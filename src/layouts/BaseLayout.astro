@@ -1,0 +1,36 @@
+---
+import '../styles/global.css'
+import Header from '../components/layout/Header.astro'
+import Footer from '../components/layout/Footer.astro'
+
+interface Props {
+  title: string
+  description?: string
+  ogImage?: string
+}
+const { title, description = 'Portfolio of Ficho — UI/UX Designer', ogImage = '/images/og-default.jpg' } = Astro.props
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com').toString()
+---
+<!doctype html>
+<html lang="en" class="bg-bg-primary text-text-primary">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@500,700,900&display=swap" />
+  </head>
+  <body class="min-h-screen bg-bg-primary text-text-primary">
+    <Header />
+    <main><slot /></main>
+    <Footer />
+  </body>
+</html>
