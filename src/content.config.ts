@@ -1,0 +1,46 @@
+import { defineCollection, z } from 'astro:content'
+import { glob } from 'astro/loaders'
+
+const caseStudies = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/case-studies' }),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    client: z.string(),
+    role: z.string(),
+    year: z.number().int(),
+    duration: z.string(),
+    tags: z.array(z.string()),
+    cover: z.string(),
+    coverAlt: z.string(),
+    thumbnail: z.string(),
+    thumbnailAlt: z.string(),
+    summary: z.string(),
+    overview: z.string(),
+    team: z.array(z.string()).optional(),
+    deliverables: z.array(z.string()),
+    tools: z.array(z.string()),
+    featured: z.boolean().default(false),
+    order: z.number().int(),
+  }),
+})
+
+const explorations = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/explorations' }),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    year: z.number().int(),
+    tags: z.array(z.string()),
+    cover: z.string(),
+    coverAlt: z.string(),
+    images: z.array(z.object({ src: z.string(), alt: z.string() })),
+    caption: z.string(),
+    order: z.number().int().default(0),
+  }),
+})
+
+export const collections = {
+  'case-studies': caseStudies,
+  'explorations': explorations,
+}
