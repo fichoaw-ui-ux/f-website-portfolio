@@ -1,0 +1,33 @@
+---
+import Container from '../layout/Container.astro'
+import Button from '../ui/Button.astro'
+import Reveal from '../ui/Reveal.astro'
+import { site } from '../../content/site'
+---
+<section class="min-h-[90vh] flex items-center py-24">
+  <Container>
+    <Reveal>
+      <div class="flex items-center gap-2 mb-8 font-mono text-xs uppercase tracking-widest text-text-secondary">
+        {site.available && (
+          <span class="relative inline-flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 animate-ping"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+          </span>
+        )}
+        {site.available ? 'Available for opportunities' : 'Currently unavailable'} · {site.location}
+      </div>
+    </Reveal>
+    <Reveal delay={100}>
+      <h1 class="font-display font-black text-display-xl max-w-5xl">{site.tagline}</h1>
+    </Reveal>
+    <Reveal delay={200}>
+      <p class="mt-8 max-w-2xl text-lg text-text-secondary">{site.bio[0]}</p>
+    </Reveal>
+    <Reveal delay={300}>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <Button href="#work" variant="primary">View Work →</Button>
+        <Button href="#contact" variant="ghost">Get in Touch</Button>
+      </div>
+    </Reveal>
+  </Container>
+</section>
