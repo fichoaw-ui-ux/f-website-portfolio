@@ -1,0 +1,22 @@
+---
+interface Props {
+  as?: string
+  delay?: number
+  class?: string
+}
+const { as: Tag = 'div', delay = 0, class: className = '' } = Astro.props
+---
+<Tag class:list={['reveal', className]} data-reveal-delay={delay} style="opacity:0; transform:translateY(20px)">
+  <slot />
+</Tag>
+
+<script>
+  import { animate, inView } from 'motion'
+  const els = document.querySelectorAll<HTMLElement>('.reveal')
+  els.forEach(el => {
+    inView(el, () => {
+      const delay = Number(el.dataset.revealDelay ?? 0) / 1000
+      animate(el, { opacity: 1, transform: 'translateY(0px)' }, { duration: 0.5, delay, easing: [0.22, 1, 0.36, 1] })
+    }, { amount: 0.2 })
+  })
+</script>
