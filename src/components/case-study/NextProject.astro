@@ -1,0 +1,20 @@
+---
+interface Props {
+  slug: string
+  title: string
+  cover: string
+  coverAlt: string
+}
+const { slug, title, cover, coverAlt } = Astro.props
+---
+<a href={`/work/${slug}`} class="group block mt-24 border-t border-border pt-12">
+  <div class="font-mono text-xs uppercase tracking-widest text-text-secondary mb-6">Next project</div>
+  <div class="grid md:grid-cols-[1fr_auto] gap-8 items-end">
+    <div>
+      <h3 class="font-display font-black text-display-md group-hover:text-accent transition">{title} →</h3>
+    </div>
+    <div class="w-full md:w-80 aspect-[16/10] rounded-lg overflow-hidden bg-bg-secondary">
+      <img src={cover} alt={coverAlt} class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" />
+    </div>
+  </div>
+</a>
