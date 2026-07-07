@@ -1,0 +1,14 @@
+---
+interface Props {
+  href?: string
+  variant?: 'primary' | 'ghost'
+  class?: string
+}
+const { href, variant = 'primary', class: className = '' } = Astro.props
+const base = 'inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-mono transition'
+const styles = variant === 'primary'
+  ? 'bg-accent text-bg-primary hover:brightness-95'
+  : 'border border-border text-text-primary hover:bg-bg-secondary'
+const Tag = href ? 'a' : 'button'
+---
+<Tag href={href} class:list={[base, styles, className]}><slot /></Tag>
