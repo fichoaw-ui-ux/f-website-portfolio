@@ -1,0 +1,6 @@
+---
+interface Props { cols?: 2 | 3 }
+const { cols = 2 } = Astro.props
+const colClass = cols === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'
+---
+<div class:list={['my-12 grid grid-cols-1 gap-4', colClass]}><slot /></div>
