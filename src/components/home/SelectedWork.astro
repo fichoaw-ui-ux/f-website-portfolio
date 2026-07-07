@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content'
+import Container from '../layout/Container.astro'
+import Tag from '../ui/Tag.astro'
+import Reveal from '../ui/Reveal.astro'
+import { sortByOrder, filterFeatured } from '../../lib/content'
+
+const all = await getCollection('case-studies')
+const featured = sortByOrder(filterFeatured(all))
+const asymmetric = featured.length >= 4
+---
+<section id="work" class="py-section-y-sm md:py-section-y">
+  <Container>
+    <div class="flex items-end justify-between mb-16">
+      <Reveal>
+        <div>
+          <div class="font-mono text-xs uppercase tracking-widest text-text-secondary mb-3">01 / Selected Work</div>
+          <h2 class="font-display font-bold text-display-lg">Recent projects.</h2>
+        </div>
+      </Reveal>
+      <Reveal><a href="#" class="hidden md:inline text-sm text-text-secondary hover:text-text-primary transition font-mono">View all →</a></Reveal>
+    </div>
+
+    {featured.length === 0 && (
+      <p class="text-text-secondary">No projects yet.</p>
+    )}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+      {featured.map((p, i) => {
+        const fullWidth = asymmetric && (i === 0 || i === 3)
+        return (
+          <Reveal class={fullWidth ? 'md:col-span-2' : ''}>
+            <a href={`/work/${p.data.slug}`} class="group block">
+              <div class="overflow-hidden rounded-lg bg-bg-secondary aspect-[16/10]">
+                <img src={p.data.thumbnail} alt={p.data.thumbnailAlt} class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02] group-hover:brightness-105" />
+              </div>
+              <div class="mt-5 flex items-start justify-between gap-6">
+                <div>
+                  <div class="flex gap-2 mb-2">{p.data.tags.slice(0, 2).map(t => <Tag>{t}</Tag>)}</div>
+                  <h3 class="font-display font-bold text-2xl md:text-3xl">{p.data.title}</h3>
+                  <p class="text-text-secondary mt-2 max-w-lg">{p.data.summary}</p>
+                </div>
+                <div class="font-mono text-sm text-text-secondary shrink-0">{p.data.year}</div>
+              </div>
+            </a>
+          </Reveal>
+        )
+      })}
+    </div>
+  </Container>
+</section>
