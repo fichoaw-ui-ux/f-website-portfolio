@@ -7,12 +7,21 @@ interface Props {
   title: string
   description?: string
   ogImage?: string
+  theme?: 'dark' | 'light'
 }
-const { title, description = 'Portfolio of Ficho — UI/UX Designer', ogImage = '/images/og-default.jpg' } = Astro.props
+const { title, description = 'Portfolio of Ficho — UI/UX Designer', ogImage = '/images/og-default.jpg', theme = 'dark' } = Astro.props
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com').toString()
+
+const lightThemeVars = [
+  '--color-bg-primary: #FAFAFA',
+  '--color-bg-secondary: #F0F0F0',
+  '--color-text-primary: #0A0A0A',
+  '--color-text-secondary: #525252',
+  '--color-border: #E5E5E5',
+].join(';')
 ---
 <!doctype html>
-<html lang="en" class="bg-bg-primary text-text-primary">
+<html lang="en" class="bg-bg-primary text-text-primary" style={theme === 'light' ? lightThemeVars : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -12,7 +12,7 @@ interface Props {
 const { entry, next } = Astro.props
 const d = entry.data
 ---
-<BaseLayout title={`${d.title} — Case Study`} description={d.summary} ogImage={d.cover}>
+<BaseLayout title={`${d.title} — Case Study`} description={d.summary} ogImage={d.cover} theme="light">
   <article class="pt-12">
     <Container>
       <a href="/#work" class="font-mono text-sm text-text-secondary hover:text-text-primary transition">← Back to work</a>
