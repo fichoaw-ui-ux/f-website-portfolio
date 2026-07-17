@@ -3,7 +3,7 @@ interface Props { url: string; title?: string; caption?: string }
 const { url, title = 'Figma prototype', caption } = Astro.props
 const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(url)}`
 ---
-<figure class="my-12">
+<figure class="mb-12">
   <div class="rounded-lg overflow-hidden border border-border bg-bg-secondary">
     <iframe
       src={embedUrl}
