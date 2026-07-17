@@ -19,12 +19,6 @@ const d = entry.data
       <header class="mt-8">
         <div class="flex flex-wrap gap-2 mb-6">{d.tags.map(t => <Tag>{t}</Tag>)}</div>
         <h1 class="font-display font-black text-display-xl max-w-4xl">{d.title}</h1>
-        <div class="mt-8 flex flex-wrap gap-x-8 gap-y-2 font-mono text-base text-text-secondary">
-          <div><span class="uppercase tracking-widest text-sm mr-2">Client</span>{d.client}</div>
-          <div><span class="uppercase tracking-widest text-sm mr-2">Role</span>{d.role}</div>
-          <div><span class="uppercase tracking-widest text-sm mr-2">Year</span>{d.year}</div>
-          <div><span class="uppercase tracking-widest text-sm mr-2">Duration</span>{d.duration}</div>
-        </div>
       </header>
 
       <div class="mt-12 rounded-lg overflow-hidden bg-bg-secondary">
