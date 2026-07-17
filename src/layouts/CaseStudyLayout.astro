@@ -1,6 +1,5 @@
 ---
 import BaseLayout from './BaseLayout.astro'
-import Container from '../components/layout/Container.astro'
 import Tag from '../components/ui/Tag.astro'
 import NextProject from '../components/case-study/NextProject.astro'
 import type { CollectionEntry } from 'astro:content'
@@ -14,7 +13,7 @@ const d = entry.data
 ---
 <BaseLayout title={`${d.title} — Case Study`} description={d.summary} ogImage={d.cover} theme="light">
   <article class="pt-12">
-    <Container>
+    <div class="mx-auto w-full max-w-[1120px] px-6 md:px-8">
       <a href="/#work" class="font-mono text-base text-text-secondary hover:text-text-primary transition">← Back to work</a>
 
       <header class="mt-8">
@@ -50,6 +49,6 @@ const d = entry.data
       <div class="mt-8"><slot /></div>
 
       <NextProject slug={next.data.slug} title={next.data.title} cover={next.data.thumbnail} coverAlt={next.data.thumbnailAlt} />
-    </Container>
+    </div>
   </article>
 </BaseLayout>
