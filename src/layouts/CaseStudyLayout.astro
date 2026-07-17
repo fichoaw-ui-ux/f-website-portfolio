@@ -31,21 +31,6 @@ const d = entry.data
         <img src={d.cover} alt={d.coverAlt} class="w-full h-auto max-h-[70vh] object-cover" />
       </div>
 
-      <div class="mt-16 grid md:grid-cols-2 gap-12">
-        <div>
-          <div class="font-mono text-sm uppercase tracking-widest text-text-secondary mb-3">Overview</div>
-          <p class="text-lg text-text-primary">{d.overview}</p>
-        </div>
-        <dl class="space-y-4 font-mono text-base">
-          {d.team && d.team.length > 0 && (
-            <div><dt class="uppercase tracking-widest text-sm text-text-secondary">Team</dt><dd class="mt-1">{d.team.join(', ')}</dd></div>
-          )}
-          <div><dt class="uppercase tracking-widest text-sm text-text-secondary">My Role</dt><dd class="mt-1">{d.role}</dd></div>
-          <div><dt class="uppercase tracking-widest text-sm text-text-secondary">Deliverables</dt><dd class="mt-1">{d.deliverables.join(', ')}</dd></div>
-          <div><dt class="uppercase tracking-widest text-sm text-text-secondary">Tools</dt><dd class="mt-1">{d.tools.join(', ')}</dd></div>
-        </dl>
-      </div>
-
       <div class="mt-8"><slot /></div>
 
       <NextProject slug={next.data.slug} title={next.data.title} cover={next.data.thumbnail} coverAlt={next.data.thumbnailAlt} />
