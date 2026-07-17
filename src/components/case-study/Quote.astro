@@ -2,7 +2,7 @@
 interface Props { author?: string }
 const { author } = Astro.props
 ---
-<blockquote class="my-12 border-l-2 border-accent pl-6">
+<blockquote class="mb-12 border-l-2 border-accent pl-6">
   <p class="font-display text-2xl md:text-3xl italic text-text-primary"><slot /></p>
   {author && <cite class="not-italic block mt-4 font-mono text-base text-text-secondary">— {author}</cite>}
 </blockquote>

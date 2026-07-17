@@ -2,7 +2,7 @@
 interface Props { src: string; alt: string; caption?: string }
 const { src, alt, caption } = Astro.props
 ---
-<figure class="my-12">
+<figure class="mb-12">
   <div class="rounded-lg overflow-hidden bg-bg-secondary">
     <img src={src} alt={alt} class="w-full h-auto" loading="lazy" />
   </div>
