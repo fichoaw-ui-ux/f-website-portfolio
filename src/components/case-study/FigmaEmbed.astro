@@ -1,0 +1,18 @@
+---
+interface Props { url: string; title?: string; caption?: string }
+const { url, title = 'Figma prototype', caption } = Astro.props
+const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(url)}`
+---
+<figure class="my-12">
+  <div class="rounded-lg overflow-hidden border border-border bg-bg-secondary">
+    <iframe
+      src={embedUrl}
+      title={title}
+      loading="lazy"
+      allowfullscreen
+      class="w-full block"
+      style="height: 600px; border: 0;"
+    ></iframe>
+  </div>
+  {caption && <figcaption class="mt-3 text-sm text-text-secondary font-mono text-center">{caption}</figcaption>}
+</figure>

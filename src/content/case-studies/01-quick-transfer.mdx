@@ -18,11 +18,15 @@ tools: ["Figma", "Prototype"]
 featured: true
 order: 1
 ---
+import PartHeader from '../../components/case-study/PartHeader.astro'
 import Section from '../../components/case-study/Section.astro'
 import ImageFull from '../../components/case-study/ImageFull.astro'
 import ImageGrid from '../../components/case-study/ImageGrid.astro'
+import FigmaEmbed from '../../components/case-study/FigmaEmbed.astro'
 import Quote from '../../components/case-study/Quote.astro'
 import Metrics from '../../components/case-study/Metrics.astro'
+
+<PartHeader number="01" title="Project Snapshot" />
 
 <Section title="Background">
 Jack Finance adalah penyedia layanan keuangan bisnis dengan solusi manajemen keuangan terintegrasi. Salah satu layanan utamanya adalah **Local Transfer** — layanan yang membantu perusahaan mengelola pembayaran domestik secara terpusat.
@@ -30,103 +34,192 @@ Jack Finance adalah penyedia layanan keuangan bisnis dengan solusi manajemen keu
 Karena target utamanya klien korporasi dengan transaksi bervolume tinggi, produk Local Transfer sejak awal **dirancang spesifik untuk pembayaran massal (batch processing)** — bukan transfer tunggal.
 </Section>
 
-<Section title="Problem">
+<PartHeader number="02" title="Context & Problem" />
+
+<Section title="A. Context Problem">
 Fira (PM saya) datang dengan satu data point:
 
 **72% batch transfer di Jack Portal cuma berisi satu penerima.**
 
 72% bukan karena mereka memilih batch — tapi karena tidak ada jalur lain yang tersedia. Setiap kali user ingin kirim ke satu orang, mereka tetap harus melewati flow yang dirancang untuk ratusan penerima: kasih nama batch, pilih metode upload, navigasi tabel validasi. Untuk satu transaksi.
 
-Ketika saya dan Fira menggali lebih dalam, masalahnya bukan satu titik. Ada **tiga friction yang muncul berurutan** dalam satu flow — dan ketiganya menghambat user bahkan sebelum sampai ke transfer.
+Ketika saya dan Fira menggali lebih dalam, masalahnya bukan satu titik. Ada tiga titik gesekan yang muncul berurutan dalam satu flow — dan ketiganya masing-masing menghambat user bahkan sebelum mereka sampai ke transfer.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/friction-1.png" alt="Layar 'Add Batch Name' yang wajib dilewati sebelum transfer" caption="Friction #1 — Nama batch dulu, baru bisa transfer. Untuk mayoritas yang cuma kirim ke satu orang, ini step pertama yang tidak punya arti." />
-
-<ImageFull src="/images/cs-quick-transfer/friction-2.png" alt="Layar dengan dua pilihan: Upload Excel atau Empty Table" caption="Friction #2 — Tidak ada form. Hanya tabel dan Excel upload, keduanya dirancang untuk puluhan hingga ratusan penerima sekaligus." />
-
-<ImageFull src="/images/cs-quick-transfer/friction-3.png" alt="Layar validasi berbasis tabel" caption="Friction #3 — Validasi untuk 100 orang, dipakai untuk 1. Antarmuka review berbasis tabel yang dirancang untuk ratusan baris data." />
-
-<Section title="Design Opportunity">
-Setelah tiga friction terpetakan, tantangannya bukan sekadar menghilangkan hambatan. Yang lebih sulit: merancang solusi yang tepat sasaran untuk mayoritas, tanpa menciptakan masalah baru bagi yang lain.
-
-**Bagaimana memberi 72% user jalur yang jauh lebih cepat — tanpa menciptakan dead-end bagi yang tetap butuh batch?**
-
-Ini bukan sekadar menambahkan fitur baru di atas yang sudah ada. Tantangannya: merancang dua jalur yang berdiri sendiri tapi terasa seperti satu produk. Salah desain di satu sisi, yang lain ikut terdampak.
+<Section title="B. Current Experience">
+Untuk memahami context problem di atas, berikut adalah gambaran pengalaman dan UI *Local Transfer* saat ini sebelum dilakukan optimasi.
 </Section>
 
-<Section title="Process">
-Setelah discovery, saya masuk setelah Fira — data sudah dipetakan, problem statement sudah jelas. Tugas saya mulai dari ideasi solusi sampai detail UI, transition logic, prototype interaktif, dan handoff ke engineering.
+<FigmaEmbed url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-44005&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=contain&content-scaling=responsive&starting-point-node-id=1875%3A43955&page-id=411%3A2&show-proto-sidebar=1" title="Current Experience — Local Transfer" caption="Prototype flow Local Transfer versi lama — coba jalankan untuk merasakan friction-nya." />
 
-**Forum dengan tim besar (Designer + Writer + PM)** untuk align arah. Output: dua hal yang perlu divalidasi ke user — bentuk pilihan entry point yang paling efektif, dan bagaimana user menjalani full journey Single Transfer end-to-end.
+<Section title="C. The Friction Points">
+Setelah menelusuri flow batch yang selama ini terpaksa dipakai user untuk transaksi tunggal, hambatannya tidak datang dari satu titik. **Ada tiga friction yang tersebar di tiga tahap berbeda dalam satu flow** — dan ketiganya harus dilewati berurutan, bahkan untuk transfer sesimpel satu penerima.
+
+**1. Nama batch dulu, baru bisa transfer.** Sebelum bisa melakukan apa pun, user diminta menamai batch — misalnya *"Transfer untuk A"*. Untuk mayoritas user yang hanya ingin kirim ke satu orang, ini adalah langkah pertama yang tidak punya arti apa-apa.
+</Section>
+
+<ImageFull src="/images/cs-quick-transfer/friction-1.png" alt="Layar 'Add Batch Name' yang wajib dilewati sebelum transfer" caption="Friction #1 — Nama batch dulu, baru bisa transfer." />
+
+<Section title=" ">
+**2. Tidak ada form — hanya tabel dan Excel upload.** Pilihan yang tersedia hanya dua: upload file Excel atau isi tabel kosong. Keduanya dirancang untuk memproses puluhan hingga ratusan penerima sekaligus. User yang ingin kirim ke satu orang tidak punya jalur lain — mereka terpaksa masuk ke salah satunya.
+</Section>
+
+<ImageFull src="/images/cs-quick-transfer/friction-2.png" alt="Layar dengan dua pilihan: Upload Excel atau Empty Table" caption="Friction #2 — Tidak ada form. Hanya tabel dan Excel upload." />
+
+<Section title=" ">
+**3. Validasi untuk 100 orang, dipakai untuk 1.** Setelah input, user masih harus melewati antarmuka validasi berbasis tabel — dirancang untuk me-review ratusan baris data sekaligus. Bagi user dengan satu penerima, ini adalah langkah terakhir yang sama sekali tidak relevan, tapi tidak bisa dilewati.
+</Section>
+
+<ImageFull src="/images/cs-quick-transfer/friction-3.png" alt="Layar validasi berbasis tabel" caption="Friction #3 — Validasi untuk 100 orang, dipakai untuk 1." />
+
+<Section title="D. Design Opportunity">
+Setelah tiga friction terpetakan, tantangannya bukan sekadar menghilangkan hambatan yang ada. Yang jauh lebih sulit adalah merancang solusi yang tepat sasaran untuk mayoritas, tanpa menciptakan masalah baru bagi yang lain.
+
+> **Bagaimana memberi 72% user jalur yang jauh lebih cepat — tanpa menciptakan dead-end bagi yang tetap butuh batch?**
+
+Ini bukan sekadar menambahkan fitur baru di atas yang sudah ada. Tantangan utamanya adalah merancang dua jalur yang berdiri sendiri tapi terasa seperti satu produk — Quick Transfer yang simpel untuk mayoritas, tanpa memutus akses ke batch flow untuk power user. Salah desain di satu sisi, yang lain ikut terdampak.
+</Section>
+
+<PartHeader number="03" title="Design Decisions" />
+
+<Section title="Kickoff">
+Setelah saya bersama Fira selesai *discovery*, saya masuk setelah Fira — data sudah dipetakan, problem statement sudah jelas. Tugas saya mulai dari ideasi solusi sampai detail UI dan transition logic, hingga prototype interaktif dan handoff ke engineering.
+
+Setelah saya rancang alternatif awal, selanjutnya saya lakukan **forum dengan tim besar (Designer + Writer + PM)** untuk align arah dan menentukan apa yang harus divalidasi. Output forum: dua hal yang perlu kami tes ke user:
+
+- Bentuk pilihan entry point yang paling efektif
+- Bagaimana user menjalani full journey *Single Transfer* secara end-to-end
 
 Saya tes dua-duanya ke **8 user internal** di sesi UT.
-
-**Uji Alur Single Transfer.** Saya walkthrough user melalui proses dari awal sampai submit, lalu minta pendapat soal alur keseluruhan. Sengaja ditaruh di awal supaya user dapat konteks utuh sebelum ditanya soal entry point.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Walkthrough full journey Single Transfer" caption="Walkthrough end-to-end Single Transfer yang dites ke 8 user internal. Hasil: semua user bilang nggak kesulitan — flow ter-validasi mudah dilalui." />
+<Section title="A.1 Uji Alur Single Transfer">
+Saya mulai sesi dengan walkthrough end-to-end: saya jalanin user melalui proses Single Transfer dari awal sampai submit, lalu tanya pendapat mereka soal alur keseluruhan. Sengaja ditaruh di awal supaya user dapat konteks utuh sebelum diminta pendapat soal entry point.
+</Section>
 
-<Section title="Tiga Alternatif Entry Point">
-Setelah full journey ter-validasi, saya tes tiga alternatif entry point:
+<ImageFull src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Walkthrough full journey Single Transfer" caption="Hasil: semua user bilang nggak merasakan kesulitan — flow ter-validasi sebagai mudah dilalui." />
+
+<Section title="A.2 Pendapat User soal Titik Masuk">
+Setelah user paham full journey-nya, baru saya minta pendapat mereka soal entry point. Tiga alternatif yang dites:
 </Section>
 
 <ImageFull src="/images/cs-quick-transfer/entry-point-alt-1.png" alt="Entry point Alt 1: Hierarki tiga pilihan" caption="Alt 1 — Hierarki tiga pilihan: Single Local Transfer + Batch (Upload Excel / Empty Table)." />
 
 <ImageFull src="/images/cs-quick-transfer/entry-point-alt-2.png" alt="Entry point Alt 2: Toggle dua pilihan" caption="Alt 2 — Toggle dua pilihan: Single vs Batch saja." />
 
-<ImageFull src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3 — Direct list. Kami sempat condong ke arah ini: kalau 72% cuma single, kenapa nggak skip semua pilihan?" />
+<ImageFull src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3 — Direct list. Kami sempat condong ke arah ini: kalau 72% transaksi cuma single, kenapa nggak skip semua pilihan dan langsung kasih list?" />
 
 <Section title="Hasil UT">
-Alt 1 dan Alt 2 dapat jumlah pilihan user yang sama. Dari analisis Pros/Cons, **Alt 2 menang** — paling clear, Cons paling sedikit. Alt 3 zero pilihan — user yang butuh batch nggak nemu jalan.
+Alt 1 dan Alt 2 dapat jumlah pilihan user yang sama, tapi dari analisis Pros/Cons, **Alt 2 menang** — lebih clear, Cons paling sedikit. Alt 3 zero pilihan — user yang butuh batch nggak nemu jalan.
+</Section>
 
-Saya dan Fira presentasi ke **Bang Edo (CEO)** dengan dua temuan utama: (1) user nggak banyak peduli sama mekanisme transisi single → batch (jarang terjadi); (2) entry point paling clear adalah Alt 2. Sambil itu kami sodorin arah yang sedang kami pertimbangkan: **lebih agresif fokus ke single-only**.
+<Section title="B. Bawa Hasil ke CEO">
+Saya dan Fira presentasi dua hasil UT di atas ke **Bang Edo (CEO kami)**. Dua temuan utama yang kami highlight:
 
-Reaksinya bukan yang kami duga. Bang Edo membawa perspektif yang tidak ditangkap UT:
+1. User nggak banyak peduli sama mekanisme transisi single → batch (jarang terjadi)
+2. Pilihan entry point yang paling clear adalah Alt 2 (dua tombol saja)
+
+Sambil itu kami sodorin arah yang sedang kami pertimbangkan: **lebih agresif fokus ke single-only**, sesuai data 72% + dua temuan UT yang sama-sama mengarah ke situ.
+
+Reaksinya bukan yang kami duga. Bang Edo membawa perspektif yang tidak ditangkap oleh UT — bukan soal seberapa sering transisi terjadi, tapi soal apa yang terjadi kalau transisi itu tidak bisa dilakukan sama sekali.
 </Section>
 
 <Quote author="Bang Edo, CEO">
 Fitur ini bisa melakukan transaksi tunggal dengan flow khusus, tapi user juga bisa beralih untuk melakukan transaksi batch juga.
 </Quote>
 
-<Section title="Iterasi Setelah Pivot">
-UT mengkonfirmasi user jarang butuh berpindah dari single ke batch — tapi tidak menguji apa yang terjadi ketika kebutuhan itu muncul di tengah jalan. Di situlah Bang Edo melihat risiko yang berbeda: Quick Transfer yang rigid bisa jadi *dead-end* di momen paling krusial.
+<Section title=" ">
+UT mengkonfirmasi bahwa user jarang butuh berpindah dari single ke batch — tapi tidak menguji apa yang terjadi ketika kebutuhan itu muncul di tengah jalan. Di situlah Bang Edo melihat risiko yang berbeda: Quick Transfer yang rigid bisa jadi *dead-end* di momen yang paling krusial bagi user.
 
 Di sinilah fitur dapat namanya: **Quick Transfer** — bukan *"Single"*, karena *"Single"* menutup pintu yang seharusnya tetap terbuka. **Framing fitur ternyata sama pentingnya dengan flow-nya.**
-
-Tiga keputusan desain final terbentuk:
-
-1. **Entry point Alt 1 dengan grouping deskriptif.** Rekomendasi UT (Alt 2) jadi nggak applicable — fitur butuh tampilkan tiga method sekaligus supaya transition logic kerja. Cons *"terlalu banyak pilihan"* saya tangani dengan grouping deskriptif: *"Suitable for 1-5 recipients"* untuk Quick Transfer, *"For up to 1000 recipients"* untuk dua opsi batch.
-2. **Multi-select di Recipient Details — pintu pertama ke batch.** Untuk user yang dari awal tahu perlu kirim ke beberapa orang.
-3. **CTA banner di Transfer Details — pintu kedua dengan data preservation.** Untuk user yang sudah isi 1 recipient + amount, lalu sadar perlu tambah orang.
-
-Ketiganya bekerja bersama: Quick Transfer cepat bagi mayoritas, tanpa menutup akses bagi yang tetap butuh batch.
 </Section>
 
-<Section title="Solution">
-72% user yang selama ini terpaksa lewat batch flow — sekarang punya jalurnya sendiri. Tidak ada nama batch. Tidak ada tabel. Tidak ada validasi untuk 100 orang.
-
-**How do you want to send money?** Kalau mereka mau melakukan transaksi, jawabannya sekarang ada: **Quick Transfer**. Ketik nama bank, pilih dari dropdown, masukkan nomor rekening → step 2: isi nominal + transfer note → submit. Dua step, form pendek — tanpa satu pun dari tiga friction.
+<Section title="C.1 Entry Point: Alt 2 → Alt 1 dengan Grouping">
+**Rekomendasi UT (Alt 2) jadi nggak applicable.** Setelah pivot, fitur butuh tampilkan tiga method (Quick + Upload Excel + Empty Table) sekaligus supaya transition logic-nya kerja. Strukturnya akhirnya pakai **Alt 1**, tapi Cons *"terlalu banyak pilihan"* saya tangani dengan grouping deskriptif: *"Suitable for 1-5 recipients"* untuk Quick Transfer, *"For up to 1000 recipients"* untuk dua opsi batch.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/solution-1-quick-transfer.gif" alt="Flow Quick Transfer end-to-end" caption="Solution 1 — Quick Transfer. Dua step, form pendek." />
+<ImageGrid cols={2}>
+  <div>
+    <img src="/images/cs-quick-transfer/entry-point-alt-2.png" alt="Before — Alt 2 (Toggle dua pilihan)" class="w-full h-auto rounded-lg" />
+    <div class="mt-2 font-mono text-sm text-text-secondary">Before — Alt 2 (Toggle)</div>
+  </div>
+  <div>
+    <img src="/images/cs-quick-transfer/placeholder.svg" alt="After — Alt 1 dengan grouping deskriptif" class="w-full h-auto rounded-lg" />
+    <div class="mt-2 font-mono text-sm text-text-secondary">After — Alt 1 dengan grouping (placeholder)</div>
+  </div>
+</ImageGrid>
+
+<Section title="C.2 Multi-select di Recipient Details">
+**Pintu pertama ke batch dari dalam flow Quick Transfer.** Saya tambah kemampuan multi-select. Kolom checkbox muncul di setiap recipient, plus indikator *"X recipients selected"* di footer dengan tombol Continue. User yang dari awal tahu mau kirim ke beberapa orang bisa langsung pilih semuanya di sini, tanpa harus mulai dengan single dulu.
+</Section>
+
+<ImageGrid cols={2}>
+  <div>
+    <img src="/images/cs-quick-transfer/placeholder.svg" alt="Before — Recipient Details tanpa multi-select" class="w-full h-auto rounded-lg" />
+    <div class="mt-2 font-mono text-sm text-text-secondary">Before — tanpa multi-select (placeholder)</div>
+  </div>
+  <div>
+    <img src="/images/cs-quick-transfer/placeholder.svg" alt="After — Recipient Details dengan multi-select" class="w-full h-auto rounded-lg" />
+    <div class="mt-2 font-mono text-sm text-text-secondary">After — dengan multi-select (placeholder)</div>
+  </div>
+</ImageGrid>
+
+<Section title="C.3 CTA Banner di Transfer Details">
+**Pintu kedua dengan data preservation.** Saya tambah CTA banner hitam *"Click here to add more recipients"* di bawah form. Buat user yang udah isi 1 recipient + amount, lalu sadar perlu kirim ke beberapa orang lagi — tinggal klik, data yang sudah keisi terbawa ke Empty Table.
+</Section>
+
+<ImageGrid cols={2}>
+  <div>
+    <img src="/images/cs-quick-transfer/placeholder.svg" alt="Before — Transfer Details tanpa CTA banner" class="w-full h-auto rounded-lg" />
+    <div class="mt-2 font-mono text-sm text-text-secondary">Before — tanpa banner (placeholder)</div>
+  </div>
+  <div>
+    <img src="/images/cs-quick-transfer/placeholder.svg" alt="After — Transfer Details dengan CTA banner" class="w-full h-auto rounded-lg" />
+    <div class="mt-2 font-mono text-sm text-text-secondary">After — dengan CTA banner (placeholder)</div>
+  </div>
+</ImageGrid>
+
+<Section title="Recap: Tiga Keputusan Desain Final">
+Dari keseluruhan proses ini — UT, masukan Bang Edo, dan iterasi setelahnya — tiga keputusan desain final terbentuk:
+
+1. **Entry point Alt 1 dengan grouping deskriptif** — mengkomunikasikan kapabilitas setiap jalur, bukan sekadar label.
+2. **Multi-select di Recipient Details** — pintu pertama ke batch, untuk yang dari awal tahu perlu kirim ke lebih dari satu orang.
+3. **CTA banner di Transfer Details** — pintu kedua dengan data preservation, untuk yang sadar butuh batch di tengah jalan.
+
+Ketiganya bekerja bersama untuk membuat Quick Transfer cepat bagi mayoritas, tanpa menutup akses bagi yang tetap butuh batch.
+</Section>
+
+<PartHeader number="04" title="Solution" />
+
+<Section title="Quick Transfer Flow">
+72% user yang selama ini terpaksa lewat batch flow — sekarang punya jalurnya sendiri. Tidak ada nama batch. Tidak ada tabel. Tidak ada proses validasi yang diperuntukan untuk 100 orang.
+
+**How do you want to send money?** Jadi sekarang kalau mereka mau melakukan transaksi, jawabannya sekarang ada: **Quick Transfer**. Ketik nama bank, pilih dari dropdown, masukin nomor rekening → step 2 isi nominal + transfer note → submit. Selesai. Dua step, form pendek — tanpa satu pun dari tiga friction yang selama ini menghambat mereka.
+</Section>
+
+<ImageFull src="/images/cs-quick-transfer/solution-1-quick-transfer.gif" alt="Flow Quick Transfer end-to-end" caption="Quick Transfer — dua step, form pendek." />
 
 <Section title="Dua Pintu ke Batch">
+Friction untuk 72% sudah terjawab. Yang belum — itu datang dari Bang Edo. Quick Transfer dirancang bukan hanya untuk cepat, tapi juga untuk tidak memutus jalan bagi yang tiba-tiba butuh lebih.
+
 Untuk menjawab celah yang Bang Edo temukan, saya buka dua pintu masuk ke batch dari dalam flow Quick Transfer.
-
-**Di Recipient Details:** kolom checkbox di setiap recipient + indikator *"X recipients selected"* di footer. User yang dari awal tahu mau kirim ke beberapa orang bisa langsung pilih semuanya di sini, tanpa harus mulai dengan single dulu.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/solution-2-add-recipient.gif" alt="Multi-select di Recipient Details" caption="Solution 2 — Multi-select di Recipient Details. Centang beberapa nama sekaligus, data terbawa." />
+<ImageFull src="/images/cs-quick-transfer/solution-2-add-recipient.gif" alt="Multi-select di Recipient Details" caption="Di Recipient Details — centang beberapa nama sekaligus, data terbawa." />
 
-<Section title="Pintu Kedua: CTA Banner">
-**Di Transfer Details:** CTA banner hitam *"Click here to add more recipients"* di bawah form. Buat user yang udah isi 1 recipient + amount, lalu sadar perlu kirim ke beberapa orang lagi — tinggal klik, data yang sudah keisi terbawa ke Empty Table.
+<ImageFull src="/images/cs-quick-transfer/solution-3-transfer-details.gif" alt="CTA banner di Transfer Details" caption="Di Transfer Details — klik banner, data yang sudah diisi terbawa ke Empty Table." />
+
+<Section title="Full Prototype">
+Dan bagi yang dari awal tahu perlu kirim ke puluhan orang, Upload Excel dan Empty Table tetap ada — tidak berubah, tidak terganggu.
+
+Kalau mau rasain full experience-nya, ada prototype lengkapnya di bawah.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/solution-3-transfer-details.gif" alt="CTA banner di Transfer Details" caption="Solution 3 — CTA banner di Transfer Details dengan data preservation ke Empty Table." />
+<FigmaEmbed url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-46677&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=contain&content-scaling=responsive&starting-point-node-id=1875%3A46627&page-id=411%3A2&show-proto-sidebar=1" title="Full Prototype — Quick Transfer" caption="Prototype lengkap Quick Transfer end-to-end." />
 
-<Section title="Impact">
-Dua minggu setelah rilis:
+<PartHeader number="05" title="Impact" />
 
+<Section title="Hasil 2 Minggu Setelah Rilis">
 <Metrics items={[
   { value: "52%", label: "Lebih cepat time-to-transfer" },
   { value: "41%", label: "Adopsi dalam 2 minggu" },
@@ -134,8 +227,10 @@ Dua minggu setelah rilis:
 ]} />
 
 *Customer success* report: pertanyaan lama *"kenapa harus kasih nama batch untuk transfer satu orang?"* hilang dari ticket masuk.
+</Section>
 
-Yang paling memuaskan bukan angka 52% atau 41% itu sendiri — tapi **alasan** kenapa angka itu bisa setinggi itu.
+<Section title="Refleksi">
+Yang paling memuaskan untuk saya bukan angka 52% atau 41% itu sendiri — tapi **alasan** kenapa angka itu bisa setinggi itu.
 
 **Masukan Bang Edo ternyata jadi penentu.** Kalau fitur ini tetap *"Single Transfer"* yang kaku, user yang tiba-tiba butuh tambah penerima bakal bounce balik ke batch flow lama, frustrasi, dan mungkin nggak balik lagi ke Quick Transfer next time. **Transition logic itu yang bikin Quick Transfer dipakai, bukan cuma dicoba.**
 </Section>
