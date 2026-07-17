@@ -22,6 +22,11 @@ const caseStudies = defineCollection({
     tools: z.array(z.string()),
     featured: z.boolean().default(false),
     order: z.number().int(),
+    snapshot: z.array(z.object({
+      label: z.string(),
+      value: z.string(),
+      pill: z.boolean().optional(),
+    })).optional(),
   }),
 })
 

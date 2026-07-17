@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro'
 import Tag from '../components/ui/Tag.astro'
 import NextProject from '../components/case-study/NextProject.astro'
+import ProjectSnapshot from '../components/case-study/ProjectSnapshot.astro'
 import type { CollectionEntry } from 'astro:content'
 
 interface Props {
@@ -24,6 +25,8 @@ const d = entry.data
       <div class="mt-12 rounded-lg overflow-hidden bg-bg-secondary">
         <img src={d.cover} alt={d.coverAlt} class="w-full h-auto max-h-[70vh] object-cover" />
       </div>
+
+      {d.snapshot && d.snapshot.length > 0 && <ProjectSnapshot items={d.snapshot} />}
 
       <div class="mt-8"><slot /></div>
 
