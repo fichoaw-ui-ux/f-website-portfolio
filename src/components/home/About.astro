@@ -14,16 +14,16 @@ import { site } from '../../content/site'
       </Reveal>
       <Reveal delay={100}>
         <div>
-          <div class="font-mono text-xs uppercase tracking-widest text-text-secondary mb-3">02 / About</div>
+          <div class="font-mono text-base uppercase tracking-widest text-text-secondary mb-3">02 / About</div>
           <h2 class="font-display font-bold text-display-md mb-8">Designer with a bias for shipping.</h2>
           {site.bio.map(p => <p class="text-text-secondary text-lg mb-4">{p}</p>)}
 
           <div class="mt-8">
-            <div class="font-mono text-xs uppercase tracking-widest text-text-secondary mb-3">Skills</div>
+            <div class="font-mono text-base uppercase tracking-widest text-text-secondary mb-3">Skills</div>
             <div class="flex flex-wrap gap-2">{site.skills.map(s => <Pill>{s}</Pill>)}</div>
           </div>
           <div class="mt-6">
-            <div class="font-mono text-xs uppercase tracking-widest text-text-secondary mb-3">Tools</div>
+            <div class="font-mono text-base uppercase tracking-widest text-text-secondary mb-3">Tools</div>
             <div class="flex flex-wrap gap-2">{site.tools.map(t => <Pill>{t}</Pill>)}</div>
           </div>
         </div>

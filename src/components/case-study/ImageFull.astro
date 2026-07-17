@@ -6,5 +6,5 @@ const { src, alt, caption } = Astro.props
   <div class="rounded-lg overflow-hidden bg-bg-secondary">
     <img src={src} alt={alt} class="w-full h-auto" loading="lazy" />
   </div>
-  {caption && <figcaption class="mt-3 text-sm text-text-secondary font-mono text-center">{caption}</figcaption>}
+  {caption && <figcaption class="mt-3 text-base text-text-secondary font-mono text-center">{caption}</figcaption>}
 </figure>

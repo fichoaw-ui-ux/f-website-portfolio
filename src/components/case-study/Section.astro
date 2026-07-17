@@ -3,6 +3,6 @@ interface Props { title: string }
 const { title } = Astro.props
 ---
 <section class="my-16 md:my-24 grid md:grid-cols-[220px_1fr] gap-8">
-  <div class="font-mono text-xs uppercase tracking-widest text-text-secondary md:sticky md:top-24 self-start">{title}</div>
+  <div class="font-mono text-base uppercase tracking-widest text-text-secondary md:sticky md:top-24 self-start">{title}</div>
   <div class="prose max-w-none prose-p:text-text-primary prose-p:text-lg prose-p:leading-relaxed prose-headings:font-display prose-headings:font-bold prose-a:text-text-primary prose-a:underline prose-strong:text-text-primary"><slot /></div>
 </section>

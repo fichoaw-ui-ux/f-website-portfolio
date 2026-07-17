@@ -4,7 +4,7 @@ import { site } from '../../content/site'
 const year = new Date().getFullYear()
 ---
 <footer class="border-t border-border mt-24">
-  <Container class="py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-sm text-text-secondary font-mono">
+  <Container class="py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-base text-text-secondary font-mono">
     <div>© {year} {site.name}. All rights reserved.</div>
     <div class="flex gap-4">
       {site.socials.map(s => <a href={s.href} class="hover:text-text-primary transition">{s.label}</a>)}

@@ -6,13 +6,13 @@ import { site } from '../../content/site'
 <section class="py-section-y-sm md:py-section-y">
   <Container>
     <Reveal>
-      <div class="font-mono text-xs uppercase tracking-widest text-text-secondary mb-3">03 / Experience</div>
+      <div class="font-mono text-base uppercase tracking-widest text-text-secondary mb-3">03 / Experience</div>
       <h2 class="font-display font-bold text-display-md mb-12">Where I've worked.</h2>
     </Reveal>
     <ul class="divide-y divide-border">
       {site.experience.map((e, i) => (
         <Reveal as="li" delay={i * 60} class="py-6 grid grid-cols-1 md:grid-cols-[200px_1fr] gap-4">
-          <div class="font-mono text-sm text-text-secondary">{e.year}</div>
+          <div class="font-mono text-base text-text-secondary">{e.year}</div>
           <div>
             <div class="font-display font-bold text-xl">{e.role} <span class="text-text-secondary font-normal">· {e.company}</span></div>
             <p class="text-text-secondary mt-1">{e.description}</p>

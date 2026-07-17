@@ -6,7 +6,7 @@ const { items } = Astro.props
   {items.map(m => (
     <div class="p-6 rounded-lg bg-bg-secondary border border-border">
       <div class="font-display font-black text-4xl md:text-5xl text-text-primary">{m.value}</div>
-      <div class="mt-2 font-mono text-xs uppercase tracking-widest text-text-secondary">{m.label}</div>
+      <div class="mt-2 font-mono text-base uppercase tracking-widest text-text-secondary">{m.label}</div>
     </div>
   ))}
 </div>

@@ -6,7 +6,7 @@ import { site } from '../../content/site'
 <section id="contact" class="py-section-y-sm md:py-section-y">
   <Container>
     <Reveal>
-      <div class="font-mono text-xs uppercase tracking-widest text-text-secondary mb-3">05 / Contact</div>
+      <div class="font-mono text-base uppercase tracking-widest text-text-secondary mb-3">05 / Contact</div>
       <h2 class="font-display font-black text-display-xl leading-none">Let's build<br />something together.</h2>
     </Reveal>
     <Reveal delay={150}>
@@ -15,7 +15,7 @@ import { site } from '../../content/site'
       </a>
     </Reveal>
     <Reveal delay={250}>
-      <div class="mt-10 flex flex-wrap gap-6 font-mono text-sm text-text-secondary">
+      <div class="mt-10 flex flex-wrap gap-6 font-mono text-base text-text-secondary">
         {site.socials.filter(s => s.label !== 'Email').map(s => (
           <a href={s.href} class="hover:text-text-primary transition">{s.label} ↗</a>
         ))}

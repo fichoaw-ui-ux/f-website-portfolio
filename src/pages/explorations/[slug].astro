@@ -14,11 +14,11 @@ const d = entry.data
 ---
 <BaseLayout title={`${d.title} — Exploration`} description={d.caption} ogImage={d.cover}>
   <Container class="pt-12">
-    <a href="/#explorations" class="font-mono text-sm text-text-secondary hover:text-text-primary transition">← Back to explorations</a>
+    <a href="/#explorations" class="font-mono text-base text-text-secondary hover:text-text-primary transition">← Back to explorations</a>
     <header class="mt-8 mb-12">
       <div class="flex flex-wrap gap-2 mb-4">{d.tags.map(t => <Tag>{t}</Tag>)}</div>
       <h1 class="font-display font-black text-display-lg">{d.title}</h1>
-      <div class="mt-3 font-mono text-sm text-text-secondary">{d.year}</div>
+      <div class="mt-3 font-mono text-base text-text-secondary">{d.year}</div>
       <p class="mt-6 max-w-2xl text-lg text-text-secondary">{d.caption}</p>
     </header>
     <div class="space-y-6">

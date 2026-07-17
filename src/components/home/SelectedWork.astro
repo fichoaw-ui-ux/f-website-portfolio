@@ -14,11 +14,11 @@ const asymmetric = featured.length >= 4
     <div class="flex items-end justify-between mb-16">
       <Reveal>
         <div>
-          <div class="font-mono text-xs uppercase tracking-widest text-text-secondary mb-3">01 / Selected Work</div>
+          <div class="font-mono text-base uppercase tracking-widest text-text-secondary mb-3">01 / Selected Work</div>
           <h2 class="font-display font-bold text-display-lg">Recent projects.</h2>
         </div>
       </Reveal>
-      <Reveal><a href="#" class="hidden md:inline text-sm text-text-secondary hover:text-text-primary transition font-mono">View all →</a></Reveal>
+      <Reveal><a href="#" class="hidden md:inline text-base text-text-secondary hover:text-text-primary transition font-mono">View all →</a></Reveal>
     </div>
 
     {featured.length === 0 && (
@@ -40,7 +40,7 @@ const asymmetric = featured.length >= 4
                   <h3 class="font-display font-bold text-2xl md:text-3xl">{p.data.title}</h3>
                   <p class="text-text-secondary mt-2 max-w-lg">{p.data.summary}</p>
                 </div>
-                <div class="font-mono text-sm text-text-secondary shrink-0">{p.data.year}</div>
+                <div class="font-mono text-base text-text-secondary shrink-0">{p.data.year}</div>
               </div>
             </a>
           </Reveal>
