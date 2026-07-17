@@ -1,0 +1,19 @@
+---
+interface Item { label: string; value: string; pill?: boolean }
+interface Props { items: Item[] }
+const { items } = Astro.props
+---
+<dl class="my-8 max-w-3xl">
+  {items.map((item, i) => (
+    <div class="grid grid-cols-[220px_1fr] gap-8 items-center py-4" class:list={i < items.length - 1 ? 'border-b border-border' : ''}>
+      <dt class="text-text-secondary text-base">{item.label}</dt>
+      <dd>
+        {item.pill ? (
+          <span class="inline-flex items-center px-3 py-1 rounded bg-bg-secondary border border-border text-base text-text-primary">{item.value}</span>
+        ) : (
+          <span class="text-text-primary text-base">{item.value}</span>
+        )}
+      </dd>
+    </div>
+  ))}
+</dl>

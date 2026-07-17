@@ -19,6 +19,7 @@ featured: true
 order: 1
 ---
 import PartHeader from '../../components/case-study/PartHeader.astro'
+import ProjectSnapshot from '../../components/case-study/ProjectSnapshot.astro'
 import Section from '../../components/case-study/Section.astro'
 import ImageFull from '../../components/case-study/ImageFull.astro'
 import ImageGrid from '../../components/case-study/ImageGrid.astro'
@@ -27,6 +28,14 @@ import Quote from '../../components/case-study/Quote.astro'
 import Metrics from '../../components/case-study/Metrics.astro'
 
 <PartHeader number="01" title="Project Snapshot" />
+
+<ProjectSnapshot items={[
+  { label: "Designer", value: "Ficho Aji Wibowo — Product Designer" },
+  { label: "Most Collaborated with", value: "Fira Alliyah — Product Manager" },
+  { label: "Brand & Industry", value: "Jack Finance & Fintech B2B" },
+  { label: "Platform", value: "Web Portal", pill: true },
+  { label: "Timeline", value: "Q1 2024" },
+]} />
 
 <Section title="Background">
 Jack Finance adalah penyedia layanan keuangan bisnis dengan solusi manajemen keuangan terintegrasi. Salah satu layanan utamanya adalah **Local Transfer** — layanan yang membantu perusahaan mengelola pembayaran domestik secara terpusat.
