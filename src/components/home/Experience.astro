@@ -1,21 +1,31 @@
 ---
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
+import SectionHeader from '../ui/SectionHeader.astro'
+import Badge from '../ui/Badge.astro'
 import { site } from '../../content/site'
+import { isCurrentRole } from '../../lib/experience'
 ---
-<section class="py-section-y-sm md:py-section-y">
+<section class="border-t border-border py-section-y-sm md:py-section-y">
   <Container>
-    <Reveal>
-      <div class="font-mono text-sm uppercase tracking-widest text-text-secondary mb-3">03 / Experience</div>
-      <h2 class="font-display font-bold text-display-md mb-12">Where I've worked.</h2>
-    </Reveal>
+    <SectionHeader badge="Experience" heading="Where I've worked." />
+
     <ul class="divide-y divide-border">
       {site.experience.map((e, i) => (
-        <Reveal as="li" delay={i * 60} class="py-6 grid grid-cols-1 md:grid-cols-[200px_1fr] gap-4">
-          <div class="font-mono text-base text-text-secondary">{e.year}</div>
+        <Reveal
+          as="li"
+          delay={i * 60}
+          class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-4 rounded-lg px-4 py-6 transition duration-300 hover:bg-bg-elevated"
+        >
+          <div class="text-base text-text-tertiary">{e.year}</div>
           <div>
-            <div class="font-display font-bold text-xl">{e.role} <span class="text-text-secondary font-normal">· {e.company}</span></div>
-            <p class="text-text-secondary mt-1">{e.description}</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <div class="font-display font-semibold text-xl text-text-primary">
+                {e.role} <span class="font-normal text-text-secondary">· {e.company}</span>
+              </div>
+              {isCurrentRole(e.year) && <Badge>Currently</Badge>}
+            </div>
+            <p class="mt-1 text-text-secondary">{e.description}</p>
           </div>
         </Reveal>
       ))}
