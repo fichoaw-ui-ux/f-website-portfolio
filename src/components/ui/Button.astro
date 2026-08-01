@@ -5,10 +5,10 @@ interface Props {
   class?: string
 }
 const { href, variant = 'primary', class: className = '' } = Astro.props
-const base = 'inline-flex items-center gap-2 px-5 py-3 rounded-full text-base font-mono transition'
+const base = 'inline-flex items-center gap-2 px-6 py-3 rounded-full text-base font-medium transition duration-300'
 const styles = variant === 'primary'
-  ? 'bg-accent text-bg-primary hover:brightness-95'
-  : 'border border-border text-text-primary hover:bg-bg-secondary'
+  ? 'bg-text-primary text-bg-primary hover:bg-text-secondary'
+  : 'border border-border text-text-secondary hover:text-text-primary hover:border-border-hover hover:bg-bg-elevated'
 const Tag = href ? 'a' : 'button'
 ---
 <Tag href={href} class:list={[base, styles, className]}><slot /></Tag>
