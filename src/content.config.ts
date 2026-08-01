@@ -27,6 +27,8 @@ const caseStudies = defineCollection({
       value: z.string(),
       pill: z.boolean().optional(),
     })).optional(),
+    brandColor: z.string().optional(),
+    brandColorAlt: z.string().optional(),
   }),
 })
 

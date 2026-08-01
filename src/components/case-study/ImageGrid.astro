@@ -1,6 +1,7 @@
 ---
-interface Props { cols?: 2 | 3 }
-const { cols = 2 } = Astro.props
+interface Props { cols?: 2 | 3; indent?: boolean | 1 | 2 }
+const { cols = 2, indent = false } = Astro.props
 const colClass = cols === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'
+const indentClass = indent === 2 ? 'pl-20' : indent ? 'pl-8' : ''
 ---
-<div class:list={['mb-12 grid grid-cols-1 gap-4', colClass]}><slot /></div>
+<div class:list={['mb-12 grid grid-cols-1 gap-6', colClass, indentClass]}><slot /></div>

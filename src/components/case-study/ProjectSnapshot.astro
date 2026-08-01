@@ -3,7 +3,7 @@ interface Item { label: string; value: string; pill?: boolean }
 interface Props { items: Item[] }
 const { items } = Astro.props
 ---
-<dl class="mb-12 max-w-3xl">
+<dl class="mb-16 max-w-3xl">
   {items.map((item, i) => (
     <div class="grid grid-cols-[220px_1fr] gap-8 items-center py-4" class:list={i < items.length - 1 ? 'border-b border-border' : ''}>
       <dt class="text-text-secondary text-base">{item.label}</dt>

@@ -1,18 +1,31 @@
 ---
-interface Props { url: string; title?: string; caption?: string }
-const { url, title = 'Figma prototype', caption } = Astro.props
-const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(url)}`
+interface Props { url: string; title?: string; caption?: string; indent?: boolean | 1 | 2 }
+const { url, title = 'Figma prototype', caption, indent = false } = Astro.props
+const indentClass = indent === 2 ? 'pl-20' : indent ? 'pl-8' : ''
+const cleanUrl = url.replace(/[?&]show-proto-sidebar=[^&]*/g, '')
+const sep = cleanUrl.includes('?') ? '&' : '?'
+const protoUrl = `${cleanUrl}${sep}show-proto-sidebar=0`
+const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(protoUrl)}`
 ---
-<figure class="mb-12">
-  <div class="rounded-lg overflow-hidden border border-border bg-bg-secondary">
-    <iframe
-      src={embedUrl}
-      title={title}
-      loading="lazy"
-      allowfullscreen
-      class="w-full block"
-      style="height: 600px; border: 0;"
-    ></iframe>
+<figure class:list={['mb-12', indentClass]}>
+  <div class="rounded-lg p-[2px] bg-gradient-accent">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary">Prototype</span>
+          <span class="font-mono text-sm text-text-primary truncate">{title}</span>
+        </div>
+        <a href={url} target="_blank" rel="noopener" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition">Open in Figma ↗</a>
+      </div>
+      <iframe
+        src={embedUrl}
+        title={title}
+        loading="lazy"
+        allowfullscreen
+        class="w-full block"
+        style="height: 600px; border: 0;"
+      ></iframe>
+    </div>
   </div>
-  {caption && <figcaption class="mt-3 text-sm text-text-secondary font-mono text-center">{caption}</figcaption>}
+  {caption && <figcaption class="mt-4 text-base text-text-secondary font-mono text-center">{caption}</figcaption>}
 </figure>

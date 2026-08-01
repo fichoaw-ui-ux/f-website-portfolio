@@ -1,33 +1,38 @@
 ---
 import Container from '../layout/Container.astro'
-import Button from '../ui/Button.astro'
 import Reveal from '../ui/Reveal.astro'
 import { site } from '../../content/site'
+
 ---
-<section class="min-h-[90vh] flex items-center py-24">
+<section class="min-h-[90vh] flex items-center py-24 text-center">
   <Container>
     <Reveal>
-      <div class="flex items-center gap-2 mb-8 font-mono text-sm uppercase tracking-widest text-text-secondary">
-        {site.available && (
-          <span class="relative inline-flex h-2 w-2">
-            <span class="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 animate-ping"></span>
-            <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
-          </span>
-        )}
-        {site.available ? 'Available for opportunities' : 'Currently unavailable'} · {site.location}
+      <div class="inline-flex items-center gap-2 mb-8 font-mono text-lg uppercase tracking-widest text-text-secondary">
+        <svg class="w-4 h-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="9 10 4 15 9 20"/>
+          <path d="M20 4v7a4 4 0 0 1-4 4H4"/>
+        </svg>
+        <span>Welcome — I'm {site.name}</span>
       </div>
     </Reveal>
     <Reveal delay={100}>
-      <h1 class="font-display font-black text-display-xl max-w-5xl">{site.tagline}</h1>
+      <h1 class="font-micro font-normal uppercase text-[clamp(5rem,12vw,9rem)] mx-auto max-w-5xl leading-[1.05]">
+        <span class="block text-text-primary">Let's Build</span>
+        <span class="block">
+          <span class="text-text-primary">Something</span>
+          <span class="inline-flex items-center justify-center align-middle mx-3 h-[0.9em] w-[0.9em] rounded-[0.22em] bg-accent text-white translate-y-[-0.05em]">
+            <svg class="w-[55%] h-[55%]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="9 10 4 15 9 20"/>
+              <path d="M20 4v7a4 4 0 0 1-4 4H4"/>
+            </svg>
+          </span>
+          <span class="text-text-secondary">People</span>
+        </span>
+        <span class="block text-text-secondary">Actually Love</span>
+      </h1>
     </Reveal>
     <Reveal delay={200}>
-      <p class="mt-8 max-w-2xl text-lg text-text-secondary">{site.bio[0]}</p>
-    </Reveal>
-    <Reveal delay={300}>
-      <div class="mt-10 flex flex-wrap gap-3">
-        <Button href="#work" variant="primary">View Work →</Button>
-        <Button href="#contact" variant="ghost">Get in Touch</Button>
-      </div>
+      <p class="mt-10 mx-auto max-w-2xl text-2xl leading-normal text-text-secondary">{site.bio[0]}</p>
     </Reveal>
   </Container>
 </section>

@@ -1,8 +1,8 @@
 ---
 interface Props { number: string; title: string }
 const { number, title } = Astro.props
+const n = String(parseInt(number, 10))
 ---
-<div class="mt-32 mb-12 pt-12 border-t border-border">
-  <div class="font-mono text-sm uppercase tracking-widest text-text-secondary mb-4">{number}</div>
-  <h2 class="font-display font-bold text-display-lg">{title}</h2>
+<div class="mt-24 mb-8 pt-12 border-t border-border" data-part-header data-part-num={`${n}.`} data-part-title={title}>
+  <h2 class="font-display font-bold text-4xl md:text-5xl text-gradient-accent leading-tight">{n}. {title}</h2>
 </div>

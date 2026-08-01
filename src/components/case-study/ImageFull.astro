@@ -1,10 +1,42 @@
 ---
-interface Props { src: string; alt: string; caption?: string }
-const { src, alt, caption } = Astro.props
+interface Props { src: string; alt: string; caption?: string; label?: string; indent?: boolean | 1 | 2; mobile?: boolean }
+const { src, alt, caption, label = 'Image', indent = false, mobile = false } = Astro.props
+const indentClass = indent === 2 ? 'pl-20' : indent ? 'pl-8' : ''
+const isPlaceholder = src.includes('placeholder')
+const resolvedLabel = isPlaceholder ? 'Placeholder' : label
+
+let title = caption
+let description = ''
+if (caption) {
+  const match = caption.match(/^([^.!?]+[.!?])\s+(.+)$/s)
+  if (match) {
+    title = match[1]
+    description = match[2]
+  }
+}
 ---
-<figure class="mb-12">
-  <div class="rounded-lg overflow-hidden bg-bg-secondary">
-    <img src={src} alt={alt} class="w-full h-auto" loading="lazy" />
+<figure class:list={['mb-12', indentClass]}>
+  <div class="rounded-lg p-[2px] bg-gradient-accent">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">{resolvedLabel}</span>
+          {title && <span class="font-mono text-sm text-text-primary truncate">{title}</span>}
+        </div>
+        {!isPlaceholder && <button type="button" data-lightbox-trigger data-lightbox-src={src} data-lightbox-alt={alt} class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>}
+      </div>
+      {mobile ? (
+        <div class="flex justify-center bg-bg-secondary py-6">
+          <img src={src} alt={alt} class="block h-auto w-full max-w-[320px]" loading="lazy" />
+        </div>
+      ) : (
+        <img src={src} alt={alt} class="w-full h-auto block" loading="lazy" />
+      )}
+      {description && (
+        <div class="px-4 py-3 border-t border-border">
+          <span class="font-mono text-sm text-text-primary">{description}</span>
+        </div>
+      )}
+    </div>
   </div>
-  {caption && <figcaption class="mt-3 text-base text-text-secondary font-mono text-center">{caption}</figcaption>}
 </figure>

@@ -1,0 +1,48 @@
+---
+---
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-6 md:p-12" data-lightbox-overlay>
+  <button type="button" data-lightbox-close aria-label="Close" class="absolute top-4 right-4 md:top-6 md:right-6 flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-white hover:opacity-80 transition">
+    Close <span class="text-xl leading-none">×</span>
+  </button>
+  <img data-lightbox-img src="" alt="" class="max-w-full max-h-full object-contain rounded" />
+</div>
+
+<script>
+  const overlay = document.getElementById('lightbox') as HTMLDivElement | null;
+  const overlayImg = overlay?.querySelector('[data-lightbox-img]') as HTMLImageElement | null;
+
+  function open(src: string, alt: string) {
+    if (!overlay || !overlayImg) return;
+    overlayImg.src = src;
+    overlayImg.alt = alt;
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    if (!overlay || !overlayImg) return;
+    overlay.classList.add('hidden');
+    overlay.classList.remove('flex');
+    overlayImg.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const trigger = target.closest('[data-lightbox-trigger]') as HTMLElement | null;
+    if (trigger) {
+      e.preventDefault();
+      const src = trigger.getAttribute('data-lightbox-src') || '';
+      const alt = trigger.getAttribute('data-lightbox-alt') || '';
+      open(src, alt);
+      return;
+    }
+    if (target === overlay || target.closest('[data-lightbox-close]')) {
+      close();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay && !overlay.classList.contains('hidden')) close();
+  });
+</script>

@@ -4,13 +4,17 @@
   --color-bg-secondary: #141414;
   --color-text-primary: #FAFAFA;
   --color-text-secondary: #A1A1A1;
-  --color-accent: #E4FF3F;
+  --color-accent: #1E4FCF;
+  --color-accent-2: #DC2626;
   --color-border: #262626;
+
+  --gradient-accent: linear-gradient(135deg, #1E4FCF 0%, #1E4FCF 60%, #DC2626 100%);
 
   /* Font families */
   --font-display: "Satoshi", system-ui, sans-serif;
+  --font-micro: "Micro 5", "Satoshi", system-ui, sans-serif;
   --font-sans: "Inter Variable", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --font-mono: "Inter Variable", system-ui, sans-serif;
 
   /* Display font sizes (with line height) */
   --text-display-xl: clamp(3rem, 8vw, 6rem);

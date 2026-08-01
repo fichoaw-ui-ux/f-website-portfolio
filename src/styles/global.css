@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @import "@fontsource-variable/inter";
-@import "@fontsource-variable/jetbrains-mono";
 @import "./tokens.css";
 
 @layer base {
@@ -17,13 +16,28 @@
   }
   ::selection {
     background: var(--color-accent);
-    color: var(--color-bg-primary);
+    color: #FAFAFA;
   }
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
     border-radius: 2px;
   }
+}
+
+@utility text-gradient-accent {
+  background: var(--gradient-accent);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility bg-gradient-accent {
+  background: var(--gradient-accent);
+}
+
+@utility border-gradient-accent {
+  border-image: var(--gradient-accent) 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
