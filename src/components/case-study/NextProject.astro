@@ -11,7 +11,7 @@ const { slug, title, cover, coverAlt } = Astro.props
   <div class="font-mono text-sm uppercase tracking-widest text-text-secondary mb-6">Next project</div>
   <div class="grid md:grid-cols-[1fr_auto] gap-8 items-end">
     <div>
-      <h3 class="font-display font-black text-display-md group-hover:opacity-70 transition">{title} →</h3>
+      <h3 class="font-display font-extrabold text-display-md group-hover:opacity-70 transition">{title} →</h3>
     </div>
     <div class="w-full md:w-80 aspect-[16/10] rounded-lg overflow-hidden bg-bg-secondary">
       <img src={cover} alt={coverAlt} class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" />

@@ -1,6 +1,10 @@
 import { defineCollection, z } from 'astro:content'
 import { glob } from 'astro/loaders'
 
+/** A 3- or 6-digit hex colour. These values are interpolated into a <style> block,
+ *  so an unconstrained string could emit an invalid or malformed declaration. */
+const hexColor = z.string().regex(/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/, 'must be a hex colour like #1E4FCF')
+
 const caseStudies = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/case-studies' }),
   schema: z.object({
@@ -27,8 +31,8 @@ const caseStudies = defineCollection({
       value: z.string(),
       pill: z.boolean().optional(),
     })).optional(),
-    brandColor: z.string().optional(),
-    brandColorAlt: z.string().optional(),
+    brandColor: hexColor.optional(),
+    brandColorAlt: hexColor.optional(),
   }),
 })
 
