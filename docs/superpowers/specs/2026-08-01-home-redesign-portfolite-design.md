@@ -17,8 +17,8 @@ same order. This is a visual and component-level redesign, not a content restruc
 
 | Decision | Choice |
 |---|---|
-| Typography | Plus Jakarta Sans (variable). `Micro 5` and `Satoshi` removed. |
-| Color | Full monochrome. Blue (`#1E4FCF`) and red (`#DC2626`) accents removed. |
+| Typography | Plus Jakarta Sans (variable) for everything. `Micro 5`, `Satoshi`, `Inter`, and any monospace face are removed. |
+| Color | Strictly monochrome — black, white, and greys only. No hue anywhere on the page. Blue (`#1E4FCF`) and red (`#DC2626`) accents removed. |
 | Theme | Dark. Home page switches from `theme="light"` to dark. |
 | Sections | Existing six, unchanged order: Hero, Selected Work, About, Experience, Explorations, Contact. |
 | Section labels | Numbered labels (`01 / Selected Work`) replaced by badge pills (`Selected work`). |
@@ -45,10 +45,14 @@ Font families:
 ```
 --font-display: "Plus Jakarta Sans Variable", system-ui, sans-serif
 --font-sans:    "Plus Jakarta Sans Variable", system-ui, sans-serif
---font-mono:    "JetBrains Mono Variable", ui-monospace, monospace
+--font-mono:    "Plus Jakarta Sans Variable", system-ui, sans-serif
 ```
 
-`--font-micro` is removed entirely.
+Plus Jakarta Sans is the only typeface on the page. `--font-micro` is removed
+entirely. `--font-mono` is kept as a token only so existing `font-mono` class usages
+keep resolving, but it points at Plus Jakarta Sans — there is no monospace typeface.
+Those call sites rely on uppercase + wide tracking for their "label" character, which
+survives the substitution.
 
 Display sizes keep their existing `clamp()` scale but tighten tracking to `-0.03em`
 for `display-xl` and `display-lg`.
@@ -60,9 +64,8 @@ Section spacing (`--spacing-section-y`, `--spacing-section-y-sm`) unchanged.
 
 ### Global (`src/styles/global.css`)
 
-- Import `@fontsource-variable/plus-jakarta-sans` and
-  `@fontsource-variable/jetbrains-mono` (already a dependency, previously unused);
-  drop the Inter import. `--font-mono` is still used by the contact social links.
+- Import `@fontsource-variable/plus-jakarta-sans`; drop the Inter import. No other
+  font is imported.
 - Remove the `text-gradient-accent`, `bg-gradient-accent`, and `border-gradient-accent`
   utilities. All call sites are updated (see per-section notes).
 - `::selection` and `:focus-visible` use `--color-text-primary` instead of the accent.
@@ -109,8 +112,8 @@ Already a floating pill, which matches Portfolite. Changes are limited to color:
 Centered, `min-h-screen`, vertically centered content. Top to bottom:
 
 1. **Badge** — `● Available for work` when `site.available` is true, otherwise
-   `UI/UX Designer — Jakarta`. The dot is a small green circle; it is the single
-   permitted non-monochrome element, because it carries status meaning.
+   `UI/UX Designer — Jakarta`. The dot is `--color-text-primary` (white), not green.
+   The page contains no hue at all.
 2. **Headline** — two lines, `font-display` weight 800,
    `clamp(3.5rem, 9vw, 7.5rem)`, `line-height: 0.95`, `letter-spacing: -0.03em`.
    Line 1 is `--color-text-primary`; line 2 is `--color-text-secondary`. This
@@ -208,8 +211,9 @@ are unchanged.
 
 - `npm run build` completes without errors.
 - The dev server renders `/` with all six sections and no console errors.
-- No `accent`, `gradient-accent`, `font-micro`, `Satoshi`, or `Micro 5` references
-  remain in home-page code paths (`grep`).
+- No `accent`, `gradient-accent`, `font-micro`, `Satoshi`, `Inter`, `Micro 5`, or
+  `JetBrains` references remain in home-page code paths (`grep`).
+- No hue on the page: every colour used resolves to a neutral (equal R, G, B) value.
 - No external font requests appear in the network log for `/`.
 - Screenshots at desktop (1280) and mobile (375) widths.
 - Keyboard focus is visible on every interactive element in the new components.
