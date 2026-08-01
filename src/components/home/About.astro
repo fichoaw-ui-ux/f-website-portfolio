@@ -2,28 +2,37 @@
 import Container from '../layout/Container.astro'
 import Pill from '../ui/Pill.astro'
 import Reveal from '../ui/Reveal.astro'
+import SectionHeader from '../ui/SectionHeader.astro'
 import { site } from '../../content/site'
 ---
-<section id="about" class="py-section-y-sm md:py-section-y bg-bg-secondary/40">
+<section id="about" class="border-t border-border py-section-y-sm md:py-section-y">
   <Container>
+    <SectionHeader badge="About me" heading="Designer with a bias for shipping." />
+
     <div class="grid md:grid-cols-2 gap-12 items-start">
       <Reveal>
-        <div class="aspect-[4/5] rounded-lg overflow-hidden bg-bg-secondary">
-          <img src="/images/placeholder.svg" alt={`Portrait of ${site.name}`} class="w-full h-full object-cover" />
+        <div class="group rounded-xl border border-border bg-bg-secondary p-3">
+          <div class="aspect-[4/5] overflow-hidden rounded-lg bg-bg-primary">
+            <img
+              src="/images/placeholder.svg"
+              alt={`Portrait of ${site.name}`}
+              class="w-full h-full object-cover saturate-[0.2] transition duration-500 group-hover:saturate-100"
+            />
+          </div>
         </div>
       </Reveal>
+
       <Reveal delay={100}>
         <div>
-          <div class="font-mono text-sm uppercase tracking-widest text-text-secondary mb-3">02 / About</div>
-          <h2 class="font-display font-bold text-display-md mb-8">Designer with a bias for shipping.</h2>
-          {site.bio.map(p => <p class="text-text-secondary text-lg mb-4">{p}</p>)}
+          {site.bio.map(p => <p class="mb-4 text-lg text-text-secondary">{p}</p>)}
 
           <div class="mt-8">
-            <div class="font-mono text-sm uppercase tracking-widest text-text-secondary mb-3">Skills</div>
+            <div class="mb-3 text-xs uppercase tracking-[0.15em] text-text-tertiary">Skills</div>
             <div class="flex flex-wrap gap-2">{site.skills.map(s => <Pill>{s}</Pill>)}</div>
           </div>
+
           <div class="mt-6">
-            <div class="font-mono text-sm uppercase tracking-widest text-text-secondary mb-3">Tools</div>
+            <div class="mb-3 text-xs uppercase tracking-[0.15em] text-text-tertiary">Tools</div>
             <div class="flex flex-wrap gap-2">{site.tools.map(t => <Pill>{t}</Pill>)}</div>
           </div>
         </div>
