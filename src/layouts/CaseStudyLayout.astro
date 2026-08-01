@@ -13,16 +13,31 @@ interface Props {
 }
 const { entry, next } = Astro.props
 const d = entry.data
+
+// Case studies keep their brand colour. The global accent tokens now default to
+// neutral so the home page stays monochrome, so this layout supplies its own
+// fallback for entries that don't declare one.
+//
+// These two hexes are COMPATIBILITY VALUES, not a chosen brand palette: they
+// reproduce the pre-redesign global `--gradient-accent` default (blue fading to
+// red) that brand-less case studies used to inherit from tokens.css. They exist
+// so those pages render exactly as they did before the redesign. Don't treat them
+// as a design decision — a case study that wants a real colour declares
+// `brandColor` in its frontmatter.
+const DEFAULT_CASE_STUDY_ACCENT = '#1E4FCF'
+const DEFAULT_CASE_STUDY_ACCENT_ALT = '#DC2626'
+const accent = d.brandColor ?? DEFAULT_CASE_STUDY_ACCENT
+// An entry that declares `brandColor` but no `brandColorAlt` gets a flat gradient in
+// its own colour. Only an entry declaring neither falls back to the old blue-to-red.
+const accentAlt = d.brandColorAlt ?? (d.brandColor ? accent : DEFAULT_CASE_STUDY_ACCENT_ALT)
 ---
 <BaseLayout title={`${d.title} — Case Study`} description={d.summary} ogImage={d.cover} theme="light">
-  {d.brandColor && (
-    <style set:html={`
-      :root{
-        --color-accent: ${d.brandColor};
-        --gradient-accent: linear-gradient(135deg, ${d.brandColor} 0%, ${d.brandColor} 60%, ${d.brandColorAlt || d.brandColor} 100%);
-      }
-    `} />
-  )}
+  <style set:html={`
+    :root{
+      --color-accent: ${accent};
+      --gradient-accent: linear-gradient(135deg, ${accent} 0%, ${accent} 60%, ${accentAlt} 100%);
+    }
+  `} />
   <article class="pt-12">
     <div class="mx-auto w-full max-w-[1120px] px-6 md:px-8">
       <a href="/#work" class="font-mono text-base text-text-secondary hover:text-text-primary transition">← Back to work</a>
