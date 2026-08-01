@@ -224,6 +224,73 @@ git commit -m "style: swap design foundation to Plus Jakarta Sans and neutral to
 
 ---
 
+## Task 1b: Give the case study layout its own accent fallback
+
+Added during execution. Spec review of Task 1 found a real regression the plan's premise missed.
+
+`CaseStudyLayout.astro` only emitted its `--color-accent` override when `d.brandColor` was set, and only `02-voucher-points-banner.mdx` declares one. With the global default neutralized to `#FAFAFA`, `/work/quick-transfer` rendered its accent content invisible against the light theme's `#FAFAFA` background.
+
+**Files:**
+- Modify: `src/layouts/CaseStudyLayout.astro`
+
+- [ ] **Step 1: Add an accent fallback to the frontmatter script**
+
+After `const d = entry.data`:
+
+```ts
+// Case studies keep their brand colour. The global accent default is neutral so the
+// home page stays monochrome, so this layout supplies its own fallback for entries
+// that don't declare one. These two hexes are compatibility values: they reproduce
+// the pre-redesign global accent default so untinted case studies look unchanged.
+const DEFAULT_CASE_STUDY_ACCENT = '#1E4FCF'
+const DEFAULT_CASE_STUDY_ACCENT_ALT = '#DC2626'
+const accent = d.brandColor ?? DEFAULT_CASE_STUDY_ACCENT
+const accentAlt = d.brandColorAlt ?? (d.brandColor ? accent : DEFAULT_CASE_STUDY_ACCENT_ALT)
+```
+
+The nested conditional on `accentAlt` matters: an entry that declares `brandColor` but
+no `brandColorAlt` falls back to its own colour (a flat gradient), while only an entry
+declaring neither gets the old blue-to-red default.
+
+- [ ] **Step 2: Emit the override unconditionally**
+
+Replace the `{d.brandColor && (...)}` block with:
+
+```astro
+  <style set:html={`
+    :root{
+      --color-accent: ${accent};
+      --gradient-accent: linear-gradient(135deg, ${accent} 0%, ${accent} 60%, ${accentAlt} 100%);
+    }
+  `} />
+```
+
+- [ ] **Step 3: Verify**
+
+```bash
+npm run build
+grep -o -- "--color-accent: [^;]*" dist/work/quick-transfer/index.html
+grep -o -- "--gradient-accent: [^;]*" dist/work/quick-transfer/index.html
+grep -o -- "--gradient-accent: [^;]*" dist/work/voucher-points-banner/index.html
+grep -c -- "--color-accent:" dist/index.html
+```
+
+Expected:
+
+- quick-transfer accent: `#1E4FCF`
+- quick-transfer gradient: `linear-gradient(135deg, #1E4FCF 0%, #1E4FCF 60%, #DC2626 100%)` — byte-identical to the pre-redesign global default
+- voucher-points-banner gradient: `linear-gradient(135deg, #DA649F 0%, #DA649F 60%, #7A2A55 100%)` — unchanged
+- home page: `0` accent overrides
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/layouts/CaseStudyLayout.astro
+git commit -m "fix: give case study layout its own accent fallback"
+```
+
+---
+
 ## Task 2: Restyle shared UI primitives (Button, Pill) and Header
 
 **Files:**
@@ -1185,6 +1252,39 @@ git commit -m "fix(home): address issues found in verification pass"
 If nothing needed fixing, there is nothing to commit — say so explicitly rather than creating an empty commit.
 
 ---
+
+## What execution changed
+
+Four things the plan did not anticipate, all found by review or by the guard test:
+
+**Task 1b — case study accent fallback.** Neutralizing the global accent defaults made
+`/work/quick-transfer` render invisible accent content, because `CaseStudyLayout` only
+emitted its override when an entry declared `brandColor`, and that entry declares none.
+Fixed with compatibility fallbacks reproducing the pre-redesign default exactly.
+
+**Task 2b — review cleanup.** Three real problems: `font-black` (900) is unreachable in
+Plus Jakarta Sans, whose range is 200–800, so seven call sites silently rendered 800
+while claiming 900 — all swapped to `font-extrabold`. The accent comment in `tokens.css`
+had gone stale after Task 1b. And `brandColor` accepted any string, so an empty value
+would emit the invalid declaration `--color-accent: ;` — now validated as a hex colour
+in `src/content.config.ts`. Unused `inter` and `jetbrains-mono` dependencies removed.
+
+**Task 3 — the guard caught a real leak, then a flaw in itself.**
+`src/components/case-study/Section.astro` hardcoded the old blue and red hexes as a
+Tailwind arbitrary value, which compiled into the shared CSS bundle that the home page
+links. Replaced with `bg-gradient-accent`, which also fixed an existing inconsistency:
+the voucher-points-banner blockquote bar had been rendering blue-to-red while the
+project's brand colour is pink.
+
+Then the "prove the guard can fail" step exposed that the guard was case-sensitive while
+the minifier lowercases hex values — so it only ever protected Tailwind class names, never
+the token path it exists to defend. Assertions are now case-insensitive regexes. `npm test`
+also runs a build first, so the guard protects whoever breaks it rather than only CI.
+
+**Concurrency.** Running a reviewer alongside an implementer corrupted a write: the
+reviewer's `git checkout` detached HEAD and reverted an in-progress edit. Nothing was
+lost, but only because the implementer happened to read the file back. Reviewers must
+inspect read-only (`git show`, `git diff`), and implementers must not run concurrently.
 
 ## Definition of done
 
