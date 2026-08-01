@@ -1,0 +1,17 @@
+---
+interface Props {
+  /** Show a small leading dot. Used by the hero availability indicator. */
+  dot?: boolean
+  class?: string
+}
+const { dot = false, class: className = '' } = Astro.props
+---
+<span
+  class:list={[
+    'inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-bg-secondary text-xs uppercase tracking-[0.15em] text-text-secondary',
+    className,
+  ]}
+>
+  {dot && <span class="w-1.5 h-1.5 rounded-full bg-text-primary" aria-hidden="true"></span>}
+  <slot />
+</span>

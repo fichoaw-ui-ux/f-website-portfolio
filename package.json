@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "vitest run"
+    "test": "npm run build && vitest run"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",

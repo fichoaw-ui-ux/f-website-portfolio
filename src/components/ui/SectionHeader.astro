@@ -1,0 +1,33 @@
+---
+import Badge from './Badge.astro'
+import Reveal from './Reveal.astro'
+
+interface Props {
+  badge: string
+  heading: string
+  /** Optional one-line paragraph under the heading. */
+  description?: string
+  /** Optional right-aligned action link, desktop only. */
+  actionLabel?: string
+  actionHref?: string
+  class?: string
+}
+const { badge, heading, description, actionLabel, actionHref, class: className = '' } = Astro.props
+---
+<div class:list={['flex items-end justify-between gap-8 mb-16', className]}>
+  <Reveal>
+    <div>
+      <Badge class="mb-5">{badge}</Badge>
+      <h2 class="font-display font-extrabold text-display-md">{heading}</h2>
+      {description && <p class="mt-4 max-w-xl text-lg text-text-secondary">{description}</p>}
+    </div>
+  </Reveal>
+  {actionLabel && actionHref && (
+    <Reveal>
+      <a
+        href={actionHref}
+        class="hidden md:inline-flex items-center gap-1 text-base text-text-secondary hover:text-text-primary transition shrink-0"
+      >{actionLabel}</a>
+    </Reveal>
+  )}
+</div>
