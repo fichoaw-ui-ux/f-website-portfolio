@@ -1,33 +1,40 @@
 @theme {
-  /* Colors */
+  /* Colors — strictly neutral. No hue on the home page. */
   --color-bg-primary: #0A0A0A;
   --color-bg-secondary: #141414;
+  --color-bg-elevated: #1A1A1A;
   --color-text-primary: #FAFAFA;
   --color-text-secondary: #A1A1A1;
-  --color-accent: #1E4FCF;
-  --color-accent-2: #DC2626;
+  --color-text-tertiary: #525252;
   --color-border: #262626;
+  --color-border-hover: #3A3A3A;
 
-  --gradient-accent: linear-gradient(135deg, #1E4FCF 0%, #1E4FCF 60%, #DC2626 100%);
+  /* Accent tokens are kept ONLY so case study pages keep working — they override
+     these per project brand in CaseStudyLayout.astro. Their defaults are neutral,
+     so any page that does not override them renders monochrome. */
+  --color-accent: #FAFAFA;
+  --color-accent-2: #A1A1A1;
+  --gradient-accent: linear-gradient(135deg, #FAFAFA 0%, #FAFAFA 60%, #A1A1A1 100%);
 
-  /* Font families */
-  --font-display: "Satoshi", system-ui, sans-serif;
-  --font-micro: "Micro 5", "Satoshi", system-ui, sans-serif;
-  --font-sans: "Inter Variable", system-ui, sans-serif;
-  --font-mono: "Inter Variable", system-ui, sans-serif;
+  /* Font families — Plus Jakarta Sans is the only typeface on the site.
+     --font-mono is kept as a token so existing `font-mono` class usages keep
+     resolving, but it points at the same face. */
+  --font-display: "Plus Jakarta Sans Variable", system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans Variable", system-ui, sans-serif;
+  --font-mono: "Plus Jakarta Sans Variable", system-ui, sans-serif;
 
   /* Display font sizes (with line height) */
   --text-display-xl: clamp(3rem, 8vw, 6rem);
   --text-display-xl--line-height: 1.05;
-  --text-display-xl--letter-spacing: -0.02em;
+  --text-display-xl--letter-spacing: -0.03em;
 
   --text-display-lg: clamp(2.5rem, 6vw, 4.5rem);
   --text-display-lg--line-height: 1.08;
-  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--letter-spacing: -0.03em;
 
   --text-display-md: clamp(2rem, 4vw, 3rem);
   --text-display-md--line-height: 1.15;
-  --text-display-md--letter-spacing: -0.01em;
+  --text-display-md--letter-spacing: -0.02em;
 
   /* Layout */
   --container-container: 1280px;
