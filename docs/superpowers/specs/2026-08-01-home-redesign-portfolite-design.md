@@ -38,7 +38,20 @@ same order. This is a visual and component-level redesign, not a content restruc
 --color-border-hover:  #3A3A3A   (new)
 ```
 
-Removed: `--color-accent`, `--color-accent-2`, `--gradient-accent`.
+**Accent tokens are neutralized, not deleted.** `CaseStudyLayout.astro` overrides
+`--color-accent` and `--gradient-accent` per project brand, and roughly thirty call
+sites across the case-study MDX files and components depend on them. Deleting the
+tokens would break pages this spec puts out of scope. Instead their *defaults* become
+neutral, so any page that does not override them renders monochrome:
+
+```
+--color-accent:    #FAFAFA   (was #1E4FCF)
+--color-accent-2:  #A1A1A1   (was #DC2626)
+--gradient-accent: linear-gradient(135deg, #FAFAFA 0%, #FAFAFA 60%, #A1A1A1 100%)
+```
+
+Case study pages keep their brand colours because they set these variables inline.
+The home page never references them at all after this redesign.
 
 Font families:
 
@@ -66,9 +79,11 @@ Section spacing (`--spacing-section-y`, `--spacing-section-y-sm`) unchanged.
 
 - Import `@fontsource-variable/plus-jakarta-sans`; drop the Inter import. No other
   font is imported.
-- Remove the `text-gradient-accent`, `bg-gradient-accent`, and `border-gradient-accent`
-  utilities. All call sites are updated (see per-section notes).
-- `::selection` and `:focus-visible` use `--color-text-primary` instead of the accent.
+- The `text-gradient-accent`, `bg-gradient-accent`, and `border-gradient-accent`
+  utilities stay — case study pages use them. Home-page call sites stop using them
+  (see per-section notes).
+- `::selection` and `:focus-visible` use `--color-text-primary` instead of the accent,
+  so focus rings are white everywhere rather than brand-coloured.
 - Add a `glow` utility: a radial white gradient at ~4% opacity, used behind the hero
   headline and inside the contact block. This replaces colored accents as the only
   source of visual "lift".
@@ -78,6 +93,9 @@ Section spacing (`--spacing-section-y`, `--spacing-section-y-sm`) unchanged.
 - Remove the Fontshare (Satoshi) and Google Fonts (Micro 5) `<link>` tags and their
   `preconnect`s. Fonts now ship via `@fontsource-variable`, so no external font
   requests remain.
+- Because `BaseLayout` and `--font-display` are shared, this is a **site-wide** font
+  change: case study and exploration pages also render in Plus Jakarta Sans. That is
+  intended — one typeface across the whole site.
 - `lightThemeVars` stays in place — case study pages may still use `theme="light"`.
   Only the home page stops passing it.
 
@@ -101,9 +119,11 @@ Already a floating pill, which matches Portfolite. Changes are limited to color:
 - **New `SectionHeader.astro`** — encapsulates the repeated badge + heading + optional
   sub-paragraph + optional right-aligned action link. Used by Selected Work, About,
   Experience, and Explorations so the pattern is defined once.
-- **New `Button.astro`** — two variants: `primary` (white background, `#0A0A0A` text) and
-  `ghost` (transparent, `--color-border` border, `--color-text-secondary` text). Used by
-  the hero and contact CTAs.
+- **`Button.astro`** — already exists with `primary` / `ghost` variants but its primary
+  style uses `bg-accent`. Restyled: `primary` becomes white background with `#0A0A0A`
+  text; `ghost` becomes transparent with a `--color-border` border and
+  `--color-text-secondary` text that brightens on hover. Used by the hero and contact
+  CTAs.
 
 ## Sections
 
@@ -200,7 +220,9 @@ are unchanged.
 
 ## Out of scope
 
-- Case study pages, exploration pages, and 404.
+- Case study pages, exploration pages, and 404 — apart from the unavoidable site-wide
+  typeface change described above.
+- Making case study pages monochrome. They keep their per-project brand colours.
 - Content changes to `src/content/site.ts` (placeholder experience entries such as
   "Company A" stay as they are).
 - Adding new sections from Portfolite that the site does not currently have
@@ -213,7 +235,10 @@ are unchanged.
 - The dev server renders `/` with all six sections and no console errors.
 - No `accent`, `gradient-accent`, `font-micro`, `Satoshi`, `Inter`, `Micro 5`, or
   `JetBrains` references remain in home-page code paths (`grep`).
-- No hue on the page: every colour used resolves to a neutral (equal R, G, B) value.
+- No hue on the home page: every colour used resolves to a neutral (equal R, G, B)
+  value.
+- Case study pages still render with their per-project brand colours (regression
+  check — they are out of scope and must not change visually apart from the typeface).
 - No external font requests appear in the network log for `/`.
 - Screenshots at desktop (1280) and mobile (375) widths.
 - Keyboard focus is visible on every interactive element in the new components.
