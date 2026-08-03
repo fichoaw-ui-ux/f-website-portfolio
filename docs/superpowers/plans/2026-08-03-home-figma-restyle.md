@@ -32,8 +32,7 @@ npm run build && npx vitest run tests/home-structure.test.ts
 
 **Created:**
 - `tests/home-structure.test.ts` — structural assertions about the built home page: which sections exist, which removed elements are gone. Separate from `build-output.test.ts`, which stays focused on global concerns (fonts, tokens, colour guards).
-- `public/images/ficho-avatar.png` — hero avatar, exported from Figma.
-- `public/images/ficho-portrait.png` — About portrait, exported from Figma.
+- `public/images/ficho-portrait.png` — the portrait photo, exported from Figma. Used twice: cropped to a circle in the hero, and full-bleed in About. Figma exports one image fill for both frames, so there is deliberately no second avatar file.
 - `public/images/logo-ficho.svg` — navbar wordmark, exported from Figma.
 
 **Modified:**
@@ -98,6 +97,14 @@ Also record the portrait's pixel dimensions from `file` — Task 10 relies on it
 git add public/images
 git commit -m "assets: export hero avatar, portrait, and wordmark from Figma"
 ```
+
+**Executed 2026-08-03. Outcome, and one correction to the rest of this plan:**
+
+The hero avatar and the About portrait came back **byte-for-byte identical** (768×1024 PNG, 416KB, same MD5). This is not a download error — Figma exports the underlying image *fill*, and nodes `8920:2151` and `8927:2824` both reference the same source photo. The two different framings in the design are achieved by cropping in CSS, exactly as this plan already specifies via `object-position`.
+
+So `ficho-avatar.png` was deleted and **there are only two assets**: `public/images/ficho-portrait.png` and `public/images/logo-ficho.svg`. Shipping the same 416KB twice would have doubled the page's image weight for no visual difference.
+
+The hero in Task 7 therefore points at `/images/ficho-portrait.png`. Its derived `object-position: 53% 37%` still holds: the source is 768×1024 (ratio 0.750) and Figma's avatar frame is 128×171 (ratio 0.749), so the crop maths is unchanged.
 
 ---
 
@@ -587,8 +594,10 @@ describe('home page structure', () => {
     })
 
     it('shows the avatar as decorative, since the h1 already names him', () => {
-      expect(html).toContain('/images/ficho-avatar.png')
-      expect(html).toMatch(/<img[^>]+ficho-avatar\.png[^>]+alt=""/)
+      // Same source file as the About portrait — Figma exports one image fill
+      // for both frames. `alt=""` is what distinguishes the hero's decorative
+      // copy from About's described one.
+      expect(html).toMatch(/<img[^>]+ficho-portrait\.png[^>]+alt=""/)
     })
   })
 })
@@ -618,7 +627,7 @@ import { site } from '../../content/site'
           <span class="flex flex-wrap items-center justify-center gap-6">
             <span>Hello!</span>
             <img
-              src="/images/ficho-avatar.png"
+              src="/images/ficho-portrait.png"
               alt=""
               width="97"
               height="96"
