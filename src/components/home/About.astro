@@ -7,12 +7,12 @@ import { site } from '../../content/site'
 <section id="about" class="overflow-x-clip py-section-y-sm md:py-section-y">
   <Container>
     <div class="grid items-start gap-12 md:grid-cols-[620px_1fr] md:gap-20">
-      <!-- Figma runs the 861px portrait past its 656px column: 102px above,
-           103px below, 18px to the left. The bleed is the composition, so it
-           must survive — but only from md up, since beside nothing it just
-           reads as a misaligned image. `overflow-x-clip` on the section stops
-           the left bleed from producing a horizontal scrollbar while still
-           letting the vertical bleed show. -->
+      {/* Figma runs the 861px portrait past its 656px column: 102px above,
+          103px below, 18px to the left. The bleed is the composition, so it
+          must survive — but only from md up, since beside nothing it just
+          reads as a misaligned image. `overflow-x-clip` on the section stops
+          the left bleed from producing a horizontal scrollbar while still
+          letting the vertical bleed show. */}
       <Reveal delay={100} class="order-1 md:order-2">
         <img
           src="/images/ficho-portrait.png"

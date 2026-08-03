@@ -73,6 +73,13 @@ describe('built home page', () => {
     expect(css).not.toMatch(/#A1A1A1/i)
   })
 
+  it('ships no HTML comments', () => {
+    // Astro strips `{/* ... */}` but passes `<!-- ... -->` straight through to
+    // the browser. Design rationale written for the next maintainer belongs in
+    // the source, not in the response — use the JSX form in .astro templates.
+    expect(html).not.toContain('<!--')
+  })
+
   it('leaks no literal "undefined" into the markup', () => {
     // `astro build` transpiles frontmatter with esbuild, which strips types
     // without checking them. Reading a field that no longer exists on

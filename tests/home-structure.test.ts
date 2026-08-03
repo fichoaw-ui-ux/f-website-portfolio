@@ -80,4 +80,33 @@ describe('home page structure', () => {
       expect(html).not.toContain('Framer')
     })
   })
+
+  describe('experience', () => {
+    it('lists company and role per entry', () => {
+      // Regexes, not string equality: Astro passes literal template text
+      // through unescaped but escapes {expression} output, so the heading
+      // keeps its raw apostrophe while {e.company} turns & into an entity.
+      expect(html).toMatch(/Where I(&#39;|&rsquo;|&apos;|'|’)ve worked/)
+      expect(html).toMatch(/Transfez (&#38;|&amp;|&) Jack/)
+      expect(html).toContain('Great Giant Pineapple')
+      expect(html).toContain('Corporate Communication')
+    })
+
+    it('renders two bullets per role as list items', () => {
+      // This is the assertion that actually distinguishes the new layout. The
+      // company names above were already in the markup once site.ts changed,
+      // so they pass either way; only the bulleted list is new. The old
+      // component rendered a single {e.description}, which no longer exists.
+      const bullets = html.match(/Lorem ipsum dolor sit amet/g) ?? []
+      expect(bullets).toHaveLength(6)
+      expect(html).toMatch(/<li[^>]*>\s*<span[^>]*aria-hidden/)
+    })
+
+    it('drops the Currently badge', () => {
+      // `>Currently<` targets the badge's own text node. A bare 'Currently'
+      // would also match site.bio[1] — "Currently exploring the intersection
+      // of design systems and motion" — which the About section renders.
+      expect(html).not.toContain('>Currently<')
+    })
+  })
 })
