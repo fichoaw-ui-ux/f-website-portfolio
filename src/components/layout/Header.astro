@@ -1,6 +1,7 @@
 ---
 import Container from './Container.astro'
 import { site } from '../../content/site'
+import logo from '../../../public/images/logo-ficho.svg?raw'
 ---
 {/* Not sticky, and no bar. Figma draws neither, and the two go together: a
     sticky header without a background scrolls transparently over the content,
@@ -10,11 +11,16 @@ import { site } from '../../content/site'
 <header class="pt-8">
   <Container>
     <div class="flex h-[72px] items-center justify-between gap-3">
-      {/* The accessible name lives on the link, so the image is decorative —
-          naming both would make the link announce itself twice. */}
-      <a href="/" class="inline-flex items-center" aria-label={`${site.name} — home`}>
-        <img src="/images/logo-ficho.svg" alt="" width="106" height="32" class="h-8 w-auto" />
-      </a>
+      {/* Inlined rather than an <img> so the wordmark's currentColor fill can
+          inherit --color-text-primary. As an <img> it was Figma's hardcoded
+          white, which vanished on the light case-study pages. The accessible
+          name lives on the link, so the SVG itself is hidden — naming both
+          would make the link announce itself twice. */}
+      <a
+        href="/"
+        class="inline-flex h-8 items-center text-text-primary [&>svg]:h-8 [&>svg]:w-auto"
+        aria-label={`${site.name} — home`}
+      ><Fragment set:html={logo} /></a>
 
       <a
         href={`mailto:${site.email}`}

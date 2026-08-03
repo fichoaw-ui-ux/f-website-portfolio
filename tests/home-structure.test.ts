@@ -145,7 +145,12 @@ describe('home page structure', () => {
 
   describe('header', () => {
     it('is reduced to a wordmark and one CTA', () => {
-      expect(html).toContain('/images/logo-ficho.svg')
+      // The wordmark is inlined, not an <img>, so its currentColor fill can
+      // follow --color-text-primary — as an <img> it stayed Figma's hardcoded
+      // white and disappeared on the light case-study pages.
+      expect(html).toMatch(/<header[\s\S]{0,400}<svg[^>]*viewBox="0 0 106 32"/)
+      expect(html).toContain('fill="currentColor"')
+      expect(html).not.toContain('src="/images/logo-ficho.svg"')
       expect(html).toContain('Contact Us')
       expect(html).not.toContain('href="/#work"')
       expect(html).not.toContain('href="/#about"')
