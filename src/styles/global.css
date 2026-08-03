@@ -22,6 +22,15 @@
     letter-spacing: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Forms a stacking context so body's own background counts as this
+       context's step-1 paint, with the negative-z-index texture layers below
+       painting above it (step 2) instead of being painted over by it. Without
+       this, body's opaque bg-bg-primary is just an in-flow descendant of the
+       root stacking context and paints after (on top of) those layers,
+       hiding the texture entirely. Do not remove as dead code. Does not
+       affect the pseudo-elements' `position: fixed` — isolation does not
+       create a containing block (only transform/filter/will-change do). */
+    isolation: isolate;
   }
 
   /* Soft light patches. Figma's background is an image fill spanning the full
