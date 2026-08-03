@@ -142,4 +142,19 @@ describe('home page structure', () => {
       expect(html).not.toContain('Dribbble')
     })
   })
+
+  describe('header', () => {
+    it('is reduced to a wordmark and one CTA', () => {
+      expect(html).toContain('/images/logo-ficho.svg')
+      expect(html).toContain('Contact Us')
+      expect(html).not.toContain('href="/#work"')
+      expect(html).not.toContain('href="/#about"')
+      expect(html).not.toContain('href="/#contact"')
+      expect(html).not.toContain('Get in touch')
+    })
+
+    it('does not stick, so it cannot scroll over the 88px headings', () => {
+      expect(html).not.toMatch(/<header[^>]*class="[^"]*sticky/)
+    })
+  })
 })

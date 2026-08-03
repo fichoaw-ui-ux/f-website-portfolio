@@ -2,26 +2,39 @@
 import Container from './Container.astro'
 import { site } from '../../content/site'
 ---
-<header class="sticky top-4 z-40 px-4">
-  <Container class="!px-0">
-    <div class="flex items-center justify-between gap-3 rounded-full bg-bg-secondary/85 backdrop-blur-md border border-border pl-6 pr-3 py-3 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.15)]">
-      <a href="/" class="font-display font-extrabold text-lg tracking-tight text-text-primary">{site.name}</a>
+{/* Not sticky, and no bar. Figma draws neither, and the two go together: a
+    sticky header without a background scrolls transparently over the content,
+    which put 88px headings underneath the wordmark. With the nav links gone
+    the only thing left to pin is the Contact CTA, and that is duplicated in
+    the Contact section. */}
+<header class="pt-8">
+  <Container>
+    <div class="flex h-[72px] items-center justify-between gap-3">
+      {/* The accessible name lives on the link, so the image is decorative —
+          naming both would make the link announce itself twice. */}
+      <a href="/" class="inline-flex items-center" aria-label={`${site.name} — home`}>
+        <img src="/images/logo-ficho.svg" alt="" width="106" height="32" class="h-8 w-auto" />
+      </a>
 
-      <div class="flex items-center gap-1">
-        <nav class="hidden md:flex items-center gap-1 mr-1">
-          <a href="/#work" class="px-4 py-2 rounded-full text-sm text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition">Work</a>
-          <a href="/#about" class="px-4 py-2 rounded-full text-sm text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition">About</a>
-          <a href="/#contact" class="px-4 py-2 rounded-full text-sm text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition">Contact</a>
-        </nav>
-
-        <a href={`mailto:${site.email}`} class="inline-flex items-center gap-2 rounded-full bg-text-primary text-bg-primary pl-4 pr-3 py-3 text-sm shadow-[0_8px_16px_-4px_rgba(0,0,0,0.2)] hover:bg-text-secondary transition">
-          <span>Get in touch</span>
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M5 12h14"/>
-            <path d="m13 5 7 7-7 7"/>
-          </svg>
-        </a>
-      </div>
+      <a
+        href={`mailto:${site.email}`}
+        class="inline-flex h-12 items-center gap-2 rounded-full border border-border px-5 text-base font-semibold leading-none text-text-primary transition duration-300 hover:border-border-hover hover:bg-bg-elevated"
+      >
+        <span>Contact Us</span>
+        <svg
+          class="h-6 w-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14" />
+          <path d="m13 5 7 7-7 7" />
+        </svg>
+      </a>
     </div>
   </Container>
 </header>
