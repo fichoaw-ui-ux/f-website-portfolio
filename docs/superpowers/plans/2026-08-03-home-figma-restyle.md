@@ -1543,6 +1543,22 @@ Two defects surfaced while executing the early tasks. Both were fixed outside th
 
 The general lesson for the remaining tasks: any token added to `@theme` has to be checked against the light override, because an unmapped token silently falls through to its dark value on case study pages.
 
+### Found later in the run
+
+**`astro build` does not type-check.** The plan predicted Task 5 would turn the build red. It did not — esbuild strips types without checking them, so removed `site` fields evaluate to `undefined`. The build stayed green, the suite stayed green, and the page shipped the literal text `UI/UX Designer — undefined`. Six downstream "expected: FAIL at the build step" steps were corrected, and a guard test now asserts the built markup contains no `undefined`.
+
+**HTML comments in `.astro` templates ship to the browser.** Astro strips `{/* … */}` but passes `<!-- … -->` straight through. Three components were sending design rationale to every visitor, including the avatar-crop derivation. All converted; a guard test asserts no `<!--` in the output.
+
+**`--container-container` was the content band, not the frame.** Tailwind sizes `max-w-*` against the border box, so Container's 64px gutters were carved out of 1312, producing an 1184px band — 128px narrower than the design at every width above 1312. The token is now 1440. An earlier check missed this because it measured Container's outer box rather than its content width.
+
+**`md` was the wrong breakpoint for the two-column sections.** About and the work cards used Figma's literal pixel column widths from 768 up, where they cannot fit: the About grid computed to 620px + 628px inside a 704px band, pushing the portrait off-screen, and the work thumbnail collapsed to 122px. `overflow-x-clip` meant the no-horizontal-scroll check still passed. Both are now proportional (47.3% and 36%, resolving to Figma's widths at 1440) and start at `lg`.
+
+**The reduced-motion claim in the spec was wrong.** The blanket rule collapses CSS animation and transition durations; `Reveal` fades in through the Web Animations API, which is neither. `Reveal` now skips its observer under the preference and the CSS forces the end state. The related fragility — `Reveal`'s inline `opacity: 0` means any failure to reveal leaves the page blank — is recorded in the spec as a known, unfixed, out-of-scope issue.
+
+**The exported wordmark did not follow the theme.** Figma's SVG carries `fill="white"`, so replacing the text wordmark made it nearly invisible on the light case-study pages. It is now inlined with `currentColor` so it inherits `--color-text-primary`. Found only by opening an out-of-scope page; build and suite were both green.
+
+**Figma's hairline stroke is `#252525`**, not the `rgba(255, 255, 255, 0.12)` the spec guessed. That composited to `#282828` over the page background, so the correction is precision rather than a visible change.
+
 ## Notes on things deliberately not done
 
 - **No light mode.** Figma's variable set includes `color/background/bg-default: #ffffff`, but no node in the frame uses it.
