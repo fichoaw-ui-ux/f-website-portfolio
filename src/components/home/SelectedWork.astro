@@ -2,52 +2,54 @@
 import { getCollection } from 'astro:content'
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
-import SectionHeader from '../ui/SectionHeader.astro'
 import { sortByOrder, filterFeatured } from '../../lib/content'
 
 const all = await getCollection('case-studies')
 const featured = sortByOrder(filterFeatured(all))
-const asymmetric = featured.length >= 4
 ---
-<section id="work" class="border-t border-border py-section-y-sm md:py-section-y">
+<section id="work" class="py-section-y-sm md:py-section-y">
   <Container>
-    <SectionHeader
-      badge="Selected work"
-      heading="Recent projects."
-      description="A few problems I've worked through end to end, from research to shipped interface."
-    />
+    <Reveal>
+      <div class="mx-auto max-w-[1088px] text-center">
+        <h2 class="font-display font-semibold text-display-lg text-text-primary">My selected works</h2>
+        <p class="mx-auto mt-6 max-w-[864px] text-2xl leading-[1.6] text-text-secondary">
+          With my keen eye for detail and sharp critical thinking skills, I specialize in
+          crafting captivating websites, products, and experiences.
+        </p>
+      </div>
+    </Reveal>
 
-    {featured.length === 0 && (
-      <p class="text-text-secondary">No projects yet.</p>
-    )}
+    {featured.length === 0 && <p class="mt-16 text-text-tertiary">No projects yet.</p>}
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-      {featured.map((p, i) => {
-        const fullWidth = asymmetric && (i === 0 || i === 3)
-        return (
-          <Reveal class={fullWidth ? 'md:col-span-2' : ''}>
-            <a
-              href={`/work/${p.data.slug}`}
-              class="group block rounded-xl border border-border bg-bg-secondary p-3 transition duration-500 hover:border-border-hover hover:-translate-y-0.5"
-            >
-              <div class="overflow-hidden rounded-lg bg-bg-primary aspect-[16/10]">
+    <div class="mt-16 flex flex-col gap-16">
+      {featured.map(p => (
+        <Reveal>
+          <a
+            href={`/work/${p.data.slug}`}
+            class="group block rounded-card bg-bg-secondary p-6 shadow-card transition duration-500 hover:-translate-y-1 md:p-12"
+          >
+            <div class="grid items-center gap-8 md:grid-cols-[438px_1fr] md:gap-12">
+              <div class="order-2 md:order-1">
+                <h3 class="font-display font-semibold text-display-md text-text-primary">{p.data.title}</h3>
+                <p class="mt-4 text-base font-semibold uppercase leading-none text-text-tertiary">
+                  {p.data.tags.join(', ')}
+                </p>
+                <p class="mt-8 text-lg leading-[1.6] text-text-tertiary">{p.data.summary}</p>
+                <span
+                  class="mt-8 inline-flex h-12 items-center rounded-full border border-border px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:border-border-hover group-hover:bg-bg-elevated"
+                >View Details</span>
+              </div>
+              <div class="order-1 aspect-[730/438] overflow-hidden rounded-media bg-bg-primary md:order-2">
                 <img
                   src={p.data.thumbnail}
                   alt={p.data.thumbnailAlt}
-                  class="w-full h-full object-contain transition duration-500 group-hover:scale-[1.02]"
+                  class="h-full w-full object-contain transition duration-500 group-hover:scale-[1.02]"
                 />
               </div>
-              <div class="px-3 pt-5 pb-3">
-                <h3 class="font-display font-semibold text-2xl md:text-3xl text-text-primary">{p.data.title}</h3>
-                <p class="mt-2 max-w-lg text-text-secondary">{p.data.summary}</p>
-                <span
-                  class="mt-5 inline-flex items-center gap-1 text-sm text-text-tertiary transition group-hover:text-text-primary"
-                >View case study ↗</span>
-              </div>
-            </a>
-          </Reveal>
-        )
-      })}
+            </div>
+          </a>
+        </Reveal>
+      ))}
     </div>
   </Container>
 </section>

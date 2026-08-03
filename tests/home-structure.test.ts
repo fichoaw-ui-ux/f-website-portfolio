@@ -41,4 +41,18 @@ describe('home page structure', () => {
       expect(html).toMatch(/<img[^>]+ficho-portrait\.png[^>]+alt=""/)
     })
   })
+
+  describe('selected works', () => {
+    it('uses the Figma heading and sub-copy', () => {
+      expect(html).toContain('My selected works')
+      expect(html).toContain('With my keen eye for detail')
+      expect(html).not.toContain('Recent projects')
+      expect(html).not.toContain('Selected work</')
+    })
+
+    it('labels each card with its upper-cased tags and a View Details pill', () => {
+      expect(html).toContain('View Details')
+      expect(html).not.toContain('View case study')
+    })
+  })
 })
