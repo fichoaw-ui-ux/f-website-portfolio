@@ -12,12 +12,21 @@ interface Props {
 const { title, description = 'Portfolio of Ficho — UI/UX Designer', ogImage = '/images/og-default.jpg', theme = 'dark' } = Astro.props
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com').toString()
 
+/* Case study pages render light. This must override every colour token the
+   shared chrome can reach, not just the ones the case-study body uses — the
+   Header and Footer render on these pages too. An unmapped token silently
+   falls through to its dark value, which is how `--color-border-hover` ended
+   up as near-white-on-white here.
+   Contrast on #FAFAFA: #0A0A0A 19.0:1, #525252 7.5:1, #6B6B6B 5.1:1. */
 const lightThemeVars = [
   '--color-bg-primary: #FAFAFA',
   '--color-bg-secondary: #F0F0F0',
+  '--color-bg-elevated: #E8E8E8',
   '--color-text-primary: #0A0A0A',
   '--color-text-secondary: #525252',
+  '--color-text-tertiary: #6B6B6B',
   '--color-border: #E5E5E5',
+  '--color-border-hover: #C4C4C4',
 ].join(';')
 ---
 <!doctype html>

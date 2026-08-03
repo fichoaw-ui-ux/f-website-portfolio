@@ -30,8 +30,8 @@
   --font-mono: "Aileron", system-ui, sans-serif;
 
   /* Type scale — Figma sizes, each clamp pinned so the max equals the 1440px
-     value exactly. letter-spacing is 0 at every level, unlike the previous
-     scale which tracked headings at -0.03em. */
+     value exactly. letter-spacing is 0 at every level; the previous scale
+     tracked xl and lg at -0.03em and md at -0.02em. */
   --text-display-xl: clamp(2.75rem, 6.111vw, 5.5rem);   /* 88px @ 1440 */
   --text-display-xl--line-height: 1.25;
   --text-display-xl--letter-spacing: 0em;
