@@ -6,9 +6,7 @@ export const site = {
     "I'm a product designer focused on turning complex problems into simple, beautiful interfaces.",
     "Currently exploring the intersection of design systems and motion.",
   ],
-  available: true,
   email: 'ficho@transfez.com',
-  location: 'Jakarta, Indonesia',
   skills: [
     'Product Design',
     'User Research',
@@ -17,18 +15,54 @@ export const site = {
     'Prototyping',
     'Information Architecture',
   ],
-  tools: ['Figma', 'Framer', 'Notion', 'Principle', 'Miro', 'Linear'],
+  tools: [
+    'Figma',
+    'Notion',
+    'Mixpanel',
+    'Claude Code',
+    'Bitbucket',
+    'Github',
+    'Photoshop',
+    'Illustrator',
+  ],
   socials: [
     { label: 'LinkedIn', href: '#' },
     { label: 'Dribbble', href: '#' },
     { label: 'Read.cv', href: '#' },
     { label: 'Email', href: 'mailto:ficho@transfez.com' },
   ],
+  // TODO: real year ranges. Figma shows "2023 - NOW" on all three roles, which
+  // is placeholder text, not three concurrent jobs.
+  // TODO: real highlights. The bullets below are the lorem ipsum from Figma and
+  // must be replaced before this page is published.
   experience: [
-    { year: '2024 — Now', role: 'Senior Product Designer', company: 'Company A', description: 'Leading design for the core platform.' },
-    { year: '2022 — 2024', role: 'Product Designer', company: 'Company B', description: 'Shipped design system and onboarding.' },
-    { year: '2020 — 2022', role: 'UI Designer', company: 'Company C', description: 'Marketing site and mobile app.' },
-    { year: '2019 — 2020', role: 'Junior Designer', company: 'Company D', description: 'First role — visual design and prototyping.' },
+    {
+      year: '2023 — NOW',
+      company: 'Transfez & Jack',
+      role: 'Product Designer',
+      highlights: [
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+      ],
+    },
+    {
+      year: '2023 — NOW',
+      company: 'Transfez & Jack',
+      role: 'Graphic Designer (Intern)',
+      highlights: [
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+      ],
+    },
+    {
+      year: '2023 — NOW',
+      company: 'Great Giant Pineapple',
+      role: 'Corporate Communication',
+      highlights: [
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+      ],
+    },
   ],
 } as const
 
