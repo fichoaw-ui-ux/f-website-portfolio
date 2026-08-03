@@ -219,7 +219,9 @@ Figma is static and cannot express motion, so the current behaviour is preserved
 - The `Reveal` scroll-in wrapper stays on every section.
 - Interactive elements keep a subtle hover and a visible focus ring. Links without hover affordance are a real usability regression, and the focus ring is an accessibility requirement — neither is something a static frame is arguing against.
 - The Experience row hover highlight is removed, since Figma restructures that row into a bulleted layout where the full-width highlight no longer fits.
-- The existing `prefers-reduced-motion` blanket rule in `global.css` continues to cover all of it.
+- ~~The existing `prefers-reduced-motion` blanket rule in `global.css` continues to cover all of it.~~ **This was wrong.** The blanket rule collapses CSS `animation-duration` and `transition-duration`, but `Reveal` fades in through the Web Animations API, which is neither — so reduced-motion users kept getting the animation. Fixed during final verification: `Reveal.astro` now skips registering its observer when the preference is set, and `global.css` forces `.reveal { opacity: 1; transform: none }` inside the reduced-motion block. A test guards the CSS rule.
+
+  The same investigation exposed a related fragility that is **not** fixed and is out of this change's scope: `Reveal` sets `opacity: 0` inline and depends on its script to undo that, so anything preventing the reveal — JS disabled, a script error, or an environment where `IntersectionObserver` callbacks never fire — leaves the entire page blank. That last case is not hypothetical; it is exactly what happened in the headless browser pane used to verify this work, where a hand-registered observer on a fully-visible element also never fired. Making the hidden state script-applied rather than inline would fix it, but that is a rewrite of a component this change was scoped to leave alone.
 
 ## Tests
 

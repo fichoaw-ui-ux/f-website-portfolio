@@ -8,8 +8,13 @@
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #BBBBC0;
   --color-text-tertiary: #909098;
-  --color-border: rgba(255, 255, 255, 0.12);
-  --color-border-hover: rgba(255, 255, 255, 0.24);
+  /* #252525 is the literal stroke on Figma's hairline vectors (8921:2750).
+     An earlier guess of rgba(255,255,255,0.12) composited to #282828 over the
+     page background — within 3/255, so this is precision rather than a visible
+     change. Opaque is preferred here because BaseLayout overrides these two
+     for the light case-study pages anyway, so adaptive alpha buys nothing. */
+  --color-border: #252525;
+  --color-border-hover: #3A3A3A;
 
   /* Figma also defines color/neutral/800 (#6C6C71). It reaches only 3.78:1 on
      the page background, so it is deliberately absent — do not add it for text. */

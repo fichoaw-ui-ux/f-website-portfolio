@@ -73,6 +73,15 @@ describe('built home page', () => {
     expect(css).not.toMatch(/#A1A1A1/i)
   })
 
+  it('forces Reveal to its end state under reduced motion', () => {
+    // Reveal fades in via the Web Animations API, which the blanket
+    // transition/animation collapse cannot reach — and its elements start at
+    // inline opacity:0. Without this rule, a reduced-motion user still gets
+    // the animation, and anyone whose script does not reveal them gets a
+    // blank page.
+    expect(css).toMatch(/prefers-reduced-motion[\s\S]{0,600}\.reveal\s*\{[^}]*opacity:\s*1/)
+  })
+
   it('ships no HTML comments', () => {
     // Astro strips `{/* ... */}` but passes `<!-- ... -->` straight through to
     // the browser. Design rationale written for the next maintainer belongs in

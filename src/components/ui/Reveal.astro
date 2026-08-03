@@ -12,11 +12,20 @@ const { as: Tag = 'div', delay = 0, class: className = '' } = Astro.props
 
 <script>
   import { animate, inView } from 'motion'
-  const els = document.querySelectorAll<HTMLElement>('.reveal')
-  els.forEach(el => {
-    inView(el, () => {
-      const delay = Number(el.dataset.revealDelay ?? 0) / 1000
-      animate(el, { opacity: 1, transform: 'translateY(0px)' }, { duration: 0.5, delay, easing: [0.22, 1, 0.36, 1] })
-    }, { amount: 0.2 })
-  })
+
+  // These elements start at inline opacity:0, so this script is what makes the
+  // page visible. Under reduced motion, skip the animation entirely rather
+  // than playing it faster: the CSS rule in global.css forces the end state,
+  // and a Web Animations API animation would override it while running.
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (!prefersReducedMotion) {
+    const els = document.querySelectorAll<HTMLElement>('.reveal')
+    els.forEach(el => {
+      inView(el, () => {
+        const delay = Number(el.dataset.revealDelay ?? 0) / 1000
+        animate(el, { opacity: 1, transform: 'translateY(0px)' }, { duration: 0.5, delay, easing: [0.22, 1, 0.36, 1] })
+      }, { amount: 0.2 })
+    })
+  }
 </script>

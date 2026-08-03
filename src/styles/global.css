@@ -92,4 +92,16 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* The rule above cannot reach Reveal. It collapses CSS transitions and
+     animations, but Reveal fades in through the Web Animations API, which is
+     neither — so under reduced motion the elements kept animating, and worse,
+     they start at inline opacity:0, so anything that stops the script from
+     revealing them leaves the content permanently invisible. Reveal.astro
+     skips registering its observer when this preference is set; this forces
+     the end state so the content is simply present either way. */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
