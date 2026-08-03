@@ -125,4 +125,21 @@ describe('home page structure', () => {
       expect(cards.length).toBe(links.length)
     })
   })
+
+  describe('contact and footer', () => {
+    it('offers LinkedIn and a mail link', () => {
+      expect(html).toMatch(/Let(&#39;|&rsquo;|&apos;|'|’)s build something together/)
+      expect(html).toContain('Contact me')
+      expect(html).toContain('mailto:ficho@transfez.com')
+      expect(html).not.toContain('Email me')
+    })
+
+    it('reduces the footer to a centred copyright', () => {
+      expect(html).toContain('All rights reserved')
+      // These two appear only in the old footer's social row, so their
+      // absence is what proves the row is gone.
+      expect(html).not.toContain('Read.cv')
+      expect(html).not.toContain('Dribbble')
+    })
+  })
 })

@@ -1,46 +1,28 @@
 ---
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
-import Badge from '../ui/Badge.astro'
 import Button from '../ui/Button.astro'
 import { site } from '../../content/site'
 
 const linkedin = site.socials.find(s => s.label === 'LinkedIn')
-const otherSocials = site.socials.filter(s => s.label !== 'Email')
 ---
-<section id="contact" class="border-t border-border py-section-y-sm md:py-section-y">
+{/* 818px is Figma's 880px section minus the 62px footer strip that follows. */}
+<section id="contact" class="flex min-h-[818px] items-center py-24">
   <Container>
     <Reveal>
-      <div class="relative overflow-hidden rounded-2xl border border-border bg-bg-secondary px-6 py-20 text-center md:px-16 md:py-28">
-        <div
-          class="glow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] pointer-events-none"
-          aria-hidden="true"
-        ></div>
+      <div class="mx-auto max-w-[1088px] text-center">
+        <h2 class="font-display font-semibold text-display-lg text-text-primary">
+          Let's build something together
+        </h2>
 
-        <div class="relative">
-          <Badge>Contact</Badge>
+        <p class="mx-auto mt-8 max-w-[640px] text-2xl leading-[1.6] text-text-secondary">
+          Open to product design work and collaborations. The fastest way to reach me is email.
+        </p>
 
-          <h2 class="mt-8 font-display font-extrabold text-display-lg text-text-primary">
-            Let's build<br />something together.
-          </h2>
-
-          <p class="mt-6 mx-auto max-w-[520px] text-lg text-text-secondary">
-            Open to product design work and collaborations. The fastest way to reach me is email.
-          </p>
-
-          <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <Button href={`mailto:${site.email}`}>Email me</Button>
-            {linkedin && <Button href={linkedin.href} variant="ghost">LinkedIn</Button>}
-          </div>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+          {linkedin && <Button href={linkedin.href} variant="ghost">LinkedIn</Button>}
+          <Button href={`mailto:${site.email}`}>Contact me</Button>
         </div>
-      </div>
-    </Reveal>
-
-    <Reveal delay={150}>
-      <div class="mt-8 flex flex-wrap justify-center gap-6 text-sm text-text-tertiary">
-        {otherSocials.map(s => (
-          <a href={s.href} class="hover:text-text-primary transition">{s.label} ↗</a>
-        ))}
       </div>
     </Reveal>
   </Container>
