@@ -35,7 +35,11 @@ const featured = sortByOrder(filterFeatured(all))
             <div class="grid items-center gap-8 lg:grid-cols-[36%_1fr] lg:gap-12">
               <div class="order-2 lg:order-1">
                 <h3 class="font-display font-semibold text-display-md text-text-primary">{p.data.title}</h3>
-                <p class="mt-4 text-base font-semibold uppercase leading-none text-text-tertiary">
+                {/* leading-tight, not leading-none. Figma's tag line is a
+                    single 16px row, but three tags wrap below about 1024 —
+                    at 375 the text is ~323px in a 279px column — and
+                    leading-none makes the wrapped lines touch. */}
+                <p class="mt-4 text-base font-semibold uppercase leading-tight text-text-tertiary">
                   {p.data.tags.join(', ')}
                 </p>
                 <p class="mt-8 text-lg leading-[1.6] text-text-tertiary">{p.data.summary}</p>
