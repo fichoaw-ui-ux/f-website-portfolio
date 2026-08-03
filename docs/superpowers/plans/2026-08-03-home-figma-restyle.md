@@ -455,13 +455,27 @@ export type SiteConfig = typeof site
 
 `available` and `location` are gone — the hero badge was their only reader. `description` on each experience entry is replaced by `highlights`.
 
-- [ ] **Step 2: Confirm the build breaks where expected**
+- [ ] **Step 2: Confirm the breakage — which is silent, not a build failure**
 
 ```bash
-npm run build
+npm run build && grep -c 'undefined' dist/index.html
 ```
 
-Expected: FAIL. `Hero.astro` still reads `site.available` and `Experience.astro` still reads `e.description`. This is the signal that Tasks 7 and 11 are required; do not patch those files here.
+**Corrected 2026-08-03, after this task ran.** An earlier version of this step predicted a FAIL here, because `Hero.astro` reads `site.available` and `Experience.astro` reads `e.description`. **The build does not fail.** `astro build` transpiles `.astro` frontmatter with esbuild, which strips types without checking them, and this project runs no `astro check`. Reading a field that no longer exists is not an error — it evaluates to `undefined`.
+
+What actually happens: the build succeeds, the hero badge renders the literal text `UI/UX Designer — undefined`, and each Experience row renders an empty `<p>`. The `grep` reports `1`.
+
+**Every "expected: FAIL at the build step" downstream of here was wrong for the same reason and has been corrected.** The lesson to carry into the remaining tasks: a green build proves nothing about whether the page works, and no existing test noticed a visible `undefined` in the markup. A guard was added to `tests/build-output.test.ts` for exactly this:
+
+```ts
+  it('leaks no literal "undefined" into the markup', () => {
+    expect(html).not.toContain('undefined')
+  })
+```
+
+That guard is **red from this task until Task 7** rewrites the hero. That is intended: it is the honest signal that the page is broken, replacing a build failure that never came.
+
+Do not patch `Hero.astro` or `Experience.astro` here. Tasks 7 and 11 own them.
 
 - [ ] **Step 3: Commit**
 
@@ -535,7 +549,15 @@ At 1440px this yields 1440 − 128 = 1312px of content, matching Figma.
 npm run build
 ```
 
-The build still fails on `Hero.astro` and `Experience.astro` from Task 5. Confirm the errors name only those two files — if `404.astro` appears, the `Button` interface was changed and must be restored.
+The build succeeds — see the correction in Task 5, Step 2. What you are checking here is that `404.astro` still compiles and still renders a button, since it is the one out-of-scope consumer of `Button`. Confirm with:
+
+```bash
+grep -c 'rounded-full' dist/404.html
+```
+
+Expected: at least `1`. If it is `0`, the `Button` interface was changed and must be restored.
+
+The `leaks no literal "undefined"` guard is still red at this point, from Task 5. That is expected until Task 7.
 
 - [ ] **Step 5: Commit**
 
@@ -609,7 +631,7 @@ describe('home page structure', () => {
 npm run build && npx vitest run tests/home-structure.test.ts
 ```
 
-Expected: FAIL at the build step, on `site.available` no longer existing.
+Expected: the build succeeds (see Task 5, Step 2 — missing `site` fields do not fail the build), and the new hero tests FAIL because the hero has not been rewritten yet. The `greets by name in a single h1` and `shows the avatar as decorative` assertions should both fail.
 
 - [ ] **Step 3: Rewrite Hero.astro**
 
@@ -664,9 +686,15 @@ The hero's other CTA — `Get in touch` — is deliberately *not* asserted absen
 npm run build && npx vitest run tests/home-structure.test.ts
 ```
 
-Expected: the build now fails only on `Experience.astro`. If the build still fails, the hero tests cannot run — fix the hero first, and expect the `Experience` error to persist until Task 11.
+Expected: the three `hero` tests PASS. Also run the global guards, because this task is what turns one of them green:
 
-Because the suite cannot go green until Task 11, verify the hero visually instead: `preview_start`, then screenshot, and compare against the Figma hero — heading centred, avatar between the two phrases, one line of grey sub-copy below.
+```bash
+npx vitest run tests/build-output.test.ts
+```
+
+Expected: all six PASS, including `leaks no literal "undefined" into the markup` — removing the availability badge removes the `site.location` read that was rendering it. **If that guard is still red, grep `dist/index.html` for `undefined` and report what you find rather than adjusting the test.**
+
+Then verify visually: `preview_start`, screenshot, and compare against the Figma hero — heading centred, avatar between the two phrases, one line of grey sub-copy below.
 
 - [ ] **Step 5: Commit**
 
@@ -709,7 +737,7 @@ Add inside `describe('home page structure')` in `tests/home-structure.test.ts`:
 npm run build && npx vitest run tests/home-structure.test.ts
 ```
 
-Expected: FAIL (build still red from Task 5, and the strings are absent).
+Expected: the build succeeds and the two new `selected works` tests FAIL, because the old markup still says `Recent projects.` and `View case study ↗`.
 
 - [ ] **Step 3: Rewrite SelectedWork.astro**
 
@@ -781,7 +809,7 @@ The `asymmetric` variable and the two-column grid are gone — Figma stacks full
 npm run build && npx vitest run tests/home-structure.test.ts
 ```
 
-Expected: the `selected works` block passes once the build succeeds. The build is still red from `Experience.astro` until Task 11 — if so, verify visually with `preview_start` plus a screenshot instead, comparing card padding, the 64px gap between cards, and the image on the right.
+Expected: the `selected works` tests PASS, and every test added by earlier tasks still passes. Then verify visually with `preview_start` plus a screenshot, comparing card padding, the 64px gap between cards, and the image sitting on the right.
 
 - [ ] **Step 5: Commit**
 
@@ -965,7 +993,7 @@ Both string assertions are regexes on purpose. Astro passes literal template tex
 npm run build && npx vitest run tests/home-structure.test.ts
 ```
 
-Expected: FAIL at the build step — `Experience.astro` reads `e.description`, which Task 5 removed.
+Expected: the build succeeds and the two new `experience` tests FAIL — the old markup still renders `Company A`–`Company D` and a `Currently` badge, and `{e.description}` renders as an empty paragraph rather than bullets.
 
 - [ ] **Step 3: Rewrite Experience.astro**
 
@@ -1027,7 +1055,9 @@ git rm src/lib/experience.ts tests/experience.test.ts
 npm test
 ```
 
-Expected: PASS. This is the first point in the plan where the whole suite can go green, since Task 5's content change is now fully absorbed. If `tests/content.test.ts` fails, read the failure — it asserts on the content collections, which this plan does not touch, so a failure there means something unintended changed.
+Expected: PASS. Task 5's content change is now fully absorbed — this task consumes the last of it, `highlights`. If `tests/content.test.ts` fails, read the failure — it asserts on the content collections, which this plan does not touch, so a failure there means something unintended changed.
+
+(The suite first went green again at Task 7, when the hero rewrite cleared the `undefined` guard. There is no long red window; only that single guard is red, and only between Tasks 5 and 7.)
 
 - [ ] **Step 6: Commit**
 
@@ -1502,6 +1532,16 @@ Visit `/work/quick-transfer`, `/explorations/01-exploration`, and a deliberately
 State plainly in your summary that the Experience bullets are lorem ipsum and all three roles read `2023 — NOW`, so the page is not publishable until real copy lands. Both are marked `TODO` in `src/content/site.ts`.
 
 ---
+
+## Findings during execution
+
+Two defects surfaced while executing the early tasks. Both were fixed outside the task sequence because everything downstream depends on them.
+
+**Tailwind was scanning `docs/`.** Automatic file detection covered the whole project, so the markup samples in this plan and in the design spec were emitting real utilities into the shipped stylesheet — seven arbitrary values (`880px`, `276px`, `103px`, `646px`, `559px`, `864px`, `438px`) that appear nowhere in `src/`. Beyond the 8KB of dead CSS, this meant editing a document changed production output, and it would let an assertion of the form "this class is emitted" pass because a document mentioned the class. Fixed with `@import "tailwindcss" source(none)` plus an explicit `@source "../../src"` in `global.css`. Bundle went 54,022 → 46,026 bytes.
+
+**The light-theme override in `BaseLayout.astro` was incomplete.** Case study pages render light through an inline custom-property override, but it remapped only five colour tokens. The `Header` and `Footer` render on those pages too, so Task 3's `--color-border-hover: rgba(255, 255, 255, 0.24)` became invisible-on-white there — the header CTA's border would vanish on hover while gaining a `#1D1D1D` fill. `--color-bg-elevated` had the same hole already. Added `border-hover`, `bg-elevated`, and `text-tertiary` to the override, with contrast figures recorded in a comment.
+
+The general lesson for the remaining tasks: any token added to `@theme` has to be checked against the light override, because an unmapped token silently falls through to its dark value on case study pages.
 
 ## Notes on things deliberately not done
 

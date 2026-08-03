@@ -72,4 +72,13 @@ describe('built home page', () => {
     expect(css).not.toMatch(/#525252/i)
     expect(css).not.toMatch(/#A1A1A1/i)
   })
+
+  it('leaks no literal "undefined" into the markup', () => {
+    // `astro build` transpiles frontmatter with esbuild, which strips types
+    // without checking them. Reading a field that no longer exists on
+    // `site` is therefore not a build error — it renders the string
+    // "undefined" into the page, or nothing at all, and the build stays
+    // green. Nothing else in this suite would notice. This is the guard.
+    expect(html).not.toContain('undefined')
+  })
 })
