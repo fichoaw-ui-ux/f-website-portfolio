@@ -14,13 +14,41 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    background: var(--color-bg-primary);
+    background-color: var(--color-bg-primary);
     color: var(--color-text-primary);
   }
   body {
     font-family: var(--font-sans);
+    letter-spacing: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Soft light patches. Figma's background is an image fill spanning the full
+     6636px frame; gradients approximate it at a fraction of the page weight and
+     adapt to any page height. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(60% 40% at 18% 12%, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0)),
+      radial-gradient(50% 35% at 82% 34%, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0)),
+      radial-gradient(55% 40% at 30% 68%, rgba(255, 255, 255, 0.040), rgba(255, 255, 255, 0)),
+      radial-gradient(45% 30% at 74% 88%, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0));
+  }
+
+  /* Fine grain, so the gradients do not band on wide displays. */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   ::selection {
     background: var(--color-text-primary);
