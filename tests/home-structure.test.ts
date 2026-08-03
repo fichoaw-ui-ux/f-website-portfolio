@@ -109,4 +109,20 @@ describe('home page structure', () => {
       expect(html).not.toContain('>Currently<')
     })
   })
+
+  describe('explorations', () => {
+    it('drops the section heading and per-card captions', () => {
+      expect(html).not.toContain('Visual experiments')
+      expect(html).not.toContain('>Explorations<')
+    })
+
+    it('keeps every card a link labelled by its cover alt', () => {
+      const links = html.match(/href="\/explorations\/[^"]+"/g) ?? []
+      expect(links.length).toBeGreaterThanOrEqual(6)
+      // Title and year are gone, so the image alt is the card's only
+      // accessible name. Without it the grid is six unlabelled links.
+      const cards = html.match(/href="\/explorations\/[^"]+"[\s\S]{0,400}?<img[^>]+alt="[^"]+"/g) ?? []
+      expect(cards.length).toBe(links.length)
+    })
+  })
 })

@@ -2,39 +2,47 @@
 import { getCollection } from 'astro:content'
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
-import SectionHeader from '../ui/SectionHeader.astro'
 import { sortByOrder } from '../../lib/content'
 
 const all = await getCollection('explorations')
 const items = sortByOrder(all)
----
-<section class="border-t border-border py-section-y-sm md:py-section-y">
-  <Container>
-    <SectionHeader badge="Explorations" heading="Visual experiments." />
 
+/* Three consecutive chunks, not round-robin. Staggered columns need real
+   column containers — a plain grid cannot offset one column without moving the
+   shared row — so DOM order is whatever the split produces. Chunking keeps DOM
+   order equal to content order, which is what the single-column mobile layout
+   stacks and what a screen reader announces. Round-robin would emit 1, 4, 2,
+   5, 3, 6. */
+const perColumn = Math.ceil(items.length / 3)
+const columns = [
+  items.slice(0, perColumn),
+  items.slice(perColumn, perColumn * 2),
+  items.slice(perColumn * 2),
+]
+---
+<section class="py-section-y-sm md:py-section-y">
+  <Container>
     {items.length === 0 ? (
-      <p class="text-text-secondary">No explorations yet.</p>
+      <p class="text-text-tertiary">No explorations yet.</p>
     ) : (
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-        {items.map((e, i) => (
-          <Reveal delay={i * 40}>
-            <a
-              href={`/explorations/${e.data.slug}`}
-              class="group block rounded-xl border border-border bg-bg-secondary p-3 transition duration-500 hover:border-border-hover hover:-translate-y-0.5"
-            >
-              <div class="overflow-hidden rounded-lg bg-bg-primary aspect-[4/5]">
-                <img
-                  src={e.data.cover}
-                  alt={e.data.coverAlt}
-                  class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                />
-              </div>
-              <div class="flex items-center justify-between px-2 pt-4 pb-1 text-base">
-                <div class="text-text-primary">{e.data.title}</div>
-                <div class="text-text-tertiary">{e.data.year}</div>
-              </div>
-            </a>
-          </Reveal>
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {columns.map((column, ci) => (
+          <div class:list={['flex flex-col gap-8', ci !== 1 && 'lg:mt-[276px]']}>
+            {column.map(e => (
+              <Reveal>
+                <a
+                  href={`/explorations/${e.data.slug}`}
+                  class="group block aspect-[416/520] overflow-hidden rounded-card bg-bg-secondary transition duration-500 hover:-translate-y-1"
+                >
+                  <img
+                    src={e.data.cover}
+                    alt={e.data.coverAlt}
+                    class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                  />
+                </a>
+              </Reveal>
+            ))}
+          </div>
         ))}
       </div>
     )}
