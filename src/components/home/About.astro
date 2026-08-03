@@ -2,38 +2,42 @@
 import Container from '../layout/Container.astro'
 import Pill from '../ui/Pill.astro'
 import Reveal from '../ui/Reveal.astro'
-import SectionHeader from '../ui/SectionHeader.astro'
 import { site } from '../../content/site'
 ---
-<section id="about" class="border-t border-border py-section-y-sm md:py-section-y">
+<section id="about" class="overflow-x-clip py-section-y-sm md:py-section-y">
   <Container>
-    <SectionHeader badge="About me" heading="Designer with a bias for shipping." />
-
-    <div class="grid md:grid-cols-2 gap-12 items-start">
-      <Reveal>
-        <div class="group rounded-xl border border-border bg-bg-secondary p-3">
-          <div class="aspect-[4/5] overflow-hidden rounded-lg bg-bg-primary">
-            <img
-              src="/images/placeholder.svg"
-              alt={`Portrait of ${site.name}`}
-              class="w-full h-full object-cover saturate-[0.2] transition duration-500 group-hover:saturate-100"
-            />
-          </div>
-        </div>
+    <div class="grid items-start gap-12 md:grid-cols-[620px_1fr] md:gap-20">
+      <!-- Figma runs the 861px portrait past its 656px column: 102px above,
+           103px below, 18px to the left. The bleed is the composition, so it
+           must survive — but only from md up, since beside nothing it just
+           reads as a misaligned image. `overflow-x-clip` on the section stops
+           the left bleed from producing a horizontal scrollbar while still
+           letting the vertical bleed show. -->
+      <Reveal delay={100} class="order-1 md:order-2">
+        <img
+          src="/images/ficho-portrait.png"
+          alt={`Portrait of ${site.name}`}
+          class="w-full rounded-card object-cover md:-mb-[103px] md:-ml-[18px] md:-mt-[102px] md:h-[861px] md:w-[646px] md:max-w-none"
+        />
       </Reveal>
 
-      <Reveal delay={100}>
+      <Reveal class="order-2 md:order-1">
         <div>
-          {site.bio.map(p => <p class="mb-4 text-lg text-text-secondary">{p}</p>)}
+          <h2 class="font-display font-semibold text-display-lg text-text-primary">About me</h2>
+          <p class="mt-6 max-w-[559px] text-2xl leading-[1.6] text-text-secondary">{site.bio.join(' ')}</p>
 
-          <div class="mt-8">
-            <div class="mb-3 text-xs uppercase tracking-[0.15em] text-text-tertiary">Skills</div>
-            <div class="flex flex-wrap gap-2">{site.skills.map(s => <Pill>{s}</Pill>)}</div>
+          <hr class="my-8 border-0 border-t border-border" />
+
+          <div>
+            <div class="text-lg leading-[1.6] text-text-tertiary">SKILLS</div>
+            <div class="mt-4 flex flex-wrap gap-4">{site.skills.map(s => <Pill>{s}</Pill>)}</div>
           </div>
 
-          <div class="mt-6">
-            <div class="mb-3 text-xs uppercase tracking-[0.15em] text-text-tertiary">Tools</div>
-            <div class="flex flex-wrap gap-2">{site.tools.map(t => <Pill>{t}</Pill>)}</div>
+          <hr class="my-8 border-0 border-t border-border" />
+
+          <div>
+            <div class="text-lg leading-[1.6] text-text-tertiary">TOOLS</div>
+            <div class="mt-4 flex flex-wrap gap-4">{site.tools.map(t => <Pill>{t}</Pill>)}</div>
           </div>
         </div>
       </Reveal>

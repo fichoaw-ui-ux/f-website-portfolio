@@ -55,4 +55,29 @@ describe('home page structure', () => {
       expect(html).not.toContain('View case study')
     })
   })
+
+  describe('about', () => {
+    it('runs the bio as one paragraph and drops the section badge pattern', () => {
+      expect(html).toContain('About me')
+      expect(html).not.toContain('Designer with a bias for shipping')
+      // Proves site.bio was joined into a single <p>: with two paragraphs a
+      // closing and opening tag would sit between these two sentences.
+      expect(html).toContain('beautiful interfaces. Currently exploring')
+    })
+
+    it('shows the real portrait, described rather than decorative', () => {
+      // Scoped to the About image. A bare `not.toContain('placeholder.svg')`
+      // fails on unrelated content: five of the six explorations legitimately
+      // still use placeholder.svg as their cover. The alt is what separates
+      // this image from the hero's decorative copy of the same file.
+      expect(html).toMatch(/<img[^>]+ficho-portrait\.png[^>]+alt="Portrait of Ficho"/)
+    })
+
+    it('keeps the skills and tools groups labelled', () => {
+      expect(html).toContain('SKILLS')
+      expect(html).toContain('TOOLS')
+      expect(html).toContain('Mixpanel')
+      expect(html).not.toContain('Framer')
+    })
+  })
 })
