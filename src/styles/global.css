@@ -1,4 +1,11 @@
-@import "tailwindcss";
+/* source(none) disables Tailwind's automatic file detection, which scans the
+   whole project and was emitting utilities from the markup samples inside
+   docs/superpowers/**. That put classes the site never uses into the shipped
+   stylesheet and made the CSS change whenever a doc was edited — and it would
+   let a "is this class emitted" assertion pass because a document mentioned
+   the class rather than because a component used it. Scan src/ only. */
+@import "tailwindcss" source(none);
+@source "../../src";
 @plugin "@tailwindcss/typography";
 @import "@fontsource/aileron/400.css";
 @import "@fontsource/aileron/600.css";
