@@ -92,7 +92,7 @@ Coordinates below are Figma's, at 1440 width.
 
 The nav links `Work` / `About` / `Contact` do not exist in Figma and are removed. **Flagged concern:** this leaves a 6636px page with no in-page navigation and no way back to a section except scrolling. Proceeding per the fidelity decision, but it is worth revisiting.
 
-Stickiness is retained — it is behaviour, not visual style, and a static frame cannot express it.
+**The header also stops being sticky.** This reverses an earlier draft of this spec, which kept stickiness on the grounds that a static frame cannot express behaviour. That reasoning does not survive the removal of the bar background: a sticky header with no background scrolls transparently over the content beneath it, and 88px headings passing under 32px nav text is illegible. With the nav links gone the only thing left to keep pinned is the `Contact Us` CTA, which is already duplicated in the Contact section. Static is both what Figma draws and the only version that reads correctly.
 
 ### Hero — `8920:2146`
 
@@ -140,7 +140,11 @@ Three 416px columns with 32px gaps. The middle column starts at the top; the two
 
 Figma shows **no section heading here** — the current `Explorations / Visual experiments.` header is removed. Figma's cards are also image-only, so the per-card title and year are removed.
 
-Figma draws seven cards (2 / 3 / 2) but the content collection holds six. The layout is content-driven: items distribute round-robin into three columns — item 1 to the left column, 2 to the middle, 3 to the right, 4 to the left again — so reading order runs left to right across each visual band. Six items give 2 / 2 / 2, and the middle column stays un-offset regardless of count. Cards remain links to their exploration pages.
+Figma draws seven cards (2 / 3 / 2) but the content collection holds six. The layout is content-driven: items are split into three consecutive chunks — items 1–2 to the left column, 3–4 to the middle, 5–6 to the right. Six items give 2 / 2 / 2, and the middle column stays un-offset regardless of count.
+
+Chunking is chosen over round-robin deliberately. Staggered columns require real column containers — a plain grid cannot offset one column without shifting the shared row — and with containers the DOM order is whatever the distribution produces. Round-robin would emit items in the order 1, 4, 2, 5, 3, 6, which is the order a screen reader announces and the order the single-column mobile layout stacks them in. Chunking keeps DOM order identical to content order at every breakpoint.
+
+Cards remain links to their exploration pages.
 
 Dropping the per-card title leaves the cover image as the only content in the link, so each card's accessible name comes from the image `alt` (`coverAlt`, already required by the collection schema). Without it the grid would be six unlabelled links.
 
