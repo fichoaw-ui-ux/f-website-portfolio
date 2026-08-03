@@ -40,9 +40,11 @@ describe('built home page', () => {
     expect(html).not.toContain('fonts.gstatic.com')
   })
 
-  it('references no typeface other than Plus Jakarta Sans', () => {
+  it('references Aileron and no other typeface', () => {
+    expect(css).toContain('Aileron')
+    expect(css).not.toContain('Plus Jakarta Sans')
+    expect(html).not.toContain('Plus Jakarta Sans')
     expect(html).not.toContain('Satoshi')
-    expect(html).not.toContain('Micro 5')
     expect(css).not.toContain('Micro 5')
     expect(css).not.toContain('JetBrains')
   })

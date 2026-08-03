@@ -19,12 +19,12 @@
   --color-accent-2: #A1A1A1;
   --gradient-accent: linear-gradient(135deg, #FAFAFA 0%, #FAFAFA 60%, #A1A1A1 100%);
 
-  /* Font families — Plus Jakarta Sans is the only typeface on the site.
+  /* Font families — Aileron is the only typeface on the site.
      --font-mono is kept as a token so existing `font-mono` class usages keep
      resolving, but it points at the same face. */
-  --font-display: "Plus Jakarta Sans Variable", system-ui, sans-serif;
-  --font-sans: "Plus Jakarta Sans Variable", system-ui, sans-serif;
-  --font-mono: "Plus Jakarta Sans Variable", system-ui, sans-serif;
+  --font-display: "Aileron", system-ui, sans-serif;
+  --font-sans: "Aileron", system-ui, sans-serif;
+  --font-mono: "Aileron", system-ui, sans-serif;
 
   /* Display font sizes (with line height) */
   --text-display-xl: clamp(3rem, 8vw, 6rem);

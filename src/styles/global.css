@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource/aileron/400.css";
+@import "@fontsource/aileron/600.css";
 @import "./tokens.css";
 
 @layer base {
