@@ -58,4 +58,18 @@ describe('built home page', () => {
     expect(css).not.toMatch(/#1E4FCF/i)
     expect(css).not.toMatch(/#DC2626/i)
   })
+
+  it('uses the Figma palette', () => {
+    expect(css).toMatch(/--color-bg-primary:\s*#0b0b0b/i)
+    expect(css).toMatch(/--color-text-primary:\s*#fff/i)
+    expect(css).toMatch(/--color-text-secondary:\s*#bbbbc0/i)
+    expect(css).toMatch(/--color-text-tertiary:\s*#909098/i)
+  })
+
+  it('drops the sub-AA grey that --color-text-tertiary used to hold', () => {
+    // #525252 was 2.4:1 on the page background. The token name survives but
+    // now points at #909098 (6.2:1), so guard the value, not the name.
+    expect(css).not.toMatch(/#525252/i)
+    expect(css).not.toMatch(/#A1A1A1/i)
+  })
 })
