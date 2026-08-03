@@ -52,9 +52,12 @@
      black instead of its light-mode #16223329, which is invisible on near-black. */
   --shadow-card: 0 16px 32px rgba(0, 0, 0, 0.45), 0 4px 12px -4px rgba(0, 0, 0, 0.35);
 
-  /* Layout — 1312px content band inside a 1440px frame leaves 64px gutters.
+  /* Layout — this is the FRAME width, not the content band. Tailwind sizes
+     max-w-* against the border box, so the 64px gutters on Container are
+     carved out of this value: 1440 − 128 leaves Figma's 1312px band. Setting
+     it to 1312 gave a 1184px band, 128px narrower than the design.
      Section padding is Figma's 80px, down from the previous 160px. */
-  --container-container: 1312px;
+  --container-container: 1440px;
   --spacing-section-y: 5rem;
   --spacing-section-y-sm: 3.5rem;
 }

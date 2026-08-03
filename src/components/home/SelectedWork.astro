@@ -28,8 +28,12 @@ const featured = sortByOrder(filterFeatured(all))
             href={`/work/${p.data.slug}`}
             class="group block rounded-card bg-bg-secondary p-6 shadow-card transition duration-500 hover:-translate-y-1 md:p-12"
           >
-            <div class="grid items-center gap-8 md:grid-cols-[438px_1fr] md:gap-12">
-              <div class="order-2 md:order-1">
+            {/* 36% is Figma's 438px text column over the 1216px inner width of
+                a 1312px card, so it resolves to 438px at 1440. A fixed 438px
+                squeezed the thumbnail to 122px at 768 — hence proportional,
+                and hence lg rather than md. */}
+            <div class="grid items-center gap-8 lg:grid-cols-[36%_1fr] lg:gap-12">
+              <div class="order-2 lg:order-1">
                 <h3 class="font-display font-semibold text-display-md text-text-primary">{p.data.title}</h3>
                 <p class="mt-4 text-base font-semibold uppercase leading-none text-text-tertiary">
                   {p.data.tags.join(', ')}
@@ -39,7 +43,7 @@ const featured = sortByOrder(filterFeatured(all))
                   class="mt-8 inline-flex h-12 items-center rounded-full border border-border px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:border-border-hover group-hover:bg-bg-elevated"
                 >View Details</span>
               </div>
-              <div class="order-1 aspect-[730/438] overflow-hidden rounded-media bg-bg-primary md:order-2">
+              <div class="order-1 aspect-[730/438] overflow-hidden rounded-media bg-bg-primary lg:order-2">
                 <img
                   src={p.data.thumbnail}
                   alt={p.data.thumbnailAlt}

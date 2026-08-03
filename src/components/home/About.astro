@@ -6,22 +6,28 @@ import { site } from '../../content/site'
 ---
 <section id="about" class="overflow-x-clip py-section-y-sm md:py-section-y">
   <Container>
-    <div class="grid items-start gap-12 md:grid-cols-[620px_1fr] md:gap-20">
+    {/* Proportional columns, not Figma's literal 620px. A fixed 620px column
+        needs a ~1312px content band to leave room for the portrait; at 768 it
+        pushed the portrait off-screen, hidden only by overflow-x-clip. 47.3%
+        is 620/1312, so it resolves to Figma's width at 1440 and degrades
+        instead of overflowing below that. Two columns start at lg, not md,
+        for the same reason. */}
+    <div class="grid items-start gap-12 lg:grid-cols-[47.3%_1fr] lg:gap-20">
       {/* Figma runs the 861px portrait past its 656px column: 102px above,
           103px below, 18px to the left. The bleed is the composition, so it
           must survive — but only from md up, since beside nothing it just
           reads as a misaligned image. `overflow-x-clip` on the section stops
           the left bleed from producing a horizontal scrollbar while still
           letting the vertical bleed show. */}
-      <Reveal delay={100} class="order-1 md:order-2">
+      <Reveal delay={100} class="order-1 lg:order-2">
         <img
           src="/images/ficho-portrait.png"
           alt={`Portrait of ${site.name}`}
-          class="w-full rounded-card object-cover md:-mb-[103px] md:-ml-[18px] md:-mt-[102px] md:h-[861px] md:w-[646px] md:max-w-none"
+          class="mx-auto aspect-[646/861] w-full max-w-[480px] rounded-card object-cover lg:mx-0 lg:-mb-[103px] lg:-ml-[18px] lg:-mt-[102px] lg:w-[calc(100%+35px)] lg:max-w-none"
         />
       </Reveal>
 
-      <Reveal class="order-2 md:order-1">
+      <Reveal class="order-2 lg:order-1">
         <div>
           <h2 class="font-display font-semibold text-display-lg text-text-primary">About me</h2>
           <p class="mt-6 max-w-[559px] text-2xl leading-[1.6] text-text-secondary">{site.bio.join(' ')}</p>
