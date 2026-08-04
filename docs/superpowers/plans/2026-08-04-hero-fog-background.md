@@ -16,7 +16,7 @@
 
 | File | Status | Responsibility |
 |---|---|---|
-| `src/styles/tokens.css` | Modify | Add a `:root` block with the four fog colour tokens and three scalar tokens. Deliberately outside `@theme` so Tailwind emits no `bg-fog-*` utilities. Lives next to `--color-bg-primary` because `--fog-base` must equal it. |
+| `src/styles/tokens.css` | Modify | Add a `:root` block with the four fog colour tokens and three scalar tokens. Deliberately outside `@theme`, which would tree-shake tokens no CSS references. Lives next to `--color-bg-primary` because `--fog-base` must equal it. |
 | `src/components/ui/FogBackground.astro` | Create | The whole effect: markup, scoped positioning + mask CSS, shader source, WebGL setup, loop gating. Takes no props. |
 | `src/components/home/Hero.astro` | Modify | Becomes a stacking context (`relative isolate overflow-hidden`) and mounts `<FogBackground />` as its first child. Two lines. |
 | `tests/build-output.test.ts` | Modify | Assert every fog token is genuinely declared in the built stylesheet, that every fog colour is grey, that `--fog-base` indirects to `--color-bg-primary`, and that the highlight keeps white text above 7:1. |
@@ -137,12 +137,12 @@ Append to `src/styles/tokens.css`, after the closing `}` of the `@theme` block:
 
    These sit in :root rather than in the @theme block above, and the reason is
    the opposite of the obvious one. It is not that @theme would emit unwanted
-   .bg-fog-* utilities: --fog-* is not in Tailwind's --color-* namespace, and
-   global.css passes source(none) so no candidates are scanned anyway. The
-   hazard is that @theme emits only the variables a utility actually
-   references, so variables read solely from JS are tree-shaken out of the
-   build. Moving this block into @theme makes every --fog-* declaration vanish
-   from dist and the fog degrades to a flat background with nothing to
+   .bg-fog-* utilities — --fog-* is outside Tailwind's --color-* namespace, so
+   it is not a colour-utility key at all. The hazard is that @theme emits only
+   the variables something in the CSS actually references, whether a utility or
+   a hand-written rule, so variables read solely from JS are tree-shaken out of
+   the build. Moving this block into @theme makes every --fog-* declaration
+   vanish from dist and the fog degrades to a flat background with nothing to
    indicate why.
 
    --fog-base points at the page background rather than repeating #0B0B0B: the
