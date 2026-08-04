@@ -3,22 +3,62 @@ import Container from './Container.astro'
 import { site } from '../../content/site'
 import logo from '../../../public/images/logo-ficho.svg?raw'
 ---
-{/* Not sticky — but it DOES have a bar. An earlier version of this comment
-    claimed "Figma draws neither"; that was wrong about the bar. Figma's navbar
-    (node 8921:2731's parent, 8920:2156) is a 1312x72 pill with a hairline
-    border and a fill slightly lighter than the page. It was dropped along with
-    the nav links when this header was reduced, and the two were not the same
-    decision: the links genuinely are absent from the design, the pill is not.
+{/* Sticky, and it DOES have a bar — the two are one decision, which is why
+    this comment has been rewritten twice. Figma's navbar (node 8921:2731's
+    parent, 8920:2156) is a 1312x72 pill with a hairline border and a fill
+    slightly lighter than the page. It was dropped along with the nav links
+    when this header was reduced, and those were not the same decision: the
+    links genuinely are absent from the design, the pill is not.
 
-    Not sticky is still right, and the tests enforce it: a sticky header
-    without a background scrolls transparently over the content, which put 88px
-    headings underneath the wordmark. With the nav links gone the only thing
-    left to pin is the Contact CTA, and that is duplicated in the Contact
-    section.
+    On sticky: it was removed because "a sticky header without a background
+    scrolls transparently over the content, which put 88px headings underneath
+    the wordmark". Read the condition — *without a background*. That was true
+    only while the pill was missing. With the pill back the header has an
+    opaque surface of its own, content passing beneath it is covered, and the
+    sole technical objection is gone. So sticky is restored deliberately, not
+    reverted by accident, and the test that asserted the opposite was flipped
+    on purpose.
+
+    `sticky`, not `fixed`: sticky stays in flow, so nothing below shifts and no
+    compensating padding has to be kept in sync with the header's height across
+    breakpoints. `fixed` would buy nothing here and add exactly that coupling.
+
+    `top-0`, not `top-4`, and the pt-8 does the offsetting instead. With
+    `top-4` the header pins 16px down while its natural position is 0, so it
+    sticks immediately and the pill sits 48px from the viewport top at rest —
+    16px below where Figma draws it. `top-0` keeps the pill at the 32px pt-8
+    gives it, both at rest and while pinned, so nothing moves on first scroll.
+
+    The scrim is what makes that 32px gap safe, and its shape is deliberate.
+    The pill is opaque, but the pt-8 above it belongs to this sticky element and
+    was transparent, so content scrolled up through it — barely visible on the
+    dark home page, glaring on the light case-study pages where large blue
+    headings slid across the top edge.
+
+    Two simpler fixes were tried in the browser and rejected on what they
+    actually rendered. A flat opaque fill hid the content but covered
+    body::before/::after for the header's full 104px, leaving a ~12-level
+    brightness step at its bottom edge where the page's radial gradient resumed
+    — the same class of seam the hero's fog mask exists to avoid. `backdrop-blur`
+    alone left no seam but only smeared bright content, so a white work card
+    still read as a pale smudge above the pill.
+
+    This gradient does both: opaque through 40% (~42px) so the 0-32px gap is
+    covered outright, then faded to nothing by 100%. The entire fade lives
+    behind the opaque pill, so it is never seen, and alpha is already zero at
+    the header's bottom edge — no step against the page. Do not flatten this to
+    a solid colour.
+
+    On the SectionIndicator: case-study pages fix a progress bar at
+    `top: var(--header-h)`, which its own script sets from this header's
+    measured height. That is 104px here (32 + 72) and it lands flush under the
+    pill, so the two coordinate without either knowing the other's numbers.
+    Changing pt-8 or the pill's height moves the indicator with it.
 
     Why the pill matters beyond fidelity: without it the header has no surface
     of its own and borrows whatever is behind it, so anything painted below —
-    the hero's fog, for one — makes it read as a stray dark band.
+    the hero's fog, for one — makes it read as a stray dark band. That is also
+    what makes sticky safe now.
 
     Every value here is a token, not a hex. This header also renders on the
     light case-study pages, where BaseLayout remaps the colour tokens; a
@@ -28,7 +68,7 @@ import logo from '../../../public/images/logo-ficho.svg?raw'
     bg-elevated -> bg-secondary; the border is a flat token rather than a
     gradient ring, which is dimmer than Figma's stroke and the one deliberate
     approximation here. */}
-<header class="pt-8">
+<header class="sticky top-0 z-40 bg-[linear-gradient(to_bottom,var(--color-bg-primary)_0%,var(--color-bg-primary)_40%,transparent_100%)] pt-8">
   <Container>
     <div class="flex h-[72px] items-center justify-between gap-3 rounded-full border border-border-hover bg-[linear-gradient(to_bottom,var(--color-bg-elevated),var(--color-bg-secondary))] pl-8 pr-3">
       {/* Inlined rather than an <img> so the wordmark's currentColor fill can

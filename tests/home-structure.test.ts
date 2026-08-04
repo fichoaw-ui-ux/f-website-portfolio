@@ -204,8 +204,28 @@ describe('home page structure', () => {
       expect(html).not.toContain('Get in touch')
     })
 
-    it('does not stick, so it cannot scroll over the 88px headings', () => {
-      expect(html).not.toMatch(/<header[^>]*class="[^"]*sticky/)
+    it('sticks — which is only safe while the bar stays opaque', () => {
+      // The inverse of this test used to exist, asserting the header did NOT
+      // stick. That was right at the time and is deliberately flipped now: the
+      // reason given was "a sticky header *without a background* scrolls
+      // transparently over the content", and the pill supplies the background.
+      //
+      // Both halves are asserted together on purpose. Sticky alone, or an
+      // opaque bar alone, is fine; sticky *without* the bar is the specific
+      // combination that put 88px headings underneath the wordmark. Splitting
+      // them into two tests would let that pair regress with both still green.
+      const header = html.match(/<header[^>]*>/)?.[0]
+      expect(header).toBeDefined()
+      expect(header).toContain('sticky')
+      // Without a stacking order it would stick and still be painted under the
+      // content it is supposed to cover.
+      expect(header).toContain('z-40')
+      // The scrim over the pt-8 gap above the pill. Without it, content scrolls
+      // up through that band — the pill covers only its own 72px.
+      expect(header).toContain('var(--color-bg-primary)')
+
+      const bar = html.match(/<header[\s\S]*?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
+      expect(bar).toContain('var(--color-bg-elevated)')
     })
 
     it('draws the wordmark and CTA inside a bordered pill, as Figma does', () => {
