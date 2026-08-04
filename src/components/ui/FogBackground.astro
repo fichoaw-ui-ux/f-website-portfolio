@@ -35,9 +35,19 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    /* Dissolves the field into the page instead of ending it on a straight
-       line. The flat parts already match --color-bg-primary exactly; this
-       handles whatever is left.
+    /* Dissolves the field into the page at BOTH ends instead of stopping on a
+       straight line. The flat parts already match --color-bg-primary exactly;
+       this handles whatever is left.
+
+       The top fade is not symmetry for its own sake. The header is
+       deliberately transparent and static (see Header.astro), so the page
+       texture runs behind it — and this layer starts at the hero's top edge,
+       immediately below it. Without the fade the field begins at full
+       strength on that boundary, drawing a horizontal line directly under the
+       navbar and making the transparent header read as a separate darker bar.
+       Invisible while the palette was dim; obvious as soon as the midtone and
+       highlight were raised. 18% of an 880px hero is ~158px, so the field is
+       at full strength just below the header rather than against it.
 
        There is deliberately no -webkit-mask-image here, and it is not because
        the build would add one. This build's CSS pipeline normalises vendor
@@ -64,7 +74,7 @@
        cover them. Not done pre-emptively because it costs the "GLSL is
        Vanta's verbatim" property and risks a premultiply halo for everyone to
        fix a faint seam for almost no one. */
-    mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 62%, transparent 100%);
   }
 
   .fog-layer canvas {

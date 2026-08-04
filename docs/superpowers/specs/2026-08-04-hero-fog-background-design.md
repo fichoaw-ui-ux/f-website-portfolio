@@ -28,7 +28,7 @@ New file: `src/components/ui/FogBackground.astro`. It renders
 
 - container: `position: absolute; inset: 0; z-index: -1; pointer-events: none`
 - canvas: `display: block; width: 100%; height: 100%`
-- container carries `mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%)` so the field dissolves into the page instead of ending on a straight edge
+- container carries `mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 62%, transparent 100%)` so the field dissolves into the page at both ends instead of stopping on a straight edge
 
 **Unprefixed, and not by oversight.** This build's CSS pipeline normalises vendor prefixes to a modern target: it neither adds them nor keeps hand-written ones where an unprefixed equivalent exists. Adding `-webkit-mask-image` to the rule and rebuilding produces `dist/` output with the prefix stripped — measured, after two earlier drafts of this spec got the mechanism wrong in opposite directions. The accepted consequence is that on **Chrome below 120 and Safari below 16** the mask no-ops and the field ends on a hard horizontal edge; Firefox is unaffected at every version. Those thresholds were bisected against Lightning CSS's compat data, not recalled — an earlier draft said Safari 15.4.
 
@@ -46,7 +46,11 @@ The WebGL setup lives in the component's own `<script>` tag, which Astro bundles
 
 The shader writes `gl_FragColor.a = 1.0`. The fog is therefore opaque and hides the gradients and the grain within the hero band; both remain intact in every other section. This is intended. The fog's own fbm already supplies grain and depth, and compositing three noise fields produces mud rather than richness. An alpha-blended variant was considered and rejected for that reason.
 
-The seam is handled by two facts working together: `--fog-base` *is* `--color-bg-primary` — declared as `var(--color-bg-primary)`, so the two cannot drift — which makes the flat parts of the field indistinguishable from the page; and the bottom-edge mask fades whatever is left.
+The seam is handled by two facts working together: `--fog-base` *is* `--color-bg-primary` — declared as `var(--color-bg-primary)`, so the two cannot drift — which makes the flat parts of the field indistinguishable from the page; and the mask fades whatever is left.
+
+**The mask fades both ends, and the top fade is the load-bearing one.** `Header.astro` is deliberately transparent and `static`, so the page texture runs behind the navbar. This layer begins at the hero's top edge, immediately below the header — so with the mask opaque from its first pixel, the field started at full strength on that boundary. That drew a horizontal line directly under the navbar and made the transparent header read as a separate, darker bar.
+
+This was latent from the beginning and invisible while the palette was dim; it surfaced the moment the midtone and highlight were raised, and was reported as "why did the navbar change?" — it had not. The fix is a `transparent 0% → #000 18%` ramp, so the field reaches full strength roughly 158px into an 880px hero rather than against the header. Worth noting as a general shape: making a decorative layer *more visible* also makes its boundaries more visible, and boundaries are where it meets someone else's component.
 
 ## Colour
 
@@ -58,14 +62,25 @@ The reason for avoiding `@theme` is the opposite of the obvious one, and an earl
 |---|---|---|---|
 | `--fog-base` | `var(--color-bg-primary)` | dominant field | `#FFEBEB` |
 | `--fog-lowlight` | `#000000` | deepest troughs | `#2D00FF` |
-| `--fog-midtone` | `#1A1A1A` | cloud body | `#FF1900` |
-| `--fog-highlight` | `#2E2E2E` | brightest peaks | `#FFC300` |
+| `--fog-midtone` | `#2E2E2E` | cloud body | `#FF1900` |
+| `--fog-highlight` | `#4A4A4A` | brightest peaks | `#FFC300` |
 
 Scalars: `--fog-blur-factor: 0.6` (Vanta's default), `--fog-zoom: 1`, `--fog-speed: 0.55`. Speed is roughly half of Vanta's `1` — at the default rate the field visibly drifts behind an 88px headline, which reads as a widget.
 
-Contrast: `--fog-highlight` sets the field's brightest pixel but does not exactly cap it. The shader's final `mix(baseColor, color, f*f*f + .6*f*f + .5*f)` has an **unclamped** factor — it crosses 1.0 at `f ≈ 0.705` and reaches 2.1 — so the result extrapolates slightly past `highlightColor`. Measured against the shipped shader, a `#2E2E2E` token yields a real maximum of `#303030`, 2/255 over, and white text on it measures **13.2:1** rather than the 13.58:1 the token alone implies. An earlier draft of this spec asserted `#2E2E2E` as a hard ceiling and quoted 13.5:1; both were wrong, if harmlessly.
+Contrast: `--fog-highlight` sets the field's brightest pixel but does not cap it. The shader's final `mix(baseColor, color, f*f*f + .6*f*f + .5*f)` has an **unclamped** factor — it crosses 1.0 at `f ≈ 0.705` and reaches 2.1 — so the result extrapolates past `highlightColor`, **by an amount that grows with the token**. There is no single constant to memorise. Measured on the shipped shader at the hero's own aspect ratio, 14.3M samples across 24 `iTime` values:
 
-Hero text therefore clears AAA at every point in the animation and no scrim is needed. The `7:1` floor the test enforces is very slightly optimistic for the same reason — a `#5A5A5A` token (6.90:1) would really deliver about `#5C5C5C` (6.69:1) — so treat the token as a close approximation of the bound rather than the bound itself when moving it. Raising `--fog-highlight` far enough to approach that floor must be accompanied by a scrim.
+| token | real max | overshoot | white contrast (token → real) |
+|---|---|---|---|
+| `#2E2E2E` | `#303030` | +2 | 13.58 → 13.20 |
+| `#4A4A4A` | `#505050` | +6 | 8.86 → **8.06** ← current |
+
+Two earlier drafts of this spec got this wrong in sequence: first asserting `#2E2E2E` as a hard ceiling with 13.5:1, then generalising the overshoot to a fixed `+2/255`. It is neither a ceiling nor a constant.
+
+Hero text still clears AAA at every point in the animation, so no scrim is needed. But note what this means for the `7:1` floor the test enforces: it reads the **token**, not the output, so it is optimistic by a widening margin. Pushing `--fog-highlight` much past `#4A4A4A` needs a fresh measurement rather than a green suite.
+
+## Palette history
+
+The shipped palette is the second one. It began at `--fog-midtone: #1A1A1A` / `--fog-highlight: #2E2E2E`, which sat close enough to the page background to read as noise rather than as intent, and was raised on review of a side-by-side comparison. Raising it exposed a latent flaw the dim palette had hidden — see *Layering*.
 
 ## Shader
 

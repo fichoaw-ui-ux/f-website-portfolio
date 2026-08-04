@@ -114,8 +114,10 @@ Then add this `describe` block at the end of the file, inside the outer `describ
     it('keeps white hero text above 7:1 against the highlight token', () => {
       // Deliberately "against the token", not "against the brightest possible
       // pixel": the shader's final mix factor is unclamped, so real output runs
-      // ~2/255 past this value. tokens.css has the arithmetic. The margin at
-      // #2E2E2E is far too large for the difference to matter here.
+      // past this value by an amount that grows with it (+6/255 at the current
+      // #4A4A4A). tokens.css has the measured table. So this floor is
+      // optimistic by a widening margin — fine at today's value, but re-measure
+      // rather than trusting a green suite if the highlight goes much higher.
       expect(contrastWithWhite(resolveColorToken(css, '--fog-highlight'))).toBeGreaterThanOrEqual(7)
     })
   })
@@ -158,20 +160,26 @@ Append to `src/styles/tokens.css`, after the closing `}` of the `@theme` block:
 
    --fog-highlight sets the field's brightest pixel but does not exactly cap
    it. The shader's final mix factor (f*f*f + .6*f*f + .5*f) is unclamped: it
-   crosses 1.0 at f ~= 0.705 and reaches 2.1, so the result extrapolates a
-   little past highlightColor. Measured against the shipped shader the real
-   maximum is #303030 for a #2E2E2E token — 2/255 over — and white text on it
-   is 13.2:1, not the 13.58:1 the token alone implies.
+   crosses 1.0 at f ~= 0.705 and reaches 2.1, so the result extrapolates past
+   highlightColor.
 
-   So the 7:1 floor in build-output.test.ts is very slightly optimistic: a
-   #5A5A5A token (6.90:1) would really deliver about #5C5C5C (6.69:1). At
-   #2E2E2E the margin is far too large for that to matter, but do not read the
-   token as an exact bound when moving it. */
+   The overshoot GROWS with the token, so there is no single constant to
+   memorise. Measured on the shipped shader at the hero's own aspect ratio,
+   14.3M samples across 24 iTime values:
+
+     token      real max   overshoot   white contrast (token -> real)
+     #2E2E2E    #303030    +2          13.58 -> 13.20
+     #4A4A4A    #505050    +6           8.86 ->  8.06   <- current
+
+   That is why the 7:1 floor in build-output.test.ts is optimistic by a
+   widening margin: it reads the token, not the output. Raising the highlight
+   much further makes that gap worse, so re-measure rather than trusting the
+   test alone if you push past roughly #4A4A4A. */
 :root {
   --fog-base: var(--color-bg-primary);
   --fog-lowlight: #000000;
-  --fog-midtone: #1A1A1A;
-  --fog-highlight: #2E2E2E;
+  --fog-midtone: #2E2E2E;
+  --fog-highlight: #4A4A4A;
 
   /* blur-factor and zoom are Vanta's defaults. Speed is roughly half of
      Vanta's 1 — at the default rate the field visibly drifts behind an 88px
@@ -309,9 +317,19 @@ Create `src/components/ui/FogBackground.astro` with exactly this content:
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    /* Dissolves the field into the page instead of ending it on a straight
-       line. The flat parts already match --color-bg-primary exactly; this
-       handles whatever is left.
+    /* Dissolves the field into the page at BOTH ends instead of stopping on a
+       straight line. The flat parts already match --color-bg-primary exactly;
+       this handles whatever is left.
+
+       The top fade is not symmetry for its own sake. The header is
+       deliberately transparent and static (see Header.astro), so the page
+       texture runs behind it — and this layer starts at the hero's top edge,
+       immediately below it. Without the fade the field begins at full
+       strength on that boundary, drawing a horizontal line directly under the
+       navbar and making the transparent header read as a separate darker bar.
+       Invisible while the palette was dim; obvious as soon as the midtone and
+       highlight were raised. 18% of an 880px hero is ~158px, so the field is
+       at full strength just below the header rather than against it.
 
        There is deliberately no -webkit-mask-image here, and it is not because
        the build would add one. This build's CSS pipeline normalises vendor
@@ -338,7 +356,7 @@ Create `src/components/ui/FogBackground.astro` with exactly this content:
        cover them. Not done pre-emptively because it costs the "GLSL is
        Vanta's verbatim" property and risks a premultiply halo for everyone to
        fix a faint seam for almost no one. */
-    mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 62%, transparent 100%);
   }
 
   .fog-layer canvas {
