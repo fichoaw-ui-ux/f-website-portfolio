@@ -182,7 +182,7 @@ void main() {
     return shader
   }
 
-  function initFog(container: HTMLElement) {
+  function mountFog(container: HTMLElement) {
     const canvas = container.querySelector('canvas')
     if (!canvas) return
     if (!setUpFog(container, canvas)) {
@@ -200,7 +200,7 @@ void main() {
     // just an empty element, letting the page show through. Every bail below
     // this point already holds a live context created with alpha: false, so
     // its backing store composites as opaque black the instant it exists —
-    // initFog above is what actually delivers "degrades to the flat
+    // mountFog above is what actually delivers "degrades to the flat
     // background" for those, by removing the canvas.
     const gl = canvas.getContext('webgl', {
       alpha: false,
@@ -219,7 +219,7 @@ void main() {
       highlightColor: parseHexColor(styles.getPropertyValue('--fog-highlight')),
     }
     // Bailing beats uploading NaN: a partly-parsed palette renders garbage,
-    // whereas removing the canvas (see initFog above) renders the correct
+    // whereas removing the canvas (see mountFog above) renders the correct
     // flat background. This also covers the one assumption worth naming —
     // --fog-base is declared as var(--color-bg-primary), and this code relies
     // on getPropertyValue returning the substituted value. That is the
@@ -341,19 +341,25 @@ void main() {
         : Math.min(window.devicePixelRatio || 1, MAX_DPR)
       const width = Math.max(1, Math.round(container.clientWidth * dpr))
       const height = Math.max(1, Math.round(container.clientHeight * dpr))
-      if (canvas.width === width && canvas.height === height) return false
-      canvas.width = width
-      canvas.height = height
+      const changed = canvas.width !== width || canvas.height !== height
+      // Guarded because assigning canvas.width reallocates and clears the
+      // drawing buffer even when the value is unchanged. viewport and uniform2f
+      // are idempotent and cost nothing, so they run every call — that is what
+      // stops "have the dimensions changed" from also gating "has iResolution
+      // ever been uploaded". Those two were entangled, and entangled they left
+      // a path to draw() with iResolution at (0,0), dividing by zero in the
+      // shader.
+      if (changed) {
+        canvas.width = width
+        canvas.height = height
+      }
       gl.viewport(0, 0, width, height)
       gl.uniform2f(uResolution, width, height)
-      return true
+      return changed
     }
 
-    // Size, then draw unconditionally. Keeping the draw out of resize() is
-    // what makes "exactly one frame under reduced motion" literally true, and
-    // it stops "have the dimensions changed" from doubling as "have the
-    // uniforms ever been uploaded" — entangled, those two could reach draw()
-    // with iResolution still (0,0) and divide by zero in the shader.
+    // Size, then draw unconditionally. Keeping the draw out of resize() is what
+    // makes "exactly one frame under reduced motion" literally true.
     resize()
     draw()
 
@@ -393,5 +399,5 @@ void main() {
     return true
   }
 
-  document.querySelectorAll<HTMLElement>('[data-fog-layer]').forEach(initFog)
+  document.querySelectorAll<HTMLElement>('[data-fog-layer]').forEach(mountFog)
 </script>
