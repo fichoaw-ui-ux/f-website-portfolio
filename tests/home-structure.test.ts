@@ -187,8 +187,15 @@ describe('home page structure', () => {
       // The wordmark is inlined, not an <img>, so its currentColor fill can
       // follow --color-text-primary — as an <img> it stayed Figma's hardcoded
       // white and disappeared on the light case-study pages.
-      expect(html).toMatch(/<header[\s\S]{0,400}<svg[^>]*viewBox="0 0 106 32"/)
-      expect(html).toContain('fill="currentColor"')
+      //
+      // Scoped to the header element rather than to a {0,400} window after the
+      // opening tag. The window version proved brittle for the reason such
+      // windows always are: it measured proximity, not containment, so simply
+      // adding classes to the bar broke it while the markup was still correct.
+      const header = html.match(/<header[\s\S]*?<\/header>/)?.[0]
+      expect(header).toBeDefined()
+      expect(header).toMatch(/<svg[^>]*viewBox="0 0 106 32"/)
+      expect(header).toContain('fill="currentColor"')
       expect(html).not.toContain('src="/images/logo-ficho.svg"')
       expect(html).toContain('Contact Us')
       expect(html).not.toContain('href="/#work"')
@@ -199,6 +206,23 @@ describe('home page structure', () => {
 
     it('does not stick, so it cannot scroll over the 88px headings', () => {
       expect(html).not.toMatch(/<header[^>]*class="[^"]*sticky/)
+    })
+
+    it('draws the wordmark and CTA inside a bordered pill, as Figma does', () => {
+      // This is a regression guard, not a style preference. The pill was
+      // dropped once already, together with the nav links, as though the two
+      // were one decision — the links are genuinely absent from the design,
+      // the pill is not. Losing it is invisible in the tests otherwise, and it
+      // leaves the header with no surface of its own, so anything painted
+      // behind it makes it read as a stray band.
+      const bar = html.match(/<header[\s\S]{0,600}?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
+      expect(bar).toBeDefined()
+      expect(bar).toContain('rounded-full')
+      expect(bar).toContain('border-border-hover')
+      // Token-driven, never a literal: this header also renders on the light
+      // case-study pages, where BaseLayout remaps the colour tokens.
+      expect(bar).toContain('var(--color-bg-elevated)')
+      expect(bar).not.toMatch(/bg-\[(linear-gradient\()?#[0-9a-fA-F]{3,8}/)
     })
   })
 })

@@ -3,14 +3,34 @@ import Container from './Container.astro'
 import { site } from '../../content/site'
 import logo from '../../../public/images/logo-ficho.svg?raw'
 ---
-{/* Not sticky, and no bar. Figma draws neither, and the two go together: a
-    sticky header without a background scrolls transparently over the content,
-    which put 88px headings underneath the wordmark. With the nav links gone
-    the only thing left to pin is the Contact CTA, and that is duplicated in
-    the Contact section. */}
+{/* Not sticky — but it DOES have a bar. An earlier version of this comment
+    claimed "Figma draws neither"; that was wrong about the bar. Figma's navbar
+    (node 8921:2731's parent, 8920:2156) is a 1312x72 pill with a hairline
+    border and a fill slightly lighter than the page. It was dropped along with
+    the nav links when this header was reduced, and the two were not the same
+    decision: the links genuinely are absent from the design, the pill is not.
+
+    Not sticky is still right, and the tests enforce it: a sticky header
+    without a background scrolls transparently over the content, which put 88px
+    headings underneath the wordmark. With the nav links gone the only thing
+    left to pin is the Contact CTA, and that is duplicated in the Contact
+    section.
+
+    Why the pill matters beyond fidelity: without it the header has no surface
+    of its own and borrows whatever is behind it, so anything painted below —
+    the hero's fog, for one — makes it read as a stray dark band.
+
+    Every value here is a token, not a hex. This header also renders on the
+    light case-study pages, where BaseLayout remaps the colour tokens; a
+    literal would have put a dark bar on #FAFAFA. Measured from Figma at full
+    resolution the fill is #232324 -> #1A1B1D and the border is a gradient
+    stroke #828287 -> #55555A. The gradient direction is reproduced through
+    bg-elevated -> bg-secondary; the border is a flat token rather than a
+    gradient ring, which is dimmer than Figma's stroke and the one deliberate
+    approximation here. */}
 <header class="pt-8">
   <Container>
-    <div class="flex h-[72px] items-center justify-between gap-3">
+    <div class="flex h-[72px] items-center justify-between gap-3 rounded-full border border-border-hover bg-[linear-gradient(to_bottom,var(--color-bg-elevated),var(--color-bg-secondary))] pl-8 pr-3">
       {/* Inlined rather than an <img> so the wordmark's currentColor fill can
           inherit --color-text-primary. As an <img> it was Figma's hardcoded
           white, which vanished on the light case-study pages. The accessible
