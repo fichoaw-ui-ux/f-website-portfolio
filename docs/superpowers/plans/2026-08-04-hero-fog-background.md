@@ -734,12 +734,14 @@ import { site } from '../../content/site'
 Then replace the opening `<section>` tag (line 6) and add the component as its first child:
 
 ```astro
-<section class="relative isolate flex min-h-[880px] items-center overflow-hidden py-24">
+<section class="relative isolate flex min-h-[880px] items-center overflow-hidden">
   <FogBackground />
   <Container>
 ```
 
 Leave everything from `<div class="mx-auto flex max-w-[1088px]...` onwards untouched.
+
+> **Amended after execution:** the section's original `py-24` was dropped on request. It was invisible at desktop width — `min-h-[880px]` is `border-box`, so the 96px sat *inside* the 880 and `items-center` centred the content identically either way. It only did work once the headline wrapped tall enough to exceed the 688px content box, which is a narrow-viewport case; see the note below on what replaced it there.
 
 - [x] **Step 5: Run the tests to verify they pass**
 
