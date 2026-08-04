@@ -91,20 +91,26 @@
 
    --fog-highlight sets the field's brightest pixel but does not exactly cap
    it. The shader's final mix factor (f*f*f + .6*f*f + .5*f) is unclamped: it
-   crosses 1.0 at f ~= 0.705 and reaches 2.1, so the result extrapolates a
-   little past highlightColor. Measured against the shipped shader the real
-   maximum is #303030 for a #2E2E2E token — 2/255 over — and white text on it
-   is 13.2:1, not the 13.58:1 the token alone implies.
+   crosses 1.0 at f ~= 0.705 and reaches 2.1, so the result extrapolates past
+   highlightColor.
 
-   So the 7:1 floor in build-output.test.ts is very slightly optimistic: a
-   #5A5A5A token (6.90:1) would really deliver about #5C5C5C (6.69:1). At
-   #2E2E2E the margin is far too large for that to matter, but do not read the
-   token as an exact bound when moving it. */
+   The overshoot GROWS with the token, so there is no single constant to
+   memorise. Measured on the shipped shader at the hero's own aspect ratio,
+   14.3M samples across 24 iTime values:
+
+     token      real max   overshoot   white contrast (token -> real)
+     #2E2E2E    #303030    +2          13.58 -> 13.20
+     #4A4A4A    #505050    +6           8.86 ->  8.06   <- current
+
+   That is why the 7:1 floor in build-output.test.ts is optimistic by a
+   widening margin: it reads the token, not the output. Raising the highlight
+   much further makes that gap worse, so re-measure rather than trusting the
+   test alone if you push past roughly #4A4A4A. */
 :root {
   --fog-base: var(--color-bg-primary);
   --fog-lowlight: #000000;
-  --fog-midtone: #1A1A1A;
-  --fog-highlight: #2E2E2E;
+  --fog-midtone: #2E2E2E;
+  --fog-highlight: #4A4A4A;
 
   /* blur-factor and zoom are Vanta's defaults. Speed is roughly half of
      Vanta's 1 — at the default rate the field visibly drifts behind an 88px
