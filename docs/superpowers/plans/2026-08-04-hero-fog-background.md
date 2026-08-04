@@ -324,13 +324,20 @@ Create `src/components/ui/FogBackground.astro` with exactly this content:
        normalised to. Two earlier versions of this comment got the mechanism
        wrong in opposite directions; this one is measured.)
 
-       Consequence, accepted: on Chrome below 120 and Safari below 15.4 the
-       mask no-ops and the field ends on a hard horizontal edge. If that ever
-       matters, the fix is not a prefix — it is to fold the fade into the
-       shader, mixing toward baseColor on a vertical ramp, which is pixel-
-       equivalent because baseColor IS the page background. That would cost
-       the "GLSL is Vanta's verbatim" property, which is why it was not done
-       pre-emptively. */
+       Consequence, accepted: on Chrome below 120 and Safari below 16 the mask
+       no-ops and the field ends on a hard horizontal edge. Firefox is
+       unaffected at every version. Thresholds bisected against lightningcss's
+       compat data rather than recalled.
+
+       If that ever matters, the fix is not a prefix. It is to output alpha
+       from the shader on a vertical ramp and drop this rule — which needs
+       `alpha: true` on the context and premultiplied colour (finalColor *
+       ramp). Note it is specifically NOT enough to mix toward baseColor: the
+       mask makes this layer genuinely transparent at the bottom, revealing
+       body::before and body::after, whereas mixing to a flat baseColor would
+       cover them. Not done pre-emptively because it costs the "GLSL is
+       Vanta's verbatim" property and risks a premultiply halo for everyone to
+       fix a faint seam for almost no one. */
     mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
   }
 
@@ -895,7 +902,7 @@ All four tasks are complete and every step above is ticked. The suite is at 37 t
 5. The step clamp's comment described the backgrounded-tab case, which `stop()` plus a null previous timestamp already makes unreachable. Vanta's `0.2` floor was also dropped: it engages only above ~300Hz, where it makes the field run ~1.6× fast.
 6. The bail paths did not degrade to the flat background. With `alpha: false` a live context that was never drawn to composites as *opaque black*, so a half-initialised canvas painted a black band. It is `canvas.remove()` that delivers the fallback.
 7. A comment claimed the restructure had decoupled "have the dimensions changed" from "has `iResolution` ever been uploaded". It had not — `resize()` still returned before the upload. Fixed by making the claim true rather than rewording it.
-8. The `-webkit-mask-image` question was got wrong twice, in opposite directions, before being settled by measurement. It was first removed on the premise that the build prefixes by browser target (false). Review then said to hand-write it, on the premise that the pipeline passes no targets and so prefixes nothing (also false). What actually happens: the pipeline normalises prefixes to a modern target, so it neither adds them nor keeps hand-written ones — adding the prefix and rebuilding yields `dist/` with it stripped. The rule therefore ships unprefixed, which is a real if narrow limitation below Chrome 120 / Safari 15.4, and the escape hatch is a shader-side vertical ramp rather than CSS. **The lesson is the one this whole list repeats: three confident mechanisms, none of them checked against the build until the third try.**
+8. The `-webkit-mask-image` question was got wrong twice, in opposite directions, before being settled by measurement. It was first removed on the premise that the build prefixes by browser target (false). Review then said to hand-write it, on the premise that the pipeline passes no targets and so prefixes nothing (also false). What actually happens: the pipeline normalises prefixes to a modern target, so it neither adds them nor keeps hand-written ones — adding the prefix and rebuilding yields `dist/` with it stripped. The rule therefore ships unprefixed, which is a real if narrow limitation below Chrome 120 / Safari 16, and the escape hatch is a shader-side vertical ramp rather than CSS. **The lesson is the one this whole list repeats: three confident mechanisms, none of them checked against the build until the third try.**
 
 **Two verification steps as written could not fail, which is worse than a failing check.** Both are corrected in place above: `elementFromPoint` cannot detect the stacking bug it was aimed at, because `pointer-events: none` makes hit testing skip the layer regardless of `z-index`; and the screenshot-pair motion check is impossible in the in-app browser pane, which reports `document.hidden` permanently and therefore never runs `requestAnimationFrame` or `ResizeObserver`. The `z-index: -1` regression test and an offscreen `preserveDrawingBuffer` recompile replaced them.
 

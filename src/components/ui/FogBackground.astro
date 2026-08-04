@@ -50,13 +50,20 @@
        normalised to. Two earlier versions of this comment got the mechanism
        wrong in opposite directions; this one is measured.)
 
-       Consequence, accepted: on Chrome below 120 and Safari below 15.4 the
-       mask no-ops and the field ends on a hard horizontal edge. If that ever
-       matters, the fix is not a prefix — it is to fold the fade into the
-       shader, mixing toward baseColor on a vertical ramp, which is pixel-
-       equivalent because baseColor IS the page background. That would cost
-       the "GLSL is Vanta's verbatim" property, which is why it was not done
-       pre-emptively. */
+       Consequence, accepted: on Chrome below 120 and Safari below 16 the mask
+       no-ops and the field ends on a hard horizontal edge. Firefox is
+       unaffected at every version. Thresholds bisected against lightningcss's
+       compat data rather than recalled.
+
+       If that ever matters, the fix is not a prefix. It is to output alpha
+       from the shader on a vertical ramp and drop this rule — which needs
+       `alpha: true` on the context and premultiplied colour (finalColor *
+       ramp). Note it is specifically NOT enough to mix toward baseColor: the
+       mask makes this layer genuinely transparent at the bottom, revealing
+       body::before and body::after, whereas mixing to a flat baseColor would
+       cover them. Not done pre-emptively because it costs the "GLSL is
+       Vanta's verbatim" property and risks a premultiply halo for everyone to
+       fix a faint seam for almost no one. */
     mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
   }
 
