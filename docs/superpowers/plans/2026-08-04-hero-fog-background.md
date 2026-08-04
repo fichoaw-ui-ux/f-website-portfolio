@@ -34,7 +34,7 @@
 - Modify: `src/styles/tokens.css` (append a `:root` block after the closing `}` of `@theme`, currently line 68)
 - Test: `tests/build-output.test.ts`
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Add these helpers to `tests/build-output.test.ts`, immediately after the existing `readAllCss` function (around line 30, before `describe('built home page'`):
 
@@ -111,15 +111,17 @@ Then add this `describe` block at the end of the file, inside the outer `describ
       expect(tokenValue(css, '--fog-base')).toBe('var(--color-bg-primary)')
     })
 
-    it('keeps white hero text above 7:1 against the brightest possible pixel', () => {
-      // --fog-highlight is the brightest pixel the field can reach; the bound
-      // and what breaks if it moves are documented in tokens.css.
+    it('keeps white hero text above 7:1 against the highlight token', () => {
+      // Deliberately "against the token", not "against the brightest possible
+      // pixel": the shader's final mix factor is unclamped, so real output runs
+      // ~2/255 past this value. tokens.css has the arithmetic. The margin at
+      // #2E2E2E is far too large for the difference to matter here.
       expect(contrastWithWhite(resolveColorToken(css, '--fog-highlight'))).toBeGreaterThanOrEqual(7)
     })
   })
 ```
 
-- [ ] **Step 2: Run the tests to verify they fail**
+- [x] **Step 2: Run the tests to verify they fail**
 
 ```bash
 npm run build && npx vitest run tests/build-output.test.ts -t "fog background tokens"
@@ -127,7 +129,7 @@ npm run build && npx vitest run tests/build-output.test.ts -t "fog background to
 
 Expected: FAIL, all 4 tests, each throwing `--fog-<name> not found in built CSS` out of `tokenValue`. No test may pass at this point — a test that is green before the tokens exist is not guarding anything.
 
-- [ ] **Step 3: Add the tokens**
+- [x] **Step 3: Add the tokens**
 
 Append to `src/styles/tokens.css`, after the closing `}` of the `@theme` block:
 
@@ -154,10 +156,17 @@ Append to `src/styles/tokens.css`, after the closing `}` of the `@theme` block:
    guarantee — the shader only mix()es these four values, and mix interpolates
    per channel, so grey inputs cannot produce a coloured pixel.
 
-   --fog-highlight is the brightest pixel the field can reach. At #2E2E2E,
-   white text over it measures 13.5:1. Past roughly #5A5A5A white drops under
-   7:1 and the hero would need a scrim; a test in build-output.test.ts holds
-   this line. */
+   --fog-highlight sets the field's brightest pixel but does not exactly cap
+   it. The shader's final mix factor (f*f*f + .6*f*f + .5*f) is unclamped: it
+   crosses 1.0 at f ~= 0.705 and reaches 2.1, so the result extrapolates a
+   little past highlightColor. Measured against the shipped shader the real
+   maximum is #303030 for a #2E2E2E token — 2/255 over — and white text on it
+   is 13.2:1, not the 13.58:1 the token alone implies.
+
+   So the 7:1 floor in build-output.test.ts is very slightly optimistic: a
+   #5A5A5A token (6.90:1) would really deliver about #5C5C5C (6.69:1). At
+   #2E2E2E the margin is far too large for that to matter, but do not read the
+   token as an exact bound when moving it. */
 :root {
   --fog-base: var(--color-bg-primary);
   --fog-lowlight: #000000;
@@ -173,7 +182,7 @@ Append to `src/styles/tokens.css`, after the closing `}` of the `@theme` block:
 }
 ```
 
-- [ ] **Step 4: Run the tests to verify they pass**
+- [x] **Step 4: Run the tests to verify they pass**
 
 ```bash
 npm run build && npx vitest run tests/build-output.test.ts -t "fog background tokens"
@@ -181,7 +190,7 @@ npm run build && npx vitest run tests/build-output.test.ts -t "fog background to
 
 Expected: PASS, 4 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/styles/tokens.css tests/build-output.test.ts
@@ -205,7 +214,7 @@ The component and the hero edit land together: the markup assertions read `dist/
 - Modify: `src/components/home/Hero.astro` (line 1-6: add the import, rewrite the `<section>` class, add the component as the first child)
 - Test: `tests/home-structure.test.ts`
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Add this `describe` block to `tests/home-structure.test.ts`, immediately after the existing `describe('hero', ...)` block closes (currently line 43):
 
@@ -250,7 +259,7 @@ Add this `describe` block to `tests/home-structure.test.ts`, immediately after t
   })
 ```
 
-- [ ] **Step 2: Run the tests to verify they fail**
+- [x] **Step 2: Run the tests to verify they fail**
 
 ```bash
 npm run build && npx vitest run tests/home-structure.test.ts -t "hero fog background"
@@ -258,7 +267,7 @@ npm run build && npx vitest run tests/home-structure.test.ts -t "hero fog backgr
 
 Expected: FAIL, 3 tests. First: `expect(layer).toBeDefined()` receives `undefined`. Second: the matched `<section>` lookahead itself matches nothing, since `data-fog-layer` doesn't exist yet, so `hero` is `undefined` rather than merely missing `overflow-hidden`. Third: the same absence — no `.fog-layer` rule exists in the built output yet, so the `z-index: -1` match fails too.
 
-- [ ] **Step 3: Create the component**
+- [x] **Step 3: Create the component**
 
 Create `src/components/ui/FogBackground.astro` with exactly this content:
 
@@ -302,10 +311,26 @@ Create `src/components/ui/FogBackground.astro` with exactly this content:
     pointer-events: none;
     /* Dissolves the field into the page instead of ending it on a straight
        line. The flat parts already match --color-bg-primary exactly; this
-       handles whatever is left. No hand-written -webkit- prefix: the build
-       prefixes by browser target, and this target doesn't need one for
-       mask-image (confirmed against dist/ — grep for webkit-mask there and
-       compare to e.g. webkit-hyphens, which does survive). */
+       handles whatever is left.
+
+       There is deliberately no -webkit-mask-image here, and it is not because
+       the build would add one. This build's CSS pipeline normalises vendor
+       prefixes to a modern target: it neither adds them nor keeps hand-written
+       ones where an unprefixed equivalent exists. Both halves were tested —
+       adding -webkit-mask-image to this very rule and rebuilding produces
+       dist/ output with the prefix stripped, and lightningcss reproduces that
+       exactly when given modern targets. (-webkit-font-smoothing in
+       global.css survives only because it has no unprefixed equivalent to be
+       normalised to. Two earlier versions of this comment got the mechanism
+       wrong in opposite directions; this one is measured.)
+
+       Consequence, accepted: on Chrome below 120 and Safari below 15.4 the
+       mask no-ops and the field ends on a hard horizontal edge. If that ever
+       matters, the fix is not a prefix — it is to fold the fade into the
+       shader, mixing toward baseColor on a vertical ramp, which is pixel-
+       equivalent because baseColor IS the page background. That would cost
+       the "GLSL is Vanta's verbatim" property, which is why it was not done
+       pre-emptively. */
     mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
   }
 
@@ -668,7 +693,7 @@ void main() {
 </script>
 ```
 
-- [ ] **Step 4: Mount it in the hero**
+- [x] **Step 4: Mount it in the hero**
 
 In `src/components/home/Hero.astro`, add the import after line 3 (`import { site } from '../../content/site'`) so the frontmatter reads:
 
@@ -691,7 +716,7 @@ Then replace the opening `<section>` tag (line 6) and add the component as its f
 
 Leave everything from `<div class="mx-auto flex max-w-[1088px]...` onwards untouched.
 
-- [ ] **Step 5: Run the tests to verify they pass**
+- [x] **Step 5: Run the tests to verify they pass**
 
 ```bash
 npm run build && npx vitest run tests/home-structure.test.ts -t "hero fog background"
@@ -699,7 +724,7 @@ npm run build && npx vitest run tests/home-structure.test.ts -t "hero fog backgr
 
 Expected: PASS, 3 tests.
 
-- [ ] **Step 6: Run the whole suite, to prove nothing else moved**
+- [x] **Step 6: Run the whole suite, to prove nothing else moved**
 
 ```bash
 npm test
@@ -707,7 +732,7 @@ npm test
 
 Expected: PASS, every test in all three files. The hero's other assertions (single `h1`, decorative avatar) must still pass — the fog is inserted before `<Container>`, not inside the heading.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/components/ui/FogBackground.astro src/components/home/Hero.astro tests/home-structure.test.ts
@@ -728,17 +753,19 @@ Nothing in Task 1 or 2 proves the effect renders. WebGL cannot run under vitest,
 
 **Files:** none modified, unless a check fails.
 
-- [ ] **Step 1: Start the dev server**
+- [x] **Step 1: Start the dev server**
 
 Use the `preview_start` tool with `{name: "Astro dev"}` (the config already exists in `.claude/launch.json`). Do not run `astro dev` through Bash.
 
-- [ ] **Step 2: Confirm the console is clean**
+- [x] **Step 2: Confirm the console is clean**
 
 Use `read_console_messages`. Expected: no errors. Specifically, no `[fog] shader compile failed` and no `[fog] program link failed` — those two messages are the component's own diagnostics and either one means the shader never ran.
 
-- [ ] **Step 3: Confirm the stacking order actually resolved as designed**
+- [x] **Step 3: Confirm the stacking order actually resolved as designed**
 
-This is the check most likely to fail. `global.css:25-33` documents a past bug in exactly this area, so the reasoning behind `isolate` gets verified rather than trusted. Use `javascript_tool`:
+`global.css:25-33` documents a past bug in exactly this area, so the reasoning behind `isolate` gets verified rather than trusted. Use `javascript_tool`:
+
+> **Correction from execution:** the `heroTextOnTop` line below is **vacuous** — do not treat a text result as proof. The layer and its canvas are `pointer-events: none`, so `elementFromPoint` skips them whatever their `z-index`; it would return a `SPAN` even with the negative index deleted. The real guard is the `z-index: -1` assertion in `tests/home-structure.test.ts`, which was verified to go red when the rule is broken. The rest of the readback below is sound and worth running.
 
 ```js
 (() => {
@@ -761,11 +788,15 @@ This is the check most likely to fail. `global.css:25-33` documents a past bug i
 
 Expected: `canvasWidth`/`canvasHeight` non-zero and roughly viewport-width × 880 times the DPR cap; `hasContext` true; `sectionIsolation` `"isolate"`; `layerZIndex` `"-1"`; `heroTextOnTop` a text element (`H1`, `SPAN`, or `P`) — **not** `CANVAS` or `DIV`. If it returns `CANVAS`, the layer is painting over the headline and the `z-index`/`isolate` pairing is wrong.
 
-- [ ] **Step 4: Confirm the fog is moving**
+- [x] **Step 4: Confirm the fog is moving**
 
-Take a `computer` screenshot, wait 3 seconds with `computer` `{action: "wait", duration: 3}`, take a second screenshot. The two must show visibly different cloud shapes. Identical frames mean the loop never started — check `IntersectionObserver` firing and the `frameId` guard.
+> **Correction from execution: do not use the screenshot-pair method below in the in-app browser pane.** That pane reports `document.hidden === true` permanently, and hidden pages get no "update the rendering" steps, so `requestAnimationFrame` never fires there. The two frames are *necessarily* identical and the stated diagnosis ("the loop never started — check `IntersectionObserver` and the `frameId` guard") would send you chasing a phantom bug in correct code. Confirmed by measurement: 0 rAF calls over 18 seconds, which is the `visibilitychange` guard working. A `ResizeObserver` installed by hand also fired 0 times, which is separately why the canvas backing store does not follow a viewport resize in that pane.
+>
+> What was used instead, and works: recompile the same GLSL in a throwaway context with `preserveDrawingBuffer: true`, render at two `iTime` values, and `readPixels` both. Result: 85.6% of pixels differed between `iTime` 0 and 5.5, and 0 of 25,600 pixels were non-grey — which doubles as the empirical monochrome check. In a normal browser tab the screenshot-pair method is fine.
 
-- [ ] **Step 5: Confirm reduced motion produces a static frame**
+Original step, kept for use outside the in-app pane: take a `computer` screenshot, wait 3 seconds with `computer` `{action: "wait", duration: 3}`, take a second screenshot. The two must show visibly different cloud shapes.
+
+- [x] **Step 5: Confirm reduced motion produces a static frame**
 
 The Browser pane cannot emulate `prefers-reduced-motion`, so force it temporarily. In `src/components/ui/FogBackground.astro`, change:
 
@@ -781,7 +812,7 @@ to:
 
 Reload, screenshot, wait 3 seconds, screenshot again. Expected: the fog is visible (texture is present, the section is not flat black) and the two screenshots are identical. Then **revert the line** and confirm with `git diff src/components/ui/FogBackground.astro` that the working tree is clean. Do not commit while the line is forced.
 
-- [ ] **Step 6: Check mobile**
+- [x] **Step 6: Check mobile**
 
 `resize_window` with `{preset: "mobile"}`. Screenshot. Expected: the fog fills the hero with no horizontal overflow and no visible seam at the bottom of the section. Then `javascript_tool` with:
 
@@ -794,11 +825,11 @@ Reload, screenshot, wait 3 seconds, screenshot again. Expected: the fog is visib
 
 Expected: `backingWidth === cssWidth` — the mobile branch pins DPR to 1. Restore with `resize_window` `{preset: "desktop"}`.
 
-- [ ] **Step 7: If it renders but feels heavy, tune it — otherwise skip**
+- [x] **Step 7: If it renders but feels heavy, tune it — otherwise skip**
 
 The levers, in order of preference: lower `MAX_DPR` from `1.5` to `1.25`, then drop `#define NUM_OCTAVES 6` to `4` in the fragment shader. Do not lower `--fog-speed` for performance reasons — speed does not affect cost. If either lever is used, record what changed and why in a comment, and rerun Steps 4 and 6.
 
-- [ ] **Step 8: Report the evidence and commit any tuning**
+- [x] **Step 8: Report the evidence and commit any tuning**
 
 Send the user the desktop screenshot, the mobile screenshot, and the console result. State plainly which checks passed and which, if any, needed tuning.
 
@@ -821,7 +852,7 @@ If nothing changed, `git status --short` must be empty. Commit nothing.
 
 ## Task 4: Final check
 
-- [ ] **Step 1: Run the full suite against a fresh build**
+- [x] **Step 1: Run the full suite against a fresh build**
 
 ```bash
 npm test
@@ -829,7 +860,7 @@ npm test
 
 Expected: PASS across `tests/content.test.ts`, `tests/home-structure.test.ts`, and `tests/build-output.test.ts`.
 
-- [ ] **Step 2: Confirm no dependency crept in**
+- [x] **Step 2: Confirm no dependency crept in**
 
 ```bash
 git diff e0cc844..HEAD --stat -- package.json package-lock.json
@@ -839,10 +870,35 @@ Expected: empty output. The whole point of the port is that neither file changes
 
 Note the baseline: `e0cc844` is the commit before this feature's spec, **not** `main`. An earlier draft of this step compared against `main` and was wrong — the `redesign/home-portfolite` branch already changed `package.json` for the typeface swap long before the fog work, so that comparison is never empty and says nothing about this feature.
 
-- [ ] **Step 3: Confirm the working tree is clean**
+- [x] **Step 3: Confirm the working tree is clean**
 
 ```bash
 git status --short
 ```
 
 Expected: empty. In particular, the temporary `prefersReducedMotion = true` from Task 3 Step 5 must be gone.
+
+---
+
+## Execution findings
+
+All four tasks are complete and every step above is ticked. The suite is at 37 tests, `git diff e0cc844..HEAD -- package.json package-lock.json` is empty, and the working tree is clean.
+
+**Task 3 Step 7 (performance tuning) was deliberately skipped.** The fog rendered without any sign of strain, so neither the `MAX_DPR` nor the `NUM_OCTAVES` lever was touched. Nothing was measured against a low-end device, so that remains untested rather than proven fine.
+
+**Eight defects were found by review, and every one of them originated in this plan rather than in its execution.** Recorded because the pattern is the lesson: the transcription was reliable and the reasoning was not.
+
+1. `hexToRgb` failed open — `parseInt` yields `NaN` for non-hex input and `NaN >> 16 & 255` is `0`, so an unparseable colour would have passed the greyscale check as black and scored 21:1 on contrast. Now throws.
+2. The `@theme` rationale was backwards. `@theme` would not emit unwanted `bg-fog-*` utilities; the real hazard is that it emits only variables something in the CSS references, so JS-only tokens are tree-shaken away entirely. Verified by moving the block and rebuilding.
+3. The `.bg-fog-` assertion attached to that wrong rationale could not fail. Deleted; the token-presence test was strengthened to require a real declaration and now carries the guarantee.
+4. `webglcontextlost` set no flag, so the still-live observers would restart a 60fps loop against a dead context — a permanent no-op spin. The comment promised a permanence the code did not deliver.
+5. The step clamp's comment described the backgrounded-tab case, which `stop()` plus a null previous timestamp already makes unreachable. Vanta's `0.2` floor was also dropped: it engages only above ~300Hz, where it makes the field run ~1.6× fast.
+6. The bail paths did not degrade to the flat background. With `alpha: false` a live context that was never drawn to composites as *opaque black*, so a half-initialised canvas painted a black band. It is `canvas.remove()` that delivers the fallback.
+7. A comment claimed the restructure had decoupled "have the dimensions changed" from "has `iResolution` ever been uploaded". It had not — `resize()` still returned before the upload. Fixed by making the claim true rather than rewording it.
+8. The `-webkit-mask-image` question was got wrong twice, in opposite directions, before being settled by measurement. It was first removed on the premise that the build prefixes by browser target (false). Review then said to hand-write it, on the premise that the pipeline passes no targets and so prefixes nothing (also false). What actually happens: the pipeline normalises prefixes to a modern target, so it neither adds them nor keeps hand-written ones — adding the prefix and rebuilding yields `dist/` with it stripped. The rule therefore ships unprefixed, which is a real if narrow limitation below Chrome 120 / Safari 15.4, and the escape hatch is a shader-side vertical ramp rather than CSS. **The lesson is the one this whole list repeats: three confident mechanisms, none of them checked against the build until the third try.**
+
+**Two verification steps as written could not fail, which is worse than a failing check.** Both are corrected in place above: `elementFromPoint` cannot detect the stacking bug it was aimed at, because `pointer-events: none` makes hit testing skip the layer regardless of `z-index`; and the screenshot-pair motion check is impossible in the in-app browser pane, which reports `document.hidden` permanently and therefore never runs `requestAnimationFrame` or `ResizeObserver`. The `z-index: -1` regression test and an offscreen `preserveDrawingBuffer` recompile replaced them.
+
+**One number in the spec was wrong.** `--fog-highlight` was described as a hard ceiling; the shader's final mix factor is unclamped, so real output reaches `#303030` against a `#2E2E2E` token and white text measures 13.2:1, not the 13.58:1 the token implies. The AAA margin is untouched.
+
+**Two known limitations, neither addressed.** `frames` accumulates unbounded while the hero is visible, so `iTime` loses float32 precision over a multi-hour session — inherited from Vanta verbatim and unreachable in practice. And there is no listener teardown, which is correct only while the site has no `ClientRouter`; adding view transitions later would leak a `visibilitychange` listener and two observers per navigation.

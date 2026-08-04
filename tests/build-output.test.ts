@@ -169,7 +169,11 @@ describe('built home page', () => {
       expect(tokenValue(css, '--fog-base')).toBe('var(--color-bg-primary)')
     })
 
-    it('keeps white hero text above 7:1 against the brightest possible pixel', () => {
+    it('keeps white hero text above 7:1 against the highlight token', () => {
+      // Deliberately "against the token", not "against the brightest possible
+      // pixel": the shader's final mix factor is unclamped, so real output runs
+      // ~2/255 past this value. tokens.css has the arithmetic. The margin at
+      // #2E2E2E is far too large for the difference to matter here.
       // Contrast floor for --fog-highlight — see tokens.css for the #5A5A5A
       // ceiling this is holding.
       expect(contrastWithWhite(resolveColorToken(css, '--fog-highlight'))).toBeGreaterThanOrEqual(7)

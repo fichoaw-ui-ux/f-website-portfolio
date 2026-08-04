@@ -28,7 +28,9 @@ New file: `src/components/ui/FogBackground.astro`. It renders
 
 - container: `position: absolute; inset: 0; z-index: -1; pointer-events: none`
 - canvas: `display: block; width: 100%; height: 100%`
-- container carries `mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%)` (plus `-webkit-mask-image`) so the field dissolves into the page instead of ending on a straight edge
+- container carries `mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%)` so the field dissolves into the page instead of ending on a straight edge
+
+**Unprefixed, and not by oversight.** This build's CSS pipeline normalises vendor prefixes to a modern target: it neither adds them nor keeps hand-written ones where an unprefixed equivalent exists. Adding `-webkit-mask-image` to the rule and rebuilding produces `dist/` output with the prefix stripped — measured, after two earlier drafts of this spec got the mechanism wrong in opposite directions. The accepted consequence is that on Chrome below 120 and Safari below 15.4 the mask no-ops and the field ends on a hard horizontal edge. The fix, should that ever matter, is not a prefix but folding the fade into the shader as a vertical ramp mixing toward `baseColor` — pixel-equivalent, since `baseColor` *is* the page background, at the cost of the "GLSL is Vanta's verbatim" property.
 
 All of it lives in the component's own scoped `<style>` block rather than in Tailwind classes. The positioning and the mask are one idea, and splitting them across a `class` attribute and a stylesheet would hide that.
 
@@ -59,7 +61,9 @@ The reason for avoiding `@theme` is the opposite of the obvious one, and an earl
 
 Scalars: `--fog-blur-factor: 0.6` (Vanta's default), `--fog-zoom: 1`, `--fog-speed: 0.55`. Speed is roughly half of Vanta's `1` — at the default rate the field visibly drifts behind an 88px headline, which reads as a widget.
 
-Contrast: the brightest pixel the field can produce is `#2E2E2E`, against which `#FFFFFF` measures 13.5:1. Hero text clears AAA at every point in the animation, so no scrim is needed behind the headline. This bound is a requirement, not an observation — raising `--fog-highlight` past roughly `#5A5A5A` would drop white text under 7:1 and must be accompanied by a scrim.
+Contrast: `--fog-highlight` sets the field's brightest pixel but does not exactly cap it. The shader's final `mix(baseColor, color, f*f*f + .6*f*f + .5*f)` has an **unclamped** factor — it crosses 1.0 at `f ≈ 0.705` and reaches 2.1 — so the result extrapolates slightly past `highlightColor`. Measured against the shipped shader, a `#2E2E2E` token yields a real maximum of `#303030`, 2/255 over, and white text on it measures **13.2:1** rather than the 13.58:1 the token alone implies. An earlier draft of this spec asserted `#2E2E2E` as a hard ceiling and quoted 13.5:1; both were wrong, if harmlessly.
+
+Hero text therefore clears AAA at every point in the animation and no scrim is needed. The `7:1` floor the test enforces is very slightly optimistic for the same reason — a `#5A5A5A` token (6.90:1) would really deliver about `#5C5C5C` (6.69:1) — so treat the token as a close approximation of the bound rather than the bound itself when moving it. Raising `--fog-highlight` far enough to approach that floor must be accompanied by a scrim.
 
 ## Shader
 
@@ -79,7 +83,7 @@ Vanta also floors each step at 0.2 frames. That floor is deliberately dropped: i
 
 Each of these is a defined behaviour, not a best-effort:
 
-- **Reduced motion.** The script checks `matchMedia('(prefers-reduced-motion: reduce)')` itself. The `@media` block in `global.css` collapses CSS animations and transitions only; it cannot reach a requestAnimationFrame loop, which is the same gap `Reveal.astro` documents. Under the preference the component draws exactly one frame at `iTime = 0` and never schedules the loop. Texture stays, motion goes.
+- **Reduced motion.** The script checks `matchMedia('(prefers-reduced-motion: reduce)')` itself. The `@media` block in `global.css` collapses CSS animations and transitions only; it cannot reach a requestAnimationFrame loop, which is the same gap `Reveal.astro` documents. Under the preference the component draws one frame at `iTime = 0` at startup and never schedules the loop. It will redraw — still at `iTime = 0` — if the `ResizeObserver` reallocates the backing store, so "exactly one frame" holds for startup, not for the lifetime of the page. Texture stays, motion goes.
 - **Off-screen.** An `IntersectionObserver` on the container starts the loop on enter and cancels it on exit, replacing Vanta's per-frame `isOnScreen()` scan.
 - **Hidden tab.** A `visibilitychange` listener cancels the loop while `document.hidden` and restarts it on return.
 - **Resolution.** The backing store is the container's `clientWidth` and `clientHeight` each multiplied by `dpr`, where `dpr = min(devicePixelRatio, 1.5)`, or `1.0` when the viewport is under 600px wide. A soft noise field gains nothing from full retina density and costs fill rate for it. A `ResizeObserver` resizes the canvas and re-uploads `iResolution`.
@@ -97,9 +101,17 @@ The colour helpers in that file throw on anything that is not a hex literal. Thi
 
 **The monochrome check is a proof, not a sample.** The same test file asserts that all four fog colours satisfy `R === G === B`. Because the shader only ever `mix()`es those four uniforms and `mix` interpolates per channel, a grey palette cannot produce a coloured pixel — so this bounds the output rather than sampling it. Reading rendered pixels back was considered and dropped: it is strictly weaker, and it does not work — a WebGL canvas without `preserveDrawingBuffer` has an empty drawing buffer by the time console code can read it, and adding that flag to production for a test would be the wrong trade.
 
-Manual, through the dev server and browser tools, reported back with artefacts rather than delegated to the reader: a screenshot of the rendered hero and of the mobile breakpoint; a clean console, checked specifically for the component's own `[fog] shader compile failed` / `[fog] program link failed` diagnostics; a scripted readback confirming the canvas has non-zero backing size, a live context, `isolation: isolate` on the section, and — via `elementFromPoint` at the hero's centre — that a text element and not the canvas is on top. That last one is checked rather than assumed because `global.css:25-33` records a past bug in exactly this stacking interaction.
+Manual, through the dev server and browser tools, reported with artefacts rather than delegated to the reader: screenshots of the rendered hero at desktop and mobile; a clean console, checked specifically for the component's own `[fog] shader compile failed` / `[fog] program link failed` diagnostics; and a scripted readback of the canvas backing size, a live context, `isolation: isolate` on the section, and `z-index: -1` on the layer.
 
-Motion is verified by two screenshots three seconds apart showing different cloud shapes. Reduced motion is verified the same way with the preference forced on in the source temporarily — the Browser pane cannot emulate `prefers-reduced-motion` — expecting a visible but *identical* pair, then reverting.
+**The environment imposes a real limit, recorded here so nobody mistakes it for a bug.** The in-app browser pane reports `document.hidden === true` permanently. Hidden pages get no "update the rendering" steps, so neither `requestAnimationFrame` nor `ResizeObserver` callbacks ever run in it. Two things follow, both measured rather than assumed: 0 rAF calls over 18 seconds (which is the `visibilitychange` guard behaving correctly), and a separately installed `ResizeObserver` firing 0 times across two viewport changes — which is why the canvas backing store does not follow a resize there. Neither is a component defect.
+
+Because of that, three checks are done differently:
+
+- **Motion and greyscale** are proven by recompiling the same GLSL in a throwaway context with `preserveDrawingBuffer: true` and reading pixels directly — 85.6% of pixels differ between `iTime` 0 and 5.5, and 0 of 25,600 pixels are non-grey. This is also the empirical confirmation of the by-construction monochrome argument above. Note the brightest channel sampled this way (41) is a small-sample floor, not the true maximum; see the Colour section for the real bound.
+- **The mobile DPR branch** is exercised through the synchronous initial `resize()` by reloading at 375px wide, which does not depend on any observer: the backing store comes out 375×880, exactly the CSS size, against 563 if the desktop branch had run.
+- **Reduced motion** needs no source patch. Since the pane never runs the loop, everything screenshotted *is* the single-static-frame path, which is precisely what the preference produces.
+
+One warning about a check that looks stronger than it is: `elementFromPoint` at the hero's centre returns a text element, but that proves nothing about stacking. The layer and its canvas are `pointer-events: none`, so hit testing skips them whatever their `z-index`. The real guard against the `global.css:25-33` class of bug is the `z-index: -1` assertion in `tests/home-structure.test.ts`, which was verified to go red when the rule is broken.
 
 ## Out of scope
 
