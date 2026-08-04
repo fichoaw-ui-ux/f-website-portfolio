@@ -25,6 +25,40 @@ async function readAllCss(): Promise<string> {
   return contents.join('\n')
 }
 
+/* Reads a custom property's declared value out of the built stylesheet, and
+   follows one level of `var()` indirection — `--fog-base` is declared as
+   `var(--color-bg-primary)` on purpose, so that the two can never drift. */
+function tokenValue(css: string, name: string): string {
+  const match = css.match(new RegExp(`${name}\\s*:\\s*([^;}]+)`))
+  if (!match) throw new Error(`${name} not found in built CSS`)
+  return match[1].trim()
+}
+
+function resolveColorToken(css: string, name: string): string {
+  const value = tokenValue(css, name)
+  const reference = value.match(/^var\(\s*(--[\w-]+)\s*\)$/)
+  return reference ? tokenValue(css, reference[1]) : value
+}
+
+function hexToRgb(hex: string): [number, number, number] {
+  const clean = hex.replace(/^#/, '')
+  const full = clean.length === 3 ? clean.replace(/./g, c => c + c) : clean
+  const n = parseInt(full, 16)
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
+}
+
+function contrastWithWhite(hex: string): number {
+  const channel = (v: number) => {
+    const s = v / 255
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4)
+  }
+  const [r, g, b] = hexToRgb(hex)
+  const luminance = 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b)
+  return 1.05 / (luminance + 0.05)
+}
+
+const FOG_COLOR_TOKENS = ['--fog-base', '--fog-lowlight', '--fog-midtone', '--fog-highlight']
+
 describe('built home page', () => {
   let html: string
   let css: string
@@ -96,5 +130,45 @@ describe('built home page', () => {
     // "undefined" into the page, or nothing at all, and the build stays
     // green. Nothing else in this suite would notice. This is the guard.
     expect(html).not.toContain('undefined')
+  })
+
+  describe('fog background tokens', () => {
+    it('ships every fog token', () => {
+      for (const name of [...FOG_COLOR_TOKENS, '--fog-speed', '--fog-blur-factor', '--fog-zoom']) {
+        expect(css).toContain(name)
+      }
+    })
+
+    it('keeps the fog field greyscale', () => {
+      // This is the monochrome guarantee, not a sample of it. The shader only
+      // mix()es these four colours, and mix interpolates per channel, so a
+      // palette where every colour has R === G === B cannot produce a
+      // non-grey pixel. Sampling rendered pixels would prove less.
+      for (const name of FOG_COLOR_TOKENS) {
+        const [r, g, b] = hexToRgb(resolveColorToken(css, name))
+        // `name` rides along so a failure names the offending token.
+        expect({ name, g, b }).toEqual({ name, g: r, b: r })
+      }
+    })
+
+    it('anchors the fog base to the page background so the edges cannot drift', () => {
+      expect(tokenValue(css, '--fog-base')).toBe('var(--color-bg-primary)')
+    })
+
+    it('keeps white hero text above 7:1 against the brightest possible pixel', () => {
+      // The brightest colour the field can reach is --fog-highlight. Raising it
+      // past roughly #5A5A5A drops white text under 7:1 and would require a
+      // scrim behind the headline; this test is what stops that happening
+      // silently. See the spec's Colour section.
+      expect(contrastWithWhite(resolveColorToken(css, '--fog-highlight'))).toBeGreaterThanOrEqual(7)
+    })
+
+    it('emits no fog utilities, since the tokens sit outside @theme', () => {
+      // Tailwind 4 turns anything inside @theme into utility classes. These
+      // tokens are consumed only by JS via getComputedStyle, so a .bg-fog-base
+      // class would be dead CSS on every page.
+      expect(css).not.toContain('.bg-fog-')
+      expect(css).not.toContain('.text-fog-')
+    })
   })
 })

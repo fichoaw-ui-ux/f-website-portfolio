@@ -66,3 +66,35 @@
   --spacing-section-y: 5rem;
   --spacing-section-y-sm: 3.5rem;
 }
+
+/* Fog background — consumed by FogBackground.astro through getComputedStyle,
+   never by a utility class, so these sit in :root rather than @theme. Inside
+   @theme, Tailwind would emit .bg-fog-base and friends on every page and
+   nothing would ever use them.
+
+   --fog-base points at the page background rather than repeating #0B0B0B: the
+   flat parts of the field have to be indistinguishable from the page for the
+   hero's bottom edge to disappear, so this equality is structural, not a
+   convention someone can quietly break.
+
+   Every colour here is grey (R === G === B). That is the whole monochrome
+   guarantee — the shader only mix()es these four values, and mix interpolates
+   per channel, so grey inputs cannot produce a coloured pixel.
+
+   --fog-highlight is the brightest pixel the field can reach. At #2E2E2E,
+   white text over it measures 13.5:1. Past roughly #5A5A5A white drops under
+   7:1 and the hero would need a scrim; a test in build-output.test.ts holds
+   this line. */
+:root {
+  --fog-base: var(--color-bg-primary);
+  --fog-lowlight: #000000;
+  --fog-midtone: #1A1A1A;
+  --fog-highlight: #2E2E2E;
+
+  /* blur-factor and zoom are Vanta's defaults. Speed is roughly half of
+     Vanta's 1 — at the default rate the field visibly drifts behind an 88px
+     headline, which reads as a widget rather than as depth. */
+  --fog-speed: 0.55;
+  --fog-blur-factor: 0.6;
+  --fog-zoom: 1;
+}
