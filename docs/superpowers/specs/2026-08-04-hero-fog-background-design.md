@@ -23,7 +23,7 @@ One detail from the source worth recording: `vanta.fog` declares a `uniform vec2
 New file: `src/components/ui/FogBackground.astro`. It renders
 
 ```
-<div class="fog-layer" aria-hidden="true"><canvas data-fog></canvas></div>
+<div class="fog-layer" data-fog-layer aria-hidden="true"><canvas></canvas></div>
 ```
 
 - container: `position: absolute; inset: 0; z-index: -1; pointer-events: none`
@@ -69,7 +69,11 @@ Fragment shader: Vanta's `vanta.fog` fragment source verbatim, minus the unused 
 
 Uniforms: `iResolution` (vec2, device pixels), `iTime` (float, seconds), `blurFactor`, `zoom`, and the four `vec3` colours. Colours and scalars are uploaded once at init; only `iTime` and `iResolution` change afterwards.
 
-Time advances the way Vanta advances it, so the visual pace matches: accumulate elapsed frames at 60fps (`dt / (1000/60)`), clamp each step to `[0.2, 5]`, scale by speed, and divide the accumulator by 60 to get `iTime`. The clamp is what keeps the field from jumping when a backgrounded tab resumes.
+Time advances on Vanta's pace formula, so the drift rate is the one Vanta produces: accumulate elapsed frames at 60fps (`dt / (1000/60)`), scale by speed, and divide the accumulator by 60 to get `iTime`. That is why time is kept in speed-scaled frame units rather than as plain seconds.
+
+Each step is capped at 5 frames so one long frame cannot lurch the field forward. The reachable case for that cap is a main-thread stall or a throttled `requestAnimationFrame` while the tab still reports itself visible; a 200ms hitch would otherwise advance time by 12 frames at once. It is explicitly *not* the backgrounded-tab case, which an earlier draft of this spec named — that is handled by `stop()` plus resetting the previous timestamp to null, which makes the first frame after a resume contribute nothing. Vanta needs its clamp for the backgrounded case because Vanta keeps its loop running with a stale timestamp; this loop does not.
+
+Vanta also floors each step at 0.2 frames. That floor is deliberately dropped: it only engages above roughly 300Hz, where it makes the field run about 1.6× fast at 480Hz — on exactly the hardware with the most headroom — and it changes nothing at 60, 120, or 240Hz.
 
 ## Runtime guardrails
 
@@ -79,15 +83,15 @@ Each of these is a defined behaviour, not a best-effort:
 - **Off-screen.** An `IntersectionObserver` on the container starts the loop on enter and cancels it on exit, replacing Vanta's per-frame `isOnScreen()` scan.
 - **Hidden tab.** A `visibilitychange` listener cancels the loop while `document.hidden` and restarts it on return.
 - **Resolution.** The backing store is the container's `clientWidth` and `clientHeight` each multiplied by `dpr`, where `dpr = min(devicePixelRatio, 1.5)`, or `1.0` when the viewport is under 600px wide. A soft noise field gains nothing from full retina density and costs fill rate for it. A `ResizeObserver` resizes the canvas and re-uploads `iResolution`.
-- **No context.** If `getContext('webgl')` returns null, the script returns without touching the canvas. The container is transparent and `--color-bg-primary` shows through, which is already the correct colour.
-- **Context lost.** A `webglcontextlost` handler calls `preventDefault()` and cancels the loop. No restore path is implemented; a lost context degrades to the flat background, which is an acceptable end state for a decorative layer. There is no state in which the hero becomes unreadable or blank.
+- **Any failure to initialise.** If `getContext('webgl')` returns null, if a `--fog-*` token will not parse, or if the shader fails to compile or link, the setup bails and the canvas is **removed from the DOM**. Removing it is what delivers the fallback, and this is a correction to an earlier draft that said the canvas could simply be left alone as "transparent": the context is created with `alpha: false`, so a live context that was never drawn to composites as *opaque black*, not transparent. A half-initialised canvas left in place would paint a black band over the page. With it removed, `--color-bg-primary` shows through, which is already the correct colour.
+- **Context lost.** A `webglcontextlost` handler calls `preventDefault()`, sets a `contextLost` flag, and cancels the loop. The flag is not optional bookkeeping: the `IntersectionObserver` and `visibilitychange` listeners stay live, so without it the next scroll-in would restart a 60fps loop issuing GL calls against a dead context — rendering nothing and never letting the page idle its frame loop again. No restore path is implemented; a lost context degrades to the flat background permanently, which is an acceptable end state for a decorative layer. There is no state in which the hero becomes unreadable, and none in which a dead layer keeps burning frames.
 - **Accessibility.** `aria-hidden="true"` on the container. The layer carries no information, and `pointer-events: none` keeps it out of the way of the hero's own interactive content.
 
 ## Verification
 
 WebGL cannot run under vitest, so the checks split by what each can actually prove.
 
-Automated, against built `dist/` output. In `tests/home-structure.test.ts`: the hero contains the fog container and a canvas, the container is `aria-hidden="true"`, and the hero section carries `relative isolate overflow-hidden`. In `tests/build-output.test.ts`: every fog token is genuinely *declared* in the shipped stylesheet — which is what catches the `@theme` tree-shaking hazard above, so it asserts a real declaration rather than merely finding the name somewhere — plus `--fog-base` is declared as `var(--color-bg-primary)` and `--fog-highlight` keeps white text at or above 7:1.
+Automated, against built `dist/` output. In `tests/home-structure.test.ts`: the hero contains the fog container with a canvas nested directly inside it, the container is `aria-hidden="true"`, the hero section carries `relative isolate overflow-hidden`, and — the assertion that guards the failure that actually matters — the layer's scoped rule still declares `z-index: -1`. Without that last one, dropping the negative index would let the opaque canvas paint over the `h1` while every other assertion here still passed. In `tests/build-output.test.ts`: every fog token is genuinely *declared* in the shipped stylesheet — which is what catches the `@theme` tree-shaking hazard above, so it asserts a real declaration rather than merely finding the name somewhere — plus `--fog-base` is declared as `var(--color-bg-primary)` and `--fog-highlight` keeps white text at or above 7:1.
 
 The colour helpers in that file throw on anything that is not a hex literal. This is deliberate: `parseInt` yields `NaN` for other notations and `NaN >> 16 & 255` is `0`, so a value the helper could not parse would pass the greyscale check as black and score a perfect 21:1 on contrast. The two assertions carrying the monochrome and contrast guarantees are exactly the ones that must not fail open.
 
