@@ -46,7 +46,9 @@ The seam is handled by two facts working together: `--fog-base` *is* `--color-bg
 
 ## Colour
 
-Four custom properties, declared in a `:root` block in `src/styles/tokens.css` — deliberately **outside** that file's `@theme` block, so Tailwind does not emit `bg-fog-base` and friends that nothing would ever use. They sit in `tokens.css` rather than `global.css` so that `--fog-base` is adjacent to the `--color-bg-primary` it has to match. The script reads them with `getComputedStyle(document.documentElement)` and parses each `#rrggbb` into normalised RGB, so the palette stays a single source of truth in CSS.
+Four custom properties, declared in a `:root` block in `src/styles/tokens.css` — deliberately **outside** that file's `@theme` block. They sit in `tokens.css` rather than `global.css` so that `--fog-base` is adjacent to the `--color-bg-primary` it has to match. The script reads them with `getComputedStyle(document.documentElement)` and parses each `#rrggbb` into normalised RGB, so the palette stays a single source of truth in CSS.
+
+The reason for avoiding `@theme` is the opposite of the obvious one, and an earlier draft of this spec had it backwards. It is *not* that `@theme` would emit unwanted `bg-fog-*` utilities — it would not: `--fog-*` is outside Tailwind's `--color-*` namespace, and `global.css` passes `source(none)`, so no candidates are scanned. The hazard is that Tailwind 4 emits only the theme variables some utility references, so variables read solely from JavaScript are tree-shaken out of the build. Moving this block into `@theme` makes every `--fog-*` declaration vanish from `dist`, and the fog degrades to a flat background with nothing to indicate why. This was verified empirically, not reasoned about.
 
 | Token | Value | Role | Vanta default replaced |
 |---|---|---|---|
@@ -85,7 +87,9 @@ Each of these is a defined behaviour, not a best-effort:
 
 WebGL cannot run under vitest, so the checks split by what each can actually prove.
 
-Automated, against built `dist/` output. In `tests/home-structure.test.ts`: the hero contains the fog container and a canvas, the container is `aria-hidden="true"`, and the hero section carries `relative isolate overflow-hidden`. In `tests/build-output.test.ts`: every fog token reaches the stylesheet, `--fog-base` is declared as `var(--color-bg-primary)`, `--fog-highlight` keeps white text at or above 7:1, and no `bg-fog-*` utility was emitted.
+Automated, against built `dist/` output. In `tests/home-structure.test.ts`: the hero contains the fog container and a canvas, the container is `aria-hidden="true"`, and the hero section carries `relative isolate overflow-hidden`. In `tests/build-output.test.ts`: every fog token is genuinely *declared* in the shipped stylesheet — which is what catches the `@theme` tree-shaking hazard above, so it asserts a real declaration rather than merely finding the name somewhere — plus `--fog-base` is declared as `var(--color-bg-primary)` and `--fog-highlight` keeps white text at or above 7:1.
+
+The colour helpers in that file throw on anything that is not a hex literal. This is deliberate: `parseInt` yields `NaN` for other notations and `NaN >> 16 & 255` is `0`, so a value the helper could not parse would pass the greyscale check as black and score a perfect 21:1 on contrast. The two assertions carrying the monochrome and contrast guarantees are exactly the ones that must not fail open.
 
 **The monochrome check is a proof, not a sample.** The same test file asserts that all four fog colours satisfy `R === G === B`. Because the shader only ever `mix()`es those four uniforms and `mix` interpolates per channel, a grey palette cannot produce a coloured pixel — so this bounds the output rather than sampling it. Reading rendered pixels back was considered and dropped: it is strictly weaker, and it does not work — a WebGL canvas without `preserveDrawingBuffer` has an empty drawing buffer by the time console code can read it, and adding that flag to production for a test would be the wrong trade.
 

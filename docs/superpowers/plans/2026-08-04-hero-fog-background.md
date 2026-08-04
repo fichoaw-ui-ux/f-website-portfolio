@@ -19,7 +19,7 @@
 | `src/styles/tokens.css` | Modify | Add a `:root` block with the four fog colour tokens and three scalar tokens. Deliberately outside `@theme` so Tailwind emits no `bg-fog-*` utilities. Lives next to `--color-bg-primary` because `--fog-base` must equal it. |
 | `src/components/ui/FogBackground.astro` | Create | The whole effect: markup, scoped positioning + mask CSS, shader source, WebGL setup, loop gating. Takes no props. |
 | `src/components/home/Hero.astro` | Modify | Becomes a stacking context (`relative isolate overflow-hidden`) and mounts `<FogBackground />` as its first child. Two lines. |
-| `tests/build-output.test.ts` | Modify | Assert the tokens reach the built stylesheet, that every fog colour is genuinely grey, that the highlight keeps white text above 7:1, and that no `bg-fog-*` utility was generated. |
+| `tests/build-output.test.ts` | Modify | Assert every fog token is genuinely declared in the built stylesheet, that every fog colour is grey, that `--fog-base` indirects to `--color-bg-primary`, and that the highlight keeps white text above 7:1. |
 | `tests/home-structure.test.ts` | Modify | Assert the built hero markup contract: fog layer present, `aria-hidden`, canvas inside it, hero clips its overflow. |
 
 **Two deliberate deviations from the spec, both cosmetic:** tokens go in `tokens.css` rather than `global.css` (more discoverable, and adjacency to `--color-bg-primary` is the point), and the layer's positioning lives in the component's scoped `<style>` block next to the mask rather than being split between Tailwind classes and CSS. The spec is amended to match.
@@ -43,7 +43,10 @@ Add these helpers to `tests/build-output.test.ts`, immediately after the existin
    follows one level of `var()` indirection — `--fog-base` is declared as
    `var(--color-bg-primary)` on purpose, so that the two can never drift. */
 function tokenValue(css: string, name: string): string {
-  const match = css.match(new RegExp(`${name}\\s*:\\s*([^;}]+)`))
+  // The leading boundary matters because the haystack is an order-independent
+  // concatenation of every stylesheet in dist/_astro — without it, `--fog-base`
+  // would also match a `--hero-fog-base:` declaration in some other chunk.
+  const match = css.match(new RegExp(`(?:^|[;{\\s])${name}\\s*:\\s*([^;}]+)`))
   if (!match) throw new Error(`${name} not found in built CSS`)
   return match[1].trim()
 }
@@ -55,7 +58,15 @@ function resolveColorToken(css: string, name: string): string {
 }
 
 function hexToRgb(hex: string): [number, number, number] {
+  if (!/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(hex)) {
+    // Not pedantry: parseInt returns NaN for anything else and NaN >> 16 & 255
+    // is 0, so an unparseable colour would sail through the greyscale check as
+    // black and score a perfect 21:1 on contrast. The two guards that carry the
+    // monochrome and contrast guarantees must fail loudly, not fail open.
+    throw new Error(`${hex} is not a hex colour — the greyscale and contrast guards cannot judge it`)
+  }
   const clean = hex.replace(/^#/, '')
+  // The minifier really does shorten #000000 to #000 in dist/_astro/*.css.
   const full = clean.length === 3 ? clean.replace(/./g, c => c + c) : clean
   const n = parseInt(full, 16)
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
@@ -78,21 +89,21 @@ Then add this `describe` block at the end of the file, inside the outer `describ
 
 ```ts
   describe('fog background tokens', () => {
-    it('ships every fog token', () => {
+    it('declares every fog token in the shipped stylesheet', () => {
+      // Not merely `css.toContain(name)` — that passes on a stray var()
+      // reference with no declaration behind it. This is the test that catches
+      // the @theme tree-shaking hazard described in tokens.css, so it has to
+      // require a real declaration.
       for (const name of [...FOG_COLOR_TOKENS, '--fog-speed', '--fog-blur-factor', '--fog-zoom']) {
-        expect(css).toContain(name)
+        expect(tokenValue(css, name)).toBeTruthy()
       }
     })
 
     it('keeps the fog field greyscale', () => {
-      // This is the monochrome guarantee, not a sample of it. The shader only
-      // mix()es these four colours, and mix interpolates per channel, so a
-      // palette where every colour has R === G === B cannot produce a
-      // non-grey pixel. Sampling rendered pixels would prove less.
+      // Why this bounds the whole output rather than sampling it: see tokens.css.
       for (const name of FOG_COLOR_TOKENS) {
         const [r, g, b] = hexToRgb(resolveColorToken(css, name))
-        // `name` rides along so a failure names the offending token.
-        expect({ name, g, b }).toEqual({ name, g: r, b: r })
+        expect([g, b], name).toEqual([r, r])
       }
     })
 
@@ -101,19 +112,9 @@ Then add this `describe` block at the end of the file, inside the outer `describ
     })
 
     it('keeps white hero text above 7:1 against the brightest possible pixel', () => {
-      // The brightest colour the field can reach is --fog-highlight. Raising it
-      // past roughly #5A5A5A drops white text under 7:1 and would require a
-      // scrim behind the headline; this test is what stops that happening
-      // silently. See the spec's Colour section.
+      // --fog-highlight is the brightest pixel the field can reach; the bound
+      // and what breaks if it moves are documented in tokens.css.
       expect(contrastWithWhite(resolveColorToken(css, '--fog-highlight'))).toBeGreaterThanOrEqual(7)
-    })
-
-    it('emits no fog utilities, since the tokens sit outside @theme', () => {
-      // Tailwind 4 turns anything inside @theme into utility classes. These
-      // tokens are consumed only by JS via getComputedStyle, so a .bg-fog-base
-      // class would be dead CSS on every page.
-      expect(css).not.toContain('.bg-fog-')
-      expect(css).not.toContain('.text-fog-')
     })
   })
 ```
@@ -124,17 +125,25 @@ Then add this `describe` block at the end of the file, inside the outer `describ
 npm run build && npx vitest run tests/build-output.test.ts -t "fog background tokens"
 ```
 
-Expected: FAIL. The first test fails on `expect(css).toContain('--fog-base')`; `resolveColorToken` throws `--fog-base not found in built CSS` in the others.
+Expected: FAIL, all 4 tests, each throwing `--fog-<name> not found in built CSS` out of `tokenValue`. No test may pass at this point — a test that is green before the tokens exist is not guarding anything.
 
 - [ ] **Step 3: Add the tokens**
 
 Append to `src/styles/tokens.css`, after the closing `}` of the `@theme` block:
 
 ```css
-/* Fog background — consumed by FogBackground.astro through getComputedStyle,
-   never by a utility class, so these sit in :root rather than @theme. Inside
-   @theme, Tailwind would emit .bg-fog-base and friends on every page and
-   nothing would ever use them.
+/* Fog background — read at runtime by FogBackground.astro through
+   getComputedStyle, never by a utility class.
+
+   These sit in :root rather than in the @theme block above, and the reason is
+   the opposite of the obvious one. It is not that @theme would emit unwanted
+   .bg-fog-* utilities: --fog-* is not in Tailwind's --color-* namespace, and
+   global.css passes source(none) so no candidates are scanned anyway. The
+   hazard is that @theme emits only the variables a utility actually
+   references, so variables read solely from JS are tree-shaken out of the
+   build. Moving this block into @theme makes every --fog-* declaration vanish
+   from dist and the fog degrades to a flat background with nothing to
+   indicate why.
 
    --fog-base points at the page background rather than repeating #0B0B0B: the
    flat parts of the field have to be indistinguishable from the page for the
@@ -170,7 +179,7 @@ Append to `src/styles/tokens.css`, after the closing `}` of the `@theme` block:
 npm run build && npx vitest run tests/build-output.test.ts -t "fog background tokens"
 ```
 
-Expected: PASS, 5 tests.
+Expected: PASS, 4 tests.
 
 - [ ] **Step 5: Commit**
 
