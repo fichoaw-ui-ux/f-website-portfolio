@@ -26,9 +26,11 @@ New file: `src/components/ui/FogBackground.astro`. It renders
 <div class="fog-layer" aria-hidden="true"><canvas data-fog></canvas></div>
 ```
 
-- container: `absolute inset-0 -z-10 pointer-events-none`
-- canvas: `block h-full w-full`
+- container: `position: absolute; inset: 0; z-index: -1; pointer-events: none`
+- canvas: `display: block; width: 100%; height: 100%`
 - container carries `mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%)` (plus `-webkit-mask-image`) so the field dissolves into the page instead of ending on a straight edge
+
+All of it lives in the component's own scoped `<style>` block rather than in Tailwind classes. The positioning and the mask are one idea, and splitting them across a `class` attribute and a stylesheet would hide that.
 
 The WebGL setup lives in the component's own `<script>` tag, which Astro bundles and scopes to pages that use the component. The component takes no props; every tunable value is a CSS custom property (see *Colour*).
 
@@ -40,15 +42,15 @@ The WebGL setup lives in the component's own `<script>` tag, which Astro bundles
 
 The shader writes `gl_FragColor.a = 1.0`. The fog is therefore opaque and hides the gradients and the grain within the hero band; both remain intact in every other section. This is intended. The fog's own fbm already supplies grain and depth, and compositing three noise fields produces mud rather than richness. An alpha-blended variant was considered and rejected for that reason.
 
-The seam is handled by two facts working together: `--fog-base` equals `--color-bg-primary` exactly, so the flat parts of the field are indistinguishable from the page; and the bottom-edge mask fades whatever is left.
+The seam is handled by two facts working together: `--fog-base` *is* `--color-bg-primary` — declared as `var(--color-bg-primary)`, so the two cannot drift — which makes the flat parts of the field indistinguishable from the page; and the bottom-edge mask fades whatever is left.
 
 ## Colour
 
-Four custom properties, declared in `:root` in `src/styles/global.css` — deliberately **outside** `@theme`, so Tailwind does not emit `bg-fog-base` and friends that nothing would ever use. The script reads them with `getComputedStyle(document.documentElement)` and parses each `#rrggbb` into normalised RGB, so the palette stays a single source of truth in CSS.
+Four custom properties, declared in a `:root` block in `src/styles/tokens.css` — deliberately **outside** that file's `@theme` block, so Tailwind does not emit `bg-fog-base` and friends that nothing would ever use. They sit in `tokens.css` rather than `global.css` so that `--fog-base` is adjacent to the `--color-bg-primary` it has to match. The script reads them with `getComputedStyle(document.documentElement)` and parses each `#rrggbb` into normalised RGB, so the palette stays a single source of truth in CSS.
 
 | Token | Value | Role | Vanta default replaced |
 |---|---|---|---|
-| `--fog-base` | `#0B0B0B` | dominant field; equals `--color-bg-primary` | `#FFEBEB` |
+| `--fog-base` | `var(--color-bg-primary)` | dominant field | `#FFEBEB` |
 | `--fog-lowlight` | `#000000` | deepest troughs | `#2D00FF` |
 | `--fog-midtone` | `#1A1A1A` | cloud body | `#FF1900` |
 | `--fog-highlight` | `#2E2E2E` | brightest peaks | `#FFC300` |
@@ -83,9 +85,13 @@ Each of these is a defined behaviour, not a best-effort:
 
 WebGL cannot run under vitest, so the checks split by what each can actually prove.
 
-Automated, added to `tests/home-structure.test.ts` against built `dist/index.html`: the hero contains the fog container and a canvas, the container is `aria-hidden="true"`, and the hero section carries `overflow-hidden`. These assert the markup contract only.
+Automated, against built `dist/` output. In `tests/home-structure.test.ts`: the hero contains the fog container and a canvas, the container is `aria-hidden="true"`, and the hero section carries `relative isolate overflow-hidden`. In `tests/build-output.test.ts`: every fog token reaches the stylesheet, `--fog-base` is declared as `var(--color-bg-primary)`, `--fog-highlight` keeps white text at or above 7:1, and no `bg-fog-*` utility was emitted.
 
-Manual, through the dev server and browser tools, and reported back with evidence rather than delegated to the reader: a screenshot of the rendered hero; a clean console; and a readback of rendered pixels via `gl.readPixels` or a 2D-canvas sample confirming `R === G === B` across the field, which is what actually proves the palette is monochrome. Reduced motion is checked by emulating the preference and confirming the field is static.
+**The monochrome check is a proof, not a sample.** The same test file asserts that all four fog colours satisfy `R === G === B`. Because the shader only ever `mix()`es those four uniforms and `mix` interpolates per channel, a grey palette cannot produce a coloured pixel — so this bounds the output rather than sampling it. Reading rendered pixels back was considered and dropped: it is strictly weaker, and it does not work — a WebGL canvas without `preserveDrawingBuffer` has an empty drawing buffer by the time console code can read it, and adding that flag to production for a test would be the wrong trade.
+
+Manual, through the dev server and browser tools, reported back with artefacts rather than delegated to the reader: a screenshot of the rendered hero and of the mobile breakpoint; a clean console, checked specifically for the component's own `[fog] shader compile failed` / `[fog] program link failed` diagnostics; a scripted readback confirming the canvas has non-zero backing size, a live context, `isolation: isolate` on the section, and — via `elementFromPoint` at the hero's centre — that a text element and not the canvas is on top. That last one is checked rather than assumed because `global.css:25-33` records a past bug in exactly this stacking interaction.
+
+Motion is verified by two screenshots three seconds apart showing different cloud shapes. Reduced motion is verified the same way with the preference forced on in the source temporarily — the Browser pane cannot emulate `prefers-reduced-motion` — expecting a visible but *identical* pair, then reverting.
 
 ## Out of scope
 
