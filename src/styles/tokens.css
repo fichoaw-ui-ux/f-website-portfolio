@@ -67,10 +67,18 @@
   --spacing-section-y-sm: 3.5rem;
 }
 
-/* Fog background — consumed by FogBackground.astro through getComputedStyle,
-   never by a utility class, so these sit in :root rather than @theme. Inside
-   @theme, Tailwind would emit .bg-fog-base and friends on every page and
-   nothing would ever use them.
+/* Fog background — read at runtime by FogBackground.astro through
+   getComputedStyle, never by a utility class.
+
+   These sit in :root rather than in the @theme block above, and the reason is
+   the opposite of the obvious one. It is not that @theme would emit unwanted
+   .bg-fog-* utilities: --fog-* is not in Tailwind's --color-* namespace, and
+   global.css passes source(none) so no candidates are scanned anyway. The
+   hazard is that @theme emits only the variables a utility actually
+   references, so variables read solely from JS are tree-shaken out of the
+   build. Moving this block into @theme makes every --fog-* declaration vanish
+   from dist and the fog degrades to a flat background with nothing to
+   indicate why.
 
    --fog-base points at the page background rather than repeating #0B0B0B: the
    flat parts of the field have to be indistinguishable from the page for the

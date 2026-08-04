@@ -29,7 +29,11 @@ async function readAllCss(): Promise<string> {
    follows one level of `var()` indirection — `--fog-base` is declared as
    `var(--color-bg-primary)` on purpose, so that the two can never drift. */
 function tokenValue(css: string, name: string): string {
-  const match = css.match(new RegExp(`${name}\\s*:\\s*([^;}]+)`))
+  // The boundary before `name` matters because `css` is an order-independent
+  // concatenation of every stylesheet in dist/_astro — Task 2 adds a component
+  // with its own scoped <style> block, so more chunks are coming. Without it,
+  // `--fog-base` would also match a hypothetical `--hero-fog-base:`.
+  const match = css.match(new RegExp(`(?:^|[;{\\s])${name}\\s*:\\s*([^;}]+)`))
   if (!match) throw new Error(`${name} not found in built CSS`)
   return match[1].trim()
 }
@@ -41,6 +45,13 @@ function resolveColorToken(css: string, name: string): string {
 }
 
 function hexToRgb(hex: string): [number, number, number] {
+  if (!/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(hex)) {
+    // Not pedantry: parseInt returns NaN for anything else and NaN >> 16 & 255
+    // is 0, so an unparseable colour would sail through the greyscale check as
+    // black and score a perfect 21:1 on contrast. The guards must fail loudly
+    // rather than fail open.
+    throw new Error(`${hex} is not a hex colour — the greyscale and contrast guards cannot judge it`)
+  }
   const clean = hex.replace(/^#/, '')
   const full = clean.length === 3 ? clean.replace(/./g, c => c + c) : clean
   const n = parseInt(full, 16)
@@ -133,21 +144,22 @@ describe('built home page', () => {
   })
 
   describe('fog background tokens', () => {
-    it('ships every fog token', () => {
+    it('declares every fog token in the shipped stylesheet', () => {
+      // Not merely `css.toContain(name)` — that passes on a stray var()
+      // reference with no declaration behind it. This is the test that catches
+      // the @theme tree-shaking hazard described in tokens.css, so it has to
+      // require a real declaration.
       for (const name of [...FOG_COLOR_TOKENS, '--fog-speed', '--fog-blur-factor', '--fog-zoom']) {
-        expect(css).toContain(name)
+        expect(tokenValue(css, name)).toBeTruthy()
       }
     })
 
     it('keeps the fog field greyscale', () => {
-      // This is the monochrome guarantee, not a sample of it. The shader only
-      // mix()es these four colours, and mix interpolates per channel, so a
-      // palette where every colour has R === G === B cannot produce a
-      // non-grey pixel. Sampling rendered pixels would prove less.
+      // Monochrome guarantee, not a sample of it — see tokens.css for why grey
+      // inputs to mix() cannot produce a coloured pixel.
       for (const name of FOG_COLOR_TOKENS) {
         const [r, g, b] = hexToRgb(resolveColorToken(css, name))
-        // `name` rides along so a failure names the offending token.
-        expect({ name, g, b }).toEqual({ name, g: r, b: r })
+        expect([g, b], name).toEqual([r, r])
       }
     })
 
@@ -156,19 +168,9 @@ describe('built home page', () => {
     })
 
     it('keeps white hero text above 7:1 against the brightest possible pixel', () => {
-      // The brightest colour the field can reach is --fog-highlight. Raising it
-      // past roughly #5A5A5A drops white text under 7:1 and would require a
-      // scrim behind the headline; this test is what stops that happening
-      // silently. See the spec's Colour section.
+      // Contrast floor for --fog-highlight — see tokens.css for the #5A5A5A
+      // ceiling this is holding.
       expect(contrastWithWhite(resolveColorToken(css, '--fog-highlight'))).toBeGreaterThanOrEqual(7)
-    })
-
-    it('emits no fog utilities, since the tokens sit outside @theme', () => {
-      // Tailwind 4 turns anything inside @theme into utility classes. These
-      // tokens are consumed only by JS via getComputedStyle, so a .bg-fog-base
-      // class would be dead CSS on every page.
-      expect(css).not.toContain('.bg-fog-')
-      expect(css).not.toContain('.text-fog-')
     })
   })
 })
