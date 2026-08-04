@@ -832,10 +832,12 @@ Expected: PASS across `tests/content.test.ts`, `tests/home-structure.test.ts`, a
 - [ ] **Step 2: Confirm no dependency crept in**
 
 ```bash
-git diff main --stat -- package.json package-lock.json
+git diff e0cc844..HEAD --stat -- package.json package-lock.json
 ```
 
 Expected: empty output. The whole point of the port is that neither file changes.
+
+Note the baseline: `e0cc844` is the commit before this feature's spec, **not** `main`. An earlier draft of this step compared against `main` and was wrong — the `redesign/home-portfolite` branch already changed `package.json` for the typeface swap long before the fog work, so that comparison is never empty and says nothing about this feature.
 
 - [ ] **Step 3: Confirm the working tree is clean**
 
