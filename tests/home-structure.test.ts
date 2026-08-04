@@ -42,6 +42,32 @@ describe('home page structure', () => {
     })
   })
 
+  describe('hero fog background', () => {
+    it('mounts a decorative fog layer wrapping a canvas', () => {
+      const layer = html.match(/<div[^>]*data-fog-layer[^>]*>/)?.[0]
+      expect(layer).toBeDefined()
+      // The layer carries no information and must never be announced or
+      // focusable — it exists only to be looked at.
+      expect(layer).toContain('aria-hidden="true"')
+      expect(html).toMatch(/data-fog-layer[\s\S]{0,200}?<canvas/)
+    })
+
+    it('clips the fog to the hero and puts it behind the headline', () => {
+      // Identified by the layer it wraps rather than by a character-distance
+      // lookahead to "Hello!" — the nested Container/Reveal/h1 markup between
+      // the two is long enough that any such window would be brittle.
+      const hero = html.match(/<section[^>]*>(?=\s*<div[^>]*data-fog-layer)/)?.[0]
+      expect(hero).toBeDefined()
+      // overflow-hidden is what keeps the canvas inside the section, and
+      // isolate is what makes the layer's negative z-index resolve against
+      // the hero instead of against body — body::before and body::after
+      // already occupy negative indices in that context.
+      expect(hero).toContain('overflow-hidden')
+      expect(hero).toContain('relative')
+      expect(hero).toContain('isolate')
+    })
+  })
+
   describe('selected works', () => {
     it('uses the Figma heading and sub-copy', () => {
       expect(html).toContain('My selected works')
