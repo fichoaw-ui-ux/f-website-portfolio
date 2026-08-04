@@ -49,7 +49,11 @@ describe('home page structure', () => {
       // The layer carries no information and must never be announced or
       // focusable — it exists only to be looked at.
       expect(layer).toContain('aria-hidden="true"')
-      expect(html).toMatch(/data-fog-layer[\s\S]{0,200}?<canvas/)
+      // Proximity, not containment: a canvas that ended up as a *sibling*
+      // rather than a child would still satisfy a loose distance window, but
+      // container.querySelector('canvas') in the component script would then
+      // return null and the effect would never mount.
+      expect(html).toMatch(/<div[^>]*data-fog-layer[^>]*>\s*<canvas/)
     })
 
     it('clips the fog to the hero and puts it behind the headline', () => {
@@ -65,6 +69,15 @@ describe('home page structure', () => {
       expect(hero).toContain('overflow-hidden')
       expect(hero).toContain('relative')
       expect(hero).toContain('isolate')
+    })
+
+    it('keeps the fog behind the headline rather than over it', () => {
+      // The assertion that would actually catch the failure that matters. If
+      // z-index: -1 were dropped, the opaque canvas would cover the h1 and
+      // every other test here would still pass; global.css:25-33 records a
+      // past bug in this exact stacking interaction. Astro inlines this
+      // component's scoped rule into the page head, so dist/index.html has it.
+      expect(html).toMatch(/\.fog-layer\[[^\]]+\][^}]*z-index:\s*-1/)
     })
   })
 

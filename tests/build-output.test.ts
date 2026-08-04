@@ -29,10 +29,12 @@ async function readAllCss(): Promise<string> {
    follows one level of `var()` indirection — `--fog-base` is declared as
    `var(--color-bg-primary)` on purpose, so that the two can never drift. */
 function tokenValue(css: string, name: string): string {
-  // The boundary before `name` matters because `css` is an order-independent
-  // concatenation of every stylesheet in dist/_astro — Task 2 adds a component
-  // with its own scoped <style> block, so more chunks are coming. Without it,
-  // `--fog-base` would also match a hypothetical `--hero-fog-base:`.
+  // The boundary before `name` matters because `css` is a concatenation of
+  // every stylesheet in dist/_astro, in `readdir` order — an arbitrary
+  // ordering across an arbitrary number of files. (FogBackground.astro's own
+  // scoped <style> does not add to that count: Astro inlines it into
+  // dist/index.html instead, which this function never reads.) Without the
+  // boundary, `--fog-base` would also match a hypothetical `--hero-fog-base:`.
   const match = css.match(new RegExp(`(?:^|[;{\\s])${name}\\s*:\\s*([^;}]+)`))
   if (!match) throw new Error(`${name} not found in built CSS`)
   return match[1].trim()

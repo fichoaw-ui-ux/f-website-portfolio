@@ -37,8 +37,10 @@
     pointer-events: none;
     /* Dissolves the field into the page instead of ending it on a straight
        line. The flat parts already match --color-bg-primary exactly; this
-       handles whatever is left. */
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+       handles whatever is left. No hand-written -webkit- prefix: the build
+       prefixes by browser target, and this target doesn't need one for
+       mask-image (confirmed against dist/ — grep for webkit-mask there and
+       compare to e.g. webkit-hyphens, which does survive). */
     mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
   }
 
@@ -152,7 +154,7 @@ void main() {
      rate for it: six-octave fbm sampled three times is ~18 noise evaluations
      per pixel per frame. Phones render at 1x for the same reason. */
   const MAX_DPR = 1.5
-  const MOBILE_MAX_WIDTH = 600
+  const MOBILE_BREAKPOINT = 600
 
   function parseHexColor(value: string): [number, number, number] | null {
     const clean = value.trim().replace(/^#/, '')
@@ -183,10 +185,23 @@ void main() {
   function initFog(container: HTMLElement) {
     const canvas = container.querySelector('canvas')
     if (!canvas) return
+    if (!setUpFog(container, canvas)) {
+      // With `alpha: false` a live context that was never drawn to composites
+      // as opaque black rather than transparent, so a half-initialised canvas
+      // would paint a black band over the page. Removing it is what actually
+      // delivers the "degrades to the flat background" guarantee; leaving it
+      // in place only looked safe.
+      canvas.remove()
+    }
+  }
 
-    // Every early return below leaves the canvas untouched and transparent,
-    // so --color-bg-primary shows through — which is already the right
-    // colour. There is no failure mode where the hero goes blank.
+  function setUpFog(container: HTMLElement, canvas: HTMLCanvasElement): boolean {
+    // Only this bail is genuinely transparent: no context means the canvas is
+    // just an empty element, letting the page show through. Every bail below
+    // this point already holds a live context created with alpha: false, so
+    // its backing store composites as opaque black the instant it exists —
+    // initFog above is what actually delivers "degrades to the flat
+    // background" for those, by removing the canvas.
     const gl = canvas.getContext('webgl', {
       alpha: false,
       antialias: false,
@@ -194,7 +209,7 @@ void main() {
       stencil: false,
       powerPreference: 'low-power',
     })
-    if (!gl) return
+    if (!gl) return false
 
     const styles = getComputedStyle(document.documentElement)
     const colors = {
@@ -204,13 +219,13 @@ void main() {
       highlightColor: parseHexColor(styles.getPropertyValue('--fog-highlight')),
     }
     // Bailing beats uploading NaN: a partly-parsed palette renders garbage,
-    // whereas no fog renders the correct flat background. This also covers the
-    // one assumption worth naming — --fog-base is declared as
-    // var(--color-bg-primary), and this code relies on getPropertyValue
-    // returning the substituted value. That is the spec'd behaviour for a
-    // custom property's computed value, but if any engine ever handed back the
-    // literal `var(...)` the parse fails here and the hero falls back to flat.
-    if (Object.values(colors).some(color => color === null)) return
+    // whereas removing the canvas (see initFog above) renders the correct
+    // flat background. This also covers the one assumption worth naming —
+    // --fog-base is declared as var(--color-bg-primary), and this code relies
+    // on getPropertyValue returning the substituted value. That is the
+    // spec'd behaviour for a custom property's computed value, but if any
+    // engine ever handed back the literal `var(...)` the parse fails here.
+    if (Object.values(colors).some(color => color === null)) return false
 
     const speed = parseScalar(styles.getPropertyValue('--fog-speed'), 0.55)
     const blurFactor = parseScalar(styles.getPropertyValue('--fog-blur-factor'), 0.6)
@@ -218,17 +233,22 @@ void main() {
 
     const vertexShader = compileShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER)
     const fragmentShader = compileShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER)
-    if (!vertexShader || !fragmentShader) return
+    if (!vertexShader || !fragmentShader) return false
 
     const program = gl.createProgram()
-    if (!program) return
+    if (!program) return false
     gl.attachShader(program, vertexShader)
     gl.attachShader(program, fragmentShader)
     gl.linkProgram(program)
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
       console.error('[fog] program link failed:', gl.getProgramInfoLog(program))
-      return
+      return false
     }
+    // Standard idiom: the program keeps its own copy once linked, so the
+    // standalone shader objects are just sources and compiled intermediates
+    // from here on.
+    gl.deleteShader(vertexShader)
+    gl.deleteShader(fragmentShader)
     gl.useProgram(program)
 
     // Two triangles covering clip space. No matrices, no camera — the shader
@@ -253,6 +273,11 @@ void main() {
     const uResolution = gl.getUniformLocation(program, 'iResolution')
     const uTime = gl.getUniformLocation(program, 'iTime')
 
+    // The @media block in global.css only collapses CSS animations and
+    // transitions; it cannot reach a requestAnimationFrame loop, which is the
+    // same gap Reveal.astro documents. So this script checks the preference
+    // itself: start() below refuses to schedule the loop when it's set, which
+    // keeps the texture and drops the motion.
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     // One guard for three inputs — reduced motion, intersection, and tab
@@ -263,8 +288,15 @@ void main() {
     let previousNow: number | null = null
     let frames = 0
     let onScreen = false
+    // Set once by webglcontextlost and never cleared — there is no restore
+    // path, so this flag is what makes that degradation permanent rather than
+    // a one-frame stall. See start() and the listener below.
+    let contextLost = false
 
     function draw() {
+      // Frames, not wall-clock seconds: iTime = frames / 60 mirrors Vanta's
+      // own pace formula (t2 * 0.016667), so --fog-speed scales the same rate
+      // Vanta produces rather than an unrelated one.
       gl.uniform1f(uTime, frames / 60)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
     }
@@ -272,10 +304,19 @@ void main() {
     function tick(now: number) {
       frameId = requestAnimationFrame(tick)
       if (previousNow !== null) {
-        // Vanta's clamp, and it earns its place: without it, returning from a
-        // backgrounded tab advances the field by the whole elapsed gap in one
-        // frame and the fog visibly jumps.
-        const step = Math.min(Math.max((now - previousNow) / (1000 / 60), 0.2), 5)
+        // Clamp so one long frame cannot lurch the field forward. The
+        // reachable case is a main-thread stall or a throttled rAF while the
+        // tab still reports visible: a 200ms hitch would otherwise advance
+        // time by 12 frames at once. It is NOT the backgrounded-tab case —
+        // that is handled by stop() plus previousNow = null, which makes the
+        // first frame after a resume contribute nothing. Vanta needs the clamp
+        // for the backgrounded case because it keeps its loop running with a
+        // stale timestamp; this loop does not.
+        //
+        // Vanta also floors the step at 0.2. Dropped deliberately: the floor
+        // only engages above ~300Hz, where it makes the field run ~1.6x fast
+        // at 480Hz. It changes nothing at 60, 120, or 240Hz.
+        const step = Math.min((now - previousNow) / (1000 / 60), 5)
         frames += step * speed
       }
       previousNow = now
@@ -283,7 +324,7 @@ void main() {
     }
 
     function start() {
-      if (frameId !== null || prefersReducedMotion) return
+      if (frameId !== null || prefersReducedMotion || contextLost) return
       previousNow = null
       frameId = requestAnimationFrame(tick)
     }
@@ -295,29 +336,41 @@ void main() {
     }
 
     function resize() {
-      const dpr = window.innerWidth < MOBILE_MAX_WIDTH
+      const dpr = window.innerWidth < MOBILE_BREAKPOINT
         ? 1
         : Math.min(window.devicePixelRatio || 1, MAX_DPR)
       const width = Math.max(1, Math.round(container.clientWidth * dpr))
       const height = Math.max(1, Math.round(container.clientHeight * dpr))
-      if (canvas.width === width && canvas.height === height) return
+      if (canvas.width === width && canvas.height === height) return false
       canvas.width = width
       canvas.height = height
       gl.viewport(0, 0, width, height)
       gl.uniform2f(uResolution, width, height)
-      // While paused or under reduced motion nothing else will redraw, and a
-      // resized buffer starts out blank.
-      if (frameId === null) draw()
+      return true
     }
 
+    // Size, then draw unconditionally. Keeping the draw out of resize() is
+    // what makes "exactly one frame under reduced motion" literally true, and
+    // it stops "have the dimensions changed" from doubling as "have the
+    // uniforms ever been uploaded" — entangled, those two could reach draw()
+    // with iResolution still (0,0) and divide by zero in the shader.
     resize()
-    new ResizeObserver(resize).observe(container)
+    draw()
+
+    new ResizeObserver(() => {
+      // Only the paused and reduced-motion cases need this; a running loop
+      // redraws on its own next frame anyway.
+      if (resize() && frameId === null) draw()
+    }).observe(container)
 
     canvas.addEventListener('webglcontextlost', event => {
-      // Degrades to the flat background permanently. Acceptable for a
-      // decorative layer, and preventDefault is required for the event to be
-      // treated as handled at all.
+      // preventDefault is required for the event to count as handled at all.
+      // The flag is what makes the degradation permanent: without it the
+      // observers below are still live, so the next scroll-in calls start()
+      // and spins a 60fps rAF against a dead context — nothing renders and the
+      // page never idles its frame loop again.
       event.preventDefault()
+      contextLost = true
       stop()
     })
 
@@ -326,19 +379,18 @@ void main() {
       else if (onScreen) start()
     })
 
-    // Replaces Vanta's per-frame isOnScreen() scan.
+    // Replaces Vanta's per-frame isOnScreen() scan. entries.length - 1, not
+    // [0]: the browser batches one entry per crossing and can deliver several
+    // in one callback, so a fast scroll can arrive as enter-exit-enter in a
+    // single call — taking the oldest record would leave onScreen false, and
+    // the loop stopped, while the hero is actually visible.
     new IntersectionObserver(entries => {
-      onScreen = entries[0].isIntersecting
+      onScreen = entries[entries.length - 1].isIntersecting
       if (onScreen && !document.hidden) start()
       else stop()
     }).observe(container)
 
-    // Reduced motion keeps the texture and drops the motion. The @media block
-    // in global.css cannot reach this: it collapses CSS animations and
-    // transitions, and a requestAnimationFrame loop is neither — the same gap
-    // Reveal.astro documents. start() is a no-op above, so this single frame
-    // is all that ever renders.
-    if (prefersReducedMotion) draw()
+    return true
   }
 
   document.querySelectorAll<HTMLElement>('[data-fog-layer]').forEach(initFog)
