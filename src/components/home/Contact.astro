@@ -5,9 +5,10 @@ import Button from '../ui/Button.astro'
 import { site } from '../../content/site'
 
 const linkedin = site.socials.find(s => s.label === 'LinkedIn')
+const whatsapp = site.socials.find(s => s.label === 'WhatsApp')
 ---
 {/* 818px is Figma's 880px section minus the 62px footer strip that follows. */}
-<section id="contact" class="flex min-h-[818px] items-center py-24">
+<section id="contact" class="flex min-h-[480px] items-center py-16 scroll-mt-32 md:min-h-[818px] md:py-24">
   <Container>
     <Reveal>
       <div class="mx-auto max-w-[1088px] text-center">
@@ -15,13 +16,17 @@ const linkedin = site.socials.find(s => s.label === 'LinkedIn')
           Let's build something together
         </h2>
 
-        <p class="mx-auto mt-8 max-w-[640px] text-2xl leading-[1.6] text-text-secondary">
-          Open to product design work and collaborations. The fastest way to reach me is email.
+        <p class="mx-auto mt-6 max-w-[640px] text-lg leading-[1.6] text-text-secondary md:mt-8 md:text-2xl">
+          Open to product design work and collaborations. You can reach me at{' '}
+          <a
+            href={`mailto:${site.email}`}
+            class="font-medium text-text-primary underline decoration-border underline-offset-4 transition hover:decoration-text-primary"
+          >{site.email}</a>, or say hi on LinkedIn or WhatsApp below.
         </p>
 
         <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
           {linkedin && <Button href={linkedin.href} variant="ghost">LinkedIn</Button>}
-          <Button href={`mailto:${site.email}`}>Contact me</Button>
+          {whatsapp && <Button href={whatsapp.href} variant="ghost">WhatsApp</Button>}
         </div>
       </div>
     </Reveal>

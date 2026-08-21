@@ -1,8 +1,8 @@
 ---
 ---
-<div id="section-indicator" class="fixed left-0 right-0 z-30 opacity-0 pointer-events-none transition-opacity duration-200 bg-bg-primary/95 backdrop-blur border-b border-border" style="top: var(--header-h, 57px);">
-  <div class="mx-auto max-w-[1120px] px-6 md:px-8 py-3">
-    <nav id="section-indicator-nav" class="flex items-center justify-between gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"></nav>
+<div id="section-indicator" class="fixed left-0 right-0 bottom-0 z-30 opacity-0 pointer-events-none transition-opacity duration-200 bg-bg-primary/95 backdrop-blur border-t border-border">
+  <div class="mx-auto flex h-[72px] max-w-[1280px] items-center px-6 md:px-8">
+    <nav id="section-indicator-nav" class="flex w-full items-center justify-between gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"></nav>
   </div>
   <div class="absolute left-0 right-0 bottom-0 h-[3px] bg-border/40 overflow-hidden">
     <div id="section-indicator-progress" class="h-full bg-gradient-accent origin-left" style="transform: scaleX(0); width: 100%;"></div>
@@ -13,12 +13,16 @@
   const indicator = document.getElementById('section-indicator');
   const navEl = document.getElementById('section-indicator-nav');
   const progressEl = document.getElementById('section-indicator-progress');
-  const header = document.querySelector('header');
+  // Site nav header only. Case studies also have an <article><header> for the
+  // page title, which is not what we want to measure — that's a tall content
+  // block, and using its height pushed the progress bar into the middle of the
+  // viewport once the site header was removed from case-study pages.
+  const header = document.querySelector('body > header');
   const article = document.querySelector('article');
   const boundaries = Array.from(document.querySelectorAll('[data-part-header]')) as HTMLElement[];
 
   if (indicator && navEl && progressEl && boundaries.length) {
-    const headerH = header ? header.getBoundingClientRect().height : 57;
+    const headerH = header ? header.getBoundingClientRect().height : 0;
     document.documentElement.style.setProperty('--header-h', `${Math.round(headerH)}px`);
     const offset = headerH + 8;
 

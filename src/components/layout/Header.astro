@@ -2,6 +2,9 @@
 import Container from './Container.astro'
 import { site } from '../../content/site'
 import logo from '../../../public/images/logo-ficho.svg?raw'
+
+interface Props { showBackToHome?: boolean }
+const { showBackToHome = false } = Astro.props
 ---
 {/* Sticky, and it DOES have a bar — the two are one decision, which is why
     this comment has been rewritten twice. Figma's navbar (node 8921:2731's
@@ -68,39 +71,163 @@ import logo from '../../../public/images/logo-ficho.svg?raw'
     bg-elevated -> bg-secondary; the border is a flat token rather than a
     gradient ring, which is dimmer than Figma's stroke and the one deliberate
     approximation here. */}
-<header class="sticky top-0 z-40 bg-[linear-gradient(to_bottom,var(--color-bg-primary)_0%,var(--color-bg-primary)_40%,transparent_100%)] pt-8">
+<header
+  class="sticky top-0 z-40 pt-8"
+  style="background: linear-gradient(to bottom, var(--color-bg-primary) 40%, transparent 100%)"
+>
   <Container>
-    <div class="flex h-[72px] items-center justify-between gap-3 rounded-full border border-border-hover bg-[linear-gradient(to_bottom,var(--color-bg-elevated),var(--color-bg-secondary))] pl-8 pr-3">
-      {/* Inlined rather than an <img> so the wordmark's currentColor fill can
-          inherit --color-text-primary. As an <img> it was Figma's hardcoded
-          white, which vanished on the light case-study pages. The accessible
-          name lives on the link, so the SVG itself is hidden — naming both
-          would make the link announce itself twice. */}
+    {/* Logo pinned to the left; on home the section nav sits beside Contact Us
+        on the right, on case study the "Back to Home" link takes its place. */}
+    {/* Mobile: 3-column flex so the logo lands between the leading slot (empty
+        on home, back link on case-study) and the trailing slot (burger on
+        home, empty on case-study). Desktop switches to a 3-column grid so
+        the wordmark sits dead-centre regardless of how wide the leading nav
+        or trailing Contact button end up. */}
+    <div class="flex h-[64px] items-center justify-between gap-3 rounded-full stroke-gradient [--stroke-fill:linear-gradient(to_bottom,var(--color-bg-elevated),var(--color-bg-secondary))] pl-5 pr-2 md:grid md:h-[72px] md:grid-cols-3 md:pl-8 md:pr-3">
+      {/* Slot 1 (leading): section nav on home, "Back to Home" on case study.
+          On mobile home the nav is hidden AND this wrapper collapses out of
+          the flex row (`hidden md:block`) so the logo becomes the leading
+          flex child and `justify-between` pushes it to the pill's left edge.
+          Case-study mobile keeps the wrapper visible so the back link renders.
+          On desktop the wrapper is always `md:block` and the grid takes over. */}
+      <div class:list={['md:justify-self-start', !showBackToHome && 'hidden md:block']}>
+        {showBackToHome ? (
+          <a
+            href="/"
+            class="inline-flex h-8 items-center gap-2 whitespace-nowrap text-base font-semibold text-text-primary transition hover:text-text-secondary"
+          >
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 12H5" />
+              <path d="m11 19-7-7 7-7" />
+            </svg>
+            <span>Back to Home</span>
+          </a>
+        ) : (
+          <nav aria-label="Sections" class="hidden md:flex items-center gap-6">
+            {site.nav.map(item => (
+              <a
+                href={item.href}
+                class="text-base font-medium text-text-secondary transition hover:text-text-primary"
+              >{item.label}</a>
+            ))}
+          </nav>
+        )}
+      </div>
+
+      {/* Slot 2: logo. Inlined rather than an <img> so its currentColor fill
+          can inherit --color-text-primary — the light case-study pages remap
+          that token, and a hardcoded white would vanish there. The accessible
+          name lives on the link; the SVG is decoration.
+
+          Hidden on mobile case study so the only element left in the pill is
+          the leading "Back to Home" link. */}
       <a
         href="/"
-        class="inline-flex h-8 items-center text-text-primary [&>svg]:h-8 [&>svg]:w-auto"
+        class={`${showBackToHome ? 'hidden md:inline-flex' : 'inline-flex'} h-8 items-center text-text-primary [&>svg]:h-8 [&>svg]:w-auto md:justify-self-center`}
         aria-label={`${site.name} — home`}
       ><Fragment set:html={logo} /></a>
 
-      <a
-        href={`mailto:${site.email}`}
-        class="inline-flex h-12 items-center gap-2 rounded-full border border-border px-5 text-base font-semibold leading-none text-text-primary transition duration-300 hover:border-border-hover hover:bg-bg-elevated"
-      >
-        <span>Contact Us</span>
-        <svg
-          class="h-6 w-6"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
+      {/* Slot 3 (trailing): Contact Me pill on md+, hamburger on mobile home.
+          Wrapped in one div so the grid still has exactly three children. */}
+      <div class="md:justify-self-end">
+        <a
+          href={`mailto:${site.email}`}
+          class="hidden h-12 items-center gap-2 whitespace-nowrap rounded-full bg-text-primary px-5 text-base font-semibold leading-none text-bg-primary transition duration-300 hover:bg-text-secondary md:inline-flex"
         >
-          <path d="M5 12h14" />
-          <path d="m13 5 7 7-7 7" />
-        </svg>
-      </a>
+          <span>Contact Me</span>
+          <svg
+            class="h-6 w-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14" />
+            <path d="m13 5 7 7-7 7" />
+          </svg>
+        </a>
+
+        {/* Native <details> handles the open/close of the mobile menu without
+            JS. list-none + the marker override strips the disclosure triangle
+            so the summary reads as a plain icon button. Outside-click and
+            in-menu link clicks are wired up in the script below. */}
+        <details id="mobile-menu" class={`relative md:hidden ${showBackToHome ? 'hidden' : ''}`}>
+        <summary
+          aria-label="Menu"
+          class="inline-flex h-12 w-12 cursor-pointer list-none items-center justify-center rounded-full bg-text-primary text-bg-primary transition duration-300 hover:bg-text-secondary [&::-webkit-details-marker]:hidden"
+        >
+          <svg
+            class="h-6 w-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M4 6h16" />
+            <path d="M4 12h16" />
+            <path d="M4 18h16" />
+          </svg>
+        </summary>
+        <div class="absolute right-0 top-[calc(100%+12px)] w-64 rounded-card stroke-gradient [--stroke-fill:var(--gradient-card)] p-5 shadow-card">
+          <nav aria-label="Menu" class="flex flex-col gap-3">
+            {site.nav.map(item => (
+              <a
+                href={item.href}
+                class="text-base font-medium text-text-secondary transition hover:text-text-primary"
+              >{item.label}</a>
+            ))}
+          </nav>
+          <hr class="my-4 border-0 border-t border-border" />
+          <a
+            href={`mailto:${site.email}`}
+            class="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-text-primary px-5 text-base font-semibold leading-none text-bg-primary transition duration-300 hover:bg-text-secondary"
+          >
+            <span>Contact Me</span>
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14" />
+              <path d="m13 5 7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+        </details>
+      </div>
     </div>
   </Container>
+  <script>
+    // Close the mobile burger menu when tapping outside it or activating any
+    // link inside. <details> doesn't do either natively.
+    const menu = document.getElementById('mobile-menu') as HTMLDetailsElement | null
+    if (menu) {
+      document.addEventListener('click', ev => {
+        if (menu.open && !menu.contains(ev.target as Node)) menu.open = false
+      })
+      menu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => { menu.open = false })
+      })
+    }
+  </script>
 </header>

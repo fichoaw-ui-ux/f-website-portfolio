@@ -8,13 +8,13 @@
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #BBBBC0;
   --color-text-tertiary: #909098;
-  /* #252525 is the literal stroke on Figma's hairline vectors (8921:2750).
-     An earlier guess of rgba(255,255,255,0.12) composited to #282828 over the
-     page background — within 3/255, so this is precision rather than a visible
-     change. Opaque is preferred here because BaseLayout overrides these two
-     for the light case-study pages anyway, so adaptive alpha buys nothing. */
-  --color-border: #252525;
-  --color-border-hover: #3A3A3A;
+  /* Figma's card stroke is a linear gradient between #6C6C71 @ 80% and #343434.
+     CSS border-color takes a solid, so this token is the darker stop composited
+     with its alpha — bright enough to read on --color-bg-primary without going
+     louder than the gradient's average. Hover matches the gradient's top stop.
+     BaseLayout overrides these two for the light case-study pages. */
+  --color-border: rgba(108, 108, 113, 0.5);
+  --color-border-hover: #6C6C71;
 
   /* Figma also defines color/neutral/800 (#6C6C71). It reaches only 3.78:1 on
      the page background, so it is deliberately absent — do not add it for text. */
@@ -50,12 +50,16 @@
   --text-display-md--letter-spacing: 0em;
 
   /* Radii — radius/radius-2xl for cards, one step tighter for media inside them. */
-  --radius-card: 2rem;    /* 32px */
-  --radius-media: 1.5rem; /* 24px */
+  --radius-card: 1rem;    /* 16px */
+  --radius-media: 1rem;   /* 16px */
 
   /* Shadow — Figma's Shadow/Far geometry (0/16/32 and 0/4/12/-4) with an opaque
      black instead of its light-mode #16223329, which is invisible on near-black. */
   --shadow-card: 0 16px 32px rgba(0, 0, 0, 0.45), 0 4px 12px -4px rgba(0, 0, 0, 0.35);
+
+  /* Fill used behind every gradient-stroked surface — cards and their nested
+     buttons — so the whole system reads as one material. */
+  --gradient-card: linear-gradient(305deg, #101115 0%, #1A1B1C 100%);
 
   /* Layout — this is the FRAME width, not the content band. Tailwind sizes
      max-w-* against the border box, so the 64px gutters on Container are
@@ -65,6 +69,18 @@
   --container-container: 1440px;
   --spacing-section-y: 5rem;
   --spacing-section-y-sm: 3.5rem;
+
+  /* Responsive flip point — everything the home page treats as "desktop"
+     (Hero split, About 2-col portrait, SelectedWork 36/64 grid, Experience
+     year/detail columns, ExplorationsGrid 3-col, Header inline nav + CTA,
+     Container 64px gutters) rides on md:/lg: prefixes. Collapsing sm/md/lg to
+     the same value makes ≤1200px render the mobile stack and ≥1201px render
+     the 1440px-wide desktop layout, with no in-between tablet mode. If a
+     future section needs a real intermediate breakpoint, add its own
+     --breakpoint-* token rather than splitting these back apart. */
+  --breakpoint-sm: 75.0625rem;   /* 1201px */
+  --breakpoint-md: 75.0625rem;   /* 1201px */
+  --breakpoint-lg: 75.0625rem;   /* 1201px */
 }
 
 /* Fog background — read at runtime by FogBackground.astro through

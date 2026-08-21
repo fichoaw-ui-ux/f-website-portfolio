@@ -8,9 +8,15 @@ interface Props {
   description?: string
   ogImage?: string
   theme?: 'dark' | 'light'
+  showHeader?: boolean
+  showBackToHome?: boolean
 }
-const { title, description = 'Portfolio of Ficho — UI/UX Designer', ogImage = '/images/og-default.jpg', theme = 'dark' } = Astro.props
-const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com').toString()
+const { title, description = 'Portfolio of Ficho — UI/UX Designer', ogImage = '/images/og-default.jpg', theme = 'dark', showHeader = true, showBackToHome = false } = Astro.props
+const origin = Astro.site ?? new URL('https://ficho-portfolio.vercel.app')
+const canonical = new URL(Astro.url.pathname, origin).toString()
+// og:image must be absolute: Facebook, LinkedIn, Slack and X all discard a
+// root-relative path, which is why link previews rendered without a card.
+const ogImageUrl = new URL(ogImage, origin).toString()
 
 /* Case study pages render light. This must override every colour token the
    shared chrome can reach, not just the ones the case-study body uses — the
@@ -39,13 +45,14 @@ const lightThemeVars = [
     <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="min-h-screen bg-bg-primary text-text-primary">
-    <Header />
+    {showHeader && <Header showBackToHome={showBackToHome} />}
     <main><slot /></main>
     <Footer />
   </body>

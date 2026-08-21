@@ -1,12 +1,11 @@
 ---
 interface Props { author?: string; indent?: boolean | 1 | 2 }
 const { author, indent = false } = Astro.props
-const indentClass = indent === 2 ? 'ml-20' : indent ? 'ml-8' : ''
+const indentClass = indent === 2 ? 'md:ml-20' : indent ? 'md:ml-8' : ''
 ---
-<figure class:list={['mb-12 max-w-3xl relative pl-6 py-2', indentClass]}>
-  <span aria-hidden="true" class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-accent rounded-full"></span>
-  <blockquote class="font-display font-bold text-2xl leading-snug text-text-primary [&_p]:mb-0 [&_p]:font-display [&_p]:font-bold [&_p]:text-2xl [&_p]:leading-snug">
+<figure class:list={['mb-12 max-w-3xl rounded-card stroke-gradient [--stroke-fill:var(--gradient-card)] p-6 md:p-8', indentClass]}>
+  <blockquote class="font-display font-semibold text-xl leading-snug text-text-primary md:text-2xl [&_p]:mb-0 [&_p]:font-display [&_p]:font-semibold [&_p]:text-xl [&_p]:leading-snug [&_p]:md:text-2xl">
     <slot />
   </blockquote>
-  {author && <figcaption class="mt-6 font-mono text-sm uppercase tracking-widest text-text-secondary">— {author}</figcaption>}
+  {author && <figcaption class="mt-6 font-mono text-sm uppercase tracking-widest text-text-tertiary">— {author}</figcaption>}
 </figure>

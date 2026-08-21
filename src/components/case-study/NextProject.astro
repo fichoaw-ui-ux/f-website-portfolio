@@ -7,14 +7,26 @@ interface Props {
 }
 const { slug, title, cover, coverAlt } = Astro.props
 ---
-<a href={`/work/${slug}`} class="group block mt-24 border-t border-border pt-12">
-  <div class="font-mono text-sm uppercase tracking-widest text-text-secondary mb-6">Next project</div>
-  <div class="grid md:grid-cols-[1fr_auto] gap-8 items-end">
-    <div>
-      <h3 class="font-display font-extrabold text-display-md group-hover:opacity-70 transition">{title} →</h3>
+<div class="mt-24">
+  <div class="mb-6 font-mono text-sm uppercase tracking-widest text-text-tertiary">Next project</div>
+  <a
+    href={`/work/${slug}`}
+    class="group block rounded-[32px] stroke-gradient [--stroke-fill:var(--gradient-card)] p-6 transition duration-500 hover:-translate-y-1 md:p-12"
+  >
+    <div class="grid items-center gap-8 lg:grid-cols-[36%_1fr] lg:items-stretch lg:gap-12">
+      <div class="order-2 lg:order-1">
+        <h3 class="font-display font-semibold text-display-md text-text-primary">{title}</h3>
+        <span
+          class="mt-8 inline-flex h-12 items-center rounded-full stroke-gradient [--stroke-fill:var(--gradient-card)] px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
+        >View Details</span>
+      </div>
+      <div class="order-1 aspect-[730/438] overflow-hidden rounded-media bg-bg-primary lg:order-2 lg:aspect-auto lg:h-full">
+        <img
+          src={cover}
+          alt={coverAlt}
+          class="h-full w-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
+        />
+      </div>
     </div>
-    <div class="w-full md:w-80 aspect-[16/10] rounded-lg overflow-hidden bg-bg-secondary">
-      <img src={cover} alt={coverAlt} class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" />
-    </div>
-  </div>
-</a>
+  </a>
+</div>

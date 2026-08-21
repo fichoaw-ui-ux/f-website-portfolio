@@ -2,8 +2,19 @@
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
 import { site } from '../../content/site'
+
+// **word** → highlighted span. Escape first so raw HTML in copy can't break out.
+function escape(s: string) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+function highlight(text: string) {
+  return escape(text).replace(
+    /\*\*([^*]+)\*\*/g,
+    '<mark class="bg-transparent font-semibold text-inherit">$1</mark>',
+  )
+}
 ---
-<section class="py-section-y-sm md:py-section-y">
+<section id="experience" class="py-section-y-sm md:py-section-y scroll-mt-32">
   <Container>
     <Reveal>
       <h2 class="font-display font-semibold text-display-lg text-text-primary">Where I've worked</h2>
@@ -12,10 +23,10 @@ import { site } from '../../content/site'
     <ul class="mt-16">
       {site.experience.map((e, i) => (
         <Reveal as="li" delay={i * 60} class={i > 0 ? 'mt-8 border-t border-border pt-8' : ''}>
-          <div class="grid gap-4 md:grid-cols-[303px_1fr] md:gap-8">
-            <div class="text-2xl leading-[1.6] text-text-tertiary">{e.year}</div>
+          <div class="grid gap-4 md:grid-cols-[360px_1fr] md:gap-8">
+            <div class="text-lg leading-[1.6] text-text-tertiary md:text-2xl">{e.year}</div>
             <div>
-              <div class="flex flex-wrap items-baseline gap-3 text-2xl leading-[1.6] text-text-primary">
+              <div class="flex flex-wrap items-baseline gap-3 text-lg leading-[1.6] text-text-primary md:text-2xl">
                 <span>{e.company}</span>
                 {/* Hidden from assistive tech: read aloud it turns
                     "Transfez & Jack, Product Designer" into
@@ -23,13 +34,35 @@ import { site } from '../../content/site'
                 <span class="text-text-tertiary" aria-hidden="true">-</span>
                 <span>{e.role}</span>
               </div>
-              <ul class="mt-3 space-y-2">
-                {e.highlights.map(h => (
-                  <li class="flex gap-2 text-lg leading-[1.6] text-text-tertiary">
-                    {/* The <li> already conveys list membership, so the glyph
-                        is decoration. */}
-                    <span class="select-none" aria-hidden="true">&bull;</span>
-                    <span>{h}</span>
+              <ul class="mt-3 space-y-5">
+                {e.sections.map(s => (
+                  <li>
+                    {s.label ? (
+                      <>
+                        <div class="flex gap-2 text-lg leading-[1.6] text-text-primary md:text-xl">
+                          {/* Bigger glyph than the sub-items, decoration only. */}
+                          <span class="select-none text-[1.4em] leading-[1.1]" aria-hidden="true">&bull;</span>
+                          <span class="font-medium">{s.label}</span>
+                        </div>
+                        <ul class="mt-2 space-y-2 pl-7">
+                          {s.items.map(h => (
+                            <li class="flex gap-2 text-lg leading-[1.6] text-text-secondary">
+                              <span class="select-none text-[1.2em] leading-[1.1]" aria-hidden="true">&bull;</span>
+                              <span set:html={highlight(h)} />
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : (
+                      <ul class="space-y-2">
+                        {s.items.map(h => (
+                          <li class="flex gap-2 text-lg leading-[1.6] text-text-secondary">
+                            <span class="select-none text-[1.2em] leading-[1.1]" aria-hidden="true">&bull;</span>
+                            <span set:html={highlight(h)} />
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </li>
                 ))}
               </ul>

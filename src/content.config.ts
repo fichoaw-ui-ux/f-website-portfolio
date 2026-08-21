@@ -48,6 +48,9 @@ const explorations = defineCollection({
     images: z.array(z.object({ src: z.string(), alt: z.string() })),
     caption: z.string(),
     order: z.number().int().default(0),
+    prototype: z.string().url().optional(),
+    prototypeTitle: z.string().optional(),
+    liveUrl: z.string().url().optional(),
   }),
 })
 

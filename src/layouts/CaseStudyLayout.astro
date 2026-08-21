@@ -1,5 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro'
+import Container from '../components/layout/Container.astro'
+import Reveal from '../components/ui/Reveal.astro'
 import Tag from '../components/ui/Tag.astro'
 import NextProject from '../components/case-study/NextProject.astro'
 import ProjectSnapshot from '../components/case-study/ProjectSnapshot.astro'
@@ -14,49 +16,54 @@ interface Props {
 const { entry, next } = Astro.props
 const d = entry.data
 
-// Case studies keep their brand colour. The global accent tokens now default to
-// neutral so the home page stays monochrome, so this layout supplies its own
-// fallback for entries that don't declare one.
+// Case studies keep their brand colour. The global accent tokens default to
+// neutral so the home page stays monochrome; this layout supplies a fallback
+// for entries that don't declare one.
 //
 // These two hexes are COMPATIBILITY VALUES, not a chosen brand palette: they
 // reproduce the pre-redesign global `--gradient-accent` default (blue fading to
-// red) that brand-less case studies used to inherit from tokens.css. They exist
-// so those pages render exactly as they did before the redesign. Don't treat them
-// as a design decision — a case study that wants a real colour declares
+// red) that brand-less case studies used to inherit from tokens.css. Don't treat
+// them as a design decision — a case study that wants a real colour declares
 // `brandColor` in its frontmatter.
 const DEFAULT_CASE_STUDY_ACCENT = '#1E4FCF'
 const DEFAULT_CASE_STUDY_ACCENT_ALT = '#DC2626'
 const accent = d.brandColor ?? DEFAULT_CASE_STUDY_ACCENT
-// An entry that declares `brandColor` but no `brandColorAlt` gets a flat gradient in
-// its own colour. Only an entry declaring neither falls back to the old blue-to-red.
 const accentAlt = d.brandColorAlt ?? (d.brandColor ? accent : DEFAULT_CASE_STUDY_ACCENT_ALT)
 ---
-<BaseLayout title={`${d.title} — Case Study`} description={d.summary} ogImage={d.cover} theme="light">
+<BaseLayout title={`${d.title} — Case Study`} description={d.summary} ogImage={d.cover} showBackToHome>
   <style set:html={`
     :root{
       --color-accent: ${accent};
       --gradient-accent: linear-gradient(135deg, ${accent} 0%, ${accent} 60%, ${accentAlt} 100%);
     }
   `} />
-  <article class="pt-12">
-    <div class="mx-auto w-full max-w-[1120px] px-6 md:px-8">
-      <a href="/#work" class="font-mono text-base text-text-secondary hover:text-text-primary transition">← Back to work</a>
+  <article class="pt-12 md:pt-16">
+    <Container>
+      <div class="mx-auto w-full max-w-[1088px]">
+        <Reveal>
+          <header class="mt-8">
+            <div class="mb-6 flex flex-wrap gap-2">{d.tags.map(t => <Tag>{t}</Tag>)}</div>
+            <h1 class="font-display font-semibold text-display-xl text-text-primary">{d.title}</h1>
+          </header>
+        </Reveal>
 
-      <header class="mt-8">
-        <div class="flex flex-wrap gap-2 mb-6">{d.tags.map(t => <Tag>{t}</Tag>)}</div>
-        <h1 class="font-display font-extrabold text-display-xl max-w-4xl">{d.title}</h1>
-      </header>
+        <Reveal delay={100}>
+          <div class="mt-16 mb-16 overflow-hidden rounded-card bg-bg-secondary">
+            <img
+              src={d.cover}
+              alt={d.coverAlt}
+              class="block h-auto w-full grayscale transition duration-500 hover:grayscale-0"
+            />
+          </div>
+        </Reveal>
 
-      <div class="mt-16 mb-16 rounded-lg overflow-hidden bg-bg-secondary">
-        <img src={d.cover} alt={d.coverAlt} class="w-full h-auto block" />
+        {d.snapshot && d.snapshot.length > 0 && <ProjectSnapshot items={d.snapshot} />}
+
+        <slot />
+
+        <NextProject slug={next.data.slug} title={next.data.title} cover={next.data.thumbnail} coverAlt={next.data.thumbnailAlt} />
       </div>
-
-      {d.snapshot && d.snapshot.length > 0 && <ProjectSnapshot items={d.snapshot} />}
-
-      <slot />
-
-      <NextProject slug={next.data.slug} title={next.data.title} cover={next.data.thumbnail} coverAlt={next.data.thumbnailAlt} />
-    </div>
+    </Container>
   </article>
   <SectionIndicator />
   <Lightbox />

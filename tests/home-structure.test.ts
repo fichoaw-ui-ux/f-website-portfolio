@@ -101,7 +101,7 @@ describe('home page structure', () => {
       expect(html).not.toContain('Designer with a bias for shipping')
       // Proves site.bio was joined into a single <p>: with two paragraphs a
       // closing and opening tag would sit between these two sentences.
-      expect(html).toContain('beautiful interfaces. Currently exploring')
+      expect(html).toContain('compliance flows. Background in Information Systems')
     })
 
     it('shows the real portrait, described rather than decorative', () => {
@@ -127,18 +127,30 @@ describe('home page structure', () => {
       // keeps its raw apostrophe while {e.company} turns & into an entity.
       expect(html).toMatch(/Where I(&#39;|&rsquo;|&apos;|'|’)ve worked/)
       expect(html).toMatch(/Transfez (&#38;|&amp;|&) Jack/)
-      expect(html).toContain('Great Giant Pineapple')
+      expect(html).toContain('Great Giant Foods')
       expect(html).toContain('Corporate Communication')
     })
 
-    it('renders two bullets per role as list items', () => {
+    it('renders every responsibility as a bulleted list item', () => {
       // This is the assertion that actually distinguishes the new layout. The
       // company names above were already in the markup once site.ts changed,
-      // so they pass either way; only the bulleted list is new. The old
+      // so they pass either way; only the nested bullet lists are new. The old
       // component rendered a single {e.description}, which no longer exists.
-      const bullets = html.match(/Lorem ipsum dolor sit amet/g) ?? []
-      expect(bullets).toHaveLength(6)
+      //
+      // 16 = the 13 responsibility items across the three roles, plus the
+      // three section labels the current role groups them under, each of which
+      // draws its own (larger) glyph. Counting the glyph rather than the copy
+      // keeps this from re-breaking every time a bullet is reworded.
+      const bullets = html.match(/aria-hidden="true">&bull;/g) ?? []
+      expect(bullets).toHaveLength(16)
       expect(html).toMatch(/<li[^>]*>\s*<span[^>]*aria-hidden/)
+      // The labels are what make the current role's two-level nesting legible;
+      // without them the nine items under it read as one flat run.
+      expect(html).toContain('General Responsibilities')
+      // **bold** in site.ts must arrive as a <mark>, not as literal asterisks —
+      // Experience.astro is the only component that interprets that syntax.
+      expect(html).toContain('<mark')
+      expect(html).not.toContain('**')
     })
 
     it('drops the Currently badge', () => {
@@ -155,22 +167,36 @@ describe('home page structure', () => {
       expect(html).not.toContain('>Explorations<')
     })
 
-    it('keeps every card a link labelled by its cover alt', () => {
-      const links = html.match(/href="\/explorations\/[^"]+"/g) ?? []
-      expect(links.length).toBeGreaterThanOrEqual(6)
-      // Title and year are gone, so the image alt is the card's only
-      // accessible name. Without it the grid is six unlabelled links.
-      const cards = html.match(/href="\/explorations\/[^"]+"[\s\S]{0,400}?<img[^>]+alt="[^"]+"/g) ?? []
-      expect(cards.length).toBe(links.length)
+    it('keeps every card reachable through one labelled action', () => {
+      // The cards no longer link to a detail page. Every exploration now
+      // carries a prototype, so the stretched primary action is the <button>
+      // that opens the modal — hence zero /explorations/ hrefs on the home
+      // page, which is correct rather than a regression. The detail pages
+      // still build and are still reachable directly.
+      const actions = html.match(/aria-label="Open [^"]+"/g) ?? []
+      expect(actions).toHaveLength(7)
+      expect(html.match(/data-proto-src="/g) ?? []).toHaveLength(7)
+      // Title and year are gone from the card, so the aria-label above and the
+      // cover alt are its only accessible names. A cover that shipped with an
+      // empty alt would leave the card described by the label alone.
+      const covers = html.match(/<img[^>]+\/images\/explorations\/[^>]*>/g) ?? []
+      expect(covers).toHaveLength(7)
+      covers.forEach(img => expect(img).toMatch(/alt="[^"]+"/))
     })
   })
 
   describe('contact and footer', () => {
-    it('offers LinkedIn and a mail link', () => {
+    it('offers LinkedIn, WhatsApp and a mail link', () => {
       expect(html).toMatch(/Let(&#39;|&rsquo;|&apos;|'|’)s build something together/)
-      expect(html).toContain('Contact me')
-      expect(html).toContain('mailto:ficho@transfez.com')
+      // The address is spelled out in the copy as a mailto, and the two
+      // socials sit below it as ghost buttons — there is no longer a single
+      // "Contact me" button in this section.
+      expect(html).toContain('mailto:fichoajiwibowo@gmail.com')
+      expect(html).toContain('>LinkedIn<')
+      expect(html).toContain('>WhatsApp<')
       expect(html).not.toContain('Email me')
+      // The old work address must not survive anywhere in the markup.
+      expect(html).not.toContain('ficho@transfez.com')
     })
 
     it('reduces the footer to a centred copyright', () => {
@@ -183,7 +209,7 @@ describe('home page structure', () => {
   })
 
   describe('header', () => {
-    it('is reduced to a wordmark and one CTA', () => {
+    it('carries the section nav, the wordmark, and one CTA', () => {
       // The wordmark is inlined, not an <img>, so its currentColor fill can
       // follow --color-text-primary — as an <img> it stayed Figma's hardcoded
       // white and disappeared on the light case-study pages.
@@ -197,10 +223,16 @@ describe('home page structure', () => {
       expect(header).toMatch(/<svg[^>]*viewBox="0 0 106 32"/)
       expect(header).toContain('fill="currentColor"')
       expect(html).not.toContain('src="/images/logo-ficho.svg"')
-      expect(html).toContain('Contact Us')
-      expect(html).not.toContain('href="/#work"')
-      expect(html).not.toContain('href="/#about"')
-      expect(html).not.toContain('href="/#contact"')
+      expect(html).toContain('Contact Me')
+      // The section nav is back — it was dropped along with the pill when the
+      // header was first reduced, and that pairing was the mistake documented
+      // in Header.astro. Every site.nav entry must render; a nav that silently
+      // lost one is invisible otherwise. There is no /#contact entry: the CTA
+      // is a mailto, not an anchor to a section.
+      expect(html).toContain('href="/#work"')
+      expect(html).toContain('href="/#about"')
+      expect(html).toContain('href="/#experience"')
+      expect(html).toContain('href="/#explorations"')
       expect(html).not.toContain('Get in touch')
     })
 
@@ -238,7 +270,11 @@ describe('home page structure', () => {
       const bar = html.match(/<header[\s\S]{0,600}?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
       expect(bar).toBeDefined()
       expect(bar).toContain('rounded-full')
-      expect(bar).toContain('border-border-hover')
+      // The border is the .stroke-gradient utility (1px transparent border with
+      // the card stroke painted to border-box), not a flat border-* class. That
+      // swap was deliberate: it reproduces Figma's #828287 -> #55555A gradient
+      // stroke, which the flat token only approximated.
+      expect(bar).toContain('stroke-gradient')
       // Token-driven, never a literal: this header also renders on the light
       // case-study pages, where BaseLayout remaps the colour tokens.
       expect(bar).toContain('var(--color-bg-elevated)')

@@ -81,8 +81,49 @@
   background: var(--gradient-accent);
 }
 
+/* Neutral border-material — same gradient the .stroke-gradient utility paints
+   into border-box. Used by case-study MDX frames (the `p-[2px]` wrapper trick)
+   that want the home-page card border color instead of the brand accent. */
+@utility bg-gradient-stroke {
+  background: linear-gradient(180deg, rgba(108, 108, 113, 0.8) 0%, #343434 50%);
+}
+
 @utility border-gradient-accent {
   border-image: var(--gradient-accent) 1;
+}
+
+/* Gradient stroke: 1px transparent border layered over two background clips —
+   the element's own fill (via --stroke-fill) painted to padding-box, and the
+   Figma card stroke (linear-gradient #6C6C71@80% → #343434) painted to
+   border-box. Set --stroke-fill per element so hover states that swap the
+   background just change the variable and keep the gradient intact. Default
+   is transparent for ghost buttons over the page. */
+@utility stroke-gradient {
+  border: 1px solid transparent;
+  /* --stroke-fill takes an <image> (gradient or the linear-gradient(color,color)
+     wrap trick for solids) — a bare color would fall on a non-last layer where
+     background-color is invalid. Default is a transparent wrap so the page bg
+     shows through. */
+  background:
+    var(--stroke-fill, linear-gradient(transparent, transparent)) padding-box,
+    linear-gradient(180deg, rgba(108, 108, 113, 0.8) 0%, #343434 50%) border-box;
+}
+
+/* Mobile artboard lock — the site's mobile design was drawn at Figma's 402px
+   iPhone frame, and the request is that every viewport in the mobile band
+   render that exact artboard, not a fluid stretch of it. Below the 1201px flip
+   point, clamp body's direct children to 402px and centre them on the page;
+   the near-black html background fills the gutters, so the column reads as a
+   phone frame rather than as a mistakenly-narrow layout. Header is `sticky`
+   inside body (not `fixed`), so this constraint reaches it too — the navbar
+   pill lives inside the 402 column with the rest of the content. */
+@media (max-width: 1200px) {
+  body > header,
+  body > main,
+  body > footer {
+    max-width: 402px;
+    margin-inline: auto;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

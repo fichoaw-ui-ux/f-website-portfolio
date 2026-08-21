@@ -11,6 +11,18 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props
 const d = entry.data
+
+// Strip any inbound `show-proto-sidebar` flag so we can force the chromeless
+// player (sidebar hidden). Figma's player still draws its own device frame
+// and prev/next/reset controls, which is exactly what we want here.
+const prototypeEmbedSrc = d.prototype
+  ? (() => {
+      const cleanUrl = d.prototype.replace(/[?&]show-proto-sidebar=[^&]*/g, '')
+      const sep = cleanUrl.includes('?') ? '&' : '?'
+      const protoUrl = `${cleanUrl}${sep}show-proto-sidebar=0`
+      return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(protoUrl)}`
+    })()
+  : null
 ---
 <BaseLayout title={`${d.title} — Exploration`} description={d.caption} ogImage={d.cover}>
   <Container class="pt-12">
@@ -21,12 +33,32 @@ const d = entry.data
       <div class="mt-3 font-mono text-base text-text-secondary">{d.year}</div>
       <p class="mt-6 max-w-2xl text-lg text-text-secondary">{d.caption}</p>
     </header>
-    <div class="space-y-6">
-      {d.images.map(img => (
-        <div class="rounded-lg overflow-hidden bg-bg-secondary">
-          <img src={img.src} alt={img.alt} class="w-full h-auto" loading="lazy" />
-        </div>
-      ))}
-    </div>
   </Container>
+
+  {prototypeEmbedSrc && (
+    /* Full-bleed dark stage so Figma's device frame reads the way it does in
+       Figma itself. h-[85vh] keeps the phone comfortably tall on desktop but
+       clamps on short viewports; min-h-[560px] keeps it usable on mobile. */
+    <section class="bg-[#0B0B0B]">
+      <iframe
+        src={prototypeEmbedSrc}
+        title={d.prototypeTitle ?? d.title}
+        loading="lazy"
+        allowfullscreen
+        class="block h-[85vh] min-h-[560px] w-full border-0"
+      ></iframe>
+    </section>
+  )}
+
+  {d.images.length > 0 && !prototypeEmbedSrc && (
+    <Container class="pt-12">
+      <div class="space-y-6">
+        {d.images.map(img => (
+          <div class="rounded-lg overflow-hidden bg-bg-secondary">
+            <img src={img.src} alt={img.alt} class="w-full h-auto" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </Container>
+  )}
 </BaseLayout>

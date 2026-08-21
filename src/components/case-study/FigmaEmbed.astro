@@ -1,31 +1,29 @@
 ---
 interface Props { url: string; title?: string; caption?: string; indent?: boolean | 1 | 2 }
 const { url, title = 'Figma prototype', caption, indent = false } = Astro.props
-const indentClass = indent === 2 ? 'pl-20' : indent ? 'pl-8' : ''
+const indentClass = indent === 2 ? 'md:pl-20' : indent ? 'md:pl-8' : ''
 const cleanUrl = url.replace(/[?&]show-proto-sidebar=[^&]*/g, '')
 const sep = cleanUrl.includes('?') ? '&' : '?'
 const protoUrl = `${cleanUrl}${sep}show-proto-sidebar=0`
 const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(protoUrl)}`
 ---
 <figure class:list={['mb-12', indentClass]}>
-  <div class="rounded-lg p-[2px] bg-gradient-accent">
-    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
-      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
-        <div class="flex items-center gap-2 min-w-0">
-          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary">Prototype</span>
-          <span class="font-mono text-sm text-text-primary truncate">{title}</span>
-        </div>
-        <a href={url} target="_blank" rel="noopener" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition">Open in Figma ↗</a>
+  <div class="overflow-hidden rounded-media stroke-gradient [--stroke-fill:var(--gradient-card)]">
+    <div class="flex items-center justify-between gap-4 border-b border-border px-4 py-3">
+      <div class="flex min-w-0 items-center gap-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-text-tertiary">Prototype</span>
+        <span class="truncate font-mono text-sm text-text-primary">{title}</span>
       </div>
-      <iframe
-        src={embedUrl}
-        title={title}
-        loading="lazy"
-        allowfullscreen
-        class="w-full block"
-        style="height: 600px; border: 0;"
-      ></iframe>
+      <a href={url} target="_blank" rel="noopener" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-tertiary transition hover:text-text-primary">Open in Figma ↗</a>
     </div>
+    <iframe
+      src={embedUrl}
+      title={title}
+      loading="lazy"
+      allowfullscreen
+      class="block w-full"
+      style="height: 600px; border: 0;"
+    ></iframe>
   </div>
-  {caption && <figcaption class="mt-4 text-base text-text-secondary font-mono text-center">{caption}</figcaption>}
+  {caption && <figcaption class="mt-4 text-center font-mono text-base text-text-tertiary">{caption}</figcaption>}
 </figure>
