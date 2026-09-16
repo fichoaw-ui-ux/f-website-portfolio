@@ -50,7 +50,7 @@ const t = useTranslations(lang)
 
           <div>
             <div class="text-lg leading-[1.6] text-text-tertiary">{t.about.tools}</div>
-            <div class="mt-4 flex flex-wrap gap-4">{site.tools.map(t => <Pill>{t}</Pill>)}</div>
+            <div class="mt-4 flex flex-wrap gap-4">{site.tools.map(tool => <Pill>{tool}</Pill>)}</div>
           </div>
         </div>
       </Reveal>
