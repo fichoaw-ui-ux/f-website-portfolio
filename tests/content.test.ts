@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { sortByOrder, getNextItem, filterFeatured } from '../src/lib/content'
+import { sortByOrder, getNextItem, filterFeatured, localeEntries } from '../src/lib/content'
 
 const items = [
   { data: { order: 3, featured: true, slug: 'c' } },
@@ -34,8 +34,6 @@ describe('getNextItem', () => {
     expect(getNextItem([], 'a')).toBeNull()
   })
 })
-
-import { localeEntries } from '../src/lib/content'
 
 describe('localeEntries', () => {
   const entries = [
