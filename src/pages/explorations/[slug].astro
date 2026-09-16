@@ -3,14 +3,18 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Container from '../../components/layout/Container.astro'
 import Tag from '../../components/ui/Tag.astro'
+import { localeEntries } from '../../lib/content'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
 
 export async function getStaticPaths() {
   const all = await getCollection('explorations')
-  return all.map(entry => ({ params: { slug: entry.data.slug }, props: { entry } }))
+  return localeEntries(all, 'id').map(entry => ({ params: { slug: entry.data.slug }, props: { entry } }))
 }
 
 const { entry } = Astro.props
 const d = entry.data
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
 
 // Strip any inbound `show-proto-sidebar` flag so we can force the chromeless
 // player (sidebar hidden). Figma's player still draws its own device frame
@@ -24,11 +28,11 @@ const prototypeEmbedSrc = d.prototype
     })()
   : null
 ---
-<BaseLayout title={`${d.title} — Exploration`} description={d.caption} ogImage={d.cover}>
+<BaseLayout title={`${d.title}${t.exploration.titleSuffix}`} description={d.caption} ogImage={d.cover}>
   <Container class="pt-12">
-    <a href="/#explorations" class="font-mono text-base text-text-secondary hover:text-text-primary transition">← Back to explorations</a>
+    <a href="/#explorations" class="font-mono text-base text-text-secondary hover:text-text-primary transition">{t.exploration.backToExplorations}</a>
     <header class="mt-8 mb-12">
-      <div class="flex flex-wrap gap-2 mb-4">{d.tags.map(t => <Tag>{t}</Tag>)}</div>
+      <div class="flex flex-wrap gap-2 mb-4">{d.tags.map(tag => <Tag>{tag}</Tag>)}</div>
       <h1 class="font-display font-extrabold text-display-lg">{d.title}</h1>
       <div class="mt-3 font-mono text-base text-text-secondary">{d.year}</div>
       <p class="mt-6 max-w-2xl text-lg text-text-secondary">{d.caption}</p>

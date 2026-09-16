@@ -2,13 +2,13 @@
 import { getCollection } from 'astro:content'
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
-import { sortByOrder, filterFeatured } from '../../lib/content'
+import { sortByOrder, filterFeatured, localeEntries } from '../../lib/content'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
-const all = await getCollection('case-studies')
-const featured = sortByOrder(filterFeatured(all))
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
+const all = await getCollection('case-studies')
+const featured = sortByOrder(filterFeatured(localeEntries(all, lang)))
 ---
 <section id="work" class="py-section-y-sm md:py-section-y scroll-mt-32">
   <Container>

@@ -3,14 +3,13 @@ import { getCollection } from 'astro:content'
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
 import Pill from '../ui/Pill.astro'
-import { sortByOrder } from '../../lib/content'
+import { sortByOrder, localeEntries } from '../../lib/content'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
-
-const all = await getCollection('explorations')
-const items = sortByOrder(all)
 
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
+const all = await getCollection('explorations')
+const items = sortByOrder(localeEntries(all, lang))
 
 /* Three consecutive chunks, not round-robin. Staggered columns need real
    column containers — a plain grid cannot offset one column without moving the
