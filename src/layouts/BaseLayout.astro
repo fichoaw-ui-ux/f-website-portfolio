@@ -2,6 +2,8 @@
 import '../styles/global.css'
 import Header from '../components/layout/Header.astro'
 import Footer from '../components/layout/Footer.astro'
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import { resolveLocale } from '../i18n/ui'
 
 interface Props {
   title: string
@@ -11,12 +13,20 @@ interface Props {
   showHeader?: boolean
   showBackToHome?: boolean
 }
-const { title, description = 'Portfolio of Ficho — UI/UX Designer', ogImage = '/images/og-default.jpg', theme = 'dark', showHeader = true, showBackToHome = false } = Astro.props
+const { title, description, ogImage = '/images/og-default.jpg', theme = 'dark', showHeader = true, showBackToHome = false } = Astro.props
+const lang = resolveLocale(Astro.currentLocale)
+const resolvedDescription = description ?? (lang === 'id' ? 'Portofolio Ficho — UI/UX Designer' : 'Portfolio of Ficho — UI/UX Designer')
 const origin = Astro.site ?? new URL('https://ficho-portfolio.vercel.app')
 const canonical = new URL(Astro.url.pathname, origin).toString()
 // og:image must be absolute: Facebook, LinkedIn, Slack and X all discard a
 // root-relative path, which is why link previews rendered without a card.
 const ogImageUrl = new URL(ogImage, origin).toString()
+
+// Strip the /en prefix (if present) to get the locale-agnostic path, then
+// rebuild it for both locales — this is what the hreflang alternates point at.
+const rawPath = lang === 'en' ? (Astro.url.pathname.replace(/^\/en/, '') || '/') : Astro.url.pathname
+const hreflangId = new URL(getRelativeLocaleUrl('id', rawPath), origin).toString()
+const hreflangEn = new URL(getRelativeLocaleUrl('en', rawPath), origin).toString()
 
 /* Case study pages render light. This must override every colour token the
    shared chrome can reach, not just the ones the case-study body uses — the
@@ -36,15 +46,18 @@ const lightThemeVars = [
 ].join(';')
 ---
 <!doctype html>
-<html lang="en" class="bg-bg-primary text-text-primary" style={theme === 'light' ? lightThemeVars : undefined}>
+<html lang={lang} class="bg-bg-primary text-text-primary" style={theme === 'light' ? lightThemeVars : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={resolvedDescription} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="id" href={hreflangId} />
+    <link rel="alternate" hreflang="en" href={hreflangEn} />
+    <link rel="alternate" hreflang="x-default" href={hreflangId} />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={resolvedDescription} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
