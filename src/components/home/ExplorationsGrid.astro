@@ -4,9 +4,13 @@ import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
 import Pill from '../ui/Pill.astro'
 import { sortByOrder } from '../../lib/content'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
 
 const all = await getCollection('explorations')
 const items = sortByOrder(all)
+
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
 
 /* Three consecutive chunks, not round-robin. Staggered columns need real
    column containers — a plain grid cannot offset one column without moving the
@@ -37,7 +41,7 @@ function embedSrc(url: string) {
 <section id="explorations" class="py-section-y-sm md:py-section-y scroll-mt-32">
   <Container>
     {items.length === 0 ? (
-      <p class="text-text-tertiary">No explorations yet.</p>
+      <p class="text-text-tertiary">{t.exploration.noExplorations}</p>
     ) : (
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {columns.map((column, ci) => (
@@ -62,7 +66,7 @@ function embedSrc(url: string) {
                     {hasProto ? (
                       <button
                         type="button"
-                        aria-label={`Open ${e.data.title} prototype`}
+                        aria-label={t.exploration.openPrototype(e.data.title)}
                         class="absolute inset-0 z-0 cursor-pointer"
                         data-proto-src={embedSrc(e.data.prototype!)}
                         data-proto-title={e.data.prototypeTitle ?? e.data.title}
@@ -70,7 +74,7 @@ function embedSrc(url: string) {
                     ) : (
                       <a
                         href={`/explorations/${e.data.slug}`}
-                        aria-label={`Open ${e.data.title} details`}
+                        aria-label={t.exploration.openDetails(e.data.title)}
                         class="absolute inset-0 z-0"
                       />
                     )}
@@ -85,7 +89,7 @@ function embedSrc(url: string) {
                       'pointer-events-none absolute inset-x-4 bottom-4 z-10 grid gap-3',
                       hasLive ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1',
                     ]}>
-                      <Pill class="w-full justify-center">See Prototype</Pill>
+                      <Pill class="w-full justify-center">{t.exploration.seePrototype}</Pill>
                       {hasLive && (
                         <a
                           href={e.data.liveUrl!}
@@ -93,7 +97,7 @@ function embedSrc(url: string) {
                           rel="noopener noreferrer"
                           class="pointer-events-auto min-w-0"
                         >
-                          <Pill class="w-full justify-center">Visit Live Site</Pill>
+                          <Pill class="w-full justify-center">{t.exploration.visitLiveSite}</Pill>
                         </a>
                       )}
                     </div>
@@ -118,15 +122,15 @@ function embedSrc(url: string) {
       <div data-proto-inner class="flex h-full w-full max-w-[1400px] flex-col overflow-hidden rounded-card border border-border bg-[#0B0B0B]">
         <div class="flex items-center justify-between gap-4 border-b border-border px-4 py-3">
           <div class="flex min-w-0 items-center gap-2">
-            <span class="font-mono text-xs uppercase tracking-widest text-text-tertiary">Prototype</span>
+            <span class="font-mono text-xs uppercase tracking-widest text-text-tertiary">{t.figmaEmbed.prototypeLabel}</span>
             <span data-proto-modal-title class="truncate font-mono text-sm text-text-primary"></span>
           </div>
           <button
             type="button"
             data-proto-modal-close
-            aria-label="Close prototype"
+            aria-label={t.exploration.closePrototype}
             class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-tertiary transition hover:text-text-primary"
-          >Close ✕</button>
+          >{t.exploration.closeLabel}</button>
         </div>
         <iframe
           data-proto-modal-iframe
@@ -139,7 +143,7 @@ function embedSrc(url: string) {
     </div>
   </dialog>
 
-  <script>
+  <script define:vars={{ fallbackTitle: t.figmaEmbed.prototypeLabel }}>
     const dialog = document.getElementById('exploration-prototype-modal') as HTMLDialogElement | null
     if (dialog) {
       const iframe = dialog.querySelector<HTMLIFrameElement>('[data-proto-modal-iframe]')!
@@ -149,7 +153,7 @@ function embedSrc(url: string) {
       document.querySelectorAll<HTMLButtonElement>('button[data-proto-src]').forEach(btn => {
         btn.addEventListener('click', () => {
           const src = btn.dataset.protoSrc ?? ''
-          const title = btn.dataset.protoTitle ?? 'Prototype'
+          const title = btn.dataset.protoTitle ?? fallbackTitle
           iframe.src = src
           iframe.title = title
           titleEl.textContent = title

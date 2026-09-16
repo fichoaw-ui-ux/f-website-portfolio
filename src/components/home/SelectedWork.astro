@@ -3,23 +3,25 @@ import { getCollection } from 'astro:content'
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
 import { sortByOrder, filterFeatured } from '../../lib/content'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
 
 const all = await getCollection('case-studies')
 const featured = sortByOrder(filterFeatured(all))
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
 ---
 <section id="work" class="py-section-y-sm md:py-section-y scroll-mt-32">
   <Container>
     <Reveal>
       <div class="mx-auto max-w-[1088px] text-center">
-        <h2 class="font-display font-semibold text-display-lg text-text-primary">My selected works</h2>
+        <h2 class="font-display font-semibold text-display-lg text-text-primary">{t.selectedWork.heading}</h2>
         <p class="mx-auto mt-6 max-w-[864px] text-lg leading-[1.6] text-text-secondary md:text-2xl">
-          With my keen eye for detail and sharp critical thinking skills, I specialize in
-          crafting captivating websites, products, and experiences.
+          {t.selectedWork.subcopy}
         </p>
       </div>
     </Reveal>
 
-    {featured.length === 0 && <p class="mt-16 text-text-tertiary">No projects yet.</p>}
+    {featured.length === 0 && <p class="mt-16 text-text-tertiary">{t.selectedWork.noProjects}</p>}
 
     {/* Sticky stacking. All slots end at the SAME absolute y, so every card
         un-sticks together and the whole stack scrolls into the next section
@@ -96,7 +98,7 @@ const featured = sortByOrder(filterFeatured(all))
                 <p class="mt-6 text-base leading-[1.6] text-text-tertiary md:mt-8 md:text-lg">{p.data.summary}</p>
                 <span
                   class="mt-8 inline-flex h-12 items-center rounded-full stroke-gradient [--stroke-fill:var(--gradient-card)] px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
-                >View Details</span>
+                >{t.common.viewDetails}</span>
               </div>
               <div class="order-1 aspect-[730/438] overflow-hidden rounded-media bg-bg-primary lg:order-2 lg:aspect-auto lg:h-full">
                 <img

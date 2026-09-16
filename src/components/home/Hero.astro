@@ -2,7 +2,12 @@
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
 import FogBackground from '../ui/FogBackground.astro'
-import { site } from '../../content/site'
+import { getSite } from '../../content/site'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+const lang = resolveLocale(Astro.currentLocale)
+const site = getSite(lang)
+const t = useTranslations(lang)
 ---
 <section class="relative isolate flex min-h-[560px] items-center overflow-hidden py-24 md:min-h-[776px] md:py-0">
   <FogBackground />
@@ -11,7 +16,7 @@ import { site } from '../../content/site'
       <Reveal>
         <h1 class="font-display font-semibold text-display-xl text-text-primary">
           <span class="flex flex-wrap items-center justify-center gap-3 md:gap-6">
-            <span>Hello!</span>
+            <span>{t.hero.greeting}</span>
             {/*
               96x96 render (768x1024 source): object-cover scales the source
               to 96 wide x 128 tall, so it already crops to the top 75% of
@@ -30,9 +35,9 @@ import { site } from '../../content/site'
               class="h-14 w-14 shrink-0 rounded-full border-2 border-text-primary object-cover grayscale transition duration-500 hover:grayscale-0 md:h-24 md:w-24"
               style="object-position: 50% 0%"
             />
-            <span>I&rsquo;m Ficho.</span>
+            <span>{t.hero.intro}</span>
           </span>
-          <span class="mt-1 block text-center">a product designer</span>
+          <span class="mt-1 block text-center">{t.hero.roleLine}</span>
         </h1>
       </Reveal>
 

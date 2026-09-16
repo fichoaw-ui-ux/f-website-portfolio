@@ -2,7 +2,12 @@
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
 import Button from '../ui/Button.astro'
-import { site } from '../../content/site'
+import { getSite } from '../../content/site'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+const lang = resolveLocale(Astro.currentLocale)
+const site = getSite(lang)
+const t = useTranslations(lang)
 
 const linkedin = site.socials.find(s => s.label === 'LinkedIn')
 const whatsapp = site.socials.find(s => s.label === 'WhatsApp')
@@ -13,15 +18,15 @@ const whatsapp = site.socials.find(s => s.label === 'WhatsApp')
     <Reveal>
       <div class="mx-auto max-w-[1088px] text-center">
         <h2 class="font-display font-semibold text-display-lg text-text-primary">
-          Let's build something together
+          {t.contact.heading}
         </h2>
 
         <p class="mx-auto mt-6 max-w-[640px] text-lg leading-[1.6] text-text-secondary md:mt-8 md:text-2xl">
-          Open to product design work and collaborations. You can reach me at{' '}
+          {t.contact.bodyBefore}
           <a
             href={`mailto:${site.email}`}
             class="font-medium text-text-primary underline decoration-border underline-offset-4 transition hover:decoration-text-primary"
-          >{site.email}</a>, or say hi on LinkedIn or WhatsApp below.
+          >{site.email}</a>{t.contact.bodyAfter}
         </p>
 
         <div class="mt-8 flex flex-wrap items-center justify-center gap-4">

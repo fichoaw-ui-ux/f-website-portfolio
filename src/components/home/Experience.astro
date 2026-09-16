@@ -1,7 +1,12 @@
 ---
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
-import { site } from '../../content/site'
+import { getSite } from '../../content/site'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+const lang = resolveLocale(Astro.currentLocale)
+const site = getSite(lang)
+const t = useTranslations(lang)
 
 // **word** → highlighted span. Escape first so raw HTML in copy can't break out.
 function escape(s: string) {
@@ -17,7 +22,7 @@ function highlight(text: string) {
 <section id="experience" class="py-section-y-sm md:py-section-y scroll-mt-32">
   <Container>
     <Reveal>
-      <h2 class="font-display font-semibold text-display-lg text-text-primary">Where I've worked</h2>
+      <h2 class="font-display font-semibold text-display-lg text-text-primary">{t.experience.heading}</h2>
     </Reveal>
 
     <ul class="mt-16">

@@ -2,7 +2,12 @@
 import Container from '../layout/Container.astro'
 import Pill from '../ui/Pill.astro'
 import Reveal from '../ui/Reveal.astro'
-import { site } from '../../content/site'
+import { getSite } from '../../content/site'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+const lang = resolveLocale(Astro.currentLocale)
+const site = getSite(lang)
+const t = useTranslations(lang)
 ---
 <section id="about" class="overflow-x-clip py-section-y-sm md:py-section-y scroll-mt-32">
   <Container>
@@ -24,27 +29,27 @@ import { site } from '../../content/site'
       <Reveal delay={100} class="order-1 lg:relative lg:order-2 lg:h-full">
         <img
           src="/images/ficho-portrait.png"
-          alt={`Portrait of ${site.name}`}
+          alt={t.about.portraitAlt(site.name)}
           class="mx-auto aspect-[646/861] w-full max-w-[480px] rounded-card object-cover grayscale transition duration-500 hover:grayscale-0 lg:absolute lg:inset-y-0 lg:left-[-18px] lg:right-auto lg:mx-0 lg:aspect-auto lg:h-full lg:w-[calc(100%+18px)] lg:max-w-none"
         />
       </Reveal>
 
       <Reveal class="order-2 lg:order-1">
         <div>
-          <h2 class="font-display font-semibold text-display-lg text-text-primary">About me</h2>
+          <h2 class="font-display font-semibold text-display-lg text-text-primary">{t.about.heading}</h2>
           <p class="mt-6 max-w-[559px] text-lg leading-[1.6] text-text-secondary md:text-2xl">{site.bio.join(' ')}</p>
 
           <hr class="my-8 border-0 border-t border-border" />
 
           <div>
-            <div class="text-lg leading-[1.6] text-text-tertiary">SKILLS</div>
+            <div class="text-lg leading-[1.6] text-text-tertiary">{t.about.skills}</div>
             <div class="mt-4 flex flex-wrap gap-4">{site.skills.map(s => <Pill>{s}</Pill>)}</div>
           </div>
 
           <hr class="my-8 border-0 border-t border-border" />
 
           <div>
-            <div class="text-lg leading-[1.6] text-text-tertiary">TOOLS</div>
+            <div class="text-lg leading-[1.6] text-text-tertiary">{t.about.tools}</div>
             <div class="mt-4 flex flex-wrap gap-4">{site.tools.map(t => <Pill>{t}</Pill>)}</div>
           </div>
         </div>
