@@ -12,9 +12,22 @@ export default defineConfig({
   // swap this one line then, and set the same value as the production
   // domain in Vercel so the two never disagree.
   site: 'https://ficho-portfolio.vercel.app',
+  i18n: {
+    locales: ['id', 'en'],
+    defaultLocale: 'id',
+    routing: { prefixDefaultLocale: false },
+  },
   vite: {
     plugins: [tailwindcss()]
   },
 
-  integrations: [mdx(), sitemap()]
+  integrations: [
+    mdx(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'id',
+        locales: { id: 'id', en: 'en' },
+      },
+    }),
+  ]
 });
