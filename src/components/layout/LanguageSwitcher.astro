@@ -1,0 +1,15 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import type { Lang } from '../../i18n/ui'
+
+interface Props { currentLang: Lang }
+const { currentLang } = Astro.props
+const rawPath = currentLang === 'en' ? (Astro.url.pathname.replace(/^\/en/, '') || '/') : Astro.url.pathname
+const idHref = getRelativeLocaleUrl('id', rawPath)
+const enHref = getRelativeLocaleUrl('en', rawPath)
+---
+<div class="flex items-center gap-1 font-mono text-sm text-text-secondary" aria-label="Language">
+  <a href={idHref} class:list={['px-1 transition hover:text-text-primary', currentLang === 'id' && 'font-semibold text-text-primary']}>ID</a>
+  <span aria-hidden="true">/</span>
+  <a href={enHref} class:list={['px-1 transition hover:text-text-primary', currentLang === 'en' && 'font-semibold text-text-primary']}>EN</a>
+</div>
