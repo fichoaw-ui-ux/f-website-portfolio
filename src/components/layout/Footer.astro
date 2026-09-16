@@ -1,7 +1,11 @@
 ---
 import Container from './Container.astro'
-import { site } from '../../content/site'
+import { getSite } from '../../content/site'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
 const year = new Date().getFullYear()
+const lang = resolveLocale(Astro.currentLocale)
+const site = getSite(lang)
+const t = useTranslations(lang)
 ---
 {/* py-5 around a 22px line gives Figma's 62px strip. The old top border and
     mt-24 are gone: Contact already ends in whitespace, so a rule there just
@@ -9,7 +13,7 @@ const year = new Date().getFullYear()
 <footer class="py-5">
   <Container>
     <p class="text-center text-sm leading-[1.6] text-text-tertiary">
-      &copy; {year} {site.name}. All rights reserved.
+      &copy; {year} {site.name}. {t.footer.rights}
     </p>
   </Container>
 </footer>
