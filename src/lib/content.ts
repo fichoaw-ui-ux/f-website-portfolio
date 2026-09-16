@@ -14,3 +14,10 @@ export function getNextItem<T>(items: Item<T>[], slug: string): Item<T> | null {
   if (idx === -1) return null
   return items[(idx + 1) % items.length]
 }
+
+export function localeEntries<T>(
+  items: { id: string; data: T }[],
+  locale: 'id' | 'en',
+): { id: string; data: T }[] {
+  return items.filter(item => item.id.startsWith(`${locale}/`))
+}

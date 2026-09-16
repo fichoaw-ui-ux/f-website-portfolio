@@ -34,3 +34,21 @@ describe('getNextItem', () => {
     expect(getNextItem([], 'a')).toBeNull()
   })
 })
+
+import { localeEntries } from '../src/lib/content'
+
+describe('localeEntries', () => {
+  const entries = [
+    { id: 'id/01-quick-transfer', data: { slug: 'quick-transfer' } },
+    { id: 'en/01-quick-transfer', data: { slug: 'quick-transfer' } },
+    { id: 'id/02-voucher-points-banner', data: { slug: 'voucher-points-banner' } },
+  ]
+
+  it('keeps only entries whose id is prefixed with the given locale', () => {
+    expect(localeEntries(entries, 'id').map(e => e.id)).toEqual([
+      'id/01-quick-transfer',
+      'id/02-voucher-points-banner',
+    ])
+    expect(localeEntries(entries, 'en').map(e => e.id)).toEqual(['en/01-quick-transfer'])
+  })
+})
