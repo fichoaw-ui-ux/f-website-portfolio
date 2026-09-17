@@ -19,6 +19,7 @@ const caseStudies = defineCollection({
   schema: z.object({
     title: z.string(),
     slug: z.string(),
+    icon: z.string(),
     client: z.string(),
     role: z.string(),
     year: z.number().int(),
