@@ -34,8 +34,10 @@ describe('home page structure (id)', () => {
       expect(html).not.toContain('Scroll down')
     })
 
-    it('shows the avatar as decorative, since the h1 already names him', () => {
-      expect(html).toMatch(/<img[^>]+ficho-portrait\.png[^>]+alt=""/)
+    it('drops the inline avatar from the heading', () => {
+      const hero = html.match(/<section[^>]*>[\s\S]*?<\/h1>/)?.[0]
+      expect(hero).toBeDefined()
+      expect(hero).not.toContain('ficho-portrait.png')
     })
   })
 

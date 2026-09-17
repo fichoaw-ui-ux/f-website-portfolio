@@ -8,7 +8,7 @@ const dictionary = {
   id: {
     header: { backToHome: 'Kembali ke Beranda', contactMe: 'Hubungi Saya', menu: 'Menu' },
     footer: { rights: 'Hak cipta dilindungi.' },
-    hero: { greeting: 'Halo!', intro: "Ficho.", roleLine: 'product designer' },
+    hero: { greeting: 'Halo!', intro: "Saya Ficho.", roleLine: 'product designer' },
     about: {
       heading: 'Profil',
       skills: 'SKILL',

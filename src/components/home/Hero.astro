@@ -17,24 +17,6 @@ const t = useTranslations(lang)
         <h1 class="font-display font-semibold text-display-xl text-text-primary">
           <span class="flex flex-wrap items-center justify-center gap-3 md:gap-6">
             <span>{t.hero.greeting}</span>
-            {/*
-              96x96 render (768x1024 source): object-cover scales the source
-              to 96 wide x 128 tall, so it already crops to the top 75% of
-              the photo and there's no horizontal slack to shift (50% is a
-              no-op, kept for clarity, not effect). object-position: 0% here
-              means "no vertical shift from the top," which centres the
-              visible band at 37.5% down the source — matching Figma's
-              framing. Don't "fix" this to a bigger number; that pushes the
-              crop down toward his chest.
-            */}
-            <img
-              src="/images/ficho-portrait.png"
-              alt=""
-              width="96"
-              height="96"
-              class="h-14 w-14 shrink-0 rounded-full border-2 border-text-primary object-cover grayscale transition duration-500 hover:grayscale-0 md:h-24 md:w-24"
-              style="object-position: 50% 0%"
-            />
             <span>{t.hero.intro}</span>
           </span>
           <span class="mt-1 block text-center">{t.hero.roleLine}</span>
