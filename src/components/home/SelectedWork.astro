@@ -84,7 +84,7 @@ const featured = sortByOrder(filterFeatured(localeEntries(all, lang)))
                 squeezed the thumbnail to 122px at 768 — hence proportional,
                 and hence lg rather than md. */}
             <div class="grid items-center gap-8 lg:grid-cols-[36%_1fr] lg:items-stretch lg:gap-12">
-              <div class="order-2 flex flex-col items-start lg:order-1 lg:h-full">
+              <div class="order-2 lg:order-1">
                 <h3 class="font-display font-semibold text-display-md text-text-primary">{p.data.title}</h3>
                 {/* leading-tight, not leading-none. Figma's tag line is a
                     single 16px row, but three tags wrap below about 1024 —
@@ -93,8 +93,9 @@ const featured = sortByOrder(filterFeatured(localeEntries(all, lang)))
                 <p class="mt-4 text-base font-semibold uppercase leading-tight text-text-tertiary">
                   {p.data.tags.join(', ')}
                 </p>
+                <p class="mt-6 text-base leading-[1.6] text-text-tertiary md:mt-8 md:text-lg">{p.data.summary}</p>
                 <span
-                  class="mt-8 lg:mt-auto inline-flex h-12 items-center rounded-full stroke-gradient [--stroke-fill:var(--gradient-card)] px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
+                  class="mt-8 inline-flex h-12 items-center rounded-full stroke-gradient [--stroke-fill:var(--gradient-card)] px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
                 >{t.common.viewDetails}</span>
               </div>
               <div class="order-1 aspect-[730/438] overflow-hidden rounded-media bg-bg-primary lg:order-2 lg:aspect-auto lg:h-full">
