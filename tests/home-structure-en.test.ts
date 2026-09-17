@@ -26,6 +26,7 @@ describe('home page structure', () => {
       expect(h1s).toHaveLength(1)
       expect(html).toContain('Hello!')
       expect(html).toMatch(/I(&#39;|&rsquo;|&apos;|'|’)m Ficho\./)
+      expect(html).toContain('a product designer')
     })
 
     it('drops the availability badge, CTAs, and scroll hint', () => {
