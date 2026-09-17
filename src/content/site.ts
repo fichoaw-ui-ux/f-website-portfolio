@@ -42,8 +42,8 @@ const perLang = {
   id: {
     tagline: 'Product Designer yang bikin produk digital user-centric, dari flow sampai high-fidelity interface.',
     bio: [
-      'Product Designer dengan pengalaman 4+ tahun, sekarang fokus di fintech remittance di Transfez (lewat Jack Finance) — KYC, transaksi cross-border, dan compliance flows.',
-      'Background Sistem Informasi, dengan pengalaman langsung di implementasi front-end berbantuan AI.',
+      'Product Designer dengan 4+ tahun pengalaman merancang produk fintech. Memiliki pengalaman menangani produk send money (international & local), payroll, banking product, dan compliance flows (KYC & KYB).',
+      'Berlatar belakang Sistem Informasi, dengan dasar technology/product development serta terbuka dan adaptif terhadap perkembangan tools berbasis AI saat ini.',
     ],
     nav: [
       { label: 'Karya', href: '#work' },
@@ -114,8 +114,8 @@ const perLang = {
   en: {
     tagline: 'Product Designer crafting user-centric digital products from flows to high-fidelity interfaces.',
     bio: [
-      "Product Designer with 4+ years of experience, currently focused on fintech remittance at Transfez (via Jack Finance) — KYC, cross-border transactions, and compliance flows.",
-      "Background in Information Systems, with hands-on experience in AI-assisted front-end implementation.",
+      "Product Designer with 4+ years of experience designing fintech products. Experienced in handling send money products (international & local), payroll, banking products, and compliance flows (KYC & KYB).",
+      "Background in Information Systems, with a foundation in technology/product development and openness to adapting to today's AI-based tools.",
     ],
     nav: [
       { label: 'Work', href: '#work' },

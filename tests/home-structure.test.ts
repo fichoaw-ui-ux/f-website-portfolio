@@ -79,7 +79,7 @@ describe('home page structure (id)', () => {
       expect(html).toContain('Profil')
       // Proves site.bio was joined into a single <p>: with two paragraphs a
       // closing and opening tag would sit between these two sentences.
-      expect(html).toContain('compliance flows. Background Sistem Informasi')
+      expect(html).toMatch(/\(KYC (&|&amp;) KYB\)\. Berlatar belakang Sistem Informasi/)
     })
 
     it('shows the real portrait, described rather than decorative', () => {
