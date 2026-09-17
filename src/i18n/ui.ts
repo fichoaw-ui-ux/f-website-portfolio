@@ -23,7 +23,7 @@ const dictionary = {
     experience: { heading: 'Pengalaman Kerja' },
     common: { viewDetails: 'Lihat Detail' },
     selectedWork: {
-      heading: 'Karya pilihanku',
+      heading: 'Studi Kasus',
       subcopy: 'Dengan mata yang detail dan cara berpikir yang kritis, saya fokus bikin website, produk, dan experience yang menarik.',
       noProjects: 'Belum ada proyek.',
     },
