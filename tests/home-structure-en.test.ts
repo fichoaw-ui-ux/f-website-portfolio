@@ -34,10 +34,11 @@ describe('home page structure', () => {
       expect(html).not.toContain('Scroll down')
     })
 
-    it('drops the inline avatar from the heading', () => {
-      const hero = html.match(/<section[^>]*>[\s\S]*?<\/h1>/)?.[0]
-      expect(hero).toBeDefined()
-      expect(hero).not.toContain('ficho-portrait.png')
+    it('shows the avatar as decorative, since the h1 already names him', () => {
+      // Same source file as the About portrait — Figma exports one image fill
+      // for both frames. `alt=""` is what distinguishes the hero's decorative
+      // copy from About's described one.
+      expect(html).toMatch(/<img[^>]+ficho-portrait\.png[^>]+alt=""/)
     })
   })
 

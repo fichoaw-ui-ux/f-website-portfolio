@@ -25,7 +25,7 @@ describe('home page structure (id)', () => {
       const h1s = html.match(/<h1\b/g) ?? []
       expect(h1s).toHaveLength(1)
       expect(html).toContain('Halo!')
-      expect(html).toContain('Saya Ficho.')
+      expect(html).toContain('Saya Ficho, product designer')
     })
 
     it('drops the availability badge, CTAs, and scroll hint', () => {
@@ -34,10 +34,8 @@ describe('home page structure (id)', () => {
       expect(html).not.toContain('Scroll down')
     })
 
-    it('drops the inline avatar from the heading', () => {
-      const hero = html.match(/<section[^>]*>[\s\S]*?<\/h1>/)?.[0]
-      expect(hero).toBeDefined()
-      expect(hero).not.toContain('ficho-portrait.png')
+    it('shows the avatar as decorative, since the h1 already names him', () => {
+      expect(html).toMatch(/<img[^>]+ficho-portrait\.png[^>]+alt=""/)
     })
   })
 
