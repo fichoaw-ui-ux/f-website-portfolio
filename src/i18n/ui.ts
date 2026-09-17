@@ -6,25 +6,25 @@ export function resolveLocale(currentLocale: string | undefined): Lang {
 
 const dictionary = {
   id: {
-    header: { backToHome: 'Kembali ke Beranda', contactMe: 'Hubungi Aku', menu: 'Menu' },
+    header: { backToHome: 'Kembali ke Beranda', contactMe: 'Hubungi Saya', menu: 'Menu' },
     footer: { rights: 'Hak cipta dilindungi.' },
-    hero: { greeting: 'Halo!', intro: "Aku Ficho.", roleLine: 'product designer' },
+    hero: { greeting: 'Halo!', intro: "Ficho.", roleLine: 'product designer' },
     about: {
-      heading: 'Tentang aku',
+      heading: 'Profil',
       skills: 'SKILL',
       tools: 'TOOLS',
       portraitAlt: (name: string) => `Potret ${name}`,
     },
     contact: {
       heading: 'Yuk, bikin sesuatu bareng',
-      bodyBefore: 'Terbuka untuk kerja product design dan kolaborasi. Bisa hubungi aku di ',
+      bodyBefore: 'Terbuka untuk kerja product design dan kolaborasi. Bisa hubungi saya di ',
       bodyAfter: ', atau say hi lewat LinkedIn atau WhatsApp di bawah.',
     },
-    experience: { heading: 'Tempat aku pernah kerja' },
+    experience: { heading: 'Pengalaman Kerja' },
     common: { viewDetails: 'Lihat Detail' },
     selectedWork: {
       heading: 'Karya pilihanku',
-      subcopy: 'Dengan mata yang detail dan cara berpikir yang kritis, aku fokus bikin website, produk, dan experience yang menarik.',
+      subcopy: 'Dengan mata yang detail dan cara berpikir yang kritis, saya fokus bikin website, produk, dan experience yang menarik.',
       noProjects: 'Belum ada proyek.',
     },
     caseStudy: { titleSuffix: ' — Studi Kasus', nextProject: 'Proyek selanjutnya' },

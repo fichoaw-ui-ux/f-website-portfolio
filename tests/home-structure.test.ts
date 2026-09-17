@@ -75,7 +75,7 @@ describe('home page structure (id)', () => {
 
   describe('about', () => {
     it('runs the bio as one paragraph and drops the section badge pattern', () => {
-      expect(html).toContain('Tentang aku')
+      expect(html).toContain('Profil')
       // Proves site.bio was joined into a single <p>: with two paragraphs a
       // closing and opening tag would sit between these two sentences.
       expect(html).toContain('compliance flows. Background Sistem Informasi')
@@ -95,7 +95,7 @@ describe('home page structure (id)', () => {
 
   describe('experience', () => {
     it('lists company and role per entry', () => {
-      expect(html).toContain('Tempat aku pernah kerja')
+      expect(html).toContain('Pengalaman Kerja')
       expect(html).toMatch(/Transfez (&#38;|&amp;|&) Jack/)
       expect(html).toContain('Great Giant Foods')
       expect(html).toContain('Corporate Communication')
@@ -157,7 +157,7 @@ describe('home page structure (id)', () => {
       expect(header).toMatch(/<svg[^>]*viewBox="0 0 106 32"/)
       expect(header).toContain('fill="currentColor"')
       expect(html).not.toContain('src="/images/logo-ficho.svg"')
-      expect(html).toContain('Hubungi Aku')
+      expect(html).toContain('Hubungi Saya')
       expect(html).toContain('href="/#work"')
       expect(html).toContain('href="/#about"')
       expect(html).toContain('href="/#experience"')
