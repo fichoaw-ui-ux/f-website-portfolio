@@ -95,8 +95,23 @@ const featured = sortByOrder(filterFeatured(localeEntries(all, lang)))
                 </p>
                 <p class="mt-6 text-base leading-[1.6] text-text-tertiary md:mt-8 md:text-lg">{p.data.summary}</p>
                 <span
-                  class="mt-8 inline-flex h-12 items-center rounded-full stroke-gradient [--stroke-fill:var(--gradient-card)] px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
-                >{t.common.viewDetails}</span>
+                  class="mt-8 inline-flex h-12 items-center gap-2 rounded-full stroke-gradient [--stroke-fill:var(--gradient-card)] px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
+                >
+                  <span>{t.common.viewDetails}</span>
+                  <svg
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="m13 5 7 7-7 7" />
+                  </svg>
+                </span>
               </div>
               <div class="order-1 aspect-[730/438] overflow-hidden rounded-media bg-bg-primary lg:order-2 lg:aspect-auto lg:h-full">
                 <img
