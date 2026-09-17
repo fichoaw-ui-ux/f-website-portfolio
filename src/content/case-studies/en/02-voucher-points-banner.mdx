@@ -1,0 +1,433 @@
+---
+title: "Voucher & Points Banner: Rescuing a Discount Nobody Noticed"
+slug: "voucher-points-banner"
+client: "Transfez"
+role: "Product Designer"
+year: 2024
+duration: "Q3"
+tags: ["Product Design", "Fintech", "Mobile App", "Remittance"]
+cover: "/images/cs-voucher-points-banner/cover.png"
+coverAlt: "Voucher & Points Banner — case study cover"
+thumbnail: "/images/cs-voucher-points-banner/cover.png"
+thumbnailAlt: "Voucher & Points Banner — case study cover"
+summary: "Almost 7 out of 10 users skipped a voucher that was sitting right there. Not because it wasn't available — the UI just never invited them to tap it."
+overview: "The Send Money page at Transfez Singapore had a hidden problem: vouchers the Growth team handed out rarely got used. The analysis found three things making each other worse — a voucher that looked already 'applied,' a points banner stealing attention, and a page hierarchy that broke the user's focus. This case study walks through how all three got fixed together as one system."
+team: ["Ficho Aji Wibowo — Product Designer", "Growth Team", "Design Lead"]
+deliverables: ["Root cause analysis", "Voucher component — default & applied state", "Points banner de-emphasis", "Information architecture restructure", "Handoff to engineering"]
+tools: ["Figma", "Mixpanel"]
+featured: true
+order: 2
+brandColor: "#DA649F"
+brandColorAlt: "#7A2A55"
+snapshot:
+  - label: "Designer"
+    value: "Ficho Aji Wibowo — Product Designer"
+  - label: "Most Collaborated with"
+    value: "Growth Team"
+  - label: "Brand & Industry"
+    value: "Transfez — Consumer Remittance"
+  - label: "Platform"
+    value: "Mobile App"
+    pill: true
+  - label: "Timeline"
+    value: "Q3"
+---
+import PartHeader from '../../../components/case-study/PartHeader.astro'
+import Section from '../../../components/case-study/Section.astro'
+import ImageFull from '../../../components/case-study/ImageFull.astro'
+import ImageGrid from '../../../components/case-study/ImageGrid.astro'
+import FigmaEmbed from '../../../components/case-study/FigmaEmbed.astro'
+import Quote from '../../../components/case-study/Quote.astro'
+import Metrics from '../../../components/case-study/Metrics.astro'
+
+<PartHeader number="01" title="Project Snapshot" />
+
+<Section title="Background">
+Transfez is a remittance platform that helps people send money abroad quickly and transparently. Transfez runs two product regions: **Indonesia to Global** and **Singapore to Indonesia**. This case study focuses on **Transfez Singapore** — the product serving people in Singapore who want to send money to Indonesia.
+
+The **Send Money** page is the core of the whole experience — this is where users set the amount, exchange rate, and payment method before moving on to confirmation.
+
+One of the supporting features is the **voucher** — a discount taken straight off the transfer fee. Vouchers are handed out regularly by the Growth Marketing team every month or during certain events. But there was a problem: **usage was way lower than it should have been.**
+</Section>
+
+<PartHeader number="02" title="Context & Problem" />
+
+<Section title="A. Context Problem">
+The Growth team came to me with one number that was hard to ignore:
+
+**Out of 6,297 users who landed on the Send Money page, only 1,979 (31.43%) even opened the voucher selection screen.**
+
+In other words: **almost 7 out of 10 users skipped a voucher that was right there** — not because there wasn't one available, but because it never occurred to them to tap.
+</Section>
+
+<ImageFull indent mobile src="/images/cs-voucher-points-banner/context-mixpanel.png" alt="Mixpanel funnel — 6,297 users entered Send Money, only 31.43% opened the voucher page" caption="Source: Mixpanel from the Growth Team." />
+
+<Section title=" " indent>
+From there, I joined at the analysis stage — together with my lead, we traced the root cause. The team's initial hypothesis: the voucher component's default state visually looked like it was already "applied." Users saw it, assumed the discount was already active, and moved on without exploring further.
+
+The easiest fix, obviously, would be *auto-apply* — the system deducts the discount without the user doing anything. But after talking it through with the Growth team, we all agreed not to go that route. The reason: a voucher that users find and apply themselves creates its own little moment of satisfaction — a bit of gamification that disappears the moment the process becomes automatic. **What needed fixing wasn't the mechanism, but how it was presented.**
+
+But as we dug deeper, the problem turned out not to stop at the voucher. We found two other components contributing to it — and all three were making each other worse.
+</Section>
+
+<Section title="B. Current Experience">
+To help you follow the context above, here's a look at the current Send Money experience and UI before any of this was optimized.
+</Section>
+
+<FigmaEmbed indent url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/template_file?page-id=961%3A9&node-id=6863-1835&viewport=1018%2C212%2C0.62&t=AaHU0eUqWPfkKv7V-1&scaling=contain&content-scaling=fixed&starting-point-node-id=6863%3A1442" title="Current Experience — Send Money" caption="Prototype of the old Send Money page — try running it to feel the friction yourself." />
+
+<Section title="C. The Friction Points">
+Once my lead and I traced through the Send Money page more carefully, one thing stood out immediately: **the problem wasn't coming from just one place**. Three different components each played a part — and they were quietly making each other worse.
+
+**1. The Voucher Component.**
+
+- **Default state looks "applied"** — A pink-to-cream gradient plus a gold badge reads like fintech's usual visual language for an active state. Users didn't tap because they already felt the voucher was in use.
+- **Passive, vague copy** — *"Check your available voucher here"* doesn't promise anything clear. There's no reason to tap.
+</Section>
+
+<ImageGrid cols={2} indent>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">Default State</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/friction-1-default.png" data-lightbox-alt="Voucher — Default State" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/friction-1-default.png" alt="Voucher — Default State" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">Active State</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/friction-1-active.png" data-lightbox-alt="Voucher — Active State" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/friction-1-active.png" alt="Voucher — Active State" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+</ImageGrid>
+
+<Section title=" " indent>
+**2. The Points Banner Component.**
+
+- **Wrong attention zone** — Sitting right above the Continue button, it pulled focus away from the voucher.
+- **Reads like a reward already earned** — Copy like *"Yeay! You'll get 250 points!"* plus gold/black styling feels like a confirmation, not an incentive.
+- **Backwards value hierarchy** — Points are a benefit you don't feel right away and take time to redeem; a voucher is instant savings. But the stronger visual treatment went to the weaker benefit.
+</Section>
+
+<ImageFull indent mobile src="/images/cs-voucher-points-banner/friction-2-points-banner.png" alt="Points banner above the Continue button" caption="The points banner dominated the last attention zone before users tapped Continue." />
+
+<Section title=" " indent>
+**3. Page Hierarchy.**
+
+- **The information structure didn't match what users actually cared about** — Payment method doesn't affect the transaction's value at all: it doesn't change how much is sent, the fee, or how much can be saved. But because it sat above the voucher, users who saw it first slipped into "all done" mode before they'd even noticed there was a saving to grab. The mental connection between the calculator and the voucher — which should have felt like one single thought about *"how much am I actually paying?"* — got broken along the way.
+</Section>
+
+<ImageFull indent mobile src="/images/cs-voucher-points-banner/friction-3-hierarchy.png" alt="Send Money page hierarchy with payment method above the voucher" caption="Payment method broke the connection between the calculator and the voucher." />
+
+<Section title="D. Design Opportunity">
+Out of these three friction points, one question became the starting point for the whole design process:
+
+> **How do you make the voucher win the reward slot on Send Money — without changing how the underlying mechanism works?**
+
+This wasn't just about fixing one component. The analysis showed three components were competing with each other: an invisible voucher, a dominant points banner, and a payment method whose position broke user focus before it ever reached the voucher. All three needed fixing together.
+</Section>
+
+<PartHeader number="03" title="Design Decisions" />
+
+<Section title="Kickoff">
+Once the analysis was done with Bang Fathur (my lead), the direction was set: these three components had to be fixed together — not one at a time. I owned the full design execution: exploring iterations, restructuring the page, and handing off to engineering.
+
+Three main decisions followed — each one answering a different friction point we'd found.
+</Section>
+
+<Section title="A. The Voucher Component — From Invisible to Actionable">
+Two things needed fixing at once: **visuals that looked too much like the active state** — and **copy that gave no reason to tap**. These two problems couldn't be solved separately, since both of them left users feeling like there was nothing more to interact with.
+
+From here, two design questions needed answers.
+</Section>
+
+<Section title="A.1 How do you introduce the voucher?" indent>
+The old copy just said *"Check your available voucher here"* — no promised value, so no reason to tap. Two approaches were explored to fix this: *Quantity First* (showing how many vouchers are available) vs. *Value First* (showing the best voucher's value right away).
+</Section>
+
+<ImageGrid cols={2} indent={2}>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">Alt 1 — Quantity First</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/decision-a1-quantity-first.png" data-lightbox-alt="Alt 1 — Quantity First" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/decision-a1-quantity-first.png" alt="Alt 1 — Quantity First" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">Alt 2 — Value First</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/decision-a1-value-first.png" data-lightbox-alt="Alt 2 — Value First" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/decision-a1-value-first.png" alt="Alt 2 — Value First" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+</ImageGrid>
+
+<Section title=" " indent={2}>
+**Alt 2 was chosen** — the more efficient option. The voucher shown is already curated by the system as the best value, so users don't need to go hunting for it themselves.
+</Section>
+
+<Section title="A.2 How do you tell the default state apart from the applied state?" indent>
+The visual problem: the old component **used one look for two different states**. The default state — pink gradient background plus a gold badge — looked identical to the active state, so users assumed the voucher was already running and skipped past it without interacting.
+
+Two visual decisions were made at once:
+
+- The **default state** was reset to something neutral: white background, pink outline border, a simple ticket icon, and an explicit **"Apply"** button. One clear signal: *this hasn't been claimed yet, tap to use it.*
+</Section>
+
+<ImageGrid cols={2} indent={2}>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">Before — Default state</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/voucher-state-default-before.png" data-lightbox-alt="Before — Default state" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/voucher-state-default-before.png" alt="Before — Default state" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">After — Default state</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/voucher-state-default-after.png" data-lightbox-alt="After — Default state" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/voucher-state-default-after.png" alt="After — Default state" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+</ImageGrid>
+
+<Section title=" " indent={2}>
+- The **active state** was made clearly distinct: a *motion icon* with a green badge as a confirmation signal — the voucher code appears at the top, and the copy changes to *"Promo applied!"*. The difference between the two states is now impossible to miss.
+</Section>
+
+<ImageGrid cols={2} indent={2}>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">Before — Active state</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/voucher-state-active-before.png" data-lightbox-alt="Before — Active state" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/voucher-state-active-before.png" alt="Before — Active state" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">After — Active state</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/voucher-state-active-after.png" data-lightbox-alt="After — Active state" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/voucher-state-active-after.png" alt="After — Active state" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+</ImageGrid>
+
+<Section title="B. Points Banner — From Dominant to Supporting">
+The friction was clear: a dominant gold/black banner, copy that read like a confirmed reward instead of an incentive, and a position right before the Continue button — all competing for attention with the voucher at the worst possible moment.
+
+My first instinct was to recommend moving the points banner to the Success page entirely, so the voucher could fully win the reward slot on Send Money. But the Growth team decided to keep it on Send Money — their reasoning: points information is still relevant at this stage, since users who know what reward they'll get before completing a transfer tend to be more motivated to finish it.
+
+The result: the points banner was visually de-emphasized — from a dominant gold banner down to a thin gray strip — so it no longer dominates the reward slot, but still shows up as useful supporting information.
+</Section>
+
+<ImageGrid cols={2} indent>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">Before — Dominant gold banner</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/decision-b-before.png" data-lightbox-alt="Before — Dominant gold banner" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/decision-b-before.png" alt="Before — Dominant gold banner" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">After — Thin gray strip</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/decision-b-after.png" data-lightbox-alt="After — Thin gray strip" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/decision-b-after.png" alt="After — Thin gray strip" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+</ImageGrid>
+
+<Section title="C. Information Architecture — Straightening Out the Page Hierarchy">
+Of the three friction points, this one was the most subtle — not a problem with a single component, but with order: **payment method sitting above the voucher put users in "all done" mode before they'd noticed there was still a saving they could grab**.
+
+Payment method doesn't affect the transaction's value — it doesn't change how much is sent, the fee, or how much can be saved. But its position above the voucher broke the connection between the calculator and the voucher, which should have felt like one single thought for the user: *"how much am I actually paying?"*
+
+Two considerations drove this decision:
+
+- **A sensible default is already recommended** — the system already sets the best payment method by default, so users don't need to think about it upfront.
+- **Calculator and voucher as one unit** — both are left as the main focus, with no distraction from other choices.
+</Section>
+
+<ImageGrid cols={2} indent>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">Before — Payment above voucher</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/decision-c-before.png" data-lightbox-alt="Before — Payment method above the voucher" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/decision-c-before.png" alt="Before — Payment method above the voucher" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">After — Payment moved below</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/decision-c-after.png" data-lightbox-alt="After — Payment method moved below with a Change label" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/decision-c-after.png" alt="After — Payment method moved below with a Change label" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+</ImageGrid>
+
+<Section title=" " indent>
+**The result:** Payment Method was moved further down with an explicit *"Change"* label — still easy to reach, but no longer interrupting the main flow.
+</Section>
+
+<Section title="Recap: Three Final Design Decisions">
+Each of these three decisions answered a different friction point. But put together, the result wasn't just a set of component-level fixes — it's one page with **one consistent flow for the user**: from calculation, to voucher, to confirmation. No competing visuals, no premature "all done" moment.
+
+1. **Voucher — from invisible to actionable.** Value First in the copy, default state reset to a neutral look with an explicit *"Apply"* button, active state clearly distinguished with a green badge and *"Promo applied!"*
+2. **Points banner — from dominant to supporting.** Still present on Send Money, but no longer stealing the reward slot.
+3. **Information architecture — straightening the page hierarchy.** Calculator and voucher become one unit; payment method moves down with a *"Change"* label.
+</Section>
+
+<PartHeader number="04" title="Solution" />
+
+<Section title="One Reward Slot, One Clear Winner">
+The voucher now shows up as a clearly unclaimed opportunity — not a benefit that's already running. The best value is visible right at the surface, applying takes one tap, and the discount's impact is instantly confirmed in the fee breakdown.
+
+The points banner is still there, but it's no longer competing for the same reward slot — its role has shifted to a quiet piece of supporting information near the bottom of the page.
+</Section>
+
+<ImageFull mobile src="/images/cs-voucher-points-banner/solution-hero.gif" alt="Solution — Send Money end-to-end with the voucher winning the reward slot" caption="Solution — one reward slot, one clear winner: the voucher." />
+
+<Section title="Before">
+</Section>
+
+<ImageGrid cols={2}>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">Before — Default</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/voucher-state-default-before.png" data-lightbox-alt="Before — Send Money default state" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/voucher-state-default-before.png" alt="Before — Send Money default state" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">Before — Applied</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/voucher-state-active-before.png" data-lightbox-alt="Before — Send Money applied state" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/voucher-state-active-before.png" alt="Before — Send Money applied state" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+</ImageGrid>
+
+<Section title="After">
+</Section>
+
+<ImageGrid cols={2}>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">After — Default</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/voucher-state-default-after.png" data-lightbox-alt="After — Send Money default state" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/voucher-state-default-after.png" alt="After — Send Money default state" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+  <div class="rounded-lg p-[2px] bg-gradient-stroke">
+    <div class="rounded-[calc(0.5rem-2px)] overflow-hidden bg-bg-secondary">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-mono text-xs uppercase tracking-widest text-text-secondary shrink-0">Image</span>
+          <span class="font-mono text-sm text-text-primary truncate">After — Applied</span>
+        </div>
+        <button type="button" data-lightbox-trigger data-lightbox-src="/images/cs-voucher-points-banner/voucher-state-active-after.png" data-lightbox-alt="After — Send Money applied state" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-secondary hover:text-text-primary transition cursor-pointer">View full ↗</button>
+      </div>
+      <img src="/images/cs-voucher-points-banner/voucher-state-active-after.png" alt="After — Send Money applied state" class="mx-auto h-auto block w-full max-w-[300px] py-6" />
+    </div>
+  </div>
+</ImageGrid>
+
+<Section title=" ">
+The result: **one reward slot, one clear winner** — the voucher.
+</Section>
+
+<PartHeader number="05" title="Impact" />
+
+<Section title="Baseline & Opportunity">
+This solution hadn't shipped to production yet at the time this case study was written. But the baseline data from Mixpanel is enough to show just how big the opportunity is:
+
+<Metrics items={[
+  { value: "31.43%", label: "Baseline — users who opened the voucher page" },
+  { value: "6,297", label: "Users who entered Send Money (measured month)" },
+  { value: "~7 in 10", label: "Users who skipped an available voucher" },
+]} />
+
+Almost 7 out of 10 users missed out on a benefit that was right there — not because they didn't want it, but because the UI never invited them in.
+</Section>
+
+<Section title="Validation & Next Steps">
+Validation happened through direct confirmation with the Growth team as the main stakeholder. The design was approved and moved into the development pipeline.
+
+If this solution meaningfully shifts that 31.43% number, the impact shows up in two places right away: **voucher redemption rate goes up**, and **users feel like they're getting more value out of every transaction** — both of which feed into long-term retention.
+</Section>
