@@ -97,12 +97,11 @@ describe('home page structure', () => {
   })
 
   describe('about', () => {
-    it('runs the bio as one paragraph and drops the section badge pattern', () => {
+    it('runs the bio as two paragraphs and drops the section badge pattern', () => {
       expect(html).toContain('About me')
       expect(html).not.toContain('Designer with a bias for shipping')
-      // Proves site.bio was joined into a single <p>: with two paragraphs a
-      // closing and opening tag would sit between these two sentences.
-      expect(html).toMatch(/\(KYC (&|&amp;) KYB\)\. Background in Information Systems/)
+      // Proves site.bio renders as two separate <p> tags, not one joined blob.
+      expect(html).toMatch(/\(KYC (&|&amp;) KYB\)\.<\/p><p>Background in Information Systems/)
     })
 
     it('shows the real portrait, described rather than decorative', () => {

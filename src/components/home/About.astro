@@ -37,7 +37,9 @@ const t = useTranslations(lang)
       <Reveal class="order-2 lg:order-1">
         <div>
           <h2 class="font-display font-semibold text-display-lg text-text-primary">{t.about.heading}</h2>
-          <p class="mt-6 max-w-[559px] text-lg leading-[1.6] text-text-secondary md:text-2xl">{site.bio.join(' ')}</p>
+          <div class="mt-6 max-w-[559px] space-y-4 text-lg leading-[1.6] text-text-secondary md:text-2xl">
+            {site.bio.map(paragraph => <p>{paragraph}</p>)}
+          </div>
 
           <hr class="my-8 border-0 border-t border-border" />
 
