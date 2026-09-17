@@ -1,4 +1,6 @@
 ---
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
 interface Props {
   slug: string
   title: string
@@ -6,9 +8,11 @@ interface Props {
   coverAlt: string
 }
 const { slug, title, cover, coverAlt } = Astro.props
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
 ---
 <div class="mt-24">
-  <div class="mb-6 font-mono text-sm uppercase tracking-widest text-text-tertiary">Next project</div>
+  <div class="mb-6 font-mono text-sm uppercase tracking-widest text-text-tertiary">{t.caseStudy.nextProject}</div>
   <a
     href={`/work/${slug}`}
     class="group block rounded-[32px] stroke-gradient [--stroke-fill:var(--gradient-card)] p-6 transition duration-500 hover:-translate-y-1 md:p-12"
@@ -18,7 +22,7 @@ const { slug, title, cover, coverAlt } = Astro.props
         <h3 class="font-display font-semibold text-display-md text-text-primary">{title}</h3>
         <span
           class="mt-8 inline-flex h-12 items-center rounded-full stroke-gradient [--stroke-fill:var(--gradient-card)] px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
-        >View Details</span>
+        >{t.common.viewDetails}</span>
       </div>
       <div class="order-1 aspect-[730/438] overflow-hidden rounded-media bg-bg-primary lg:order-2 lg:aspect-auto lg:h-full">
         <img

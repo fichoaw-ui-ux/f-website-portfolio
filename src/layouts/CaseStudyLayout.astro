@@ -7,6 +7,7 @@ import NextProject from '../components/case-study/NextProject.astro'
 import ProjectSnapshot from '../components/case-study/ProjectSnapshot.astro'
 import Lightbox from '../components/case-study/Lightbox.astro'
 import SectionIndicator from '../components/case-study/SectionIndicator.astro'
+import { resolveLocale, useTranslations } from '../i18n/ui'
 import type { CollectionEntry } from 'astro:content'
 
 interface Props {
@@ -29,8 +30,11 @@ const DEFAULT_CASE_STUDY_ACCENT = '#1E4FCF'
 const DEFAULT_CASE_STUDY_ACCENT_ALT = '#DC2626'
 const accent = d.brandColor ?? DEFAULT_CASE_STUDY_ACCENT
 const accentAlt = d.brandColorAlt ?? (d.brandColor ? accent : DEFAULT_CASE_STUDY_ACCENT_ALT)
+
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
 ---
-<BaseLayout title={`${d.title} — Case Study`} description={d.summary} ogImage={d.cover} showBackToHome>
+<BaseLayout title={`${d.title}${t.caseStudy.titleSuffix}`} description={d.summary} ogImage={d.cover} showBackToHome>
   <style set:html={`
     :root{
       --color-accent: ${accent};

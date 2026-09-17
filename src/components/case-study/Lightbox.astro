@@ -1,8 +1,11 @@
 ---
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
 ---
 <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-6 md:p-12" data-lightbox-overlay>
-  <button type="button" data-lightbox-close aria-label="Close" class="absolute top-4 right-4 md:top-6 md:right-6 flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-white hover:opacity-80 transition">
-    Close <span class="text-xl leading-none">×</span>
+  <button type="button" data-lightbox-close aria-label={t.lightbox.close} class="absolute top-4 right-4 md:top-6 md:right-6 flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-white hover:opacity-80 transition">
+    {t.lightbox.close} <span class="text-xl leading-none">×</span>
   </button>
   <img data-lightbox-img src="" alt="" class="max-w-full max-h-full object-contain rounded" />
 </div>

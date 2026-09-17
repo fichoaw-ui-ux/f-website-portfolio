@@ -1,9 +1,13 @@
 ---
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
 interface Props { src: string; alt: string; caption?: string; label?: string; indent?: boolean | 1 | 2; mobile?: boolean }
-const { src, alt, caption, label = 'Image', indent = false, mobile = false } = Astro.props
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
+const { src, alt, caption, label, indent = false, mobile = false } = Astro.props
 const indentClass = indent === 2 ? 'md:pl-20' : indent ? 'md:pl-8' : ''
 const isPlaceholder = src.includes('placeholder')
-const resolvedLabel = isPlaceholder ? 'Placeholder' : label
+const resolvedLabel = isPlaceholder ? t.imageFull.placeholderLabel : (label ?? t.imageFull.imageLabel)
 
 let title = caption
 let description = ''
@@ -22,7 +26,7 @@ if (caption) {
         <span class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-tertiary">{resolvedLabel}</span>
         {title && <span class="truncate font-mono text-sm text-text-primary">{title}</span>}
       </div>
-      {!isPlaceholder && <button type="button" data-lightbox-trigger data-lightbox-src={src} data-lightbox-alt={alt} class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-text-tertiary transition hover:text-text-primary">View full ↗</button>}
+      {!isPlaceholder && <button type="button" data-lightbox-trigger data-lightbox-src={src} data-lightbox-alt={alt} class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-text-tertiary transition hover:text-text-primary">{t.imageFull.viewFull}</button>}
     </div>
     {mobile ? (
       <div class="flex justify-center bg-bg-primary py-6">
