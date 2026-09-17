@@ -85,7 +85,7 @@ const featured = sortByOrder(filterFeatured(localeEntries(all, lang)))
                 and hence lg rather than md. */}
             <div class="grid items-center gap-8 lg:grid-cols-[36%_1fr] lg:items-stretch lg:gap-12">
               <div class="order-2 lg:order-1 lg:flex lg:h-full lg:flex-col lg:items-start lg:justify-center">
-                <span class="block text-[clamp(3rem,4.444vw,4rem)] leading-none" aria-hidden="true">{p.data.icon}</span>
+                <span class="block text-display-md leading-none" aria-hidden="true">{p.data.icon}</span>
                 <h3 class="mt-4 font-display font-semibold text-display-md text-text-primary">{p.data.title}</h3>
                 {/* leading-tight, not leading-none. Figma's tag line is a
                     single 16px row, but three tags wrap below about 1024 —
