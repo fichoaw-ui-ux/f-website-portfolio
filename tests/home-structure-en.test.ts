@@ -25,7 +25,7 @@ describe('home page structure', () => {
       const h1s = html.match(/<h1\b/g) ?? []
       expect(h1s).toHaveLength(1)
       expect(html).toContain('Hello!')
-      expect(html).toContain('a product designer')
+      expect(html).toMatch(/I(&#39;|&rsquo;|&apos;|'|’)m Ficho\./)
     })
 
     it('drops the availability badge, CTAs, and scroll hint', () => {
