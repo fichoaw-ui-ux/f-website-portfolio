@@ -229,10 +229,13 @@ describe('home page structure', () => {
       // in Header.astro. Every site.nav entry must render; a nav that silently
       // lost one is invisible otherwise. There is no /#contact entry: the CTA
       // is a mailto, not an anchor to a section.
-      expect(html).toContain('href="/#work"')
-      expect(html).toContain('href="/#about"')
-      expect(html).toContain('href="/#experience"')
-      expect(html).toContain('href="/#explorations"')
+      //
+      // On the English (/en) page these must be prefixed with /en so the
+      // links stay on the English site instead of dropping back to Indonesian.
+      expect(html).toContain('href="/en/#work"')
+      expect(html).toContain('href="/en/#about"')
+      expect(html).toContain('href="/en/#experience"')
+      expect(html).toContain('href="/en/#explorations"')
       expect(html).not.toContain('Get in touch')
     })
 

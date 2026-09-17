@@ -46,10 +46,10 @@ const perLang = {
       'Background Sistem Informasi, dengan pengalaman langsung di implementasi front-end berbantuan AI.',
     ],
     nav: [
-      { label: 'Karya', href: '/#work' },
-      { label: 'Tentang', href: '/#about' },
-      { label: 'Pengalaman', href: '/#experience' },
-      { label: 'Eksplorasi', href: '/#explorations' },
+      { label: 'Karya', href: '#work' },
+      { label: 'Tentang', href: '#about' },
+      { label: 'Pengalaman', href: '#experience' },
+      { label: 'Eksplorasi', href: '#explorations' },
     ],
     experience: [
       {
@@ -118,10 +118,10 @@ const perLang = {
       "Background in Information Systems, with hands-on experience in AI-assisted front-end implementation.",
     ],
     nav: [
-      { label: 'Work', href: '/#work' },
-      { label: 'About', href: '/#about' },
-      { label: 'Experience', href: '/#experience' },
-      { label: 'Exploration', href: '/#explorations' },
+      { label: 'Work', href: '#work' },
+      { label: 'About', href: '#about' },
+      { label: 'Experience', href: '#experience' },
+      { label: 'Exploration', href: '#explorations' },
     ],
     experience: [
       {

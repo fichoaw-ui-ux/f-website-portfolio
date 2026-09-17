@@ -4,10 +4,15 @@ import logo from '../../../public/images/logo-ficho.svg?raw'
 import LanguageSwitcher from './LanguageSwitcher.astro'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 import { getSite } from '../../content/site'
+import { getRelativeLocaleUrl } from 'astro:i18n'
 
 const lang = resolveLocale(Astro.currentLocale)
 const site = getSite(lang)
 const t = useTranslations(lang)
+// getRelativeLocaleUrl('en', '/') returns "/en" (no trailing slash) while
+// ('id', '/') returns "/" — normalize to always have exactly one trailing
+// slash so fragment hrefs below never end up as "/en#work" or "/en//#work".
+const homeHref = `${getRelativeLocaleUrl(lang, '/').replace(/\/$/, '')}/`
 
 interface Props { showBackToHome?: boolean }
 const { showBackToHome = false } = Astro.props
@@ -99,7 +104,7 @@ const { showBackToHome = false } = Astro.props
       <div class:list={['md:justify-self-start', !showBackToHome && 'hidden md:block']}>
         {showBackToHome ? (
           <a
-            href="/"
+            href={homeHref}
             class="inline-flex h-8 items-center gap-2 whitespace-nowrap text-base font-semibold text-text-primary transition hover:text-text-secondary"
           >
             <svg
@@ -121,7 +126,7 @@ const { showBackToHome = false } = Astro.props
           <nav aria-label="Sections" class="hidden md:flex items-center gap-6">
             {site.nav.map(item => (
               <a
-                href={item.href}
+                href={`${homeHref}${item.href}`}
                 class="text-base font-medium text-text-secondary transition hover:text-text-primary"
               >{item.label}</a>
             ))}
@@ -137,7 +142,7 @@ const { showBackToHome = false } = Astro.props
           Hidden on mobile case study so the only element left in the pill is
           the leading "Back to Home" link. */}
       <a
-        href="/"
+        href={homeHref}
         class={`${showBackToHome ? 'hidden md:inline-flex' : 'inline-flex'} h-8 items-center text-text-primary [&>svg]:h-8 [&>svg]:w-auto md:justify-self-center`}
         aria-label={`${site.name} — home`}
       ><Fragment set:html={logo} /></a>
@@ -196,7 +201,7 @@ const { showBackToHome = false } = Astro.props
           <nav aria-label="Menu" class="flex flex-col gap-3">
             {site.nav.map(item => (
               <a
-                href={item.href}
+                href={`${homeHref}${item.href}`}
                 class="text-base font-medium text-text-secondary transition hover:text-text-primary"
               >{item.label}</a>
             ))}

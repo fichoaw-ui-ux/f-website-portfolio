@@ -1,8 +1,5 @@
 export type Lang = 'id' | 'en'
 
-export const locales: Lang[] = ['id', 'en']
-export const defaultLocale: Lang = 'id'
-
 export function resolveLocale(currentLocale: string | undefined): Lang {
   return currentLocale === 'en' ? 'en' : 'id'
 }

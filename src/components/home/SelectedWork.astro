@@ -4,6 +4,7 @@ import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
 import { sortByOrder, filterFeatured, localeEntries } from '../../lib/content'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
+import { getRelativeLocaleUrl } from 'astro:i18n'
 
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
@@ -78,7 +79,7 @@ const featured = sortByOrder(filterFeatured(localeEntries(all, lang)))
           style={cardStyle}
         >
           <a
-            href={`/work/${p.data.slug}`}
+            href={getRelativeLocaleUrl(lang, `/work/${p.data.slug}`)}
             class="group block rounded-[32px] stroke-gradient [--stroke-fill:var(--gradient-card)] p-6 transition duration-500 hover:-translate-y-1 md:p-12"
           >
             {/* 36% is Figma's 438px text column over the 1216px inner width of
