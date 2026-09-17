@@ -27,13 +27,6 @@ const dictionary = {
       subcopy: 'Dengan mata yang detail dan cara berpikir yang kritis, aku fokus bikin website, produk, dan experience yang menarik.',
       noProjects: 'Belum ada proyek.',
     },
-    notFound: {
-      pageTitle: '404 — Tidak Ditemukan',
-      errorLabel: 'Error 404',
-      heading: 'Halaman tidak ditemukan.',
-      body: 'Halaman yang kamu cari nggak ada atau udah dipindah.',
-      backHome: '← Kembali ke beranda',
-    },
     caseStudy: { titleSuffix: ' — Studi Kasus', nextProject: 'Proyek selanjutnya' },
     exploration: {
       backToExplorations: '← Kembali ke eksplorasi',
@@ -71,13 +64,6 @@ const dictionary = {
       heading: 'My selected works',
       subcopy: 'With my keen eye for detail and sharp critical thinking skills, I specialize in crafting captivating websites, products, and experiences.',
       noProjects: 'No projects yet.',
-    },
-    notFound: {
-      pageTitle: '404 — Not Found',
-      errorLabel: 'Error 404',
-      heading: 'Page not found.',
-      body: "The page you're looking for doesn't exist or has been moved.",
-      backHome: '← Back home',
     },
     caseStudy: { titleSuffix: ' — Case Study', nextProject: 'Next project' },
     exploration: {
