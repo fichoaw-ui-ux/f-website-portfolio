@@ -83,9 +83,9 @@ describe('home page structure', () => {
   })
 
   describe('selected works', () => {
-    it('uses the Figma heading and sub-copy', () => {
+    it('uses the Figma heading, with no sub-copy', () => {
       expect(html).toContain('My selected works')
-      expect(html).toContain('With my keen eye for detail')
+      expect(html).not.toContain('With my keen eye for detail')
       expect(html).not.toContain('Recent projects')
       expect(html).not.toContain('Selected work</')
     })

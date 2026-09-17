@@ -62,9 +62,9 @@ describe('home page structure (id)', () => {
   })
 
   describe('selected works', () => {
-    it('uses the Indonesian heading and sub-copy', () => {
+    it('uses the Indonesian heading, with no sub-copy', () => {
       expect(html).toContain('Studi Kasus')
-      expect(html).toContain('mata yang detail')
+      expect(html).not.toContain('mata yang detail')
       expect(html).not.toContain('My selected works')
     })
 

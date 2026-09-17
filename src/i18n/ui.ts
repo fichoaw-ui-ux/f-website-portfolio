@@ -24,7 +24,6 @@ const dictionary = {
     common: { viewDetails: 'Lihat Detail' },
     selectedWork: {
       heading: 'Studi Kasus',
-      subcopy: 'Dengan mata yang detail dan cara berpikir yang kritis, saya fokus bikin website, produk, dan experience yang menarik.',
       noProjects: 'Belum ada proyek.',
     },
     caseStudy: { titleSuffix: ' — Studi Kasus', nextProject: 'Proyek selanjutnya' },
@@ -62,7 +61,6 @@ const dictionary = {
     common: { viewDetails: 'View Details' },
     selectedWork: {
       heading: 'My selected works',
-      subcopy: 'With my keen eye for detail and sharp critical thinking skills, I specialize in crafting captivating websites, products, and experiences.',
       noProjects: 'No projects yet.',
     },
     caseStudy: { titleSuffix: ' — Case Study', nextProject: 'Next project' },
