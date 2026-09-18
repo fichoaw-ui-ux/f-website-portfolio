@@ -16,7 +16,7 @@ const dictionary = {
       portraitAlt: (name: string) => `Potret ${name}`,
     },
     contact: {
-      heading: 'Yuk, bikin sesuatu bareng',
+      heading: 'Terbuka untuk peluang kerja dan freelance',
       bodyBefore: 'Terbuka untuk kerja product design dan kolaborasi. Bisa hubungi saya di ',
       bodyAfter: ', atau say hi lewat LinkedIn atau WhatsApp di bawah.',
     },

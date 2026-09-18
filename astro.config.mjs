@@ -14,7 +14,7 @@ export default defineConfig({
   site: 'https://ficho-portfolio.vercel.app',
   i18n: {
     locales: ['id', 'en'],
-    defaultLocale: 'id',
+    defaultLocale: 'en',
     routing: { prefixDefaultLocale: false },
   },
   vite: {
@@ -25,7 +25,7 @@ export default defineConfig({
     mdx(),
     sitemap({
       i18n: {
-        defaultLocale: 'id',
+        defaultLocale: 'en',
         locales: { id: 'id', en: 'en' },
       },
     }),

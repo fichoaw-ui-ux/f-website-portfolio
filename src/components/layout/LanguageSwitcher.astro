@@ -4,12 +4,22 @@ import type { Lang } from '../../i18n/ui'
 
 interface Props { currentLang: Lang }
 const { currentLang } = Astro.props
-const rawPath = currentLang === 'en' ? (Astro.url.pathname.replace(/^\/en/, '') || '/') : Astro.url.pathname
+const rawPath = currentLang === 'id' ? (Astro.url.pathname.replace(/^\/id/, '') || '/') : Astro.url.pathname
 const idHref = getRelativeLocaleUrl('id', rawPath)
 const enHref = getRelativeLocaleUrl('en', rawPath)
 ---
 <div class="flex items-center gap-1 font-mono text-sm text-text-secondary" aria-label="Language">
-  <a href={idHref} class:list={['px-1 transition hover:text-text-primary', currentLang === 'id' && 'font-semibold text-text-primary']}>ID</a>
+  <a href={idHref} data-lang-switch class:list={['px-1 transition hover:text-text-primary', currentLang === 'id' && 'font-semibold text-text-primary']}>ID</a>
   <span aria-hidden="true">/</span>
-  <a href={enHref} class:list={['px-1 transition hover:text-text-primary', currentLang === 'en' && 'font-semibold text-text-primary']}>EN</a>
+  <a href={enHref} data-lang-switch class:list={['px-1 transition hover:text-text-primary', currentLang === 'en' && 'font-semibold text-text-primary']}>EN</a>
 </div>
+<script is:inline>
+  // Switching language is a full page navigation to a different locale route,
+  // so the browser resets scroll to the top. Stash the current position
+  // before leaving and BaseLayout restores it on the next page's load.
+  document.querySelectorAll('a[data-lang-switch]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      sessionStorage.setItem('langSwitchScrollY', String(window.scrollY))
+    })
+  })
+</script>

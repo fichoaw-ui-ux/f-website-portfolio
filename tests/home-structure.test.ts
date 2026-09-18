@@ -5,7 +5,7 @@ import { join } from 'node:path'
 const DIST = join(process.cwd(), 'dist')
 
 async function readHomeHtml(): Promise<string> {
-  return readFile(join(DIST, 'index.html'), 'utf8').catch((err: unknown) => {
+  return readFile(join(DIST, 'id', 'index.html'), 'utf8').catch((err: unknown) => {
     if ((err as NodeJS.ErrnoException)?.code === 'ENOENT') {
       throw new Error('dist/ not found — run `npm run build` before this test')
     }
@@ -97,15 +97,14 @@ describe('home page structure (id)', () => {
     it('lists company and role per entry', () => {
       expect(html).toContain('Pengalaman Kerja')
       expect(html).toMatch(/Transfez (&#38;|&amp;|&) Jack/)
-      expect(html).toContain('Great Giant Foods')
-      expect(html).toContain('Corporate Communication')
+      expect(html).toContain('Desainer Grafis')
     })
 
     it('renders every responsibility as a bulleted list item', () => {
       // Same content shape as the English version, just translated — the
       // item/label count is language-independent.
       const bullets = html.match(/aria-hidden="true">&bull;/g) ?? []
-      expect(bullets).toHaveLength(16)
+      expect(bullets).toHaveLength(14)
       expect(html).toMatch(/<li[^>]*>\s*<span[^>]*aria-hidden/)
       expect(html).toContain('Tanggung Jawab Umum')
       expect(html).toContain('<mark')
@@ -136,7 +135,7 @@ describe('home page structure (id)', () => {
 
   describe('contact and footer', () => {
     it('offers LinkedIn, WhatsApp and a mail link', () => {
-      expect(html).toContain('Yuk, bikin sesuatu bareng')
+      expect(html).toContain('Terbuka untuk peluang kerja dan freelance')
       expect(html).toContain('mailto:fichoajiwibowo@gmail.com')
       expect(html).toContain('>LinkedIn<')
       expect(html).toContain('>WhatsApp<')
@@ -158,17 +157,17 @@ describe('home page structure (id)', () => {
       expect(header).toContain('fill="currentColor"')
       expect(html).not.toContain('src="/images/logo-ficho.svg"')
       expect(html).toContain('Hubungi Saya')
-      expect(html).toContain('href="/#work"')
-      expect(html).toContain('href="/#about"')
-      expect(html).toContain('href="/#experience"')
-      expect(html).toContain('href="/#explorations"')
+      expect(html).toContain('href="/id/#work"')
+      expect(html).toContain('href="/id/#about"')
+      expect(html).toContain('href="/id/#experience"')
+      expect(html).toContain('href="/id/#explorations"')
       expect(html).not.toContain('Get in touch')
     })
 
     it('offers the ID/EN language switcher', () => {
       expect(html).toMatch(/>ID<\/a>/)
       expect(html).toMatch(/>EN<\/a>/)
-      expect(html).toMatch(/href="\/en\/?"/)
+      expect(html).toMatch(/href="\/"/)
     })
 
     it('sticks — which is only safe while the bar stays opaque', () => {

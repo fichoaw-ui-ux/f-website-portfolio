@@ -11,16 +11,16 @@ const hasTitle = trimmed.length > 0
 const prefixMatch = trimmed.match(/^([A-Z][.\d]*)\s+(.+)$/)
 const prefix = prefixMatch?.[1] ?? ''
 const titleBody = prefixMatch?.[2] ?? trimmed
-const proseClasses = "prose max-w-none [&>*:last-child]:mb-0 prose-p:text-text-primary prose-p:text-lg prose-p:leading-relaxed prose-p:mb-6 prose-headings:font-display prose-headings:font-semibold prose-a:text-text-primary prose-a:underline prose-strong:text-text-primary prose-ul:pl-0 prose-ol:pl-0 prose-ul:my-6 prose-ol:my-6 prose-li:text-text-primary prose-li:text-lg prose-li:leading-relaxed prose-li:pl-0 prose-li:my-2 marker:text-text-primary [&_ul>li]:list-inside [&_ol>li]:list-inside [&_blockquote]:border-0 [&_blockquote]:p-6 [&_blockquote]:md:p-8 [&_blockquote]:my-8 [&_blockquote]:rounded-card [&_blockquote]:stroke-gradient [&_blockquote]:[--stroke-fill:var(--gradient-card)] [&_blockquote]:not-italic prose-blockquote:font-display prose-blockquote:font-semibold prose-blockquote:leading-snug prose-blockquote:text-text-primary [&_blockquote_p]:font-display [&_blockquote_p]:font-semibold [&_blockquote_p]:not-italic [&_blockquote_p]:text-xl [&_blockquote_p]:md:text-2xl [&_blockquote_p]:leading-snug [&_blockquote_p]:m-0 [&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none [&_blockquote_strong]:font-semibold"
+const proseClasses = "prose max-w-none [&>*:last-child]:mb-0 prose-p:text-text-primary prose-p:text-lg prose-p:leading-relaxed prose-p:mb-6 prose-headings:font-display prose-headings:font-semibold prose-a:text-text-primary prose-a:underline prose-strong:text-text-primary prose-ul:pl-0 prose-ol:pl-0 prose-ul:my-6 prose-ol:my-6 prose-li:text-text-primary prose-li:text-lg prose-li:leading-relaxed prose-li:pl-0 prose-li:my-3 marker:text-text-primary [&_ul>li]:list-inside [&_ol>li]:list-inside [&_blockquote]:border-0 [&_blockquote]:p-6 [&_blockquote]:md:p-8 [&_blockquote]:my-8 [&_blockquote]:rounded-card [&_blockquote]:stroke-gradient [&_blockquote]:[--stroke-fill:var(--gradient-card)] [&_blockquote]:not-italic prose-blockquote:font-display prose-blockquote:font-semibold prose-blockquote:leading-snug prose-blockquote:text-text-primary [&_blockquote_p]:font-display [&_blockquote_p]:font-semibold [&_blockquote_p]:not-italic [&_blockquote_p]:text-xl [&_blockquote_p]:md:text-2xl [&_blockquote_p]:leading-snug [&_blockquote_p]:m-0 [&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none [&_blockquote_strong]:font-semibold"
 ---
 {prefix ? (
-  <section class:list={['mb-6 [&:has(+section)]:mb-16 [&:has(+section[class*="pl-8"])]:mb-4 max-w-3xl grid gap-x-2', gridColsClass, indentClass]}>
+  <section class:list={['mb-6 [&:has(+section)]:mb-16 [&:has(+section[class*="pl-8"])]:mb-8 max-w-3xl grid gap-x-2', gridColsClass, indentClass]}>
     <h3 class="font-display font-semibold text-lg md:text-xl text-text-primary mb-4 uppercase tracking-wide col-start-1">{prefix}</h3>
     <h3 class="font-display font-semibold text-lg md:text-xl text-text-primary mb-4 uppercase tracking-wide col-start-2">{titleBody}</h3>
     <div class={`col-start-2 ${proseClasses}`}><slot /></div>
   </section>
 ) : (
-  <section class:list={['mb-6 [&:has(+section)]:mb-16 [&:has(+section[class*="pl-8"])]:mb-4 max-w-3xl', indentClass]}>
+  <section class:list={['mb-6 [&:has(+section)]:mb-16 [&:has(+section[class*="pl-8"])]:mb-8 max-w-3xl', indentClass]}>
     {hasTitle && <h3 class="font-display font-semibold text-lg md:text-xl text-text-primary mb-4 uppercase tracking-wide">{trimmed}</h3>}
     <div class={proseClasses}><slot /></div>
   </section>

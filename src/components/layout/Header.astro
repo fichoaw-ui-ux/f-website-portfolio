@@ -9,9 +9,9 @@ import { getRelativeLocaleUrl } from 'astro:i18n'
 const lang = resolveLocale(Astro.currentLocale)
 const site = getSite(lang)
 const t = useTranslations(lang)
-// getRelativeLocaleUrl('en', '/') returns "/en" (no trailing slash) while
-// ('id', '/') returns "/" — normalize to always have exactly one trailing
-// slash so fragment hrefs below never end up as "/en#work" or "/en//#work".
+// getRelativeLocaleUrl('id', '/') returns "/id" (no trailing slash) while
+// ('en', '/') returns "/" — normalize to always have exactly one trailing
+// slash so fragment hrefs below never end up as "/id#work" or "/id//#work".
 const homeHref = `${getRelativeLocaleUrl(lang, '/').replace(/\/$/, '')}/`
 
 interface Props { showBackToHome?: boolean }

@@ -5,7 +5,7 @@ import { join } from 'node:path'
 const DIST = join(process.cwd(), 'dist')
 
 async function readHomeHtml(): Promise<string> {
-  return readFile(join(DIST, 'en', 'index.html'), 'utf8').catch((err: unknown) => {
+  return readFile(join(DIST, 'index.html'), 'utf8').catch((err: unknown) => {
     if ((err as NodeJS.ErrnoException)?.code === 'ENOENT') {
       throw new Error('dist/ not found — run `npm run build` before this test')
     }
@@ -127,8 +127,7 @@ describe('home page structure', () => {
       // keeps its raw apostrophe while {e.company} turns & into an entity.
       expect(html).toMatch(/Where I(&#39;|&rsquo;|&apos;|'|’)ve worked/)
       expect(html).toMatch(/Transfez (&#38;|&amp;|&) Jack/)
-      expect(html).toContain('Great Giant Foods')
-      expect(html).toContain('Corporate Communication')
+      expect(html).toContain('Graphic Designer')
     })
 
     it('renders every responsibility as a bulleted list item', () => {
@@ -137,12 +136,12 @@ describe('home page structure', () => {
       // so they pass either way; only the nested bullet lists are new. The old
       // component rendered a single {e.description}, which no longer exists.
       //
-      // 16 = the 13 responsibility items across the three roles, plus the
+      // 14 = the 11 responsibility items across the two roles, plus the
       // three section labels the current role groups them under, each of which
       // draws its own (larger) glyph. Counting the glyph rather than the copy
       // keeps this from re-breaking every time a bullet is reworded.
       const bullets = html.match(/aria-hidden="true">&bull;/g) ?? []
-      expect(bullets).toHaveLength(16)
+      expect(bullets).toHaveLength(14)
       expect(html).toMatch(/<li[^>]*>\s*<span[^>]*aria-hidden/)
       // The labels are what make the current role's two-level nesting legible;
       // without them the nine items under it read as one flat run.
@@ -230,12 +229,11 @@ describe('home page structure', () => {
       // lost one is invisible otherwise. There is no /#contact entry: the CTA
       // is a mailto, not an anchor to a section.
       //
-      // On the English (/en) page these must be prefixed with /en so the
-      // links stay on the English site instead of dropping back to Indonesian.
-      expect(html).toContain('href="/en/#work"')
-      expect(html).toContain('href="/en/#about"')
-      expect(html).toContain('href="/en/#experience"')
-      expect(html).toContain('href="/en/#explorations"')
+      // English is the default locale (no URL prefix), so these stay bare.
+      expect(html).toContain('href="/#work"')
+      expect(html).toContain('href="/#about"')
+      expect(html).toContain('href="/#experience"')
+      expect(html).toContain('href="/#explorations"')
       expect(html).not.toContain('Get in touch')
     })
 

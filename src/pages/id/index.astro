@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import HomePage from '../../components/home/HomePage.astro'
 import { getSite } from '../../content/site'
 
-const site = getSite('en')
+const site = getSite('id')
 ---
 <BaseLayout title={`${site.name} — ${site.role}`} description={site.tagline}>
   <HomePage />

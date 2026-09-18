@@ -8,7 +8,7 @@ import { resolveLocale, useTranslations } from '../../../i18n/ui'
 
 export async function getStaticPaths() {
   const all = await getCollection('explorations')
-  return localeEntries(all, 'en').map(entry => ({ params: { slug: entry.data.slug }, props: { entry } }))
+  return localeEntries(all, 'id').map(entry => ({ params: { slug: entry.data.slug }, props: { entry } }))
 }
 
 const { entry } = Astro.props
@@ -16,6 +16,9 @@ const d = entry.data
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 
+// Strip any inbound `show-proto-sidebar` flag so we can force the chromeless
+// player (sidebar hidden). Figma's player still draws its own device frame
+// and prev/next/reset controls, which is exactly what we want here.
 const prototypeEmbedSrc = d.prototype
   ? (() => {
       const cleanUrl = d.prototype.replace(/[?&]show-proto-sidebar=[^&]*/g, '')
@@ -27,7 +30,7 @@ const prototypeEmbedSrc = d.prototype
 ---
 <BaseLayout title={`${d.title}${t.exploration.titleSuffix}`} description={d.caption} ogImage={d.cover}>
   <Container class="pt-12">
-    <a href="/en/#explorations" class="font-mono text-base text-text-secondary hover:text-text-primary transition">{t.exploration.backToExplorations}</a>
+    <a href="/id/#explorations" class="font-mono text-base text-text-secondary hover:text-text-primary transition">{t.exploration.backToExplorations}</a>
     <header class="mt-8 mb-12">
       <div class="flex flex-wrap gap-2 mb-4">{d.tags.map(tag => <Tag>{tag}</Tag>)}</div>
       <h1 class="font-display font-extrabold text-display-lg">{d.title}</h1>
@@ -37,6 +40,9 @@ const prototypeEmbedSrc = d.prototype
   </Container>
 
   {prototypeEmbedSrc && (
+    /* Full-bleed dark stage so Figma's device frame reads the way it does in
+       Figma itself. h-[85vh] keeps the phone comfortably tall on desktop but
+       clamps on short viewports; min-h-[560px] keeps it usable on mobile. */
     <section class="bg-[#0B0B0B]">
       <iframe
         src={prototypeEmbedSrc}

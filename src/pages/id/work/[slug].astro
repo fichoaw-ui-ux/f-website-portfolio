@@ -5,7 +5,7 @@ import { sortByOrder, getNextItem, localeEntries } from '../../../lib/content'
 
 export async function getStaticPaths() {
   const all = await getCollection('case-studies')
-  const sorted = sortByOrder(localeEntries(all, 'en'))
+  const sorted = sortByOrder(localeEntries(all, 'id'))
   return sorted.map(entry => ({
     params: { slug: entry.data.slug },
     props: { entry, next: getNextItem(sorted, entry.data.slug)! },

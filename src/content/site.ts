@@ -53,58 +53,45 @@ const perLang = {
     ],
     experience: [
       {
-        year: 'Juli 2022 — Sekarang',
+        year: 'Oktober 2022 — Sekarang',
         company: 'Transfez & Jack Finance',
         role: 'UI/UX Designer',
         sections: [
           {
             label: 'Tanggung Jawab Umum',
             items: [
-              'Kerja bareng tim **Product, Engineering, Compliance, dan Data** buat nerjemahin kebutuhan regulasi dan bisnis jadi solusi desain yang solid dan bisa diuji.',
-              'Ngerjain **usability review** dan iterasi desain berdasarkan data (misalnya **analisis transaksi/funnel**) dan feedback kualitatif dari tim Ops dan Compliance.',
+              'Berkolaborasi dengan semua tim untuk menerjemahkan kebutuhan regulasi dan bisnis jadi solusi desain yang solid dan bisa diuji.',
+              'Membangun sistem dokumentasi copy menggunakan fitur variables di Figma, lalu mengembangkannya jadi AI skill supaya proses dokumentasi dan implementasinya ke desain jadi lebih mudah dan konsisten.',
             ],
           },
           {
-            label: 'Fokus: Transfez (Sekarang)',
+            label: 'Transfez (Fokus Saat Ini) | Oktober 2025 - Sekarang',
             items: [
-              'Ikut bangun website Transfez pakai **AI-assisted development (Claude Code)** yang terintegrasi sama **Figma lewat MCP** — jadi proses handoff desain langsung nyambung ke kode, termasuk **git workflow** (commit, push, pull request) bareng tim development.',
-              'Nemuin gap UX besar di **fitur voucher Send Money** Transfez — cuma **31.43% dari 6.297 user** yang pakai voucher yang tersedia menurut data Mixpanel — terus mimpin eksekusi desain dari awal sampai handoff ke engineering (analisis, iterasi, restrukturisasi halaman); solusinya **divalidasi tim Growth dan disetujui buat dikembangkan**.',
+              'Ikut membangun website Transfez pakai **AI-assisted development (Claude Code)** yang terintegrasi dengan **Figma lewat MCP** — jadi proses handoff desain langsung tersambung ke kode, termasuk **git workflow** (commit, push, pull request) bareng tim development.',
+              'Menemukan gap UX besar di **fitur voucher Send Money** Transfez — hanya **1.979 dari 6.297 user (31,43%)** yang memakai voucher yang tersedia, menurut data Mixpanel — lalu memimpin eksekusi desain dari awal sampai handoff ke engineering (analisis, iterasi, restrukturisasi halaman); solusinya **divalidasi tim Growth dan disetujui untuk dikembangkan**.',
             ],
           },
           {
-            label: 'Fokus Sebelumnya: Jack Finance (Afiliasi Transfez)',
+            label: 'Jack Finance | Oktober 2022 - September 2025',
             items: [
-              'Megang **desain end-to-end** buat **Send Money (Transfer Internasional & Lokal), Payroll**, dan produk inti lainnya — mulai dari user flow, information architecture, sampai UI high-fidelity.',
-              'Ngedesain UI flow, mockup, dan elemen interface buat fitur **transaction recovery**, yang bikin **tiket support turun 70%** dan payment success rate naik dari **80% ke 95%**.',
-              'Mimpin desain UI/UX buat **flow Local Transfer yang mobile-native**, yang bikin **56% adopsi mobile** di bulan pertama dan **motong waktu penyelesaian 40%**.',
-              'Ngedesain flow **"Quick Transfer"** yang lebih ringkas buat pembayaran satuan/volume kecil, motong waktu mulai transfer **52%** dan berhasil dipakai buat **41% dari semua inisiasi Local Transfer** dalam dua minggu setelah rilis.',
-              'Ngedesain pengalaman **Enhanced Due Diligence (EDD)** yang dilihat client — form permintaan dokumen yang dinamis, notifikasi multi-channel, dan alert perubahan kurs — buat sistem **monitoring compliance AML/CFT** otomatis di transfer cross-border.',
+              'Menangani **desain end-to-end** untuk **Send Money (Transfer Internasional & Lokal), Payroll**, dan produk inti lainnya — mulai dari user flow, information architecture, sampai UI high-fidelity.',
+              'Bertanggung jawab membangun flow dan desain product/fitur **KYB** untuk membantu proses onboarding customer, sesuai kebutuhan tim Compliance dan Business Development.',
+              'Memimpin desain UI/UX untuk **flow Local Transfer yang mobile-native**, yang bikin **adopsi naik 56%** di bulan pertama dan **mengurangi waktu penyelesaian 40%**.',
+              'Merancang flow **"Quick Transfer"** yang lebih ringkas untuk pembayaran satuan/volume kecil — memangkas waktu mulai transfer **52%** dan berhasil dipakai untuk **41% dari semua inisiasi Local Transfer** dalam dua minggu setelah rilis.',
+              'Merancang UI flow, mockup, dan elemen interface untuk fitur **transaction recovery**, yang bikin **tiket support turun 70%** dan **payment success rate naik dari 80% ke 95%**.',
             ],
           },
         ],
       },
       {
-        year: 'Oktober 2021 — Juni 2022',
+        year: 'Oktober 2021 — September 2022',
         company: 'Transfez',
         role: 'Desainer Grafis (Magang)',
         sections: [
           {
             items: [
-              'Bikin materi marketing, aset brand identity, dan grafis media sosial buat dukung kampanye dan publikasi perusahaan.',
-              'Kerja bareng tim Marketing, Product, dan Content buat mastiin hasil desain sesuai sama tujuan kampanye.',
-            ],
-          },
-        ],
-      },
-      {
-        year: 'Oktober 2021 — Maret 2022',
-        company: 'Great Giant Foods',
-        role: 'Corporate Communication (Magang)',
-        sections: [
-          {
-            items: [
-              'Bikin dan jalanin konten corporate communication di media sosial dan newsletter buat dukung tujuan perusahaan.',
-              'Nulis, ngedit, dan visualisasiin materi komunikasi termasuk press release dan laporan sustainability (ESG/governance).',
+              'Membuat aset brand identity dan grafis media sosial untuk mendukung kampanye dan publikasi perusahaan.',
+              'Berkolaborasi dengan tim Marketing, Product, dan Content untuk memastikan hasil desain sesuai dengan tujuan kampanye.',
             ],
           },
         ],
@@ -125,58 +112,45 @@ const perLang = {
     ],
     experience: [
       {
-        year: 'July 2022 — Present',
+        year: 'October 2022 — Present',
         company: 'Transfez & Jack Finance',
         role: 'UI/UX Designer',
         sections: [
           {
             label: 'General Responsibilities',
             items: [
-              'Collaborated closely with **Product, Engineering, Compliance, and Data** teams to translate regulatory and business requirements into cohesive, testable design solutions.',
-              'Conducted **usability reviews** and iterated on designs based on data (e.g., **transaction/funnel analysis**) and qualitative feedback from Ops and Compliance stakeholders.',
+              'Collaborated with all teams to translate regulatory and business needs into solid, testable design solutions.',
+              "Built a copy documentation system using Figma's variables feature, then turned it into an AI skill to make documentation and design implementation easier and more consistent.",
             ],
           },
           {
-            label: 'Focus: Transfez (Current)',
+            label: 'Transfez (Focus Now) | October 2025 - Now',
             items: [
-              'Collaborated on implementation of the Transfez website using **AI-assisted development (Claude Code)** integrated with **Figma via MCP** — bridging design handoff directly into code, including **git workflows** (commit, push, pull requests) alongside the development team.',
-              "Identified a major UX gap in Transfez's **Send Money voucher experience** — only **31.43% of 6,297 users** engaged with available vouchers per Mixpanel data — and led full design execution (analysis, iteration, page restructuring) through engineering handoff; solution **validated by Growth stakeholders and approved for development**.",
+              'Helped build the Transfez website using **AI-assisted development (Claude Code)** integrated with **Figma via MCP** — connecting the design handoff process directly to code, including **git workflow** (commit, push, pull request) with the development team.',
+              'Found a major UX gap in the **Send Money voucher feature** — only **1,979 out of 6,297 users (31.43%)** used the available voucher, based on Mixpanel data — then led the design work from research to engineering handoff (analysis, iteration, page restructuring); the solution was **validated by the Growth team and approved for development**.',
             ],
           },
           {
-            label: 'Prior Focus: Jack Finance (Transfez Affiliate)',
+            label: 'Jack Finance | October 2022 - September 2025',
             items: [
-              'Managed **end-to-end design** for **Send Money (International & Local Transfers), Payroll**, and other core products — from user flows and information architecture to high-fidelity UI.',
-              'Designed UI flows, mockups, and interface elements for a **transaction recovery** feature, contributing to a **70% drop in support tickets** and lifting payment success rate from **80% to 95%**.',
-              'Led UI/UX design for a **mobile-native Local Transfer flow**, driving **56% mobile adoption** within the first month and **cutting time-to-completion by 40%**.',
-              'Designed a streamlined **"Quick Transfer" flow** for single/small-volume payments, reducing transfer initiation time by **52%** and capturing **41% of Local Transfer initiations** within two weeks of launch.',
-              'Designed the client-facing **Enhanced Due Diligence (EDD)** experience — dynamic document-request forms, multi-channel notifications, and FX-rate change alerts — for an automated **AML/CFT compliance monitoring** system across cross-border transfers.',
+              'Handled **end-to-end design** for **Send Money (International & Local Transfer), Payroll**, and other core products — from user flow and information architecture to high-fidelity UI.',
+              'Responsible for building the flow and design for the **KYB** product/feature to support customer onboarding, based on the needs of the Compliance and Business Development teams.',
+              'Led UI/UX design for the **mobile-native Local Transfer flow**, which drove **56% mobile adoption** in the first month and **cut completion time by 40%**.',
+              'Designed the **"Quick Transfer"** flow, a simpler option for small or single payments, which cut transfer initiation time by **52%** and was used in **41% of all Local Transfer initiations** within two weeks of launch.',
+              'Designed UI flow, mockups, and interface elements for the **transaction recovery** feature, which cut **support tickets by 70%** and raised the **payment success rate from 80% to 95%**.',
             ],
           },
         ],
       },
       {
-        year: 'October 2021 — June 2022',
+        year: 'October 2021 — September 2022',
         company: 'Transfez',
         role: 'Graphic Designer (Intern)',
         sections: [
           {
             items: [
-              'Produced marketing materials, brand identity assets, and social media graphics supporting company campaigns and publications.',
-              'Partnered with Marketing, Product, and Content teams to ensure design output aligned with campaign objectives.',
-            ],
-          },
-        ],
-      },
-      {
-        year: 'October 2021 — March 2022',
-        company: 'Great Giant Foods',
-        role: 'Corporate Communication (Intern)',
-        sections: [
-          {
-            items: [
-              'Developed and executed corporate communication content across social media and newsletters in support of company goals.',
-              'Drafted, edited, and visualized communication materials including press releases and sustainability reports (ESG/governance).',
+              'Created marketing materials, brand identity assets, and social media graphics to support company campaigns and publications.',
+              'Worked with the Marketing, Product, and Content teams to make sure designs matched campaign goals.',
             ],
           },
         ],

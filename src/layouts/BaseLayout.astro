@@ -22,9 +22,9 @@ const canonical = new URL(Astro.url.pathname, origin).toString()
 // root-relative path, which is why link previews rendered without a card.
 const ogImageUrl = new URL(ogImage, origin).toString()
 
-// Strip the /en prefix (if present) to get the locale-agnostic path, then
+// Strip the /id prefix (if present) to get the locale-agnostic path, then
 // rebuild it for both locales — this is what the hreflang alternates point at.
-const rawPath = lang === 'en' ? (Astro.url.pathname.replace(/^\/en/, '') || '/') : Astro.url.pathname
+const rawPath = lang === 'id' ? (Astro.url.pathname.replace(/^\/id/, '') || '/') : Astro.url.pathname
 const hreflangId = new URL(getRelativeLocaleUrl('id', rawPath), origin).toString()
 const hreflangEn = new URL(getRelativeLocaleUrl('en', rawPath), origin).toString()
 
@@ -55,7 +55,7 @@ const lightThemeVars = [
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="id" href={hreflangId} />
     <link rel="alternate" hreflang="en" href={hreflangEn} />
-    <link rel="alternate" hreflang="x-default" href={hreflangId} />
+    <link rel="alternate" hreflang="x-default" href={hreflangEn} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={resolvedDescription} />
     <meta property="og:image" content={ogImageUrl} />
@@ -68,5 +68,19 @@ const lightThemeVars = [
     {showHeader && <Header showBackToHome={showBackToHome} />}
     <main><slot /></main>
     <Footer />
+    <script is:inline>
+      // Counterpart to the stash in LanguageSwitcher.astro — restores the
+      // scroll position after the language-switch navigation lands here.
+      (function () {
+        var y = sessionStorage.getItem('langSwitchScrollY')
+        if (y !== null) {
+          sessionStorage.removeItem('langSwitchScrollY')
+          // `behavior: 'instant'` bypasses the global `scroll-behavior:
+          // smooth` (global.css) — without it this animates from the top,
+          // which is the "back to top" flash we're trying to avoid.
+          window.scrollTo({ top: parseInt(y, 10), left: 0, behavior: 'instant' })
+        }
+      })()
+    </script>
   </body>
 </html>
