@@ -154,7 +154,7 @@ const { showBackToHome = false } = Astro.props
           <LanguageSwitcher currentLang={lang} />
         </div>
         <a
-          href={`mailto:${site.email}`}
+          href={`${homeHref}#contact`}
           class="hidden h-12 items-center gap-2 whitespace-nowrap rounded-full bg-text-primary px-5 text-base font-semibold leading-none text-bg-primary transition duration-300 hover:bg-text-secondary md:inline-flex"
         >
           <span>{t.header.contactMe}</span>
@@ -209,7 +209,7 @@ const { showBackToHome = false } = Astro.props
           <hr class="my-4 border-0 border-t border-border" />
           <LanguageSwitcher currentLang={lang} />
           <a
-            href={`mailto:${site.email}`}
+            href={`${homeHref}#contact`}
             class="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-text-primary px-5 text-base font-semibold leading-none text-bg-primary transition duration-300 hover:bg-text-secondary"
           >
             <span>{t.header.contactMe}</span>
