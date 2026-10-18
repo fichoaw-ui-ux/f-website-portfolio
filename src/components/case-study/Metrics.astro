@@ -4,7 +4,7 @@ const { items } = Astro.props
 ---
 <div class="mb-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
   {items.map(m => (
-    <div class="rounded-card stroke-gradient [--stroke-fill:var(--gradient-card)] p-6">
+    <div class="rounded-card glass p-6">
       <div class="font-display font-semibold text-4xl md:text-5xl text-accent">{m.value}</div>
       <div class="mt-2 font-mono text-sm uppercase tracking-widest text-text-tertiary">{m.label}</div>
     </div>

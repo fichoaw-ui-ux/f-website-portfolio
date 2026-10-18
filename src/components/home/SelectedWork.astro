@@ -77,7 +77,7 @@ const featured = sortByOrder(filterFeatured(localeEntries(all, lang)))
         >
           <a
             href={getRelativeLocaleUrl(lang, `/work/${p.data.slug}`)}
-            class="group block rounded-[32px] stroke-gradient [--stroke-fill:var(--gradient-card)] p-6 transition duration-500 hover:-translate-y-1 md:p-12"
+            class="group block rounded-[32px] glass p-6 transition duration-500 hover:-translate-y-1 md:p-12"
           >
             {/* 36% is Figma's 438px text column over the 1216px inner width of
                 a 1312px card, so it resolves to 438px at 1440. A fixed 438px
@@ -96,7 +96,7 @@ const featured = sortByOrder(filterFeatured(localeEntries(all, lang)))
                 </p>
                 <p class="mt-6 text-base leading-[1.6] text-text-tertiary md:mt-8 md:text-lg">{p.data.summary}</p>
                 <span
-                  class="mt-8 inline-flex h-12 items-center gap-2 rounded-full stroke-gradient [--stroke-fill:var(--gradient-card)] px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
+                  class="mt-8 inline-flex h-12 items-center gap-2 rounded-full glass px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
                 >
                   <span>{t.common.viewDetails}</span>
                   <svg

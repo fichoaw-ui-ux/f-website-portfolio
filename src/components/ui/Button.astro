@@ -8,7 +8,7 @@ const { href, variant = 'primary', class: className = '' } = Astro.props
 const base = 'inline-flex h-12 items-center gap-2 px-5 rounded-full text-base font-semibold leading-none transition duration-300'
 const styles = variant === 'primary'
   ? 'bg-text-primary text-bg-primary hover:bg-text-secondary'
-  : 'stroke-gradient [--stroke-fill:var(--gradient-card)] text-text-primary hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]'
+  : 'glass text-text-primary hover:bg-glass-hover'
 const Tag = href ? 'a' : 'button'
 ---
 <Tag href={href} class:list={[base, styles, className]}><slot /></Tag>

@@ -16,13 +16,13 @@ const t = useTranslations(lang)
   <div class="mb-6 font-mono text-sm uppercase tracking-widest text-text-tertiary">{t.caseStudy.nextProject}</div>
   <a
     href={getRelativeLocaleUrl(lang, `/work/${slug}`)}
-    class="group block rounded-[32px] stroke-gradient [--stroke-fill:var(--gradient-card)] p-6 transition duration-500 hover:-translate-y-1 md:p-12"
+    class="group block rounded-[32px] glass p-6 transition duration-500 hover:-translate-y-1 md:p-12"
   >
     <div class="grid items-center gap-8 lg:grid-cols-[36%_1fr] lg:items-stretch lg:gap-12">
       <div class="order-2 lg:order-1">
         <h3 class="font-display font-semibold text-display-md text-text-primary">{title}</h3>
         <span
-          class="mt-8 inline-flex h-12 items-center gap-2 rounded-full stroke-gradient [--stroke-fill:var(--gradient-card)] px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
+          class="mt-8 inline-flex h-12 items-center gap-2 rounded-full glass px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
         >
           <span>{t.common.viewDetails}</span>
           <svg

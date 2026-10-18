@@ -64,6 +64,13 @@ describe('home page structure (id)', () => {
       const hrefs = [...html.matchAll(/<link[^>]+href="(\/_astro\/[^"]+\.css)"/g)].map((m) => m[1])
       const css = (await Promise.all(hrefs.map((h) => readFile(join(DIST, h), 'utf8')))).join('\n')
       expect(css).toMatch(/\.bg-video\[[^\]]+\]\{[^}]*z-index:\s*-3/)
+      // Glass surfaces sit over the footage: the tint is what keeps text
+      // readable and covers content scrolling beneath, so blur alone is not
+      // enough. Both must ship in the utility.
+      const glass = css.match(/\.glass\{[^}]*\}/)?.[0]
+      expect(glass).toBeDefined()
+      expect(glass).toContain('var(--color-glass)')
+      expect(glass).toMatch(/backdrop-filter:\s*blur\(/)
     })
   })
 
@@ -184,10 +191,9 @@ describe('home page structure (id)', () => {
       expect(header).not.toContain('var(--color-bg-primary)')
 
       const bar = html.match(/<header[\s\S]*?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
-      // Over the video the pill is tinted glass; the tint is what covers
-      // content scrolling beneath it, so it must be there, not blur alone.
-      expect(bar).toContain('bg-glass')
-      expect(bar).toMatch(/backdrop-blur-/)
+      // Over the video the pill is tinted glass (the `glass` utility, whose
+      // tint and blur are asserted in the background video block).
+      expect(bar).toMatch(/class="[^"]*\bglass\b/)
     })
 
     it('draws the wordmark and CTA inside a bordered pill, as Figma does', () => {
@@ -196,8 +202,7 @@ describe('home page structure (id)', () => {
       expect(bar).toContain('rounded-full')
       // Dark pages sit over the background video, so the pill is glass with
       // a token-driven fill and edge (tokens.css), never a literal colour.
-      expect(bar).toContain('border-glass-border')
-      expect(bar).toContain('bg-glass')
+      expect(bar).toMatch(/class="[^"]*\bglass\b/)
       expect(bar).not.toMatch(/bg-\[(linear-gradient\()?#[0-9a-fA-F]{3,8}/)
     })
   })

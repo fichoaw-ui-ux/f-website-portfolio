@@ -3,7 +3,7 @@ interface Props { author?: string; indent?: boolean | 1 | 2 }
 const { author, indent = false } = Astro.props
 const indentClass = indent === 2 ? 'md:ml-20' : indent ? 'md:ml-8' : ''
 ---
-<figure class:list={['mb-12 max-w-3xl rounded-card stroke-gradient [--stroke-fill:var(--gradient-card)] p-6 md:p-8', indentClass]}>
+<figure class:list={['mb-12 max-w-3xl rounded-card glass p-6 md:p-8', indentClass]}>
   <blockquote class="font-display font-semibold text-xl leading-snug text-text-primary md:text-2xl [&_p]:mb-0 [&_p]:font-display [&_p]:font-semibold [&_p]:text-xl [&_p]:leading-snug [&_p]:md:text-2xl">
     <slot />
   </blockquote>
