@@ -14,11 +14,12 @@ const t = useTranslations(lang)
 // slash so fragment hrefs below never end up as "/id#work" or "/id//#work".
 const homeHref = `${getRelativeLocaleUrl(lang, '/').replace(/\/$/, '')}/`
 
-// `scrim` paints the page colour over the pt-8 gap above the pill (see the
-// note on <header> below). Dark pages turn it off: the background video sits
-// behind them, and a page-colour fade read as a black band over the footage.
-interface Props { showBackToHome?: boolean; scrim?: boolean }
-const { showBackToHome = false, scrim = true } = Astro.props
+// `overVideo` is set on the dark pages, where BackgroundVideo plays behind
+// everything. There the page-colour scrim above the pill is dropped (it read
+// as a black band over the footage) and the pill turns to tinted glass, since
+// a solid neutral-black bar no longer matched the cool, moving sky.
+interface Props { showBackToHome?: boolean; overVideo?: boolean }
+const { showBackToHome = false, overVideo = false } = Astro.props
 ---
 {/* Sticky, and it DOES have a bar — the two are one decision, which is why
     this comment has been rewritten twice. Figma's navbar (node 8921:2731's
@@ -92,7 +93,7 @@ const { showBackToHome = false, scrim = true } = Astro.props
     approximation here. */}
 <header
   class="sticky top-0 z-40 pt-8"
-  style={scrim ? 'background: linear-gradient(to bottom, var(--color-bg-primary) 40%, transparent 100%)' : undefined}
+  style={!overVideo ? 'background: linear-gradient(to bottom, var(--color-bg-primary) 40%, transparent 100%)' : undefined}
 >
   <Container>
     {/* Logo pinned to the left; on home the section nav sits beside Contact Us
@@ -102,7 +103,16 @@ const { showBackToHome = false, scrim = true } = Astro.props
         home, empty on case-study). Desktop switches to a 3-column grid so
         the wordmark sits dead-centre regardless of how wide the leading nav
         or trailing Contact button end up. */}
-    <div class="flex h-[64px] items-center justify-between gap-3 rounded-full stroke-gradient [--stroke-fill:linear-gradient(to_bottom,var(--color-bg-elevated),var(--color-bg-secondary))] pl-5 pr-2 md:grid md:h-[72px] md:grid-cols-3 md:pl-8 md:pr-3">
+    {/* Glass over the video: a tint pulled from the footage's darkest band
+        (Washed Stone #596273, taken down to #1E2430) at 55%, plus blur. The
+        tint is not optional — blur alone was tried before and left bright
+        content passing underneath as a pale smudge (see the note above). */}
+    <div class:list={[
+      'flex h-[64px] items-center justify-between gap-3 rounded-full pl-5 pr-2 md:grid md:h-[72px] md:grid-cols-3 md:pl-8 md:pr-3',
+      overVideo
+        ? 'border border-glass-border bg-glass backdrop-blur-[20px] backdrop-saturate-[1.4]'
+        : 'stroke-gradient [--stroke-fill:linear-gradient(to_bottom,var(--color-bg-elevated),var(--color-bg-secondary))]',
+    ]}>
       {/* Slot 1 (leading): section nav on home, "Back to Home" on case study.
           On mobile home the nav is hidden AND this wrapper collapses out of
           the flex row (`hidden md:block`) so the logo becomes the leading

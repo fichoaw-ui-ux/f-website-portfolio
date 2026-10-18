@@ -16,6 +16,12 @@
   --color-border: rgba(108, 108, 113, 0.5);
   --color-border-hover: #6C6C71;
 
+  /* Navbar glass over the background video. The fill is the video's darkest
+     band (#596273) taken down to #1E2430 so white text keeps AA even where
+     the footage is brightest; the border is the glass edge highlight. */
+  --color-glass: rgba(30, 36, 48, 0.55);
+  --color-glass-border: rgba(255, 255, 255, 0.12);
+
   /* Figma also defines color/neutral/800 (#6C6C71). It reaches only 3.78:1 on
      the page background, so it is deliberately absent — do not add it for text. */
 

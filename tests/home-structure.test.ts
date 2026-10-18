@@ -184,15 +184,20 @@ describe('home page structure (id)', () => {
       expect(header).not.toContain('var(--color-bg-primary)')
 
       const bar = html.match(/<header[\s\S]*?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
-      expect(bar).toContain('var(--color-bg-elevated)')
+      // Over the video the pill is tinted glass; the tint is what covers
+      // content scrolling beneath it, so it must be there, not blur alone.
+      expect(bar).toContain('bg-glass')
+      expect(bar).toMatch(/backdrop-blur-/)
     })
 
     it('draws the wordmark and CTA inside a bordered pill, as Figma does', () => {
       const bar = html.match(/<header[\s\S]{0,600}?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
       expect(bar).toBeDefined()
       expect(bar).toContain('rounded-full')
-      expect(bar).toContain('stroke-gradient')
-      expect(bar).toContain('var(--color-bg-elevated)')
+      // Dark pages sit over the background video, so the pill is glass with
+      // a token-driven fill and edge (tokens.css), never a literal colour.
+      expect(bar).toContain('border-glass-border')
+      expect(bar).toContain('bg-glass')
       expect(bar).not.toMatch(/bg-\[(linear-gradient\()?#[0-9a-fA-F]{3,8}/)
     })
   })

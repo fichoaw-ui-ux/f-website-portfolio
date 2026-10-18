@@ -67,7 +67,7 @@ const lightThemeVars = [
   </head>
   <body class="min-h-screen bg-bg-primary text-text-primary">
     {theme === 'dark' && <BackgroundVideo />}
-    {showHeader && <Header showBackToHome={showBackToHome} scrim={theme === 'light'} />}
+    {showHeader && <Header showBackToHome={showBackToHome} overVideo={theme === 'dark'} />}
     <main><slot /></main>
     <Footer />
     <script is:inline>
