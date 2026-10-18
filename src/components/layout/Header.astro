@@ -14,8 +14,11 @@ const t = useTranslations(lang)
 // slash so fragment hrefs below never end up as "/id#work" or "/id//#work".
 const homeHref = `${getRelativeLocaleUrl(lang, '/').replace(/\/$/, '')}/`
 
-interface Props { showBackToHome?: boolean }
-const { showBackToHome = false } = Astro.props
+// `scrim` paints the page colour over the pt-8 gap above the pill (see the
+// note on <header> below). Dark pages turn it off: the background video sits
+// behind them, and a page-colour fade read as a black band over the footage.
+interface Props { showBackToHome?: boolean; scrim?: boolean }
+const { showBackToHome = false, scrim = true } = Astro.props
 ---
 {/* Sticky, and it DOES have a bar — the two are one decision, which is why
     this comment has been rewritten twice. Figma's navbar (node 8921:2731's
@@ -63,6 +66,11 @@ const { showBackToHome = false } = Astro.props
     the header's bottom edge — no step against the page. Do not flatten this to
     a solid colour.
 
+    Light pages only. On the dark pages the background video shows through
+    the gap, and the page-colour fade read as a black band across the top of
+    the footage, so BaseLayout passes scrim={false} there. Content scrolling
+    through that 32px gap is the accepted trade-off on those pages.
+
     On the SectionIndicator: case-study pages fix a progress bar at
     `top: var(--header-h)`, which its own script sets from this header's
     measured height. That is 104px here (32 + 72) and it lands flush under the
@@ -84,7 +92,7 @@ const { showBackToHome = false } = Astro.props
     approximation here. */}
 <header
   class="sticky top-0 z-40 pt-8"
-  style="background: linear-gradient(to bottom, var(--color-bg-primary) 40%, transparent 100%)"
+  style={scrim ? 'background: linear-gradient(to bottom, var(--color-bg-primary) 40%, transparent 100%)' : undefined}
 >
   <Container>
     {/* Logo pinned to the left; on home the section nav sits beside Contact Us

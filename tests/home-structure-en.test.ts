@@ -241,9 +241,10 @@ describe('home page structure', () => {
       // Without a stacking order it would stick and still be painted under the
       // content it is supposed to cover.
       expect(header).toContain('z-40')
-      // The scrim over the pt-8 gap above the pill. Without it, content scrolls
-      // up through that band — the pill covers only its own 72px.
-      expect(header).toContain('var(--color-bg-primary)')
+      // No scrim over the pt-8 gap on the dark home page: the background video
+      // shows through there, and the page-colour fade read as a black band.
+      // Light case-study pages keep it (Header's `scrim` prop).
+      expect(header).not.toContain('var(--color-bg-primary)')
 
       const bar = html.match(/<header[\s\S]*?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
       expect(bar).toContain('var(--color-bg-elevated)')

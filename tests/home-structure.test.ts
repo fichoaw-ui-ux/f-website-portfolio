@@ -181,7 +181,7 @@ describe('home page structure (id)', () => {
       expect(header).toBeDefined()
       expect(header).toContain('sticky')
       expect(header).toContain('z-40')
-      expect(header).toContain('var(--color-bg-primary)')
+      expect(header).not.toContain('var(--color-bg-primary)')
 
       const bar = html.match(/<header[\s\S]*?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
       expect(bar).toContain('var(--color-bg-elevated)')
