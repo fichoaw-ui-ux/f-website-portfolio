@@ -43,42 +43,30 @@ describe('home page structure', () => {
     })
   })
 
-  describe('hero fog background', () => {
-    it('mounts a decorative fog layer wrapping a canvas', () => {
-      const layer = html.match(/<div[^>]*data-fog-layer[^>]*>/)?.[0]
+  describe('background video', () => {
+    it('mounts a decorative, muted, inline looping video', () => {
+      const layer = html.match(/<div[^>]*class="bg-video[^"]*"[^>]*>/)?.[0]
       expect(layer).toBeDefined()
-      // The layer carries no information and must never be announced or
-      // focusable — it exists only to be looked at.
       expect(layer).toContain('aria-hidden="true"')
-      // Proximity, not containment: a canvas that ended up as a *sibling*
-      // rather than a child would still satisfy a loose distance window, but
-      // container.querySelector('canvas') in the component script would then
-      // return null and the effect would never mount.
-      expect(html).toMatch(/<div[^>]*data-fog-layer[^>]*>\s*<canvas/)
+      // muted + playsinline are what let iOS Safari autoplay it at all.
+      const video = html.match(/<div[^>]*class="bg-video[^>]*>\s*(<video[^>]*>)/)?.[1]
+      expect(video).toBeDefined()
+      for (const attr of ['autoplay', 'muted', 'loop', 'playsinline', 'poster=']) {
+        expect(video).toContain(attr)
+      }
     })
 
-    it('clips the fog to the hero and puts it behind the headline', () => {
-      // Identified by the layer it wraps rather than by a character-distance
-      // lookahead to "Hello!" — the nested Container/Reveal/h1 markup between
-      // the two is long enough that any such window would be brittle.
-      const hero = html.match(/<section[^>]*>(?=\s*<div[^>]*data-fog-layer)/)?.[0]
-      expect(hero).toBeDefined()
-      // overflow-hidden is what keeps the canvas inside the section, and
-      // isolate is what makes the layer's negative z-index resolve against
-      // the hero instead of against body — body::before and body::after
-      // already occupy negative indices in that context.
-      expect(hero).toContain('overflow-hidden')
-      expect(hero).toContain('relative')
-      expect(hero).toContain('isolate')
+    it('offers HEVC first with an H.264 fallback', () => {
+      expect(html).toMatch(/bg-storm-light-hevc\.mp4[^>]*hvc1[\s\S]*?bg-storm-light\.mp4/)
     })
 
-    it('keeps the fog behind the headline rather than over it', () => {
-      // The assertion that would actually catch the failure that matters. If
-      // z-index: -1 were dropped, the opaque canvas would cover the h1 and
-      // every other test here would still pass; global.css:25-33 records a
-      // past bug in this exact stacking interaction. Astro inlines this
-      // component's scoped rule into the page head, so dist/index.html has it.
-      expect(html).toMatch(/\.fog-layer\[[^\]]+\][^}]*z-index:\s*-1/)
+    it('sits under the body texture layers, not over the content', async () => {
+      // body::before is -2 and the grain is -1; the footage must stay below
+      // both, and a non-negative value would paint it over the headline.
+      // BaseLayout's scoped styles ship as a linked stylesheet, not inline.
+      const hrefs = [...html.matchAll(/<link[^>]+href="(\/_astro\/[^"]+\.css)"/g)].map((m) => m[1])
+      const css = (await Promise.all(hrefs.map((h) => readFile(join(DIST, h), 'utf8')))).join('\n')
+      expect(css).toMatch(/\.bg-video\[[^\]]+\]\{[^}]*z-index:\s*-3/)
     })
   })
 
