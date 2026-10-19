@@ -40,24 +40,37 @@ describe('home page structure (id)', () => {
     })
   })
 
-  describe('hero fog background', () => {
-    it('mounts a decorative fog layer wrapping a canvas', () => {
-      const layer = html.match(/<div[^>]*data-fog-layer[^>]*>/)?.[0]
+  describe('background video', () => {
+    it('mounts a decorative, muted, inline looping video', () => {
+      const layer = html.match(/<div[^>]*class="bg-video[^"]*"[^>]*>/)?.[0]
       expect(layer).toBeDefined()
       expect(layer).toContain('aria-hidden="true"')
-      expect(html).toMatch(/<div[^>]*data-fog-layer[^>]*>\s*<canvas/)
+      // muted + playsinline are what let iOS Safari autoplay it at all.
+      const video = html.match(/<div[^>]*class="bg-video[^>]*>\s*(<video[^>]*>)/)?.[1]
+      expect(video).toBeDefined()
+      for (const attr of ['autoplay', 'muted', 'loop', 'playsinline', 'poster=']) {
+        expect(video).toContain(attr)
+      }
     })
 
-    it('clips the fog to the hero and puts it behind the headline', () => {
-      const hero = html.match(/<section[^>]*>(?=\s*<div[^>]*data-fog-layer)/)?.[0]
-      expect(hero).toBeDefined()
-      expect(hero).toContain('overflow-hidden')
-      expect(hero).toContain('relative')
-      expect(hero).toContain('isolate')
+    it('offers HEVC first with an H.264 fallback', () => {
+      expect(html).toMatch(/bg-storm-light-hevc\.mp4[^>]*hvc1[\s\S]*?bg-storm-light\.mp4/)
     })
 
-    it('keeps the fog behind the headline rather than over it', () => {
-      expect(html).toMatch(/\.fog-layer\[[^\]]+\][^}]*z-index:\s*-1/)
+    it('sits under the body texture layers, not over the content', async () => {
+      // body::before is -2 and the grain is -1; the footage must stay below
+      // both, and a non-negative value would paint it over the headline.
+      // BaseLayout's scoped styles ship as a linked stylesheet, not inline.
+      const hrefs = [...html.matchAll(/<link[^>]+href="(\/_astro\/[^"]+\.css)"/g)].map((m) => m[1])
+      const css = (await Promise.all(hrefs.map((h) => readFile(join(DIST, h), 'utf8')))).join('\n')
+      expect(css).toMatch(/\.bg-video\[[^\]]+\]\{[^}]*z-index:\s*-3/)
+      // Glass surfaces sit over the footage: the tint is what keeps text
+      // readable and covers content scrolling beneath, so blur alone is not
+      // enough. Both must ship in the utility.
+      const glass = css.match(/\.glass\{[^}]*\}/)?.[0]
+      expect(glass).toBeDefined()
+      expect(glass).toContain('var(--color-glass)')
+      expect(glass).toMatch(/backdrop-filter:\s*blur\(/)
     })
   })
 
@@ -175,18 +188,21 @@ describe('home page structure (id)', () => {
       expect(header).toBeDefined()
       expect(header).toContain('sticky')
       expect(header).toContain('z-40')
-      expect(header).toContain('var(--color-bg-primary)')
+      expect(header).not.toContain('var(--color-bg-primary)')
 
       const bar = html.match(/<header[\s\S]*?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
-      expect(bar).toContain('var(--color-bg-elevated)')
+      // Over the video the pill is tinted glass (the `glass` utility, whose
+      // tint and blur are asserted in the background video block).
+      expect(bar).toMatch(/class="[^"]*\bglass\b/)
     })
 
     it('draws the wordmark and CTA inside a bordered pill, as Figma does', () => {
       const bar = html.match(/<header[\s\S]{0,600}?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
       expect(bar).toBeDefined()
       expect(bar).toContain('rounded-full')
-      expect(bar).toContain('stroke-gradient')
-      expect(bar).toContain('var(--color-bg-elevated)')
+      // Dark pages sit over the background video, so the pill is glass with
+      // a token-driven fill and edge (tokens.css), never a literal colour.
+      expect(bar).toMatch(/class="[^"]*\bglass\b/)
       expect(bar).not.toMatch(/bg-\[(linear-gradient\()?#[0-9a-fA-F]{3,8}/)
     })
   })

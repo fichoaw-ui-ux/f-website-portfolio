@@ -1,7 +1,6 @@
 ---
 import Container from '../layout/Container.astro'
 import Reveal from '../ui/Reveal.astro'
-import FogBackground from '../ui/FogBackground.astro'
 import { getSite } from '../../content/site'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
@@ -10,7 +9,6 @@ const site = getSite(lang)
 const t = useTranslations(lang)
 ---
 <section class="relative isolate flex min-h-[560px] items-center overflow-hidden py-24 md:min-h-[776px] md:py-0">
-  <FogBackground />
   <Container>
     <div class="mx-auto flex max-w-[1088px] flex-col items-center gap-6 md:gap-8">
       <Reveal>

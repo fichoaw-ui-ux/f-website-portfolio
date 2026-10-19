@@ -14,8 +14,11 @@ const t = useTranslations(lang)
 // slash so fragment hrefs below never end up as "/id#work" or "/id//#work".
 const homeHref = `${getRelativeLocaleUrl(lang, '/').replace(/\/$/, '')}/`
 
-interface Props { showBackToHome?: boolean }
-const { showBackToHome = false } = Astro.props
+// `overVideo` is set on the dark pages, where BackgroundVideo plays behind
+// everything. There the page-colour scrim above the pill is dropped: it read
+// as a black band over the footage.
+interface Props { showBackToHome?: boolean; overVideo?: boolean }
+const { showBackToHome = false, overVideo = false } = Astro.props
 ---
 {/* Sticky, and it DOES have a bar — the two are one decision, which is why
     this comment has been rewritten twice. Figma's navbar (node 8921:2731's
@@ -63,6 +66,11 @@ const { showBackToHome = false } = Astro.props
     the header's bottom edge — no step against the page. Do not flatten this to
     a solid colour.
 
+    Light pages only. On the dark pages the background video shows through
+    the gap, and the page-colour fade read as a black band across the top of
+    the footage, so BaseLayout passes scrim={false} there. Content scrolling
+    through that 32px gap is the accepted trade-off on those pages.
+
     On the SectionIndicator: case-study pages fix a progress bar at
     `top: var(--header-h)`, which its own script sets from this header's
     measured height. That is 104px here (32 + 72) and it lands flush under the
@@ -78,13 +86,12 @@ const { showBackToHome = false } = Astro.props
     light case-study pages, where BaseLayout remaps the colour tokens; a
     literal would have put a dark bar on #FAFAFA. Measured from Figma at full
     resolution the fill is #232324 -> #1A1B1D and the border is a gradient
-    stroke #828287 -> #55555A. The gradient direction is reproduced through
-    bg-elevated -> bg-secondary; the border is a flat token rather than a
-    gradient ring, which is dimmer than Figma's stroke and the one deliberate
-    approximation here. */}
+    stroke #828287 -> #55555A. Since the background video landed, the pill
+    no longer reproduces that fill: it uses the shared `glass` utility
+    (global.css) so it stays in tone with the sky and with every card. */}
 <header
   class="sticky top-0 z-40 pt-8"
-  style="background: linear-gradient(to bottom, var(--color-bg-primary) 40%, transparent 100%)"
+  style={!overVideo ? 'background: linear-gradient(to bottom, var(--color-bg-primary) 40%, transparent 100%)' : undefined}
 >
   <Container>
     {/* Logo pinned to the left; on home the section nav sits beside Contact Us
@@ -94,7 +101,7 @@ const { showBackToHome = false } = Astro.props
         home, empty on case-study). Desktop switches to a 3-column grid so
         the wordmark sits dead-centre regardless of how wide the leading nav
         or trailing Contact button end up. */}
-    <div class="flex h-[64px] items-center justify-between gap-3 rounded-full stroke-gradient [--stroke-fill:linear-gradient(to_bottom,var(--color-bg-elevated),var(--color-bg-secondary))] pl-5 pr-2 md:grid md:h-[72px] md:grid-cols-3 md:pl-8 md:pr-3">
+    <div class="flex h-[64px] items-center justify-between gap-3 rounded-full glass pl-5 pr-2 md:grid md:h-[72px] md:grid-cols-3 md:pl-8 md:pr-3">
       {/* Slot 1 (leading): section nav on home, "Back to Home" on case study.
           On mobile home the nav is hidden AND this wrapper collapses out of
           the flex row (`hidden md:block`) so the logo becomes the leading
@@ -197,7 +204,7 @@ const { showBackToHome = false } = Astro.props
             <path d="M4 18h16" />
           </svg>
         </summary>
-        <div class="absolute right-0 top-[calc(100%+12px)] w-64 rounded-card stroke-gradient [--stroke-fill:var(--gradient-card)] p-5 shadow-card">
+        <div class="absolute right-0 top-[calc(100%+12px)] w-64 rounded-card glass p-5 shadow-card">
           <nav aria-label="Menu" class="flex flex-col gap-3">
             {site.nav.map(item => (
               <a

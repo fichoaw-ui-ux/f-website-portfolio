@@ -1,11 +1,11 @@
 ---
 ---
-<div id="section-indicator" class="fixed left-0 right-0 bottom-0 z-30 opacity-0 pointer-events-none transition-opacity duration-200 bg-bg-primary/95 backdrop-blur border-t border-border">
+<div id="section-indicator" class="fixed left-0 right-0 bottom-0 z-30 opacity-0 pointer-events-none transition-opacity duration-200 bg-glass backdrop-blur-[20px] backdrop-saturate-[1.4] border-t border-glass-border">
   <div class="mx-auto flex h-[72px] max-w-[1280px] items-center px-6 md:px-8">
     <nav id="section-indicator-nav" class="flex w-full items-center justify-between gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"></nav>
   </div>
   <div class="absolute left-0 right-0 bottom-0 h-[3px] bg-border/40 overflow-hidden">
-    <div id="section-indicator-progress" class="h-full bg-gradient-accent origin-left" style="transform: scaleX(0); width: 100%;"></div>
+    <div id="section-indicator-progress" class="h-full bg-text-primary origin-left" style="transform: scaleX(0); width: 100%;"></div>
   </div>
 </div>
 
@@ -77,8 +77,11 @@
           item.classList.remove('active', 'finished');
           if (i === currentIdx) {
             item.classList.add('active');
-            num.style.color = 'var(--color-accent)';
-            title.style.color = 'var(--color-accent)';
+            // Neutral, not the case study's brand colour: the indicator sits on
+            // the glass over the background video and should stay in its tone.
+            // Bold + larger type is what marks the active section.
+            num.style.color = 'var(--color-text-primary)';
+            title.style.color = 'var(--color-text-primary)';
             title.style.fontWeight = '700';
             num.style.fontSize = '18px';
             title.style.fontSize = '14px';

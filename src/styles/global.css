@@ -109,6 +109,20 @@
     linear-gradient(180deg, rgba(108, 108, 113, 0.8) 0%, #343434 50%) border-box;
 }
 
+/* Glass surface — the treatment for every card, pill and ghost button that
+   sits over the background video. A tint pulled from the footage's darkest
+   band keeps it in tone with the moving sky; the blur keeps the motion
+   readable through it without competing with the text. The tint is not
+   optional: blur alone let bright content passing beneath read as a pale
+   smudge (Header.astro). background-color (not the shorthand) so bg-* and
+   hover:bg-* utilities can override it. */
+@utility glass {
+  border: 1px solid var(--color-glass-border);
+  background-color: var(--color-glass);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+}
+
 /* Mobile artboard lock — the site's mobile design was drawn at Figma's 402px
    iPhone frame, and the request is that every viewport in the mobile band
    render that exact artboard, not a fluid stretch of it. Below the 1201px flip

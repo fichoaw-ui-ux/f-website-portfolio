@@ -2,6 +2,7 @@
 import '../styles/global.css'
 import Header from '../components/layout/Header.astro'
 import Footer from '../components/layout/Footer.astro'
+import BackgroundVideo from '../components/layout/BackgroundVideo.astro'
 import { getRelativeLocaleUrl } from 'astro:i18n'
 import { resolveLocale } from '../i18n/ui'
 
@@ -43,6 +44,9 @@ const lightThemeVars = [
   '--color-text-tertiary: #6B6B6B',
   '--color-border: #E5E5E5',
   '--color-border-hover: #C4C4C4',
+  '--color-glass: rgba(255, 255, 255, 0.7)',
+  '--color-glass-border: rgba(0, 0, 0, 0.08)',
+  '--color-glass-hover: rgba(255, 255, 255, 0.9)',
 ].join(';')
 ---
 <!doctype html>
@@ -65,7 +69,8 @@ const lightThemeVars = [
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="min-h-screen bg-bg-primary text-text-primary">
-    {showHeader && <Header showBackToHome={showBackToHome} />}
+    {theme === 'dark' && <BackgroundVideo />}
+    {showHeader && <Header showBackToHome={showBackToHome} overVideo={theme === 'dark'} />}
     <main><slot /></main>
     <Footer />
     <script is:inline>

@@ -55,47 +55,50 @@ function embedSrc(url: string) {
               // invalid HTML and breaks keyboard focus order.
               const hasProto = !!e.data.prototype
               const hasLive = !!e.data.liveUrl
-              const cardShell = 'group relative block aspect-[416/520] w-full overflow-hidden rounded-card stroke-gradient [--stroke-fill:var(--gradient-card)] transition duration-500 hover:-translate-y-1'
+              const cardShell = 'group relative block aspect-[416/520] w-full overflow-hidden rounded-card glass transition duration-500 hover:-translate-y-1'
               const imgClass = 'h-full w-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0'
-              // Primary action stretches over the whole card via inset-0.
-              // The pill row sits above it (z-10) so both remain clickable.
+              // Only the pills are interactive. The card itself is not a
+              // target: an earlier version stretched the primary action over
+              // the whole card (inset-0), which made every pixel show a
+              // pointer — the request was that only the buttons read as
+              // clickable.
+              const pillAction = 'min-w-0 cursor-pointer rounded-full'
               return (
                 <Reveal>
                   <div class={cardShell}>
                     <img src={e.data.cover} alt={e.data.coverAlt} class={imgClass} />
-                    {hasProto ? (
-                      <button
-                        type="button"
-                        aria-label={t.exploration.openPrototype(e.data.title)}
-                        class="absolute inset-0 z-0 cursor-pointer"
-                        data-proto-src={embedSrc(e.data.prototype!)}
-                        data-proto-title={e.data.prototypeTitle ?? e.data.title}
-                      />
-                    ) : (
-                      <a
-                        href={getRelativeLocaleUrl(lang, `/explorations/${e.data.slug}`)}
-                        aria-label={t.exploration.openDetails(e.data.title)}
-                        class="absolute inset-0 z-0"
-                      />
-                    )}
-                    {/* pointer-events-none lets clicks between/on the "See
-                        Details" pill fall through to the stretched primary
-                        action below. The live-site link re-enables pointer
-                        events on itself so it captures its own clicks. */}
                     {/* Grid gives both pills equal columns cleanly — flex-1
                         wasn't equalising the mixed span/anchor children
                         reliably across browsers. */}
                     <div class:list={[
-                      'pointer-events-none absolute inset-x-4 bottom-4 z-10 grid gap-3',
+                      'absolute inset-x-4 bottom-4 z-10 grid gap-3',
                       hasLive ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1',
                     ]}>
-                      <Pill class="w-full justify-center">{t.exploration.seePrototype}</Pill>
+                      {hasProto ? (
+                        <button
+                          type="button"
+                          aria-label={t.exploration.openPrototype(e.data.title)}
+                          class={pillAction}
+                          data-proto-src={embedSrc(e.data.prototype!)}
+                          data-proto-title={e.data.prototypeTitle ?? e.data.title}
+                        >
+                          <Pill class="w-full justify-center">{t.exploration.seePrototype}</Pill>
+                        </button>
+                      ) : (
+                        <a
+                          href={getRelativeLocaleUrl(lang, `/explorations/${e.data.slug}`)}
+                          aria-label={t.exploration.openDetails(e.data.title)}
+                          class={pillAction}
+                        >
+                          <Pill class="w-full justify-center">{t.exploration.seePrototype}</Pill>
+                        </a>
+                      )}
                       {hasLive && (
                         <a
                           href={e.data.liveUrl!}
                           target="_blank"
                           rel="noopener noreferrer"
-                          class="pointer-events-auto min-w-0"
+                          class={pillAction}
                         >
                           <Pill class="w-full justify-center">{t.exploration.visitLiveSite}</Pill>
                         </a>
@@ -143,14 +146,17 @@ function embedSrc(url: string) {
     </div>
   </dialog>
 
+  {/* define:vars makes this an inline script that Astro does not compile,
+      so it must be plain JavaScript — TypeScript syntax here (`as`, generics,
+      `!`) is a SyntaxError in the browser and silently kills the modal. */}
   <script define:vars={{ fallbackTitle: t.figmaEmbed.prototypeLabel }}>
-    const dialog = document.getElementById('exploration-prototype-modal') as HTMLDialogElement | null
+    const dialog = document.getElementById('exploration-prototype-modal')
     if (dialog) {
-      const iframe = dialog.querySelector<HTMLIFrameElement>('[data-proto-modal-iframe]')!
-      const titleEl = dialog.querySelector<HTMLElement>('[data-proto-modal-title]')!
-      const closeBtn = dialog.querySelector<HTMLButtonElement>('[data-proto-modal-close]')!
+      const iframe = dialog.querySelector('[data-proto-modal-iframe]')
+      const titleEl = dialog.querySelector('[data-proto-modal-title]')
+      const closeBtn = dialog.querySelector('[data-proto-modal-close]')
 
-      document.querySelectorAll<HTMLButtonElement>('button[data-proto-src]').forEach(btn => {
+      document.querySelectorAll('button[data-proto-src]').forEach(btn => {
         btn.addEventListener('click', () => {
           const src = btn.dataset.protoSrc ?? ''
           const title = btn.dataset.protoTitle ?? fallbackTitle
@@ -168,7 +174,7 @@ function embedSrc(url: string) {
       // Clicking the backdrop closes; native <dialog> reports the click on the dialog itself.
       // Any click that isn't inside the inner box counts as a backdrop click.
       dialog.addEventListener('click', ev => {
-        const t = ev.target as HTMLElement
+        const t = ev.target
         if (!t.closest('[data-proto-inner]')) dialog.close()
       })
     }
