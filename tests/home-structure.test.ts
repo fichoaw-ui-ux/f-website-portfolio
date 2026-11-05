@@ -113,21 +113,26 @@ describe('home page structure (id)', () => {
   })
 
   describe('experience', () => {
-    it('lists company and role per entry', () => {
+    it('lists the two jobs from the redesign with role and period', () => {
       expect(html).toContain('Pengalaman Kerja')
-      expect(html).toMatch(/Transfez (&#38;|&amp;|&) Jack/)
-      expect(html).toContain('Desainer Grafis')
+      for (const text of ['Transfez', 'Jack Finance', 'Associate UI/UX Designer',
+        'Oktober 2025 - Sekarang', 'Oktober 2022 - September 2025']) {
+        expect(html).toContain(text)
+      }
+      expect(html).not.toContain('Desainer Grafis')
+      expect(html).not.toContain('Tanggung Jawab Umum')
     })
 
-    it('renders every responsibility as a bulleted list item', () => {
-      // Same content shape as the English version, just translated — the
-      // item/label count is language-independent.
-      const bullets = html.match(/aria-hidden="true">&bull;/g) ?? []
-      expect(bullets).toHaveLength(14)
-      expect(html).toMatch(/<li[^>]*>\s*<span[^>]*aria-hidden/)
-      expect(html).toContain('Tanggung Jawab Umum')
-      expect(html).toContain('<mark')
-      expect(html).not.toContain('**')
+    it('renders the bullets inside accordion panels, top job open', () => {
+      const section = html.match(/<section[^>]*id="experience"[\s\S]*?<\/section>/)?.[0] ?? ''
+      const buttons = section.match(/<button[^>]*data-accordion-button[^>]*>/g) ?? []
+      expect(buttons).toHaveLength(2)
+      expect(buttons[0]).toContain('aria-expanded="true"')
+      expect(buttons[1]).toContain('aria-expanded="false"')
+      const dots = section.match(/<li[^>]*>\s*<span[^>]*before:rounded-full[^>]*aria-hidden="true"/g) ?? []
+      expect(dots).toHaveLength(7)
+      expect(section).toContain('<strong')
+      expect(section).not.toContain('**')
     })
 
     it('drops the Currently badge', () => {

@@ -25,13 +25,17 @@
   --color-transfez-pink: #da649f;       /* Primary/Transfez Pink */
 
   /* Text styles — Figma text styles (size / line-height / weight).
+     Line heights are the px Figma renders, not the style's percentage: Figma
+     rounds percent line heights to the nearest whole pixel (14 × 1.6 = 22.4 → 22,
+     16 → 25.6 → 26, 18 → 28.8 → 29, 24 → 38.4 → 38; checked on text nodes
+     8:635, 8:198, 8:692, 8:186). 1.25 styles land on whole px already.
      Aileron only: Figma's mobile title styles name TypeFezStd and the
      compact header uses Inter; both render as Aileron by decision. */
   --text-section-heading: 56px;                 /* Dekstop/Section/Heading (H3) */
   --text-section-heading--line-height: 1.25;
   --text-section-heading--font-weight: 600;
   --text-section-subheading: 20px;              /* Dekstop/Section/Sub - Heading */
-  --text-section-subheading--line-height: 1.6;
+  --text-section-subheading--line-height: 32px;
   --text-mobile-h1: 32px;                       /* Mobile/Display/Heading (H1) */
   --text-mobile-h1--line-height: 1.25;
   --text-mobile-h1--font-weight: 600;
@@ -39,31 +43,27 @@
   --text-mobile-h3--line-height: 1.25;
   --text-mobile-h3--font-weight: 600;
   --text-mobile-subheading: 16px;               /* Mobile/Display/Sub - Heading */
-  --text-mobile-subheading--line-height: 1.6;
+  --text-mobile-subheading--line-height: 26px;
   --text-title-lg: 24px;                        /* Component/Title/Large */
-  --text-title-lg--line-height: 1.6;
+  --text-title-lg--line-height: 38px;
   --text-title-lg--font-weight: 600;
   --text-title-xl: 20px;                        /* Component/Title/X - Large */
-  --text-title-xl--line-height: 1.6;
+  --text-title-xl--line-height: 32px;
   --text-title-xl--font-weight: 600;
   --text-title-md: 18px;                        /* Component/Title/Medium */
-  --text-title-md--line-height: 1.6;
+  --text-title-md--line-height: 29px;
   --text-title-md--font-weight: 600;
   --text-title-xmd: 16px;                       /* Component/Title/X - Medium */
-  --text-title-xmd--line-height: 1.6;
+  --text-title-xmd--line-height: 26px;
   --text-title-xmd--font-weight: 600;
   --text-title-new-lg: 20px;                    /* New/Title/Title Large */
   --text-title-new-lg--line-height: 24px;
   --text-title-new-lg--font-weight: 600;
   --text-body-xl: 20px;                         /* Component/Body/X - Large */
-  --text-body-xl--line-height: 1.6;
+  --text-body-xl--line-height: 32px;
   --text-body-xmd: 16px;                        /* Component/Body/X - Medium */
-  --text-body-xmd--line-height: 1.6;
+  --text-body-xmd--line-height: 26px;
   --text-body-sm: 14px;                         /* Component/Body/Small */
-  /* Figma's style says 160%, but Figma rounds percent line heights to whole
-     pixels: 14 × 1.6 = 22.4 renders as 22 (text node 8:635 is 4 lines = 88).
-     Use the rendered 22px. Other styles whose 1.6 lands on a fraction
-     (16 → 25.6, 18 → 28.8, 24 → 38.4) need the same check when first used. */
   --text-body-sm--line-height: 22px;
   --text-button-md: 16px;                       /* Button/Medium */
   --text-button-md--line-height: 1;

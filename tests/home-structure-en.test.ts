@@ -121,35 +121,35 @@ describe('home page structure', () => {
   })
 
   describe('experience', () => {
-    it('lists company and role per entry', () => {
-      // Regexes, not string equality: Astro passes literal template text
-      // through unescaped but escapes {expression} output, so the heading
-      // keeps its raw apostrophe while {e.company} turns & into an entity.
+    it('lists the two jobs from the redesign with role and period', () => {
+      // Regex for the heading: Astro passes literal text through unescaped but
+      // escapes {expression} output, so the apostrophe may arrive as an entity.
       expect(html).toMatch(/Where I(&#39;|&rsquo;|&apos;|'|’)ve worked/)
-      expect(html).toMatch(/Transfez (&#38;|&amp;|&) Jack/)
-      expect(html).toContain('Graphic Designer')
+      for (const text of ['Transfez', 'Jack Finance', 'Associate UI/UX Designer',
+        'October 2025 - Now', 'October 2022 - September 2025']) {
+        expect(html).toContain(text)
+      }
+      // Ficho: follow the design — the intern role and the general
+      // responsibilities stay in site.ts (experienceArchive) but are not shown.
+      expect(html).not.toContain('Graphic Designer')
+      expect(html).not.toContain('General Responsibilities')
     })
 
-    it('renders every responsibility as a bulleted list item', () => {
-      // This is the assertion that actually distinguishes the new layout. The
-      // company names above were already in the markup once site.ts changed,
-      // so they pass either way; only the nested bullet lists are new. The old
-      // component rendered a single {e.description}, which no longer exists.
-      //
-      // 14 = the 11 responsibility items across the two roles, plus the
-      // three section labels the current role groups them under, each of which
-      // draws its own (larger) glyph. Counting the glyph rather than the copy
-      // keeps this from re-breaking every time a bullet is reworded.
-      const bullets = html.match(/aria-hidden="true">&bull;/g) ?? []
-      expect(bullets).toHaveLength(14)
-      expect(html).toMatch(/<li[^>]*>\s*<span[^>]*aria-hidden/)
-      // The labels are what make the current role's two-level nesting legible;
-      // without them the nine items under it read as one flat run.
-      expect(html).toContain('General Responsibilities')
-      // **bold** in site.ts must arrive as a <mark>, not as literal asterisks —
-      // Experience.astro is the only component that interprets that syntax.
-      expect(html).toContain('<mark')
-      expect(html).not.toContain('**')
+    it('renders the bullets inside accordion panels, top job open', () => {
+      const section = html.match(/<section[^>]*id="experience"[\s\S]*?<\/section>/)?.[0] ?? ''
+      const buttons = section.match(/<button[^>]*data-accordion-button[^>]*>/g) ?? []
+      expect(buttons).toHaveLength(2)
+      expect(buttons[0]).toContain('aria-expanded="true"')
+      expect(buttons[1]).toContain('aria-expanded="false"')
+      const panels = section.match(/<div[^>]*data-accordion-panel[^>]*>/g) ?? []
+      expect(panels).toHaveLength(2)
+      expect(panels[1]).toMatch(/\sinert/)
+      // 2 Transfez + 5 Jack Finance bullets, each drawn as a decorative dot.
+      const dots = section.match(/<li[^>]*>\s*<span[^>]*before:rounded-full[^>]*aria-hidden="true"/g) ?? []
+      expect(dots).toHaveLength(7)
+      // **bold** in site.ts arrives as <strong>, never as literal asterisks.
+      expect(section).toContain('<strong')
+      expect(section).not.toContain('**')
     })
 
     it('drops the Currently badge', () => {

@@ -1,6 +1,11 @@
 ---
-import Container from '../layout/Container.astro'
-import Reveal from '../ui/Reveal.astro'
+/* Experience — Figma Draft: desktop `8:177`, mobile `8:684` (expanded mobile
+   bullets are the hidden layers `8:705` / `8:732`).
+   Accordion (page spec): the top job starts open on every breakpoint and only
+   one job is open at a time. Collapsed jobs still show company + role/period,
+   as in the mobile frame; only the bullets collapse.
+   **x** in the copy renders semibold — kept on purpose (Ficho), Figma has none. */
+import ContentBand from '../layout/ContentBand.astro'
 import { getSite } from '../../content/site'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
@@ -8,73 +13,139 @@ const lang = resolveLocale(Astro.currentLocale)
 const site = getSite(lang)
 const t = useTranslations(lang)
 
-// **word** → highlighted span. Escape first so raw HTML in copy can't break out.
+// **word** → semibold. Escape first so raw HTML in copy can't break out.
+// leading-none: Aileron SemiBold's ascent/descent differ from Regular, so a
+// bold run at the inherited 19px line height grew its line box by 0.5–1px
+// on mobile. A 1.0 inline box sits inside the line's strut and adds nothing.
 function escape(s: string) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 function highlight(text: string) {
-  return escape(text).replace(
-    /\*\*([^*]+)\*\*/g,
-    '<mark class="bg-transparent font-semibold text-inherit">$1</mark>',
-  )
+  return escape(text).replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold leading-none">$1</strong>')
 }
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 ---
-<section id="experience" class="py-section-y-sm md:py-section-y scroll-mt-32">
-  <Container>
-    <Reveal>
-      <h2 class="font-display font-semibold text-display-lg text-text-primary">{t.experience.heading}</h2>
-    </Reveal>
+<section
+  id="experience"
+  class="scroll-mt-32 bg-neutral-900 py-(--space-48) desktop:py-(--space-88)"
+  data-figma="experience"
+>
+  <ContentBand>
+    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1" data-figma="experience/heading">
+      {/* Desktop heading is 32/1.25 semibold = the Mobile/Display/Heading (H1) style. */}
+      {t.experience.heading}
+    </h2>
 
-    <ul class="mt-16">
-      {site.experience.map((e, i) => (
-        <Reveal as="li" delay={i * 60} class={i > 0 ? 'mt-8 border-t border-border pt-8' : ''}>
-          <div class="grid gap-4 md:grid-cols-[360px_1fr] md:gap-8">
-            <div class="text-lg leading-[1.6] text-text-tertiary md:text-2xl">{e.year}</div>
-            <div>
-              <div class="flex flex-wrap items-baseline gap-3 text-lg leading-[1.6] text-text-primary md:text-2xl">
-                <span>{e.company}</span>
-                {/* Hidden from assistive tech: read aloud it turns
-                    "Transfez & Jack, Product Designer" into
-                    "Transfez and Jack hyphen Product Designer". */}
-                <span class="text-text-tertiary" aria-hidden="true">-</span>
-                <span>{e.role}</span>
-              </div>
-              <ul class="mt-3 space-y-5">
-                {e.sections.map(s => (
-                  <li>
-                    {s.label ? (
-                      <>
-                        <div class="flex gap-2 text-lg leading-[1.6] text-text-primary md:text-xl">
-                          {/* Bigger glyph than the sub-items, decoration only. */}
-                          <span class="select-none text-[1.4em] leading-[1.1]" aria-hidden="true">&bull;</span>
-                          <span class="font-medium">{s.label}</span>
-                        </div>
-                        <ul class="mt-2 space-y-2 pl-7">
-                          {s.items.map(h => (
-                            <li class="flex gap-2 text-lg leading-[1.6] text-text-secondary">
-                              <span class="select-none text-[1.2em] leading-[1.1]" aria-hidden="true">&bull;</span>
-                              <span set:html={highlight(h)} />
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    ) : (
-                      <ul class="space-y-2">
-                        {s.items.map(h => (
-                          <li class="flex gap-2 text-lg leading-[1.6] text-text-secondary">
-                            <span class="select-none text-[1.2em] leading-[1.1]" aria-hidden="true">&bull;</span>
-                            <span set:html={highlight(h)} />
+    <ul class="mt-(--space-32) desktop:mt-(--space-40)" data-figma="experience/list" data-accordion>
+      {site.jobs.map((job, i) => {
+        const id = `job-${slug(job.company)}`
+        const open = i === 0
+        return (
+          <li class={i > 0 ? 'mt-(--space-24) desktop:mt-(--space-32)' : ''} data-figma={`experience/${slug(job.company)}`}>
+            {i > 0 && (
+              /* Mobile divider is a 0-height vector (no layout space), desktop a 1px rect. */
+              <div class="-mb-px h-px bg-neutral-800 desktop:mb-0" data-figma="experience/divider"></div>
+            )}
+            <div class:list={['flex flex-col gap-(--space-12) desktop:gap-(--space-20)', i > 0 && 'mt-(--space-24) desktop:mt-(--space-32)']}>
+              <h3>
+                <button
+                  type="button"
+                  id={`${id}-button`}
+                  aria-expanded={open ? 'true' : 'false'}
+                  aria-controls={`${id}-panel`}
+                  class="group flex w-full cursor-pointer items-center gap-(--space-12) text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-100 desktop:gap-(--space-16)"
+                  data-accordion-button
+                  data-figma={`experience/${slug(job.company)}/company`}
+                >
+                  {/* Logo tile: mobile 36 r8 (logo 24), desktop 48 r10.667 (logo 32). */}
+                  <span class="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-(--radius-8) bg-neutral-100 desktop:size-12 desktop:rounded-[10.667px]">
+                    {/* desktop radius 10.667: not in tokens (scaled frame in Figma) */}
+                    <img src={job.logo} alt="" width="32" height="32" class="size-6 desktop:size-8" />
+                  </span>
+                  <span class="min-w-0 flex-1 text-title-md text-neutral-100 desktop:text-title-lg">{job.company}</span>
+                  <img
+                    src="/images/icons/chevron-down.svg"
+                    alt=""
+                    width="28"
+                    height="28"
+                    class="size-6 shrink-0 transition-transform duration-300 group-aria-expanded:rotate-180 desktop:size-7"
+                  />
+                </button>
+              </h3>
+
+              <div class="flex items-start gap-(--space-12) desktop:gap-(--space-16)" data-figma={`experience/${slug(job.company)}/role`}>
+                {/* Role badge: mobile area 36×26 (1px borders, p2, r6/r4, icon 12);
+                    desktop 48×36, the same badge scaled ×1.33 (Figma values).
+                    Desktop strokes are inset box-shadows: browsers round a
+                    1.33px border down to 1px, which shrank the badge to 30.6
+                    (Figma 31.92). Padding 3.99 = 2.66 + the 1.33 stroke. */}
+                <span class="flex h-[26px] w-9 shrink-0 items-center justify-center desktop:h-9 desktop:w-12" aria-hidden="true">
+                  <span class="flex rounded-(--radius-6) border border-neutral-800 p-(--space-2) desktop:rounded-[7.98px] desktop:border-0 desktop:p-[3.99px] desktop:shadow-[inset_0_0_0_1.33px_var(--color-neutral-800)]">
+                    <span class="flex rounded-(--radius-4) border border-neutral-800 p-(--space-2) desktop:rounded-[5.32px] desktop:border-0 desktop:p-[3.99px] desktop:shadow-[inset_0_0_0_1.33px_var(--color-neutral-800)]">
+                      <img src="/images/icons/role-sparkle.svg" alt="" width="16" height="16" class="size-3 desktop:size-[15.96px]" />
+                    </span>
+                  </span>
+                </span>
+
+                <div class="flex min-w-0 flex-1 flex-col">
+                  <p class="flex flex-col desktop:gap-(--space-4)">
+                    <span class="text-body-xmd text-neutral-100 desktop:text-body-xl">{job.role}</span>
+                    <span class="text-body-sm text-neutral-600 desktop:text-body-xmd">{job.period}</span>
+                  </p>
+
+                  {/* Collapsible bullets. The 12/16 gap above them lives inside the
+                      panel so a closed panel takes no space. */}
+                  <div
+                    id={`${id}-panel`}
+                    role="region"
+                    aria-labelledby={`${id}-button`}
+                    class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out data-open:grid-rows-[1fr]"
+                    data-open={open ? '' : undefined}
+                    inert={!open}
+                    data-accordion-panel
+                  >
+                    <div class="min-h-0 overflow-hidden">
+                      <ul class="flex flex-col gap-(--space-12) pt-(--space-12) desktop:pt-(--space-16)" data-figma={`experience/${slug(job.company)}/bullets`}>
+                        {job.items.map((item) => (
+                          <li class="flex gap-(--space-4)">
+                            {/* Bullet: 6px #6C6C71 circle at x5 in a 16-wide box,
+                                y8 of 22 (mobile) / y10 of 26 (desktop), as in Figma. */}
+                            <span class="relative h-[22px] w-4 shrink-0 before:absolute before:left-[5px] before:top-[8px] before:size-[6px] before:rounded-full before:bg-neutral-800 desktop:h-[26px] desktop:before:top-[10px]" aria-hidden="true"></span>
+                            {/* mobile 12/19: not in tokens — Figma Aileron 12, 160% renders 19 */}
+                            <span class="min-w-0 text-[12px] leading-[19px] text-neutral-100 desktop:max-w-[720px] desktop:text-body-xmd desktop:leading-(--text-body-xmd--line-height)" set:html={highlight(item)} />
                           </li>
                         ))}
                       </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </Reveal>
-      ))}
+          </li>
+        )
+      })}
     </ul>
-  </Container>
+  </ContentBand>
 </section>
+
+<script>
+  // One job open at a time; clicking the open job closes it.
+  const root = document.querySelector<HTMLElement>('[data-accordion]')
+  const buttons = Array.from(root?.querySelectorAll<HTMLButtonElement>('[data-accordion-button]') ?? [])
+
+  function setOpen(button: HTMLButtonElement, open: boolean) {
+    const panel = document.getElementById(button.getAttribute('aria-controls') ?? '')
+    button.setAttribute('aria-expanded', String(open))
+    if (!panel) return
+    panel.toggleAttribute('data-open', open)
+    panel.inert = !open
+  }
+
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      const willOpen = button.getAttribute('aria-expanded') !== 'true'
+      for (const other of buttons) if (other !== button) setOpen(other, false)
+      setOpen(button, willOpen)
+    })
+  }
+</script>

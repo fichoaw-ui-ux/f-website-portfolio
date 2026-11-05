@@ -69,7 +69,14 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
 - **Blocked:** the language switch (ID/EN) has no place in the new design. Ficho
   will design it in Figma first; until then the legacy header stays on all pages.
 
-### Experience
+### Experience — done (`src/components/home/Experience.astro`)
+- Measured equal to Figma: desktop with both jobs open (section 1141, Transfez 340,
+  Jack Finance 513), mobile closed (398) and mobile open (hidden layers 8:705 /
+  8:732: bullets 12/19, rows gap 12).
+- Content: Transfez + Jack Finance only (`site.jobs`); General Responsibilities and
+  the intern role moved to `experienceArchive`, not shown (Ficho). Key numbers stay
+  semibold via `**x**` (Ficho, not in Figma).
+- Desktop role-badge strokes are 1.33px inset shadows (borders round down to 1px).
 - Accordion, one entry open at a time: the top entry (Transfez) starts open on
   every breakpoint; opening another entry closes the one that was open.
   (Differs from the static Figma frames, which show desktop all open and
