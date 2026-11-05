@@ -70,7 +70,9 @@ const HIDDEN_TAGS = new Set(['Product Design'])
                     </li>
                   ))}
                 </ul>
-                <p class="order-3 mt-(--space-12) w-full text-body-sm text-neutral-100 desktop:mt-(--space-16) desktop:text-body-xmd">{p.data.summary}</p>
+                {/* Desktop summary: Figma 16/26, raised to 18/29 (Ficho, +2px; not in tokens).
+                    Tags (labels) and the View Details button keep Figma's sizes. */}
+                <p class="order-3 mt-(--space-12) w-full text-body-sm text-neutral-100 desktop:mt-(--space-16) desktop:text-[18px] desktop:leading-[29px]">{p.data.summary}</p>
                 {/* Mobile button: Figma has a 1px stroke the same colour as the fill,
                     inside the 36px height — invisible, so it is left out. */}
                 <a
