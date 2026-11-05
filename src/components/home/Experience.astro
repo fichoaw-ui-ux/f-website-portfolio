@@ -4,7 +4,10 @@
    Accordion (page spec): the top job starts open on every breakpoint and only
    one job is open at a time. Collapsed jobs still show company + role/period,
    as in the mobile frame; only the bullets collapse.
-   **x** in the copy renders semibold — kept on purpose (Ficho), Figma has none. */
+   **x** in the copy renders semibold — kept on purpose (Ficho), Figma has none.
+   Text that is 16px in Figma renders at 18px here (Ficho, +2px): mobile role,
+   desktop period and bullets — 18/29 (1.6, rounded as Figma renders it), not
+   in tokens. The mobile role badge and desktop bullet dots follow the 29px line. */
 import ContentBand from '../layout/ContentBand.astro'
 import { getSite } from '../../content/site'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
@@ -79,7 +82,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
                     Desktop strokes are inset box-shadows: browsers round a
                     1.33px border down to 1px, which shrank the badge to 30.6
                     (Figma 31.92). Padding 3.99 = 2.66 + the 1.33 stroke. */}
-                <span class="flex h-[26px] w-9 shrink-0 items-center justify-center desktop:h-9 desktop:w-12" aria-hidden="true">
+                <span class="flex h-[29px] w-9 shrink-0 items-center justify-center desktop:h-9 desktop:w-12" aria-hidden="true">
                   <span class="flex rounded-(--radius-6) border border-neutral-800 p-(--space-2) desktop:rounded-[7.98px] desktop:border-0 desktop:p-[3.99px] desktop:shadow-[inset_0_0_0_1.33px_var(--color-neutral-800)]">
                     <span class="flex rounded-(--radius-4) border border-neutral-800 p-(--space-2) desktop:rounded-[5.32px] desktop:border-0 desktop:p-[3.99px] desktop:shadow-[inset_0_0_0_1.33px_var(--color-neutral-800)]">
                       <img src="/images/icons/role-sparkle.svg" alt="" width="16" height="16" class="size-3 desktop:size-[15.96px]" />
@@ -89,8 +92,8 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
                 <div class="flex min-w-0 flex-1 flex-col">
                   <p class="flex flex-col desktop:gap-(--space-4)">
-                    <span class="text-body-xmd text-neutral-100 desktop:text-body-xl">{job.role}</span>
-                    <span class="text-body-sm text-neutral-600 desktop:text-body-xmd">{job.period}</span>
+                    <span class="text-[18px] leading-[29px] text-neutral-100 desktop:text-body-xl desktop:leading-(--text-body-xl--line-height)">{job.role}</span>
+                    <span class="text-body-sm text-neutral-600 desktop:text-[18px] desktop:leading-[29px]">{job.period}</span>
                   </p>
 
                   {/* Collapsible bullets. The 12/16 gap above them lives inside the
@@ -110,9 +113,9 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
                           <li class="flex gap-(--space-4)">
                             {/* Bullet: 6px #6C6C71 circle at x5 in a 16-wide box,
                                 y8 of 22 (mobile) / y10 of 26 (desktop), as in Figma. */}
-                            <span class="relative h-[22px] w-4 shrink-0 before:absolute before:left-[5px] before:top-[8px] before:size-[6px] before:rounded-full before:bg-neutral-800 desktop:h-[26px] desktop:before:top-[10px]" aria-hidden="true"></span>
+                            <span class="relative h-[22px] w-4 shrink-0 before:absolute before:left-[5px] before:top-[8px] before:size-[6px] before:rounded-full before:bg-neutral-800 desktop:h-[29px] desktop:before:top-[11.5px]" aria-hidden="true"></span>
                             {/* mobile 12/19: not in tokens — Figma Aileron 12, 160% renders 19 */}
-                            <span class="min-w-0 text-[12px] leading-[19px] text-neutral-100 desktop:max-w-[720px] desktop:text-body-xmd desktop:leading-(--text-body-xmd--line-height)" set:html={highlight(item)} />
+                            <span class="min-w-0 text-[12px] leading-[19px] text-neutral-100 desktop:max-w-[720px] desktop:text-[18px] desktop:leading-[29px]" set:html={highlight(item)} />
                           </li>
                         ))}
                       </ul>

@@ -91,6 +91,8 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   back to EN. The 404 page is in English.
 
 ### Experience — done (`src/components/home/Experience.astro`)
+- Text that is 16px in Figma is 18px here (Ficho, +2px): mobile role, desktop
+  period and bullets — 18/29. The heights measured below predate this change.
 - Measured equal to Figma: desktop with both jobs open (section 1141, Transfez 340,
   Jack Finance 513), mobile closed (398) and mobile open (hidden layers 8:705 /
   8:732: bullets 12/19, rows gap 12).
