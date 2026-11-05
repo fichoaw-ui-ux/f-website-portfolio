@@ -119,7 +119,7 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
 
 ### Study Case — done (`src/components/home/StudyCase.astro`, `#work`)
 - Desktop summary is 18/29 instead of Figma's 16/26 (Ficho, +2px), 8px under the
-  title instead of 16 (Ficho). Tags and the
+  title instead of 16 and 24px above the button instead of 16 (Ficho). Tags and the
   View Details button keep Figma's sizes; mobile has no 16px text.
 - Measured equal to Figma: desktop rows (cover 504×360, content centred, 40+1+40
   dividers; section 1058 with 2 studies), mobile cards (532 each, section 1255).

@@ -60,8 +60,8 @@ const HIDDEN_TAGS = new Set(['Product Design'])
 
               <div class="flex min-w-0 flex-col items-start desktop:flex-1" data-figma={`study-case/${p.data.slug}/content`}>
                 {/* Order and gaps differ: mobile title → 12 → tags → 12 → summary → 32 → button;
-                    desktop tags → 16 → title → 8 → summary → 16 → button (title → summary
-                    is 8 instead of Figma's 16, Ficho). */}
+                    desktop tags → 16 → title → 8 → summary → 24 → button (title → summary
+                    8 and summary → button 24 instead of Figma's 16 / 16, Ficho). */}
                 <h3 class="order-1 w-full text-title-md text-neutral-100 desktop:order-2 desktop:mt-(--space-16) desktop:text-title-lg">{p.data.title}</h3>
                 <ul class="order-2 mt-(--space-12) flex flex-wrap gap-(--space-8) desktop:order-1 desktop:mt-0" aria-label="Tags">
                   {tags.map((tag) => (
@@ -78,7 +78,7 @@ const HIDDEN_TAGS = new Set(['Product Design'])
                     inside the 36px height — invisible, so it is left out. */}
                 <a
                   href={href}
-                  class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-full) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-16) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
+                  class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-full) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-24) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
                   data-figma={`study-case/${p.data.slug}/button`}
                 >
                   {t.common.viewDetails}<span class="sr-only">: {p.data.title}</span>
