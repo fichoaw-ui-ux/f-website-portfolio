@@ -20,6 +20,7 @@ const dictionary = {
     },
     skillsTools: { skills: 'Skill', tools: 'Tools' },
     compactHeader: { contact: 'Kontak' },
+    languageSwitch: { label: 'Bahasa' },
     contact: {
       heading: 'Terbuka untuk peluang kerja dan freelance',
       bodyBefore: 'Terbuka untuk kerja product design dan kolaborasi. Bisa hubungi saya di ',
@@ -61,6 +62,7 @@ const dictionary = {
     },
     skillsTools: { skills: 'Skills', tools: 'Tools' },
     compactHeader: { contact: 'Contact' },
+    languageSwitch: { label: 'Language' },
     contact: {
       heading: "Let's build something together",
       bodyBefore: 'Open to product design work and collaborations. You can reach me at ',

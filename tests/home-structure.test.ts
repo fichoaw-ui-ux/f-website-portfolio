@@ -242,6 +242,15 @@ describe('home page structure (id)', () => {
       expect(block).toMatch(/href="#contact"[\s\S]*Kontak/)
     })
 
+    it('marks ID current in both language switches', () => {
+      const switches = html.match(/<nav[^>]*data-figma="language-switch"[\s\S]*?<\/nav>/g) ?? []
+      expect(switches).toHaveLength(2)
+      for (const sw of switches) {
+        expect(sw).toContain('aria-label="Bahasa"')
+        expect(sw).toMatch(/<a[^>]*href="\/id\/"[^>]*aria-current="true"[^>]*>ID<\/a>/)
+      }
+    })
+
     it('keeps the tab bar sticky right under it', () => {
       const bar = html.match(/<nav[^>]*data-tab-bar[^>]*>/)?.[0] ?? ''
       expect(bar).toContain('sticky')

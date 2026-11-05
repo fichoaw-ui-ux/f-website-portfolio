@@ -1,16 +1,20 @@
 ---
-/* Compact header — Figma Draft: desktop `8:594` (scrolled frame 8:384),
-   mobile `8:1092` (scrolled frame 8:877).
+/* Compact header — Figma Draft: desktop `25:1716` (scrolled frame 25:1506),
+   mobile `25:2226` (scrolled frame 25:2011).
    Fixed at the top, hidden while the hero is on screen; it slides/fades in
    when the tab bar reaches it (page spec), and the tab bar sticks right under
    it (TabBar.astro). Desktop 84 tall (16 + 56 + 12), mobile 80 (8 + 64 + 8).
-   No language switch: set aside by Ficho for now.
+   Right side: language switch + Contact pill (desktop, gap 16; 44 tall) or
+   language switch + a 24px contact icon (mobile, gap 12). Figma's mobile icon
+   is a menu glyph; Ficho meant a contact icon — the envelope from the Contact
+   section, in white like Figma's glyph, linking to #contact.
 
-   Figma sets the desktop name/handle/button in Inter; rendered in Aileron at
-   Figma's sizes (20/30, 15/22.5, 16/24). The photo's #252525 stroke matches
+   Figma sets the desktop name/handle in Inter; rendered in Aileron at Figma's
+   sizes (20/30, 15/23 — 22.5 rounded as Figma renders it). The photo's #252525 stroke matches
    the #252525 background, so it is invisible and left out. */
 import { Image } from 'astro:assets'
 import ContentBand from '../layout/ContentBand.astro'
+import LanguageSwitch from '../layout/LanguageSwitch.astro'
 import portrait from '../../assets/hero/portrait.png'
 import { getSite } from '../../content/site'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
@@ -41,19 +45,29 @@ const t = useTranslations(lang)
     </div>
 
     <div class="flex min-w-0 flex-1 flex-col gap-(--space-4) whitespace-nowrap desktop:gap-(--space-2)">
-      {/* "Ficho Aji W" as designed (Ficho). Desktop 20/30 + 15/22.5: not in tokens (Figma Inter, 150%). */}
+      {/* "Ficho Aji W" as designed (Ficho). Desktop 20/30 + 15/23: not in tokens (Figma Inter, 150%). */}
       <p class="text-title-md text-neutral-100 desktop:text-[20px] desktop:leading-[30px]">Ficho Aji W</p>
-      <p class="text-button-sm text-neutral-600 desktop:text-[15px] desktop:leading-[22.5px] desktop:font-normal">{site.handle}</p>
+      <p class="text-button-sm text-neutral-600 desktop:text-[15px] desktop:leading-[23px] desktop:font-normal">{site.handle}</p>
     </div>
 
-    <a
-      href="#contact"
-      class="flex shrink-0 items-center gap-(--space-4) rounded-(--radius-full) border border-neutral-800 bg-neutral-800 px-(--space-12) py-(--space-8) text-button-sm text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:gap-(--space-8) desktop:border-0 desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-[16px] desktop:leading-[24px]"
-      data-figma="compact-header/contact"
-    >
-      {/* Desktop 16/24 semibold: not in tokens (Figma Inter, 150%). */}
-      {t.compactHeader.contact}
-      <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5" />
-    </a>
+    <div class="flex shrink-0 items-center gap-(--space-12) desktop:gap-(--space-16)" data-figma="compact-header/actions">
+      <LanguageSwitch data-figma-place="compact-header" />
+      {/* Mobile: 24px contact icon (envelope, white). */}
+      <a
+        href="#contact"
+        aria-label={t.compactHeader.contact}
+        class="size-6 shrink-0 bg-neutral-100 [mask-image:url(/images/icons/envelope.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:hidden"
+        data-figma="compact-header/contact-icon"
+      ></a>
+      {/* Desktop: Contact pill, Button/Medium 16/1 — 12 + 20 + 12 = 44 tall. */}
+      <a
+        href="#contact"
+        class="hidden shrink-0 items-center gap-(--space-8) rounded-(--radius-full) bg-neutral-800 px-(--space-20) py-(--space-12) text-button-md text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:flex"
+        data-figma="compact-header/contact"
+      >
+        {t.compactHeader.contact}
+        <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5" />
+      </a>
+    </div>
   </ContentBand>
 </div>

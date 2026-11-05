@@ -7,6 +7,7 @@
    ordered into the single column with `order`. */
 import { Image } from 'astro:assets'
 import ContentBand from '../layout/ContentBand.astro'
+import LanguageSwitch from '../layout/LanguageSwitch.astro'
 import portrait from '../../assets/hero/portrait.png'
 import { getSite } from '../../content/site'
 import { resolveLocale } from '../../i18n/ui'
@@ -34,6 +35,11 @@ const socials = ['WhatsApp', 'LinkedIn', 'Email']
   <div class="absolute inset-x-0 top-0 h-[72px] bg-neutral-100 desktop:h-[164px]" data-figma="hero/top-band" aria-hidden="true"></div>
 
   <ContentBand class="relative">
+    {/* Mobile: photo and language switch share a row (space-between, centred:
+       Figma 25:1756). Desktop: the switch is absolutely placed at the content's
+       right edge, 142 from the hero top (= 78 into the band, which starts at
+       the 64px top padding) — Figma 25:1273, straddling the white band's edge. */}
+    <div class="flex items-center justify-between gap-(--space-20)" data-figma="hero/avatar-row">
     {/* Photo: mobile 97×96 r16 (image 96×128, nudged +0.5 / +6);
         desktop 200×200 r24 (image 200×267, nudged 0 / +0.5). */}
     <div
@@ -49,6 +55,8 @@ const socials = ['WhatsApp', 'LinkedIn', 'Email']
         loading="eager"
         class="absolute left-[calc(50%+0.5px)] top-[calc(50%+6px)] h-[128px] w-[96px] max-w-none -translate-x-1/2 -translate-y-1/2 object-cover desktop:left-1/2 desktop:top-[calc(50%+0.5px)] desktop:h-[267px] desktop:w-[200px]"
       />
+    </div>
+    <LanguageSwitch class="desktop:absolute desktop:top-[78px] desktop:right-(--space-24)" data-figma-place="hero" />
     </div>
 
     {/* Avatar → content: mobile 20 (frame gap); desktop 60 = Profile pt 160 − 100px overlap. */}

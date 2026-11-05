@@ -1,0 +1,60 @@
+---
+/* Language switch (redesign) — Figma Draft `toogle-switch-language`:
+   desktop 25:1273 / 25:1723 (84×44), mobile 25:1759 / 25:2234 (64×32).
+   A #6C6C71 pill holding two round options; the current language is the white
+   option with #909098 text (Ficho), the other is transparent with white text.
+   Desktop: padding 4, options 36, text 16/1 (current SemiBold, other Regular).
+   Mobile: padding 2, options 28, text 14/1 SemiBold.
+   Figma's desktop labels are TypeFezStd; rendered in Aileron (decision).
+   The options' 4px backdrop blur sits over the solid pill and has no visible
+   effect, so it is left out.
+   Each option is a link to the same page in that language. The scroll
+   position is stashed before leaving and restored by BaseLayout. */
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+interface Props { class?: string; [key: string]: unknown }
+const { class: className = '', ...rest } = Astro.props
+
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
+const rawPath = lang === 'id' ? (Astro.url.pathname.replace(/^\/id/, '') || '/') : Astro.url.pathname
+const options = [
+  { code: 'id', label: 'ID', name: 'Bahasa Indonesia', href: getRelativeLocaleUrl('id', rawPath) },
+  { code: 'en', label: 'EN', name: 'English', href: getRelativeLocaleUrl('en', rawPath) },
+] as const
+---
+<nav
+  aria-label={t.languageSwitch.label}
+  class:list={['flex w-max items-center gap-(--space-4) rounded-(--radius-full) bg-neutral-800 p-(--space-2) desktop:p-(--space-4)', className]}
+  data-figma="language-switch"
+  {...rest}
+>
+  {options.map((o) => {
+    const current = o.code === lang
+    return (
+      <a
+        href={o.href}
+        hreflang={o.code}
+        lang={o.code}
+        aria-label={o.name}
+        aria-current={current ? 'true' : undefined}
+        data-lang-switch
+        class:list={[
+          'flex size-7 items-center justify-center rounded-(--radius-full) text-button-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:size-9 desktop:text-button-md',
+          current ? 'bg-neutral-100 text-neutral-700' : 'text-neutral-100 desktop:font-normal',
+        ]}
+      >{o.label}</a>
+    )
+  })}
+</nav>
+
+<script is:inline>
+  // Switching language is a full navigation to the other locale's route, so
+  // the browser resets scroll. Stash the position; BaseLayout restores it.
+  document.querySelectorAll('a[data-lang-switch]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      sessionStorage.setItem('langSwitchScrollY', String(window.scrollY))
+    })
+  })
+</script>

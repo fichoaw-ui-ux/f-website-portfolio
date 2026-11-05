@@ -21,19 +21,22 @@ intentional exceptions. Values come from Figma and `src/styles/tokens.css`.
 ## Section map
 Figma file **Draft** (`OXwf8tiGQHyIw6XX4ZhSrj`). Refer to sections by name.
 
-- Full page — desktop: `8:116` | desktop scrolled: `8:384` | mobile: `8:624` | mobile scrolled: `8:877`
+- Full page — desktop: `25:1233` | desktop scrolled: `25:1506` | mobile: `25:1752` | mobile scrolled: `25:2011`
+  (the frames were rebuilt in Figma on 2026-11-06 when the language switch was
+  added; the earlier `8:*` IDs no longer exist)
 
-| Section | Mobile node | Desktop node | Desktop scrolled |
-|---|---|---|---|
-| Hero / Profile | `8:627` | `8:117` | — |
-| Compact profile (sticky) | `8:1092` (scrolled frame) | — | `8:594` |
-| Tab bar | `8:662` (scrolled: `8:1071`) | `8:156` | `8:603` |
-| Experience | `8:684` | `8:177` | `8:386` |
-| Skills & Tools | `8:753` | `8:247` | `8:456` |
-| Study Case | `8:798` | `8:290` | `8:499` |
-| Exploration | `8:831` | `8:334` | `8:543` |
-| Contact | `8:837` | `8:346` | `8:555` |
-| Footer | `8:874` | `8:382` | `8:591` |
+| Section | Mobile node | Desktop node |
+|---|---|---|
+| Hero / Profile | `25:1755` | `25:1234` |
+| Language switch | hero `25:1759`, compact `25:2234` | hero `25:1273`, compact `25:1723` |
+| Compact profile (sticky) | `25:2226` (scrolled frame) | `25:1716` (scrolled frame) |
+| Tab bar | `25:1796` | `25:1278` |
+| Experience | in `25:1817` (1st) | `25:1299` |
+| Skills & Tools | in `25:1817` (2nd) | `25:1369` |
+| Study Case | in `25:1817` (3rd) | `25:1412` |
+| Exploration | in `25:1817` (4th) | `25:1456` |
+| Contact | in `25:1817` (5th) | `25:1468` |
+| Footer | in `25:1817` (6th) | `25:1504` |
 
 Mobile layers still have generic names (`Frame 15978804xx`); pairing is by order.
 Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713`, mobile `9225:12221`.
@@ -73,8 +76,17 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   Contact 48 tall), mobile 80 (photo 64 r16, name 18/29, handle 14/1, Contact 38).
   Figma's Inter text is rendered in Aileron at Figma's sizes.
 - Name text "Ficho Aji W" as designed (Ficho). Contact links to `#contact`.
-- **No language switch** — set aside by Ficho for now. The home pages no longer
-  render the legacy header (`showHeader={false}`); /id stays reachable by URL.
+- Right side: language switch + Contact pill (desktop, 44 tall) or switch + a white
+  envelope icon linking to Contact (mobile). Figma's mobile glyph is a menu icon;
+  Ficho meant a contact icon. The home pages no longer render the legacy header.
+
+### Language switch — done (`src/components/layout/LanguageSwitch.astro`)
+- In the hero (desktop: absolute at the content's right edge, 142 from the top,
+  straddling the white band; mobile: in the photo row, space-between) and in the
+  compact header. Measured equal to Figma: 84×44 / 36 options (desktop), 64×32 / 28
+  options (mobile).
+- The white option is the current language (Ficho). Each option links to the same
+  page in that language; scroll position is restored after switching.
 - Default language is English: `/` is EN, `/id` is ID, and `resolveLocale` falls
   back to EN. The 404 page is in English.
 

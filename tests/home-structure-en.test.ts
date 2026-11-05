@@ -368,6 +368,19 @@ describe('home page structure', () => {
       expect(block).toMatch(/href="#contact"[\s\S]*Contact/)
     })
 
+    it('offers the ID/EN switch in the hero and the compact header, EN current', () => {
+      const switches = html.match(/<nav[^>]*data-figma="language-switch"[\s\S]*?<\/nav>/g) ?? []
+      expect(switches).toHaveLength(2)
+      for (const sw of switches) {
+        expect(sw).toContain('aria-label="Language"')
+        expect(sw).toMatch(/<a[^>]*href="\/id\/"[^>]*>ID<\/a>/)
+        expect(sw).toMatch(/<a[^>]*href="\/"[^>]*aria-current="true"[^>]*>EN<\/a>/)
+        expect(sw).not.toMatch(/<a[^>]*href="\/id\/"[^>]*aria-current/)
+      }
+      // Mobile: an envelope icon link to Contact beside the switch.
+      expect(html).toMatch(/<a[^>]*href="#contact"[^>]*aria-label="Contact"[^>]*data-figma="compact-header\/contact-icon"/)
+    })
+
     it('keeps the tab bar sticky right under it', () => {
       const bar = html.match(/<nav[^>]*data-tab-bar[^>]*>/)?.[0] ?? ''
       expect(bar).toContain('sticky')
