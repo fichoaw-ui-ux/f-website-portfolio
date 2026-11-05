@@ -1,0 +1,59 @@
+---
+/* Compact header — Figma Draft: desktop `8:594` (scrolled frame 8:384),
+   mobile `8:1092` (scrolled frame 8:877).
+   Fixed at the top, hidden while the hero is on screen; it slides/fades in
+   when the tab bar reaches it (page spec), and the tab bar sticks right under
+   it (TabBar.astro). Desktop 84 tall (16 + 56 + 12), mobile 80 (8 + 64 + 8).
+   No language switch: set aside by Ficho for now.
+
+   Figma sets the desktop name/handle/button in Inter; rendered in Aileron at
+   Figma's sizes (20/30, 15/22.5, 16/24). The photo's #252525 stroke matches
+   the #252525 background, so it is invisible and left out. */
+import { Image } from 'astro:assets'
+import ContentBand from '../layout/ContentBand.astro'
+import portrait from '../../assets/hero/portrait.png'
+import { getSite } from '../../content/site'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+const lang = resolveLocale(Astro.currentLocale)
+const site = getSite(lang)
+const t = useTranslations(lang)
+---
+<div
+  class="fixed inset-x-0 top-0 z-50 mx-auto max-w-[402px] -translate-y-full bg-neutral-900 opacity-0 transition-[translate,opacity] duration-300 ease-out data-shown:translate-y-0 data-shown:opacity-100 desktop:max-w-none"
+  data-compact-header
+  data-figma="compact-header"
+  aria-hidden="true"
+  inert
+>
+  {/* max-w 402 below the desktop breakpoint follows the 402px mobile artboard lock (global.css). */}
+  <ContentBand class="flex items-center gap-(--space-16) py-(--space-8) desktop:pt-(--space-16) desktop:pb-(--space-12)">
+    {/* Photo: mobile 64 r16 (image 64×85, +5.5), desktop 56 r6.72 (image 56.07×74.76, +0.14). */}
+    <div class="relative size-16 shrink-0 overflow-hidden rounded-[16px] desktop:size-14 desktop:rounded-[6.72px]">
+      {/* radii: not in tokens — mobile Figma radius/radius-lg 16; desktop 6.72 is the hero's 24 scaled ×0.28 */}
+      <Image
+        src={portrait}
+        alt=""
+        widths={[64, 128]}
+        sizes="64px"
+        class="absolute left-1/2 top-[calc(50%+5.5px)] h-[85px] w-16 max-w-none -translate-x-1/2 -translate-y-1/2 object-cover desktop:top-[calc(50%+0.14px)] desktop:h-[74.76px] desktop:w-[56.07px]"
+      />
+    </div>
+
+    <div class="flex min-w-0 flex-1 flex-col gap-(--space-4) whitespace-nowrap desktop:gap-(--space-2)">
+      {/* "Ficho Aji W" as designed (Ficho). Desktop 20/30 + 15/22.5: not in tokens (Figma Inter, 150%). */}
+      <p class="text-title-md text-neutral-100 desktop:text-[20px] desktop:leading-[30px]">Ficho Aji W</p>
+      <p class="text-button-sm text-neutral-600 desktop:text-[15px] desktop:leading-[22.5px] desktop:font-normal">{site.handle}</p>
+    </div>
+
+    <a
+      href="#contact"
+      class="flex shrink-0 items-center gap-(--space-4) rounded-(--radius-full) border border-neutral-800 bg-neutral-800 px-(--space-12) py-(--space-8) text-button-sm text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:gap-(--space-8) desktop:border-0 desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-[16px] desktop:leading-[24px]"
+      data-figma="compact-header/contact"
+    >
+      {/* Desktop 16/24 semibold: not in tokens (Figma Inter, 150%). */}
+      {t.compactHeader.contact}
+      <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5" />
+    </a>
+  </ContentBand>
+</div>

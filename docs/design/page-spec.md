@@ -60,14 +60,19 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
 - The scrolled desktop frame sets the tabs in Inter; built in Aileron from the
   default frame (`8:156`) styles.
 
-### Hero ↔ Compact profile — waiting on Figma
-- The "scrolled" frames show the hero collapsing into a compact profile bar with
-  the tab bar under it. Confirmed: sticky header (desktop 84 tall, mobile 80) that
-  slides/fades in when the tab bar reaches it; tab bar sticks under it.
-  Respect `prefers-reduced-motion`.
-- Name text is "Ficho Aji W" as designed (decided by Ficho).
-- **Blocked:** the language switch (ID/EN) has no place in the new design. Ficho
-  will design it in Figma first; until then the legacy header stays on all pages.
+### Compact header — done (`src/components/home/CompactHeader.astro`)
+- Fixed at the top, hidden (and inert) while the hero is on screen; slides/fades in
+  (300ms, off under reduced motion) when the tab bar sticks under it. The tab bar
+  is sticky at 80 (mobile) / 84 (desktop). Sections scroll to `--sticky-offset`
+  (136 / 152.4) so tab clicks land just under both bars.
+- Measured equal to Figma: desktop 84 (photo 56, name 20/30, handle 15/22.5,
+  Contact 48 tall), mobile 80 (photo 64 r16, name 18/29, handle 14/1, Contact 38).
+  Figma's Inter text is rendered in Aileron at Figma's sizes.
+- Name text "Ficho Aji W" as designed (Ficho). Contact links to `#contact`.
+- **No language switch** — set aside by Ficho for now. The home pages no longer
+  render the legacy header (`showHeader={false}`); /id stays reachable by URL.
+- Default language is English: `/` is EN, `/id` is ID, and `resolveLocale` falls
+  back to EN. The 404 page is in English.
 
 ### Experience — done (`src/components/home/Experience.astro`)
 - Measured equal to Figma: desktop with both jobs open (section 1141, Transfez 340,

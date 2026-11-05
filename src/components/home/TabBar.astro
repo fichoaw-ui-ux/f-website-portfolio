@@ -2,8 +2,8 @@
 /* Tab bar — Figma Draft: desktop `8:156`, mobile `8:662`.
    Navigation, not content switching (page spec): every section stays on the
    page, a tab scrolls to its section, and the active tab follows the section
-   in view. Sticky + compact header come later, once the language switch is
-   designed in Figma.
+   in view. The bar sticks under the compact header (mobile 80, desktop 84),
+   and the compact header slides in when the bar reaches it.
 
    Icons are the Figma SVGs used as CSS masks, so the active (white) and
    inactive (#6C6C71) colours can swap without editing the files. The masks
@@ -26,7 +26,7 @@ const tabs = [
 ---
 <nav
   aria-label={t.tabs.label}
-  class="relative bg-neutral-900 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-neutral-800 desktop:border-y desktop:border-neutral-800 desktop:before:hidden desktop:after:hidden"
+  class="sticky top-[80px] z-40 bg-neutral-900 desktop:top-[84px] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-neutral-800 desktop:border-y desktop:border-neutral-800 desktop:before:hidden desktop:after:hidden"
   data-figma="tab-bar"
   data-tab-bar
 >
@@ -69,6 +69,7 @@ const tabs = [
   // (scroll-mt-32), which is above that line. Before the first section the
   // first tab stays active, as in the Figma default frame.
   const bar = document.querySelector<HTMLElement>('[data-tab-bar]')
+  const header = document.querySelector<HTMLElement>('[data-compact-header]')
   const scroller = bar?.querySelector<HTMLElement>('[data-tab-scroller]')
   const links = Array.from(bar?.querySelectorAll<HTMLAnchorElement>('[data-tab]') ?? [])
   const sections = links
@@ -95,7 +96,21 @@ const tabs = [
     }
   }
 
+  // Compact header: shown once the bar is stuck under it (its top has reached
+  // the header's height), hidden again while the hero is back in view.
+  let shown = false
+  function updateHeader() {
+    if (!bar || !header) return
+    const stuck = bar.getBoundingClientRect().top <= header.offsetHeight + 0.5
+    if (stuck === shown) return
+    shown = stuck
+    header.toggleAttribute('data-shown', stuck)
+    header.setAttribute('aria-hidden', String(!stuck))
+    header.inert = !stuck
+  }
+
   function update() {
+    updateHeader()
     if (!bar || sections.length === 0) return
     const line = Math.max(bar.getBoundingClientRect().bottom + 24, window.innerHeight * 0.3)
     let id = sections[0].id

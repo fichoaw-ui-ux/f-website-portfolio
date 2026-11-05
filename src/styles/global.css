@@ -13,6 +13,12 @@
 @import "@fontsource/aileron/700.css";
 @import "./tokens.css";
 
+/* Height of what sticks to the top of the redesigned home page: compact header
+   + tab bar (mobile 80 + 56, desktop 84 + 68.4). Sections scroll to just
+   under it when a tab is clicked. Derived from Figma, not a Figma variable. */
+:root { --sticky-offset: 136px; }
+@media (width >= 64rem) { :root { --sticky-offset: 152.4px; } }
+
 @layer base {
   html {
     scroll-behavior: smooth;

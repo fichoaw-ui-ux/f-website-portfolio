@@ -3,11 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import Container from '../components/layout/Container.astro'
 import Button from '../components/ui/Button.astro'
 ---
-<BaseLayout title="404 — Tidak Ditemukan">
+<BaseLayout title="404 — Not Found">
   <Container class="min-h-[60vh] flex flex-col justify-center py-24">
     <div class="font-mono text-sm uppercase tracking-widest text-text-secondary mb-3">Error 404</div>
-    <h1 class="font-display font-extrabold text-display-lg mb-6">Halaman tidak ditemukan.</h1>
-    <p class="text-text-secondary text-lg mb-8 max-w-lg">Halaman yang kamu cari nggak ada atau udah dipindah.</p>
-    <div><Button href="/" variant="primary">← Kembali ke beranda</Button></div>
+    <h1 class="font-display font-extrabold text-display-lg mb-6">Page not found.</h1>
+    <p class="text-text-secondary text-lg mb-8 max-w-lg">The page you're looking for doesn't exist or has moved.</p>
+    <div><Button href="/" variant="primary">← Back to home</Button></div>
   </Container>
 </BaseLayout>

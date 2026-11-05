@@ -235,7 +235,16 @@ describe('home page structure', () => {
     })
   })
 
-  describe('header', () => {
+  // The legacy header left the home page with the redesign (the compact header
+  // replaced it) but still serves the case study and exploration pages. The
+  // exploration page is dark like the old home, so these checks still apply.
+  describe('legacy header (exploration page)', () => {
+    let legacyPage: string
+
+    beforeAll(async () => {
+      legacyPage = await readFile(join(DIST, 'explorations', 'exploration-01', 'index.html'), 'utf8')
+    })
+
     it('carries the section nav, the wordmark, and one CTA', () => {
       // The wordmark is inlined, not an <img>, so its currentColor fill can
       // follow --color-text-primary — as an <img> it stayed Figma's hardcoded
@@ -245,12 +254,12 @@ describe('home page structure', () => {
       // opening tag. The window version proved brittle for the reason such
       // windows always are: it measured proximity, not containment, so simply
       // adding classes to the bar broke it while the markup was still correct.
-      const header = html.match(/<header[\s\S]*?<\/header>/)?.[0]
+      const header = legacyPage.match(/<header[\s\S]*?<\/header>/)?.[0]
       expect(header).toBeDefined()
       expect(header).toMatch(/<svg[^>]*viewBox="0 0 106 32"/)
       expect(header).toContain('fill="currentColor"')
-      expect(html).not.toContain('src="/images/logo-ficho.svg"')
-      expect(html).toContain('Contact Me')
+      expect(legacyPage).not.toContain('src="/images/logo-ficho.svg"')
+      expect(legacyPage).toContain('Contact Me')
       // The section nav is back — it was dropped along with the pill when the
       // header was first reduced, and that pairing was the mistake documented
       // in Header.astro. Every site.nav entry must render; a nav that silently
@@ -258,11 +267,11 @@ describe('home page structure', () => {
       // is a mailto, not an anchor to a section.
       //
       // English is the default locale (no URL prefix), so these stay bare.
-      expect(html).toContain('href="/#work"')
-      expect(html).toContain('href="/#skills"')
-      expect(html).toContain('href="/#experience"')
-      expect(html).toContain('href="/#explorations"')
-      expect(html).not.toContain('Get in touch')
+      expect(legacyPage).toContain('href="/#work"')
+      expect(legacyPage).toContain('href="/#skills"')
+      expect(legacyPage).toContain('href="/#experience"')
+      expect(legacyPage).toContain('href="/#explorations"')
+      expect(legacyPage).not.toContain('Get in touch')
     })
 
     it('sticks — which is only safe while the bar stays opaque', () => {
@@ -275,7 +284,7 @@ describe('home page structure', () => {
       // opaque bar alone, is fine; sticky *without* the bar is the specific
       // combination that put 88px headings underneath the wordmark. Splitting
       // them into two tests would let that pair regress with both still green.
-      const header = html.match(/<header[^>]*>/)?.[0]
+      const header = legacyPage.match(/<header[^>]*>/)?.[0]
       expect(header).toBeDefined()
       expect(header).toContain('sticky')
       // Without a stacking order it would stick and still be painted under the
@@ -286,7 +295,7 @@ describe('home page structure', () => {
       // Light case-study pages keep it (Header's `scrim` prop).
       expect(header).not.toContain('var(--color-bg-primary)')
 
-      const bar = html.match(/<header[\s\S]*?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
+      const bar = legacyPage.match(/<header[\s\S]*?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
       // Over the video the pill is tinted glass (the `glass` utility, whose
       // tint and blur are asserted in the background video block).
       expect(bar).toMatch(/class="[^"]*\bglass\b/)
@@ -299,13 +308,40 @@ describe('home page structure', () => {
       // the pill is not. Losing it is invisible in the tests otherwise, and it
       // leaves the header with no surface of its own, so anything painted
       // behind it makes it read as a stray band.
-      const bar = html.match(/<header[\s\S]{0,600}?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
+      const bar = legacyPage.match(/<header[\s\S]{0,600}?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
       expect(bar).toBeDefined()
       expect(bar).toContain('rounded-full')
       // Dark pages sit over the background video, so the pill is glass with
       // a token-driven fill and edge (tokens.css), never a literal colour.
       expect(bar).toMatch(/class="[^"]*\bglass\b/)
       expect(bar).not.toMatch(/bg-\[(linear-gradient\()?#[0-9a-fA-F]{3,8}/)
+    })
+  })
+
+  describe('compact header', () => {
+    it('replaces the legacy header on the home page and starts hidden', () => {
+      expect(html).not.toMatch(/<header\b/)
+      const header = html.match(/<div[^>]*data-compact-header[^>]*>/)?.[0]
+      expect(header).toBeDefined()
+      // Hidden and unreachable until the tab bar sticks under it.
+      expect(header).toContain('aria-hidden="true"')
+      expect(header).toMatch(/\sinert/)
+      // The attribute itself, not the `data-shown:` class variant.
+      expect(header).not.toMatch(/\sdata-shown[\s=>]/)
+    })
+
+    it('shows the short name, handle and a Contact link to the section', () => {
+      const block = html.match(/<div[^>]*data-compact-header[\s\S]*?data-figma="compact-header\/contact"[\s\S]*?<\/a>/)?.[0] ?? ''
+      expect(block).toContain('Ficho Aji W')
+      expect(block).toContain('@fichoaw')
+      expect(block).toMatch(/href="#contact"[\s\S]*Contact/)
+    })
+
+    it('keeps the tab bar sticky right under it', () => {
+      const bar = html.match(/<nav[^>]*data-tab-bar[^>]*>/)?.[0] ?? ''
+      expect(bar).toContain('sticky')
+      expect(bar).toContain('top-[80px]')
+      expect(bar).toContain('desktop:top-[84px]')
     })
   })
 })

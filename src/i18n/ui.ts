@@ -1,7 +1,9 @@
 export type Lang = 'id' | 'en'
 
+// English is the default language (astro.config: defaultLocale 'en', served at /);
+// Indonesian lives under /id. Anything that is not explicitly 'id' renders English.
 export function resolveLocale(currentLocale: string | undefined): Lang {
-  return currentLocale === 'en' ? 'en' : 'id'
+  return currentLocale === 'id' ? 'id' : 'en'
 }
 
 const dictionary = {
@@ -17,6 +19,7 @@ const dictionary = {
       exploration: 'Eksplorasi',
     },
     skillsTools: { skills: 'Skill', tools: 'Tools' },
+    compactHeader: { contact: 'Kontak' },
     contact: {
       heading: 'Terbuka untuk peluang kerja dan freelance',
       bodyBefore: 'Terbuka untuk kerja product design dan kolaborasi. Bisa hubungi saya di ',
@@ -57,6 +60,7 @@ const dictionary = {
       exploration: 'Exploration',
     },
     skillsTools: { skills: 'Skills', tools: 'Tools' },
+    compactHeader: { contact: 'Contact' },
     contact: {
       heading: "Let's build something together",
       bodyBefore: 'Open to product design work and collaborations. You can reach me at ',

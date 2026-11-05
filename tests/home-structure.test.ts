@@ -169,42 +169,52 @@ describe('home page structure (id)', () => {
     })
   })
 
-  describe('header', () => {
+  // The legacy header left the home page with the redesign (the compact header
+  // replaced it) but still serves the case study and exploration pages. The
+  // exploration page is dark like the old home, so these checks still apply.
+  describe('legacy header (exploration page)', () => {
+    let legacyPage: string
+
+    beforeAll(async () => {
+      legacyPage = await readFile(join(DIST, 'id', 'explorations', 'exploration-01', 'index.html'), 'utf8')
+    })
+
     it('carries the section nav, the wordmark, and one CTA', () => {
-      const header = html.match(/<header[\s\S]*?<\/header>/)?.[0]
+      const header = legacyPage.match(/<header[\s\S]*?<\/header>/)?.[0]
       expect(header).toBeDefined()
       expect(header).toMatch(/<svg[^>]*viewBox="0 0 106 32"/)
       expect(header).toContain('fill="currentColor"')
-      expect(html).not.toContain('src="/images/logo-ficho.svg"')
-      expect(html).toContain('Hubungi Saya')
-      expect(html).toContain('href="/id/#work"')
-      expect(html).toContain('href="/id/#skills"')
-      expect(html).toContain('href="/id/#experience"')
-      expect(html).toContain('href="/id/#explorations"')
-      expect(html).not.toContain('Get in touch')
+      expect(legacyPage).not.toContain('src="/images/logo-ficho.svg"')
+      expect(legacyPage).toContain('Hubungi Saya')
+      expect(legacyPage).toContain('href="/id/#work"')
+      expect(legacyPage).toContain('href="/id/#skills"')
+      expect(legacyPage).toContain('href="/id/#experience"')
+      expect(legacyPage).toContain('href="/id/#explorations"')
+      expect(legacyPage).not.toContain('Get in touch')
     })
 
     it('offers the ID/EN language switcher', () => {
-      expect(html).toMatch(/>ID<\/a>/)
-      expect(html).toMatch(/>EN<\/a>/)
-      expect(html).toMatch(/href="\/"/)
+      expect(legacyPage).toMatch(/>ID<\/a>/)
+      expect(legacyPage).toMatch(/>EN<\/a>/)
+      // On an exploration page the EN link points at the same page in English.
+      expect(legacyPage).toMatch(/href="\/explorations\/exploration-01\/"/)
     })
 
     it('sticks — which is only safe while the bar stays opaque', () => {
-      const header = html.match(/<header[^>]*>/)?.[0]
+      const header = legacyPage.match(/<header[^>]*>/)?.[0]
       expect(header).toBeDefined()
       expect(header).toContain('sticky')
       expect(header).toContain('z-40')
       expect(header).not.toContain('var(--color-bg-primary)')
 
-      const bar = html.match(/<header[\s\S]*?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
+      const bar = legacyPage.match(/<header[\s\S]*?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
       // Over the video the pill is tinted glass (the `glass` utility, whose
       // tint and blur are asserted in the background video block).
       expect(bar).toMatch(/class="[^"]*\bglass\b/)
     })
 
     it('draws the wordmark and CTA inside a bordered pill, as Figma does', () => {
-      const bar = html.match(/<header[\s\S]{0,600}?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
+      const bar = legacyPage.match(/<header[\s\S]{0,600}?<div[^>]*class="[^"]*h-\[72px\][^"]*"/)?.[0]
       expect(bar).toBeDefined()
       expect(bar).toContain('rounded-full')
       // Dark pages sit over the background video, so the pill is glass with
@@ -213,4 +223,31 @@ describe('home page structure (id)', () => {
       expect(bar).not.toMatch(/bg-\[(linear-gradient\()?#[0-9a-fA-F]{3,8}/)
     })
   })
+  describe('compact header', () => {
+    it('replaces the legacy header on the home page and starts hidden', () => {
+      expect(html).not.toMatch(/<header\b/)
+      const header = html.match(/<div[^>]*data-compact-header[^>]*>/)?.[0]
+      expect(header).toBeDefined()
+      // Hidden and unreachable until the tab bar sticks under it.
+      expect(header).toContain('aria-hidden="true"')
+      expect(header).toMatch(/\sinert/)
+      // The attribute itself, not the `data-shown:` class variant.
+      expect(header).not.toMatch(/\sdata-shown[\s=>]/)
+    })
+
+    it('shows the short name, handle and a Contact link to the section', () => {
+      const block = html.match(/<div[^>]*data-compact-header[\s\S]*?data-figma="compact-header\/contact"[\s\S]*?<\/a>/)?.[0] ?? ''
+      expect(block).toContain('Ficho Aji W')
+      expect(block).toContain('@fichoaw')
+      expect(block).toMatch(/href="#contact"[\s\S]*Kontak/)
+    })
+
+    it('keeps the tab bar sticky right under it', () => {
+      const bar = html.match(/<nav[^>]*data-tab-bar[^>]*>/)?.[0] ?? ''
+      expect(bar).toContain('sticky')
+      expect(bar).toContain('top-[80px]')
+      expect(bar).toContain('desktop:top-[84px]')
+    })
+  })
+
 })
