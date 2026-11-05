@@ -159,6 +159,9 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   exploration pages keep the legacy footer until they are redesigned.
 
 ## Intentional exceptions
+- Mobile has no 12px text (Ficho): hero meta, Experience bullets and Study Case
+  tags are 14px (meta/tags 14/1 semibold, bullets 14/22). Mobile text buttons
+  (View Details, See Prototype / Visit Live Site) use 12px padding on all sides.
 - Hover states (not in Figma, Ficho), 200ms, only on devices that hover:
   filled pills (Contact, View Details, See Prototype / Visit Live Site) brighten
   ×1.1 and their arrow nudges 4px right; bordered tiles (hero socials, contact row

@@ -64,8 +64,8 @@ const HIDDEN_TAGS = new Set(['Product Design'])
                 <h3 class="order-1 w-full text-title-md text-neutral-100 desktop:order-2 desktop:mt-(--space-16) desktop:text-title-lg">{p.data.title}</h3>
                 <ul class="order-2 mt-(--space-12) flex flex-wrap gap-(--space-8) desktop:order-1 desktop:mt-0" aria-label="Tags">
                   {tags.map((tag) => (
-                    <li class="rounded-(--radius-full) border border-neutral-800 px-(--space-8) py-(--space-4) text-[12px] leading-none font-semibold text-neutral-600 desktop:px-(--space-10) desktop:text-button-sm">
-                      {/* mobile 12/1 semibold: not in tokens — Figma font-size/xs 12 */}
+                    <li class="rounded-(--radius-full) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-neutral-600 desktop:px-(--space-10)">
+                      {/* mobile 14/1 semibold = Button/Small (Figma 12, raised by Ficho) */}
                       {tag}
                     </li>
                   ))}
@@ -77,7 +77,7 @@ const HIDDEN_TAGS = new Set(['Product Design'])
                     inside the 36px height — invisible, so it is left out. */}
                 <a
                   href={href}
-                  class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-full) bg-neutral-800 px-(--space-12) py-(--space-8) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-16) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
+                  class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-full) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-16) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
                   data-figma={`study-case/${p.data.slug}/button`}
                 >
                   {t.common.viewDetails}<span class="sr-only">: {p.data.title}</span>

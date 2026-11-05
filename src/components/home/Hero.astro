@@ -74,12 +74,12 @@ const socials = ['WhatsApp', 'LinkedIn', 'Email']
         <ul class="order-2 mt-(--space-16) flex items-center gap-(--space-22) desktop:order-none desktop:mt-(--space-20) desktop:gap-(--space-28)" data-figma="hero/meta">
           <li class="flex items-center gap-(--space-6) desktop:gap-(--space-8)">
             <img src="/images/icons/user.svg" alt="" width="20" height="20" class="size-4 desktop:size-5" />
-            {/* mobile 12/1 semibold: not in tokens — Figma font-size/xs 12 */}
-            <span class="text-[12px] font-semibold leading-none text-neutral-600 desktop:text-button-md">{site.role}</span>
+            {/* mobile 14/1 semibold (Figma 12, raised by Ficho) = Button/Small */}
+            <span class="text-button-sm text-neutral-600 desktop:text-button-md">{site.role}</span>
           </li>
           <li class="flex items-center gap-(--space-6) desktop:gap-(--space-8)">
             <img src="/images/icons/map-pin.svg" alt="" width="20" height="20" class="size-4 desktop:size-5" />
-            <span class="text-[12px] font-semibold leading-none text-neutral-600 desktop:text-button-md">{site.location}</span>
+            <span class="text-button-sm text-neutral-600 desktop:text-button-md">{site.location}</span>
           </li>
         </ul>
 

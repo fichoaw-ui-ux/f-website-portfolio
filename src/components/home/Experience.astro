@@ -123,8 +123,8 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
                         {/* Bullet: 6px #6C6C71 circle at x5 in a 16-wide box,
                             y8 of 22 (mobile) / y10 of 26 (desktop), as in Figma. */}
                         <span class="relative h-[22px] w-4 shrink-0 before:absolute before:left-[5px] before:top-[8px] before:size-[6px] before:rounded-full before:bg-neutral-800 desktop:h-[29px] desktop:before:top-[11.5px]" aria-hidden="true"></span>
-                        {/* mobile 12/19: not in tokens — Figma Aileron 12, 160% renders 19 */}
-                        <span class="min-w-0 text-[12px] leading-[19px] text-neutral-100 desktop:max-w-[720px] desktop:text-[18px] desktop:leading-[29px]" set:html={highlight(item)} />
+                        {/* mobile 14/22 = Body/Small (Figma 12/19, raised by Ficho) */}
+                        <span class="min-w-0 text-body-sm text-neutral-100 desktop:max-w-[720px] desktop:text-[18px] desktop:leading-[29px]" set:html={highlight(item)} />
                       </li>
                     ))}
                   </ul>
