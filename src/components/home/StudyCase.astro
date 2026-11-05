@@ -5,6 +5,8 @@
    thumbnails fill the same boxes. Tags: everything except "Product Design"
    (Ficho: show industry/platform, as the design does).
    Replaces the legacy SelectedWork sticky-stack; the design is a plain list.
+   Covers are black & white and turn to colour (with a 1.02 zoom) while the
+   card is hovered — kept from the previous design (Ficho), not in Figma.
 
    Desktop: rows (cover 504×360 | content), 1px dividers, content centred.
    Mobile: bordered cards (stroke inside the 24px padding, so p = 23 + 1),
@@ -40,7 +42,7 @@ const HIDDEN_TAGS = new Set(['Product Design'])
           <li class:list={[i > 0 && 'desktop:mt-(--space-40) desktop:border-t desktop:border-neutral-800 desktop:pt-(--space-40)']}>
             {/* Desktop divider: 40 + 1px + 40 between rows, as in Figma. */}
             <article
-              class="flex flex-col gap-(--space-24) rounded-(--radius-24) border border-neutral-800 p-[23px] [filter:drop-shadow(0_4px_6px_rgba(22,34,51,0.12))_drop-shadow(0_16px_16px_rgba(22,34,51,0.16))] desktop:flex-row desktop:items-center desktop:gap-(--space-32) desktop:rounded-none desktop:border-0 desktop:p-0 desktop:[filter:none]"
+              class="group flex flex-col gap-(--space-24) rounded-(--radius-24) border border-neutral-800 p-[23px] [filter:drop-shadow(0_4px_6px_rgba(22,34,51,0.12))_drop-shadow(0_16px_16px_rgba(22,34,51,0.16))] desktop:flex-row desktop:items-center desktop:gap-(--space-32) desktop:rounded-none desktop:border-0 desktop:p-0 desktop:[filter:none]"
               data-figma={`study-case/${p.data.slug}`}
             >
               {/* Cover: mobile 200 tall, 2px #BBBBC0 stroke; desktop 504×360, no stroke. */}
@@ -52,7 +54,7 @@ const HIDDEN_TAGS = new Set(['Product Design'])
                   widths={[302, 504, 604, 1008]}
                   sizes="(min-width: 1024px) 504px, 302px"
                   loading="lazy"
-                  class="size-full object-cover"
+                  class="size-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
                 />
               </div>
 

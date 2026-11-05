@@ -185,6 +185,22 @@ describe('home page structure', () => {
   })
 
   describe('explorations', () => {
+    it('shows covers in black & white, colour on card hover, with stacked pills', () => {
+      const covers = html.match(/<img[^>]+\/_astro\/(exp-0|cover\.)[^>]*>/g) ?? []
+      expect(covers.length).toBe(9) // 7 explorations + 2 case studies
+      covers.forEach(img => {
+        expect(img).toContain('grayscale')
+        expect(img).toContain('group-hover:grayscale-0')
+      })
+      // See Prototype / Visit Live Site stack vertically on every card.
+      const pillRows = html.match(/<div class="absolute inset-x-\(--space-16\)[^"]*"/g) ?? []
+      expect(pillRows).toHaveLength(7)
+      pillRows.forEach(row => {
+        expect(row).toContain('grid-cols-1')
+        expect(row).not.toContain('grid-cols-2')
+      })
+    })
+
     it('has the redesign heading and no per-card captions', () => {
       // The redesign brings the "Explorations" heading back (Figma 8:334).
       expect(html).toMatch(/<h2[^>]*>Explorations<\/h2>/)

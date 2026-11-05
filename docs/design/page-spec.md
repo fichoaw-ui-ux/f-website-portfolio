@@ -143,6 +143,10 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   exploration pages keep the legacy footer until they are redesigned.
 
 ## Intentional exceptions
+- Study case and exploration covers are black & white and turn to colour (with a
+  1.02 zoom, 500ms) while their card is hovered — kept from the previous design
+  (Ficho). Exploration pills stack vertically, full width. The profile photo has no
+  hover effect for now: the Figma photo is already black & white (Ficho: later).
 - Hero top band (white, 164px) and section dividers are full-bleed; content sits in the 1040 band.
 - Storm video behind the page (see Global → Background). Not in Figma.
 - Experience accordion opening state (see Experience). Not in Figma.

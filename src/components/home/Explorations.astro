@@ -7,7 +7,9 @@
    Not in Figma, kept on purpose (Ficho): the "See Prototype" / "Visit Live
    Site" pills, restyled like the redesign's View Details pill. Only the
    pills are interactive, as before; See Prototype opens the Figma modal.
-   ASSUMED: pills sit 16px from the card's bottom and sides, 12px apart. */
+   ASSUMED: pills sit 16px from the card's bottom and sides, 12px apart.
+   Covers are black & white and turn to colour (with a 1.02 zoom) while the
+   card is hovered — kept from the previous design (Ficho). */
 import { getCollection } from 'astro:content'
 import { getRelativeLocaleUrl } from 'astro:i18n'
 import { Image } from 'astro:assets'
@@ -47,7 +49,7 @@ const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(-
           const hasLive = !!e.data.liveUrl
           return (
             <li
-              class="relative h-[400px] overflow-hidden rounded-(--radius-32) bg-neutral-200 desktop:h-[420px]"
+              class="group relative h-[400px] overflow-hidden rounded-(--radius-32) bg-neutral-200 desktop:h-[420px]"
               data-figma={`explorations/${e.data.slug}`}
             >
               {/* Card: mobile 354 wide, desktop (1040 − 2×24) / 3 ≈ 331; 1× and 2×. */}
@@ -57,12 +59,10 @@ const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(-
                 widths={[331, 354, 662, 708]}
                 sizes="(min-width: 1024px) 331px, 354px"
                 loading="lazy"
-                class="size-full object-cover"
+                class="size-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
               />
-              <div class:list={[
-                'absolute inset-x-(--space-16) bottom-(--space-16) grid gap-(--space-12)',
-                hasLive ? 'grid-cols-2' : 'grid-cols-1',
-              ]}>
+              {/* Pills stack vertically, full width (as in the previous design, Ficho). */}
+              <div class="absolute inset-x-(--space-16) bottom-(--space-16) grid grid-cols-1 gap-(--space-12)">
                 {hasProto ? (
                   <button
                     type="button"
