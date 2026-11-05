@@ -1,0 +1,111 @@
+---
+/* Tab bar — Figma Draft: desktop `8:156`, mobile `8:662`.
+   Navigation, not content switching (page spec): every section stays on the
+   page, a tab scrolls to its section, and the active tab follows the section
+   in view. Sticky + compact header come later, once the language switch is
+   designed in Figma.
+
+   Icons are the Figma SVGs used as CSS masks, so the active (white) and
+   inactive (#6C6C71) colours can swap without editing the files. The masks
+   keep each path's alpha, including the 0.2-opacity duotone fill.
+
+   The active underline is an inset box-shadow, not a border: Figma's 2px
+   stroke sits inside the tab and does not move its content. */
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
+
+// Targets are the current section ids; redesigned sections keep them.
+const tabs = [
+  { id: 'experience', label: t.tabs.experience, icon: '/images/icons/tab-experience.svg', large: false },
+  { id: 'about', label: t.tabs.skills, icon: '/images/icons/tab-skills.svg', large: false },
+  { id: 'work', label: t.tabs.studyCase, icon: '/images/icons/tab-study-case.svg', large: false },
+  { id: 'explorations', label: t.tabs.exploration, icon: '/images/icons/tab-exploration.svg', large: true },
+]
+---
+<nav
+  aria-label={t.tabs.label}
+  class="relative bg-neutral-900 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-neutral-800 desktop:border-y desktop:border-neutral-800 desktop:before:hidden desktop:after:hidden"
+  data-figma="tab-bar"
+  data-tab-bar
+>
+  {/* Mobile: Figma's 1px top/bottom strokes do not take layout space (the
+      56px tabs fill the 56px frame), so they are pseudo-element lines under
+      the tabs. Desktop: the strokes are in layout (1 + 66.4 + 1). */}
+  <div class="mx-auto w-full max-w-[1088px] desktop:px-(--space-24)">
+    <ul class="relative flex overflow-x-auto [scrollbar-width:none] desktop:overflow-visible [&::-webkit-scrollbar]:hidden" data-tab-scroller>
+      {tabs.map((tab, i) => (
+        <li class="flex shrink-0 desktop:min-w-0 desktop:flex-1">
+          <a
+            href={`#${tab.id}`}
+            data-tab={tab.id}
+            data-active={i === 0 ? '' : undefined}
+            aria-current={i === 0 ? 'true' : undefined}
+            class="group flex h-[56px] flex-1 items-center justify-center gap-(--space-6) whitespace-nowrap px-(--space-24) text-body-sm font-normal text-neutral-600 data-active:font-semibold data-active:text-neutral-100 data-active:shadow-[inset_0_-2px_0_var(--color-neutral-100)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-100 desktop:h-auto desktop:gap-(--space-8) desktop:py-(--space-20) desktop:text-button-md desktop:font-semibold"
+            data-figma={`tab-bar/${tab.id}`}
+          >
+            {/* Icon sizes: mobile 20 (Exploration 24), desktop 22 (Exploration 26.4). */}
+            <span
+              aria-hidden="true"
+              class:list={[
+                'shrink-0 bg-neutral-800 group-data-active:bg-neutral-100 [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain]',
+                tab.large ? 'size-6 desktop:size-[26.4px]' : 'size-5 desktop:size-[22px]',
+              ]}
+              style={`mask-image: url(${tab.icon}); -webkit-mask-image: url(${tab.icon});`}
+            ></span>
+            <span>{tab.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  // Scroll-spy: the active tab is the last section whose top has passed a
+  // reading line — 30% down the viewport, or just under the tab bar if that
+  // is lower. Sections land 128px from the top after a tab click
+  // (scroll-mt-32), which is above that line. Before the first section the
+  // first tab stays active, as in the Figma default frame.
+  const bar = document.querySelector<HTMLElement>('[data-tab-bar]')
+  const scroller = bar?.querySelector<HTMLElement>('[data-tab-scroller]')
+  const links = Array.from(bar?.querySelectorAll<HTMLAnchorElement>('[data-tab]') ?? [])
+  const sections = links
+    .map((a) => document.getElementById(a.dataset.tab ?? ''))
+    .filter((s): s is HTMLElement => s !== null)
+
+  let current = links[0]?.dataset.tab
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+  function setActive(id: string | undefined) {
+    if (!id || id === current) return
+    current = id
+    for (const a of links) {
+      const on = a.dataset.tab === id
+      a.toggleAttribute('data-active', on)
+      if (on) a.setAttribute('aria-current', 'true')
+      else a.removeAttribute('aria-current')
+      // Mobile: keep the active tab visible inside the horizontal scroller
+      // without scrolling the page itself.
+      if (on && scroller && scroller.scrollWidth > scroller.clientWidth) {
+        const left = a.offsetLeft - (scroller.clientWidth - a.offsetWidth) / 2
+        scroller.scrollTo({ left, behavior: reduceMotion.matches ? 'auto' : 'smooth' })
+      }
+    }
+  }
+
+  function update() {
+    if (!bar || sections.length === 0) return
+    const line = Math.max(bar.getBoundingClientRect().bottom + 24, window.innerHeight * 0.3)
+    let id = sections[0].id
+    for (const s of sections) if (s.getBoundingClientRect().top <= line) id = s.id
+    setActive(id)
+  }
+
+  // update() reads four rects and only writes when the active tab changes,
+  // so it runs straight from the (passive) scroll event.
+  window.addEventListener('scroll', update, { passive: true })
+  window.addEventListener('resize', update)
+  update()
+</script>

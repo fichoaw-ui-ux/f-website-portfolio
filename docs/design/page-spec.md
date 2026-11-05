@@ -47,17 +47,27 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
 - Figma rounds percent line heights to whole px (14 × 1.6 → 22). `--text-body-sm`
   uses 22px; check other fractional styles the same way.
 
-### Tab bar
+### Tab bar — done, not sticky yet (`src/components/home/TabBar.astro`)
 - Navigation, not content switching: every section stays on the page. Clicking a
   tab scrolls to its section; the active tab follows the section currently in
   view (scroll-spy). Decided by Ficho.
-- Mobile: tabs are wider than the 402 frame (599px) — **assumed** horizontal scroll.
+- Measured equal to Figma at 1440 (68.4 tall, tabs 260 × 66.4) and 402 (56 tall).
+  Mobile tab widths hug the rendered text: 146/155/145/149 vs Figma 147/156/146/150.
+- Mobile: tabs scroll horizontally (scrollbar hidden); the active tab is scrolled
+  into view inside the bar.
+- Targets: Experience → `#experience`, Skills & Tools → `#about` (legacy About
+  holds the skills until rebuilt), Study Case → `#work`, Exploration → `#explorations`.
+- The scrolled desktop frame sets the tabs in Inter; built in Aileron from the
+  default frame (`8:156`) styles.
 
-### Hero ↔ Compact profile
+### Hero ↔ Compact profile — waiting on Figma
 - The "scrolled" frames show the hero collapsing into a compact profile bar with
-  the tab bar under it. Confirmed: sticky header that appears after the hero
-  scrolls out, with a smooth transition (Ficho: "yang smooth saja").
+  the tab bar under it. Confirmed: sticky header (desktop 84 tall, mobile 80) that
+  slides/fades in when the tab bar reaches it; tab bar sticks under it.
   Respect `prefers-reduced-motion`.
+- Name text is "Ficho Aji W" as designed (decided by Ficho).
+- **Blocked:** the language switch (ID/EN) has no place in the new design. Ficho
+  will design it in Figma first; until then the legacy header stays on all pages.
 
 ### Experience
 - Accordion, one entry open at a time: the top entry (Transfez) starts open on

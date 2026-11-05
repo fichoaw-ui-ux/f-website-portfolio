@@ -9,6 +9,13 @@ const dictionary = {
     header: { backToHome: 'Kembali ke Beranda', contactMe: 'Hubungi Saya', menu: 'Menu' },
     footer: { rights: 'Hak cipta dilindungi.' },
     hero: { greeting: 'Halo!', intro: "Saya Ficho.", roleLine: 'product designer' },
+    tabs: {
+      label: 'Navigasi section',
+      experience: 'Pengalaman',
+      skills: 'Skill & Tools',
+      studyCase: 'Studi Kasus',
+      exploration: 'Eksplorasi',
+    },
     about: {
       heading: 'Profil',
       skills: 'SKILL',
@@ -46,6 +53,13 @@ const dictionary = {
     header: { backToHome: 'Back to Home', contactMe: 'Contact Me', menu: 'Menu' },
     footer: { rights: 'All rights reserved.' },
     hero: { greeting: 'Hello!', intro: "I'm Ficho.", roleLine: 'a product designer' },
+    tabs: {
+      label: 'Section navigation',
+      experience: 'Experience',
+      skills: 'Skills & Tools',
+      studyCase: 'Study Case',
+      exploration: 'Exploration',
+    },
     about: {
       heading: 'About me',
       skills: 'SKILLS',

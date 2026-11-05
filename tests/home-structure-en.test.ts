@@ -281,3 +281,37 @@ describe('home page structure', () => {
     })
   })
 })
+
+describe('tab bar', () => {
+  let html: string
+
+  beforeAll(async () => {
+    html = await readHomeHtml()
+  })
+
+  it('is a labelled nav right after the hero, with four tabs in Figma order', () => {
+    const nav = html.match(/<nav[^>]*data-tab-bar[^>]*>[\s\S]*?<\/nav>/)?.[0]
+    expect(nav).toBeDefined()
+    expect(nav).toContain('aria-label="Section navigation"')
+    const targets = [...nav!.matchAll(/data-tab="([^"]+)"/g)].map(m => m[1])
+    expect(targets).toEqual(['experience', 'about', 'work', 'explorations'])
+    for (const label of ['Experience', 'Skills &amp; Tools', 'Study Case', 'Exploration']) {
+      expect(nav).toContain(label)
+    }
+    // The hero section closes immediately before the tab bar opens.
+    expect(html).toMatch(/<\/section>\s*<nav[^>]*data-tab-bar/)
+  })
+
+  it('points every tab at a section that exists on the page', () => {
+    for (const id of ['experience', 'about', 'work', 'explorations']) {
+      expect(html).toContain(`href="#${id}"`)
+      expect(html).toMatch(new RegExp(`<section[^>]*id="${id}"`))
+    }
+  })
+
+  it('marks only the first tab current on load', () => {
+    const current = html.match(/<a[^>]*data-tab="[^"]+"[^>]*aria-current="true"[^>]*>/g) ?? []
+    expect(current).toHaveLength(1)
+    expect(current[0]).toContain('data-tab="experience"')
+  })
+})
