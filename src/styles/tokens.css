@@ -60,7 +60,11 @@
   --text-body-xmd: 16px;                        /* Component/Body/X - Medium */
   --text-body-xmd--line-height: 1.6;
   --text-body-sm: 14px;                         /* Component/Body/Small */
-  --text-body-sm--line-height: 1.6;
+  /* Figma's style says 160%, but Figma rounds percent line heights to whole
+     pixels: 14 × 1.6 = 22.4 renders as 22 (text node 8:635 is 4 lines = 88).
+     Use the rendered 22px. Other styles whose 1.6 lands on a fraction
+     (16 → 25.6, 18 → 28.8, 24 → 38.4) need the same check when first used. */
+  --text-body-sm--line-height: 22px;
   --text-button-md: 16px;                       /* Button/Medium */
   --text-button-md--line-height: 1;
   --text-button-md--font-weight: 600;
@@ -70,6 +74,10 @@
 
   /* Shadow — Figma Shadow/Far. */
   --shadow-far: 0 16px 32px 0 #16223329, 0 4px 12px -4px #1622331f;
+
+  /* Breakpoint — redesign switches mobile → desktop at 1024px (page spec).
+     Own name so the legacy sm/md/lg (1201px) stay untouched: use `desktop:`. */
+  --breakpoint-desktop: 64rem;
 }
 
 /* Spacing and radius sit in :root, not @theme: --space-* is not a Tailwind

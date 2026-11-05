@@ -130,8 +130,12 @@
    the near-black html background fills the gutters, so the column reads as a
    phone frame rather than as a mistakenly-narrow layout. Header is `sticky`
    inside body (not `fixed`), so this constraint reaches it too — the navbar
-   pill lives inside the 402 column with the rest of the content. */
-@media (max-width: 1200px) {
+   pill lives inside the 402 column with the rest of the content.
+   Redesign: the flip point moved from 1201px to 1024px (`desktop:` variant,
+   --breakpoint-desktop), so the lock now ends there. Until every legacy
+   section is replaced, those sections show their mobile layout at full width
+   between 1024 and 1200px. */
+@media (width < 64rem) {
   body > header,
   body > main,
   body > footer {

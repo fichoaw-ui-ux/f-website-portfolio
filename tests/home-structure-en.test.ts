@@ -21,12 +21,15 @@ describe('home page structure', () => {
   })
 
   describe('hero', () => {
-    it('greets by name in a single h1', () => {
+    it('names him in a single h1, with handle, English bio and socials', () => {
       const h1s = html.match(/<h1\b/g) ?? []
       expect(h1s).toHaveLength(1)
-      expect(html).toContain('Hello!')
-      expect(html).toMatch(/I(&#39;|&rsquo;|&apos;|'|’)m Ficho\./)
-      expect(html).toContain('a product designer')
+      expect(html).toMatch(/<h1[^>]*>\s*Ficho Aji Wibowo\s*<\/h1>/)
+      expect(html).toContain('@fichoaw')
+      expect(html).toContain('Product Designer with 4+ years of experience')
+      for (const label of ['WhatsApp', 'LinkedIn', 'Email']) {
+        expect(html).toContain(`aria-label="${label}"`)
+      }
     })
 
     it('drops the availability badge, CTAs, and scroll hint', () => {
@@ -36,10 +39,12 @@ describe('home page structure', () => {
     })
 
     it('shows the avatar as decorative, since the h1 already names him', () => {
-      // Same source file as the About portrait — Figma exports one image fill
-      // for both frames. `alt=""` is what distinguishes the hero's decorative
-      // copy from About's described one.
-      expect(html).toMatch(/<img[^>]+ficho-portrait\.png[^>]+alt=""/)
+      // Redesign hero portrait (src/assets/hero/portrait.png, optimised by
+      // astro:assets). `alt=""` because the h1 right after it is his name.
+      const img = html.match(/<img[^>]+\/_astro\/portrait\.[^>]+>/)?.[0]
+      expect(img).toBeDefined()
+      // Astro minifies alt="" to a bare `alt`; both mean an empty alternative.
+      expect(img).toMatch(/\salt(="")?[\s>]/)
     })
   })
 

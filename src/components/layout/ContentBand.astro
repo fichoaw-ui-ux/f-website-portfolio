@@ -1,0 +1,10 @@
+---
+/* Redesign content band. Figma's content column is 1040px inside the 1440
+   frame (200px gutters) and 354px inside the 402 frame (24px gutters).
+   max-width 1088 = 1040 + 2 × 24, so the band is exactly 1040 wide at any
+   viewport ≥ 1088 (gutters 200 at 1440) and keeps 24px gutters below that.
+   Legacy sections keep using Container.astro. */
+interface Props { class?: string; [key: string]: unknown }
+const { class: className = '', ...rest } = Astro.props
+---
+<div class:list={['mx-auto w-full max-w-[1088px] px-(--space-24)', className]} {...rest}><slot /></div>

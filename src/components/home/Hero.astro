@@ -1,49 +1,107 @@
 ---
-import Container from '../layout/Container.astro'
-import Reveal from '../ui/Reveal.astro'
+/* Hero — Figma Draft: desktop `8:117`, mobile `8:627` (+ top band `8:625`).
+   Value sheet and assumptions: docs/design/page-spec.md → Hero.
+   Mobile and desktop order the content differently (mobile: name → bio →
+   meta → divider → socials; desktop: identity column | bio column), so the
+   identity wrapper is `display: contents` on mobile and its children are
+   ordered into the single column with `order`. */
+import { Image } from 'astro:assets'
+import ContentBand from '../layout/ContentBand.astro'
+import portrait from '../../assets/hero/portrait.png'
 import { getSite } from '../../content/site'
-import { resolveLocale, useTranslations } from '../../i18n/ui'
+import { resolveLocale } from '../../i18n/ui'
 
 const lang = resolveLocale(Astro.currentLocale)
 const site = getSite(lang)
-const t = useTranslations(lang)
----
-<section class="relative isolate flex min-h-[560px] items-center overflow-hidden py-24 md:min-h-[776px] md:py-0">
-  <Container>
-    <div class="mx-auto flex max-w-[1088px] flex-col items-center gap-6 md:gap-8">
-      <Reveal>
-        <h1 class="font-display font-semibold text-display-xl text-text-primary">
-          <span class="flex flex-wrap items-center justify-center gap-3 md:gap-6">
-            <span>{t.hero.greeting}</span>
-            {/*
-              96x96 render (768x1024 source): object-cover scales the source
-              to 96 wide x 128 tall, so it already crops to the top 75% of
-              the photo and there's no horizontal slack to shift (50% is a
-              no-op, kept for clarity, not effect). object-position: 0% here
-              means "no vertical shift from the top," which centres the
-              visible band at 37.5% down the source — matching Figma's
-              framing. Don't "fix" this to a bigger number; that pushes the
-              crop down toward his chest.
-            */}
-            <img
-              src="/images/ficho-portrait.png"
-              alt=""
-              width="96"
-              height="96"
-              class="h-14 w-14 shrink-0 rounded-full border-2 border-text-primary object-cover grayscale transition duration-500 hover:grayscale-0 md:h-24 md:w-24"
-              style="object-position: 50% 0%"
-            />
-            <span>{t.hero.intro}</span>
-          </span>
-          <span class="mt-1 block text-center">{t.hero.roleLine}</span>
-        </h1>
-      </Reveal>
 
-      <Reveal delay={100}>
-        <p class="mx-auto max-w-[640px] text-center text-lg leading-[1.6] text-text-secondary md:text-2xl">
-          {site.tagline}
-        </p>
-      </Reveal>
+// Figma order: WhatsApp, LinkedIn, Email.
+const socialIcons: Record<string, string> = {
+  WhatsApp: '/images/icons/whatsapp.svg',
+  LinkedIn: '/images/icons/linkedin.svg',
+  Email: '/images/icons/envelope.svg',
+}
+const socials = ['WhatsApp', 'LinkedIn', 'Email']
+  .map((label) => site.socials.find((s) => s.label === label))
+  .filter((s): s is (typeof site.socials)[number] => Boolean(s))
+---
+<section
+  class="relative bg-neutral-900 pt-(--space-24) pb-[55px] desktop:pt-(--space-64) desktop:pb-(--space-88)"
+  data-figma="hero"
+>
+  {/* ASSUMED mobile: Figma's band is 128 tall but its top 56 is the iPhone
+      status bar, so the web band is 72 and the photo sits 24 from the top.
+      pb 55 = frame padding 24 + 31 free space before the tab bar (ASSUMED). */}
+  <div class="absolute inset-x-0 top-0 h-[72px] bg-neutral-100 desktop:h-[164px]" data-figma="hero/top-band" aria-hidden="true"></div>
+
+  <ContentBand class="relative">
+    {/* Photo: mobile 97×96 r16 (image 96×128, nudged +0.5 / +6);
+        desktop 200×200 r24 (image 200×267, nudged 0 / +0.5). */}
+    <div
+      class="relative h-[96px] w-[97px] overflow-hidden rounded-[16px] border-2 border-border-strong desktop:size-[200px] desktop:rounded-(--radius-24)"
+      data-figma="hero/avatar"
+    >
+      {/* rounded-[16px]: not in tokens — Figma radius/radius-lg 16 */}
+      <Image
+        src={portrait}
+        alt=""
+        widths={[96, 192, 200, 400]}
+        sizes="(min-width: 1024px) 200px, 96px"
+        loading="eager"
+        class="absolute left-[calc(50%+0.5px)] top-[calc(50%+6px)] h-[128px] w-[96px] max-w-none -translate-x-1/2 -translate-y-1/2 object-cover desktop:left-1/2 desktop:top-[calc(50%+0.5px)] desktop:h-[267px] desktop:w-[200px]"
+      />
     </div>
-  </Container>
+
+    {/* Avatar → content: mobile 20 (frame gap); desktop 60 = Profile pt 160 − 100px overlap. */}
+    <div class="mt-(--space-20) flex flex-col desktop:mt-[60px] desktop:flex-row desktop:items-start desktop:gap-(--space-64)" data-figma="hero/profile-content">
+      <div class="contents desktop:flex desktop:min-w-0 desktop:flex-1 desktop:flex-col" data-figma="hero/identity">
+        <div class="flex flex-col desktop:gap-(--space-4)" data-figma="hero/name">
+          <h1 class="text-title-xl text-neutral-100 desktop:text-[48px] desktop:leading-[1.25]">
+            {/* desktop 48/1.25: not in tokens — no text style in Figma */}
+            {site.fullName}
+          </h1>
+          <p class="text-button-sm text-neutral-600 desktop:text-body-xl desktop:font-normal">{site.handle}</p>
+        </div>
+
+        <ul class="order-2 mt-(--space-16) flex items-center gap-(--space-22) desktop:order-none desktop:mt-(--space-20) desktop:gap-(--space-28)" data-figma="hero/meta">
+          <li class="flex items-center gap-(--space-6) desktop:gap-(--space-8)">
+            <img src="/images/icons/user.svg" alt="" width="20" height="20" class="size-4 desktop:size-5" />
+            {/* mobile 12/1 semibold: not in tokens — Figma font-size/xs 12 */}
+            <span class="text-[12px] font-semibold leading-none text-neutral-600 desktop:text-button-md">{site.role}</span>
+          </li>
+          <li class="flex items-center gap-(--space-6) desktop:gap-(--space-8)">
+            <img src="/images/icons/map-pin.svg" alt="" width="20" height="20" class="size-4 desktop:size-5" />
+            <span class="text-[12px] font-semibold leading-none text-neutral-600 desktop:text-button-md">{site.location}</span>
+          </li>
+        </ul>
+
+        {/* Mobile divider is a 0-height vector with a 1px stroke in Figma, so it
+            takes no layout space: -mb-px cancels the 1px. Desktop is a 1px rect. */}
+        <div class="order-2 mt-(--space-16) -mb-px h-px w-full bg-neutral-800 desktop:order-none desktop:mt-(--space-28) desktop:mb-0" data-figma="hero/divider"></div>
+
+        <ul class="order-2 mt-(--space-16) flex items-center gap-(--space-8) desktop:order-none desktop:mt-(--space-28) desktop:gap-(--space-12)" data-figma="hero/socials">
+          {socials.map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target={s.href.startsWith('http') ? '_blank' : undefined}
+                rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                aria-label={s.label}
+                class="flex items-center justify-center rounded-(--radius-8) border border-neutral-800 p-(--space-8) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:rounded-(--radius-12) desktop:p-(--space-16)"
+                data-figma={`hero/socials/${s.label.toLowerCase()}`}
+              >
+                <img src={socialIcons[s.label]} alt="" width="24" height="24" class="size-5 desktop:size-6" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div
+        class="order-1 mt-(--space-20) flex flex-col gap-(--space-12) text-body-sm text-neutral-100 desktop:order-none desktop:mt-0 desktop:min-w-0 desktop:flex-1 desktop:gap-(--space-20) desktop:text-body-xl"
+        data-figma="hero/bio"
+      >
+        {site.bio.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </ContentBand>
 </section>

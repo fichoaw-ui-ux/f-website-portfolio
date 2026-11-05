@@ -21,12 +21,15 @@ describe('home page structure (id)', () => {
   })
 
   describe('hero', () => {
-    it('greets by name in a single h1', () => {
+    it('names him in a single h1, with handle, Indonesian bio and socials', () => {
       const h1s = html.match(/<h1\b/g) ?? []
       expect(h1s).toHaveLength(1)
-      expect(html).toContain('Halo!')
-      expect(html).toContain('Saya Ficho.')
-      expect(html).toContain('product designer')
+      expect(html).toMatch(/<h1[^>]*>\s*Ficho Aji Wibowo\s*<\/h1>/)
+      expect(html).toContain('@fichoaw')
+      expect(html).toContain('Product Designer dengan 4+ tahun pengalaman')
+      for (const label of ['WhatsApp', 'LinkedIn', 'Email']) {
+        expect(html).toContain(`aria-label="${label}"`)
+      }
     })
 
     it('drops the availability badge, CTAs, and scroll hint', () => {
@@ -36,7 +39,10 @@ describe('home page structure (id)', () => {
     })
 
     it('shows the avatar as decorative, since the h1 already names him', () => {
-      expect(html).toMatch(/<img[^>]+ficho-portrait\.png[^>]+alt=""/)
+      const img = html.match(/<img[^>]+\/_astro\/portrait\.[^>]+>/)?.[0]
+      expect(img).toBeDefined()
+      // Astro minifies alt="" to a bare `alt`; both mean an empty alternative.
+      expect(img).toMatch(/\salt(="")?[\s>]/)
     })
   })
 

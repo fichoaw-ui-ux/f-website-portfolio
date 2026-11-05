@@ -2,6 +2,9 @@ import type { Lang } from '../i18n/ui'
 
 const shared = {
   name: 'Ficho',
+  fullName: 'Ficho Aji Wibowo',
+  handle: '@fichoaw',
+  location: 'Jakarta, Indonesia',
   role: 'UI/UX Designer',
   email: 'fichoajiwibowo@gmail.com',
   // International format for wa.me deep links (Indonesia country code 62, leading 0 dropped).
