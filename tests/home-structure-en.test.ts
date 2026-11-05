@@ -170,9 +170,10 @@ describe('home page structure', () => {
   })
 
   describe('explorations', () => {
-    it('drops the section heading and per-card captions', () => {
+    it('has the redesign heading and no per-card captions', () => {
+      // The redesign brings the "Explorations" heading back (Figma 8:334).
+      expect(html).toMatch(/<h2[^>]*>Explorations<\/h2>/)
       expect(html).not.toContain('Visual experiments')
-      expect(html).not.toContain('>Explorations<')
     })
 
     it('keeps every card reachable through one labelled action', () => {
@@ -187,7 +188,7 @@ describe('home page structure', () => {
       // Title and year are gone from the card, so the aria-label above and the
       // cover alt are its only accessible names. A cover that shipped with an
       // empty alt would leave the card described by the label alone.
-      const covers = html.match(/<img[^>]+\/images\/explorations\/[^>]*>/g) ?? []
+      const covers = html.match(/<img[^>]+\/_astro\/exp-0[^>]*>/g) ?? []
       expect(covers).toHaveLength(7)
       covers.forEach(img => expect(img).toMatch(/alt="[^"]+"/))
     })

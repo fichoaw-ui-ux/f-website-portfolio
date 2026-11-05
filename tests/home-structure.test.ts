@@ -138,16 +138,16 @@ describe('home page structure (id)', () => {
   })
 
   describe('explorations', () => {
-    it('drops the section heading and per-card captions', () => {
+    it('has the redesign heading and no per-card captions', () => {
+      expect(html).toMatch(/<h2[^>]*>Eksplorasi<\/h2>/)
       expect(html).not.toContain('Visual experiments')
-      expect(html).not.toContain('>Explorations<')
     })
 
     it('keeps every card reachable through one labelled action', () => {
       const actions = html.match(/aria-label="Buka [^"]+"/g) ?? []
       expect(actions).toHaveLength(7)
       expect(html.match(/data-proto-src="/g) ?? []).toHaveLength(7)
-      const covers = html.match(/<img[^>]+\/images\/explorations\/[^>]*>/g) ?? []
+      const covers = html.match(/<img[^>]+\/_astro\/exp-0[^>]*>/g) ?? []
       expect(covers).toHaveLength(7)
       covers.forEach(img => expect(img).toMatch(/alt="[^"]+"/))
     })

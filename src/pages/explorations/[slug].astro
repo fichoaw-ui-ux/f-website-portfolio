@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content'
+import { Image, getImage } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Container from '../../components/layout/Container.astro'
 import Tag from '../../components/ui/Tag.astro'
@@ -16,6 +17,9 @@ const d = entry.data
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 
+// Link previews: a 1200px JPEG, not the 1920×2400 source PNG.
+const ogImage = await getImage({ src: d.cover, width: 1200, format: 'jpg' })
+
 const prototypeEmbedSrc = d.prototype
   ? (() => {
       const cleanUrl = d.prototype.replace(/[?&]show-proto-sidebar=[^&]*/g, '')
@@ -25,7 +29,7 @@ const prototypeEmbedSrc = d.prototype
     })()
   : null
 ---
-<BaseLayout title={`${d.title}${t.exploration.titleSuffix}`} description={d.caption} ogImage={d.cover}>
+<BaseLayout title={`${d.title}${t.exploration.titleSuffix}`} description={d.caption} ogImage={ogImage.src}>
   <Container class="pt-12">
     <a href="/#explorations" class="font-mono text-base text-text-secondary hover:text-text-primary transition">{t.exploration.backToExplorations}</a>
     <header class="mt-8 mb-12">
@@ -53,7 +57,7 @@ const prototypeEmbedSrc = d.prototype
       <div class="space-y-6">
         {d.images.map(img => (
           <div class="rounded-lg overflow-hidden bg-bg-secondary">
-            <img src={img.src} alt={img.alt} class="w-full h-auto" loading="lazy" />
+            <Image src={img.src} alt={img.alt} widths={[402, 804, 1312, 1920]} sizes="(min-width: 1440px) 1312px, 100vw" class="w-full h-auto" loading="lazy" />
           </div>
         ))}
       </div>

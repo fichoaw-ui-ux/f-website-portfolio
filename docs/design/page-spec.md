@@ -107,8 +107,17 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   study header up to 1088, next-project card up to 700). Home downloads 3–15 KB
   per cover instead of the 1.3 / 2.5 MB 7680×4800 PNGs. og:image is a 1200px JPG.
 
-### Exploration
-- Card images are placeholders in Figma; content comes from the exploration collection.
+### Exploration — done (`src/components/home/Explorations.astro`, `#explorations`)
+- Measured equal to Figma: desktop 3-column grid of 330.7×420 cards (gap 24, r32;
+  section 1565), mobile 354×400 cards (gap 24; 3095 with all 7).
+- All 7 explorations on every breakpoint (Ficho; Figma's 9 / 3 are placeholders).
+  Covers fill the cards, in colour (the legacy grayscale hover and staggered
+  columns are gone).
+- Not in Figma, kept (Ficho): "See Prototype" / "Visit Live Site" pills, styled
+  like View Details, 16px from the card edges (ASSUMED). See Prototype opens the
+  Figma modal, as before.
+- Images moved to `src/assets/explorations/` (schema `image()` for cover and
+  images): 15–42 KB WebP per card instead of 2–6.5 MB PNGs; og:image 1200px JPG.
 
 ## Intentional exceptions
 - Hero top band (white, 164px) and section dividers are full-bleed; content sits in the 1040 band.

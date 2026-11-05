@@ -50,14 +50,16 @@ const caseStudies = defineCollection({
 
 const explorations = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/explorations', generateId }),
-  schema: z.object({
+  // cover and images go through astro:assets — the sources are 1920×2400 PNGs
+  // of 2–6.5 MB each that were served as-is.
+  schema: ({ image }) => z.object({
     title: z.string(),
     slug: z.string(),
     year: z.number().int(),
     tags: z.array(z.string()),
-    cover: z.string(),
+    cover: image(),
     coverAlt: z.string(),
-    images: z.array(z.object({ src: z.string(), alt: z.string() })),
+    images: z.array(z.object({ src: image(), alt: z.string() })),
     caption: z.string(),
     order: z.number().int().default(0),
     prototype: z.string().url().optional(),

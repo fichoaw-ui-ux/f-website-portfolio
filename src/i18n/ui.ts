@@ -30,6 +30,7 @@ const dictionary = {
     },
     caseStudy: { titleSuffix: ' — Studi Kasus', nextProject: 'Proyek selanjutnya' },
     exploration: {
+      heading: 'Eksplorasi',
       backToExplorations: '← Kembali ke eksplorasi',
       titleSuffix: ' — Eksplorasi',
       noExplorations: 'Belum ada eksplorasi.',
@@ -69,6 +70,7 @@ const dictionary = {
     },
     caseStudy: { titleSuffix: ' — Case Study', nextProject: 'Next project' },
     exploration: {
+      heading: 'Explorations',
       backToExplorations: '← Back to explorations',
       titleSuffix: ' — Exploration',
       noExplorations: 'No explorations yet.',

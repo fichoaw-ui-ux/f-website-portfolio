@@ -1,0 +1,144 @@
+---
+/* Exploration — Figma Draft: desktop `8:334`, mobile `8:831`.
+   Figma: desktop 3-column grid of 420-tall cards (r32, gap 24), mobile a
+   single column of 400-tall cards. All explorations show on every breakpoint
+   (Ficho; Figma's 9 / 3 cards are placeholders). Covers fill the cards.
+
+   Not in Figma, kept on purpose (Ficho): the "See Prototype" / "Visit Live
+   Site" pills, restyled like the redesign's View Details pill. Only the
+   pills are interactive, as before; See Prototype opens the Figma modal.
+   ASSUMED: pills sit 16px from the card's bottom and sides, 12px apart. */
+import { getCollection } from 'astro:content'
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import { Image } from 'astro:assets'
+import ContentBand from '../layout/ContentBand.astro'
+import { sortByOrder, localeEntries } from '../../lib/content'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
+const all = await getCollection('explorations')
+const items = sortByOrder(localeEntries(all, lang))
+
+// Sandboxed Figma embed src for the modal (sidebar hidden).
+function embedSrc(url: string) {
+  const cleanUrl = url.replace(/[?&]show-proto-sidebar=[^&]*/g, '')
+  const sep = cleanUrl.includes('?') ? '&' : '?'
+  return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(`${cleanUrl}${sep}show-proto-sidebar=0`)}`
+}
+
+const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(--radius-full) bg-neutral-800 px-(--space-12) py-(--space-8) text-button-sm whitespace-nowrap text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md'
+---
+<section
+  id="explorations"
+  class="scroll-mt-32 border-t border-neutral-800 bg-neutral-900 py-(--space-48) desktop:py-(--space-88)"
+  data-figma="explorations"
+>
+  <ContentBand>
+    {/* Heading → grid: mobile 24, desktop 40. */}
+    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1">{t.exploration.heading}</h2>
+
+    {items.length === 0 ? (
+      <p class="mt-(--space-24) text-body-sm text-neutral-600 desktop:mt-(--space-40)">{t.exploration.noExplorations}</p>
+    ) : (
+      <ul class="mt-(--space-24) grid grid-cols-1 gap-(--space-24) desktop:mt-(--space-40) desktop:grid-cols-3" data-figma="explorations/grid">
+        {items.map((e) => {
+          const hasProto = !!e.data.prototype
+          const hasLive = !!e.data.liveUrl
+          return (
+            <li
+              class="relative h-[400px] overflow-hidden rounded-(--radius-32) bg-neutral-200 desktop:h-[420px]"
+              data-figma={`explorations/${e.data.slug}`}
+            >
+              {/* Card: mobile 354 wide, desktop (1040 − 2×24) / 3 ≈ 331; 1× and 2×. */}
+              <Image
+                src={e.data.cover}
+                alt={e.data.coverAlt}
+                widths={[331, 354, 662, 708]}
+                sizes="(min-width: 1024px) 331px, 354px"
+                loading="lazy"
+                class="size-full object-cover"
+              />
+              <div class:list={[
+                'absolute inset-x-(--space-16) bottom-(--space-16) grid gap-(--space-12)',
+                hasLive ? 'grid-cols-2' : 'grid-cols-1',
+              ]}>
+                {hasProto ? (
+                  <button
+                    type="button"
+                    aria-label={t.exploration.openPrototype(e.data.title)}
+                    class={pill}
+                    data-proto-src={embedSrc(e.data.prototype!)}
+                    data-proto-title={e.data.prototypeTitle ?? e.data.title}
+                  >{t.exploration.seePrototype}</button>
+                ) : (
+                  <a
+                    href={getRelativeLocaleUrl(lang, `/explorations/${e.data.slug}`)}
+                    aria-label={t.exploration.openDetails(e.data.title)}
+                    class={pill}
+                  >{t.exploration.seePrototype}</a>
+                )}
+                {hasLive && (
+                  <a href={e.data.liveUrl!} target="_blank" rel="noopener noreferrer" class={pill}>{t.exploration.visitLiveSite}</a>
+                )}
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+    )}
+  </ContentBand>
+
+  {/* Prototype modal (unchanged behaviour). Fixed inset 0 stretches the
+      native <dialog> over the viewport; the inner box is centred by flex. */}
+  <dialog
+    id="exploration-prototype-modal"
+    class="fixed inset-0 m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 text-neutral-100 backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+  >
+    <div class="flex h-full w-full items-center justify-center p-4 md:p-8">
+      <div data-proto-inner class="flex h-full w-full max-w-[1400px] flex-col overflow-hidden rounded-(--radius-24) border border-neutral-800 bg-neutral-900">
+        <div class="flex items-center justify-between gap-(--space-16) border-b border-neutral-800 px-(--space-16) py-(--space-12)">
+          <div class="flex min-w-0 items-center gap-(--space-8)">
+            <span class="text-button-sm text-neutral-600">{t.figmaEmbed.prototypeLabel}</span>
+            <span data-proto-modal-title class="truncate text-button-sm text-neutral-100"></span>
+          </div>
+          <button
+            type="button"
+            data-proto-modal-close
+            aria-label={t.exploration.closePrototype}
+            class="shrink-0 cursor-pointer text-button-sm text-neutral-600 transition hover:text-neutral-100"
+          >{t.exploration.closeLabel}</button>
+        </div>
+        <iframe data-proto-modal-iframe title="" loading="lazy" allowfullscreen class="block w-full flex-1 border-0"></iframe>
+      </div>
+    </div>
+  </dialog>
+
+  {/* define:vars makes this an inline, uncompiled script: plain JavaScript only. */}
+  <script define:vars={{ fallbackTitle: t.figmaEmbed.prototypeLabel }}>
+    const dialog = document.getElementById('exploration-prototype-modal')
+    if (dialog) {
+      const iframe = dialog.querySelector('[data-proto-modal-iframe]')
+      const titleEl = dialog.querySelector('[data-proto-modal-title]')
+      const closeBtn = dialog.querySelector('[data-proto-modal-close]')
+
+      document.querySelectorAll('button[data-proto-src]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const title = btn.dataset.protoTitle ?? fallbackTitle
+          iframe.src = btn.dataset.protoSrc ?? ''
+          iframe.title = title
+          titleEl.textContent = title
+          dialog.showModal()
+        })
+      })
+
+      // Clear the iframe on close so the Figma player stops in the background.
+      closeBtn.addEventListener('click', () => dialog.close())
+      dialog.addEventListener('close', () => { iframe.src = 'about:blank' })
+      // A click outside the inner box is a backdrop click.
+      dialog.addEventListener('click', ev => {
+        if (!ev.target.closest('[data-proto-inner]')) dialog.close()
+      })
+    }
+  </script>
+</section>
