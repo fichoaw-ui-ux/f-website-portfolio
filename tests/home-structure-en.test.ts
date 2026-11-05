@@ -176,6 +176,17 @@ describe('home page structure', () => {
       expect(section).not.toContain('**')
     })
 
+    it('makes the company + role header one click target, bullets outside it', () => {
+      const section = html.match(/<section[^>]*id="experience"[\s\S]*?<\/section>/)?.[0] ?? ''
+      const headers = section.match(/<div[^>]*data-accordion-header[\s\S]*?data-figma="experience\/[a-z-]+\/role"[\s\S]*?<\/p>/g) ?? []
+      expect(headers).toHaveLength(2)
+      for (const h of headers) {
+        expect(h).toContain('cursor-pointer')
+        expect(h).toContain('data-accordion-button')
+        expect(h).not.toContain('data-accordion-panel')
+      }
+    })
+
     it('drops the Currently badge', () => {
       // `>Currently<` targets the badge's own text node. A bare 'Currently'
       // would also match site.bio[1] — "Currently exploring the intersection

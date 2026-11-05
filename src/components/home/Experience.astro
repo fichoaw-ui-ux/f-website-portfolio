@@ -49,78 +49,85 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
               /* Mobile divider is a 0-height vector (no layout space), desktop a 1px rect. */
               <div class="-mb-px h-px bg-neutral-800 desktop:mb-0" data-figma="experience/divider"></div>
             )}
-            <div class:list={['flex flex-col gap-(--space-12) desktop:gap-(--space-20)', i > 0 && 'mt-(--space-24) desktop:mt-(--space-32)']}>
-              <h3>
-                <button
-                  type="button"
-                  id={`${id}-button`}
-                  aria-expanded={open ? 'true' : 'false'}
-                  aria-controls={`${id}-panel`}
-                  class="group flex w-full cursor-pointer items-center gap-(--space-12) text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-100 desktop:gap-(--space-16)"
-                  data-accordion-button
-                  data-figma={`experience/${slug(job.company)}/company`}
-                >
-                  {/* Logo tile: mobile 36 r8 (logo 24), desktop 48 r10.667 (logo 32). */}
-                  <span class="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-(--radius-8) bg-neutral-100 desktop:size-12 desktop:rounded-[10.667px]">
-                    {/* desktop radius 10.667: not in tokens (scaled frame in Figma) */}
-                    <img src={job.logo} alt="" width="32" height="32" class="size-6 desktop:size-8" />
-                  </span>
-                  <span class="min-w-0 flex-1 text-title-md text-neutral-100 decoration-neutral-600 underline-offset-4 group-hover:underline desktop:text-title-lg">{job.company}</span>
-                  <img
-                    src="/images/icons/chevron-down.svg"
-                    alt=""
-                    width="28"
-                    height="28"
-                    class="size-6 shrink-0 transition-transform duration-300 group-aria-expanded:rotate-180 desktop:size-7"
-                  />
-                </button>
-              </h3>
+            <div class:list={['flex flex-col', i > 0 && 'mt-(--space-24) desktop:mt-(--space-32)']}>
+              {/* Header: company row + role row form one click target (Ficho). The
+                  button stays the keyboard/screen-reader control; clicks anywhere
+                  else in the header are forwarded to it (script below). */}
+              <div class="group/job flex cursor-pointer flex-col gap-(--space-12) desktop:gap-(--space-20)" data-accordion-header data-figma={`experience/${slug(job.company)}/header`}>
+                <h3>
+                  <button
+                    type="button"
+                    id={`${id}-button`}
+                    aria-expanded={open ? 'true' : 'false'}
+                    aria-controls={`${id}-panel`}
+                    class="group flex w-full cursor-pointer items-center gap-(--space-12) text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-100 desktop:gap-(--space-16)"
+                    data-accordion-button
+                    data-figma={`experience/${slug(job.company)}/company`}
+                  >
+                    {/* Logo tile: mobile 36 r8 (logo 24), desktop 48 r10.667 (logo 32). */}
+                    <span class="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-(--radius-8) bg-neutral-100 desktop:size-12 desktop:rounded-[10.667px]">
+                      {/* desktop radius 10.667: not in tokens (scaled frame in Figma) */}
+                      <img src={job.logo} alt="" width="32" height="32" class="size-6 desktop:size-8" />
+                    </span>
+                    <span class="min-w-0 flex-1 text-title-md text-neutral-100 decoration-neutral-600 underline-offset-4 group-hover/job:underline desktop:text-title-lg">{job.company}</span>
+                    <img
+                      src="/images/icons/chevron-down.svg"
+                      alt=""
+                      width="28"
+                      height="28"
+                      class="size-6 shrink-0 transition-transform duration-300 group-aria-expanded:rotate-180 desktop:size-7"
+                    />
+                  </button>
+                </h3>
 
-              <div class="flex items-start gap-(--space-12) desktop:gap-(--space-16)" data-figma={`experience/${slug(job.company)}/role`}>
-                {/* Role badge: mobile area 36×26 (1px borders, p2, r6/r4, icon 12);
-                    desktop 48×36, the same badge scaled ×1.33 (Figma values).
-                    Desktop strokes are inset box-shadows: browsers round a
-                    1.33px border down to 1px, which shrank the badge to 30.6
-                    (Figma 31.92). Padding 3.99 = 2.66 + the 1.33 stroke. */}
-                <span class="flex h-[29px] w-9 shrink-0 items-center justify-center desktop:h-9 desktop:w-12" aria-hidden="true">
-                  <span class="flex rounded-(--radius-6) border border-neutral-800 p-(--space-2) desktop:rounded-[7.98px] desktop:border-0 desktop:p-[3.99px] desktop:shadow-[inset_0_0_0_1.33px_var(--color-neutral-800)]">
-                    <span class="flex rounded-(--radius-4) border border-neutral-800 p-(--space-2) desktop:rounded-[5.32px] desktop:border-0 desktop:p-[3.99px] desktop:shadow-[inset_0_0_0_1.33px_var(--color-neutral-800)]">
-                      <img src="/images/icons/role-sparkle.svg" alt="" width="16" height="16" class="size-3 desktop:size-[15.96px]" />
+                <div class="flex items-start gap-(--space-12) desktop:gap-(--space-16)" data-figma={`experience/${slug(job.company)}/role`}>
+                  {/* Role badge: mobile area 36×29 (1px borders, p2, r6/r4, icon 12);
+                      desktop 48×36, the same badge scaled ×1.33 (Figma values).
+                      Desktop strokes are inset box-shadows: browsers round a
+                      1.33px border down to 1px, which shrank the badge to 30.6
+                      (Figma 31.92). Padding 3.99 = 2.66 + the 1.33 stroke. */}
+                  <span class="flex h-[29px] w-9 shrink-0 items-center justify-center desktop:h-9 desktop:w-12" aria-hidden="true">
+                    <span class="flex rounded-(--radius-6) border border-neutral-800 p-(--space-2) desktop:rounded-[7.98px] desktop:border-0 desktop:p-[3.99px] desktop:shadow-[inset_0_0_0_1.33px_var(--color-neutral-800)]">
+                      <span class="flex rounded-(--radius-4) border border-neutral-800 p-(--space-2) desktop:rounded-[5.32px] desktop:border-0 desktop:p-[3.99px] desktop:shadow-[inset_0_0_0_1.33px_var(--color-neutral-800)]">
+                        <img src="/images/icons/role-sparkle.svg" alt="" width="16" height="16" class="size-3 desktop:size-[15.96px]" />
+                      </span>
                     </span>
                   </span>
-                </span>
 
-                <div class="flex min-w-0 flex-1 flex-col">
-                  <p class="flex flex-col desktop:gap-(--space-4)">
-                    <span class="text-[18px] leading-[29px] text-neutral-100 desktop:text-body-xl desktop:leading-(--text-body-xl--line-height)">{job.role}</span>
-                    <span class="text-body-sm text-neutral-600 desktop:text-[18px] desktop:leading-[29px]">{job.period}</span>
-                  </p>
-
-                  {/* Collapsible bullets. The 12/16 gap above them lives inside the
-                      panel so a closed panel takes no space. */}
-                  <div
-                    id={`${id}-panel`}
-                    role="region"
-                    aria-labelledby={`${id}-button`}
-                    class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out data-open:grid-rows-[1fr]"
-                    data-open={open ? '' : undefined}
-                    inert={!open}
-                    data-accordion-panel
-                  >
-                    <div class="min-h-0 overflow-hidden">
-                      <ul class="flex flex-col gap-(--space-12) pt-(--space-12) desktop:pt-(--space-16)" data-figma={`experience/${slug(job.company)}/bullets`}>
-                        {job.items.map((item) => (
-                          <li class="flex gap-(--space-4)">
-                            {/* Bullet: 6px #6C6C71 circle at x5 in a 16-wide box,
-                                y8 of 22 (mobile) / y10 of 26 (desktop), as in Figma. */}
-                            <span class="relative h-[22px] w-4 shrink-0 before:absolute before:left-[5px] before:top-[8px] before:size-[6px] before:rounded-full before:bg-neutral-800 desktop:h-[29px] desktop:before:top-[11.5px]" aria-hidden="true"></span>
-                            {/* mobile 12/19: not in tokens — Figma Aileron 12, 160% renders 19 */}
-                            <span class="min-w-0 text-[12px] leading-[19px] text-neutral-100 desktop:max-w-[720px] desktop:text-[18px] desktop:leading-[29px]" set:html={highlight(item)} />
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  <div class="flex min-w-0 flex-1 flex-col">
+                    <p class="flex flex-col desktop:gap-(--space-4)">
+                      <span class="text-[18px] leading-[29px] text-neutral-100 desktop:text-body-xl desktop:leading-(--text-body-xl--line-height)">{job.role}</span>
+                      <span class="text-body-sm text-neutral-600 desktop:text-[18px] desktop:leading-[29px]">{job.period}</span>
+                    </p>
                   </div>
+                </div>
+              </div>
+
+              {/* Collapsible bullets, outside the clickable header and indented to the
+                  role text: badge + gap = 36 + 12 (mobile), 48 + 16 (desktop). The
+                  12/16 gap above them lives inside the panel so a closed panel takes
+                  no space. */}
+              <div
+                id={`${id}-panel`}
+                role="region"
+                aria-labelledby={`${id}-button`}
+                class="ml-[48px] grid grid-rows-[0fr] desktop:ml-[64px] transition-[grid-template-rows] duration-300 ease-out data-open:grid-rows-[1fr]"
+                data-open={open ? '' : undefined}
+                inert={!open}
+                data-accordion-panel
+              >
+                <div class="min-h-0 overflow-hidden">
+                  <ul class="flex flex-col gap-(--space-12) pt-(--space-12) desktop:pt-(--space-16)" data-figma={`experience/${slug(job.company)}/bullets`}>
+                    {job.items.map((item) => (
+                      <li class="flex gap-(--space-4)">
+                        {/* Bullet: 6px #6C6C71 circle at x5 in a 16-wide box,
+                            y8 of 22 (mobile) / y10 of 26 (desktop), as in Figma. */}
+                        <span class="relative h-[22px] w-4 shrink-0 before:absolute before:left-[5px] before:top-[8px] before:size-[6px] before:rounded-full before:bg-neutral-800 desktop:h-[29px] desktop:before:top-[11.5px]" aria-hidden="true"></span>
+                        {/* mobile 12/19: not in tokens — Figma Aileron 12, 160% renders 19 */}
+                        <span class="min-w-0 text-[12px] leading-[19px] text-neutral-100 desktop:max-w-[720px] desktop:text-[18px] desktop:leading-[29px]" set:html={highlight(item)} />
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
@@ -149,6 +156,13 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
       const willOpen = button.getAttribute('aria-expanded') !== 'true'
       for (const other of buttons) if (other !== button) setOpen(other, false)
       setOpen(button, willOpen)
+    })
+    // The whole header (company + role rows) toggles too; clicks on the
+    // button itself are already handled above.
+    const header = button.closest<HTMLElement>('[data-accordion-header]')
+    header?.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('[data-accordion-button]')) return
+      button.click()
     })
   }
 </script>
