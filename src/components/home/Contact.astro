@@ -1,7 +1,11 @@
 ---
-import Container from '../layout/Container.astro'
-import Reveal from '../ui/Reveal.astro'
-import Button from '../ui/Button.astro'
+/* Contact — Figma Draft: desktop `8:346`, mobile `8:837`.
+   Desktop: headline (520 wide) | contact list, gap 96, vertically centred.
+   Mobile: headline, then the list, gap 24.
+   Each list row is one link (icon tile, label + value, arrow), separated by
+   1px rules: 1 + (20 + 58 + 20 + 1) × 3 = 298, as in Figma.
+   Figma's "LinkedInd" label is a typo; rendered as "LinkedIn". */
+import ContentBand from '../layout/ContentBand.astro'
 import { getSite } from '../../content/site'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
@@ -9,31 +13,51 @@ const lang = resolveLocale(Astro.currentLocale)
 const site = getSite(lang)
 const t = useTranslations(lang)
 
-const linkedin = site.socials.find(s => s.label === 'LinkedIn')
-const whatsapp = site.socials.find(s => s.label === 'WhatsApp')
+const href = (label: string) => site.socials.find((s) => s.label === label)?.href ?? '#'
+const rows = [
+  { label: 'Email', value: site.email, href: `mailto:${site.email}`, icon: '/images/icons/envelope.svg' },
+  { label: 'WhatsApp', value: site.whatsappDisplay, href: href('WhatsApp'), icon: '/images/icons/whatsapp.svg' },
+  { label: 'LinkedIn', value: site.fullName, href: href('LinkedIn'), icon: '/images/icons/linkedin.svg' },
+]
 ---
-{/* 818px is Figma's 880px section minus the 62px footer strip that follows. */}
-<section id="contact" class="flex min-h-[480px] items-center py-16 scroll-mt-32 md:min-h-[818px] md:py-24">
-  <Container>
-    <Reveal>
-      <div class="mx-auto max-w-[1088px] text-center">
-        <h2 class="font-display font-semibold text-display-lg text-text-primary">
-          {t.contact.heading}
-        </h2>
+<section
+  id="contact"
+  class="scroll-mt-32 border-t border-neutral-800 bg-neutral-900 py-(--space-48) desktop:py-(--space-112)"
+  data-figma="contact"
+>
+  <ContentBand class="flex flex-col gap-(--space-24) desktop:flex-row desktop:items-center desktop:gap-(--space-96)">
+    <div class="flex flex-col gap-(--space-16) desktop:w-[520px] desktop:shrink-0" data-figma="contact/headline">
+      <h2 class="text-mobile-h1 text-neutral-600 desktop:text-section-heading">{t.contact.heading}</h2>
+      {/* E-mail: mobile SemiBold, desktop Bold + underline (Figma). */}
+      <p class="text-mobile-subheading text-neutral-100 desktop:text-section-subheading">
+        {t.contact.bodyBefore}<a
+          href={`mailto:${site.email}`}
+          class="font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:font-bold desktop:underline"
+        >{site.email}</a>{t.contact.bodyAfter}
+      </p>
+    </div>
 
-        <p class="mx-auto mt-6 max-w-[640px] text-lg leading-[1.6] text-text-secondary md:mt-8 md:text-2xl">
-          {t.contact.bodyBefore}
+    <ul class="border-t border-neutral-800 desktop:min-w-0 desktop:flex-1" data-figma="contact/list">
+      {rows.map((row) => (
+        <li class="border-b border-neutral-800">
           <a
-            href={`mailto:${site.email}`}
-            class="font-medium text-text-primary underline decoration-border underline-offset-4 transition hover:decoration-text-primary"
-          >{site.email}</a>{t.contact.bodyAfter}
-        </p>
-
-        <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-          {linkedin && <Button href={linkedin.href} variant="ghost">LinkedIn</Button>}
-          {whatsapp && <Button href={whatsapp.href} variant="ghost">WhatsApp</Button>}
-        </div>
-      </div>
-    </Reveal>
-  </Container>
+            href={row.href}
+            target={row.href.startsWith('http') ? '_blank' : undefined}
+            rel={row.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+            class="flex items-center gap-(--space-16) py-(--space-20) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100"
+            data-figma={`contact/${row.label.toLowerCase()}`}
+          >
+            <span class="flex shrink-0 items-center justify-center rounded-(--radius-12) border border-neutral-800 p-(--space-16)" aria-hidden="true">
+              <img src={row.icon} alt="" width="24" height="24" class="size-6" />
+            </span>
+            <span class="flex min-w-0 flex-1 flex-col gap-(--space-4) text-neutral-100">
+              <span class="text-title-xmd">{row.label}</span>
+              <span class="truncate text-body-xmd">{row.value}</span>
+            </span>
+            <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 shrink-0" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </ContentBand>
 </section>

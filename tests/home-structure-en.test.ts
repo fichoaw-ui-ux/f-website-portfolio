@@ -208,6 +208,24 @@ describe('home page structure', () => {
       expect(html).not.toContain('ficho@transfez.com')
     })
 
+    it('lists Email, WhatsApp and LinkedIn as one link per row', () => {
+      const section = html.match(/<section[^>]*id="contact"[\s\S]*?<\/section>/)?.[0] ?? ''
+      const rows = [...section.matchAll(/<a[^>]*href="([^"]+)"[^>]*data-figma="contact\/([a-z]+)"/g)]
+        .map(m => `${m[2]} ${m[1]}`)
+      expect(rows).toEqual([
+        'email mailto:fichoajiwibowo@gmail.com',
+        'whatsapp https://wa.me/6282111183273',
+        'linkedin https://linkedin.com/in/fichoajiwibowo',
+      ])
+      expect(section).toContain('+62 821 1118 3273')
+      // Figma's "LinkedInd" is a typo.
+      expect(section).not.toContain('LinkedInd')
+    })
+
+    it('uses the redesign footer on the home page', () => {
+      expect(html).toMatch(/<footer[^>]*data-figma="footer"/)
+    })
+
     it('reduces the footer to a centred copyright', () => {
       expect(html).toContain('All rights reserved')
       // These two appear only in the old footer's social row, so their

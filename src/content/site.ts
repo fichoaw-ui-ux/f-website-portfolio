@@ -10,6 +10,7 @@ const shared = {
   // International format for wa.me deep links (Indonesia country code 62, leading 0 dropped).
   // Local number is 082111183273.
   whatsapp: '6282111183273',
+  whatsappDisplay: '+62 821 1118 3273',
   // Skills & Tools follow the mobile Figma frame (8:753), on every breakpoint
   // (Ficho). Desktop Figma lacks Information Architecture; the old site listed
   // "Claude Code" and Mixpanel.

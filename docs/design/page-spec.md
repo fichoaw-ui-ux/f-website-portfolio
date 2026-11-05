@@ -119,6 +119,20 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
 - Images moved to `src/assets/explorations/` (schema `image()` for cover and
   images): 15–42 KB WebP per card instead of 2–6.5 MB PNGs; og:image 1200px JPG.
 
+### Contact — done (`src/components/home/Contact.astro`, `#contact`)
+- Measured equal to Figma: desktop 523 (headline 520 | list 424, gap 96, centred),
+  mobile 593. Each row (Email, WhatsApp, LinkedIn) is one link.
+- Figma's "LinkedInd" label is a typo → "LinkedIn". The e-mail in the copy is Aileron
+  Bold + underline on desktop (Aileron 700 now loaded), SemiBold on mobile.
+- Indonesian heading keeps the existing translation ("Terbuka untuk peluang kerja
+  dan freelance").
+
+### Footer — done (`src/components/layout/FooterRedesign.astro`)
+- Measured equal to Figma: desktop 83 with a 1px top rule, text left; mobile 74, no
+  rule, text centred.
+- Only on redesigned pages (`<BaseLayout redesign>`, both home pages). Case study and
+  exploration pages keep the legacy footer until they are redesigned.
+
 ## Intentional exceptions
 - Hero top band (white, 164px) and section dividers are full-bleed; content sits in the 1040 band.
 - Storm video behind the page (see Global → Background). Not in Figma.

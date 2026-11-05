@@ -2,6 +2,7 @@
 import '../styles/global.css'
 import Header from '../components/layout/Header.astro'
 import Footer from '../components/layout/Footer.astro'
+import FooterRedesign from '../components/layout/FooterRedesign.astro'
 import BackgroundVideo from '../components/layout/BackgroundVideo.astro'
 import { getRelativeLocaleUrl } from 'astro:i18n'
 import { resolveLocale } from '../i18n/ui'
@@ -13,8 +14,10 @@ interface Props {
   theme?: 'dark' | 'light'
   showHeader?: boolean
   showBackToHome?: boolean
+  /** Redesigned page: uses the redesign footer (legacy pages keep the old one). */
+  redesign?: boolean
 }
-const { title, description, ogImage = '/images/og-default.jpg', theme = 'dark', showHeader = true, showBackToHome = false } = Astro.props
+const { title, description, ogImage = '/images/og-default.jpg', theme = 'dark', showHeader = true, showBackToHome = false, redesign = false } = Astro.props
 const lang = resolveLocale(Astro.currentLocale)
 const resolvedDescription = description ?? (lang === 'id' ? 'Portofolio Ficho — UI/UX Designer' : 'Portfolio of Ficho — UI/UX Designer')
 const origin = Astro.site ?? new URL('https://ficho-portfolio.vercel.app')
@@ -72,7 +75,7 @@ const lightThemeVars = [
     {theme === 'dark' && <BackgroundVideo />}
     {showHeader && <Header showBackToHome={showBackToHome} overVideo={theme === 'dark'} />}
     <main><slot /></main>
-    <Footer />
+    {redesign ? <FooterRedesign /> : <Footer />}
     <script is:inline>
       // Counterpart to the stash in LanguageSwitcher.astro — restores the
       // scroll position after the language-switch navigation lands here.
