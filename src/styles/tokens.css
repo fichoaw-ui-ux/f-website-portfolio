@@ -1,3 +1,117 @@
+/* ==========================================================================
+   REDESIGN TOKENS — source of truth for the redesign.
+   Generated from Figma file "Draft" (OXwf8tiGQHyIw6XX4ZhSrj), frames
+   Desktop 8:116 / 8:384 and iPhone 17 8:624 / 8:877. Values are copied
+   exactly from the Figma variables and text styles; never round them.
+   Spacing and radius names match each variable's WEB code syntax.
+   Values used in the design but not defined as variables are NOT here —
+   they appear in components with a "not in tokens: Figma <value>" comment.
+   ========================================================================== */
+@theme {
+  /* Colours — Figma color/* and Primary/* variables. */
+  --color-neutral-100: #ffffff;
+  --color-neutral-200: #fcfcfc;
+  --color-neutral-500: #e6e6e8;
+  --color-neutral-600: #bbbbc0;
+  --color-neutral-700: #909098;
+  --color-neutral-800: #6c6c71;
+  --color-neutral-900: #252525;
+  --color-bg-default: #ffffff;          /* color/background/bg-default */
+  --color-bg-subtle: #fcfcfc;           /* color/background/bg-subtle */
+  --color-text-active: #252525;         /* color/text/active */
+  --color-text-inverse: #ffffff;        /* color/text/color-text-inverse */
+  --color-text-disabled: #bbbbc0;       /* color/text/color-text-disabled */
+  --color-border-strong: #252525;       /* color/border/color-border-strong */
+  --color-transfez-pink: #da649f;       /* Primary/Transfez Pink */
+
+  /* Text styles — Figma text styles (size / line-height / weight).
+     Aileron only: Figma's mobile title styles name TypeFezStd and the
+     compact header uses Inter; both render as Aileron by decision. */
+  --text-section-heading: 56px;                 /* Dekstop/Section/Heading (H3) */
+  --text-section-heading--line-height: 1.25;
+  --text-section-heading--font-weight: 600;
+  --text-section-subheading: 20px;              /* Dekstop/Section/Sub - Heading */
+  --text-section-subheading--line-height: 1.6;
+  --text-mobile-h1: 32px;                       /* Mobile/Display/Heading (H1) */
+  --text-mobile-h1--line-height: 1.25;
+  --text-mobile-h1--font-weight: 600;
+  --text-mobile-h3: 24px;                       /* Mobile/Display/Heading (H3) */
+  --text-mobile-h3--line-height: 1.25;
+  --text-mobile-h3--font-weight: 600;
+  --text-mobile-subheading: 16px;               /* Mobile/Display/Sub - Heading */
+  --text-mobile-subheading--line-height: 1.6;
+  --text-title-lg: 24px;                        /* Component/Title/Large */
+  --text-title-lg--line-height: 1.6;
+  --text-title-lg--font-weight: 600;
+  --text-title-xl: 20px;                        /* Component/Title/X - Large */
+  --text-title-xl--line-height: 1.6;
+  --text-title-xl--font-weight: 600;
+  --text-title-md: 18px;                        /* Component/Title/Medium */
+  --text-title-md--line-height: 1.6;
+  --text-title-md--font-weight: 600;
+  --text-title-xmd: 16px;                       /* Component/Title/X - Medium */
+  --text-title-xmd--line-height: 1.6;
+  --text-title-xmd--font-weight: 600;
+  --text-title-new-lg: 20px;                    /* New/Title/Title Large */
+  --text-title-new-lg--line-height: 24px;
+  --text-title-new-lg--font-weight: 600;
+  --text-body-xl: 20px;                         /* Component/Body/X - Large */
+  --text-body-xl--line-height: 1.6;
+  --text-body-xmd: 16px;                        /* Component/Body/X - Medium */
+  --text-body-xmd--line-height: 1.6;
+  --text-body-sm: 14px;                         /* Component/Body/Small */
+  --text-body-sm--line-height: 1.6;
+  --text-button-md: 16px;                       /* Button/Medium */
+  --text-button-md--line-height: 1;
+  --text-button-md--font-weight: 600;
+  --text-button-sm: 14px;                       /* Button/Small */
+  --text-button-sm--line-height: 1;
+  --text-button-sm--font-weight: 600;
+
+  /* Shadow — Figma Shadow/Far. */
+  --shadow-far: 0 16px 32px 0 #16223329, 0 4px 12px -4px #1622331f;
+}
+
+/* Spacing and radius sit in :root, not @theme: --space-* is not a Tailwind
+   namespace, and keeping radius out of @theme means `rounded-full` and the
+   default radius utilities are untouched. Use them as `gap-(--space-24)`,
+   `rounded-(--radius-32)`. Names = Figma variables' WEB code syntax. */
+:root {
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-22: 22px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-88: 88px;
+  --space-96: 96px;
+  --space-112: 112px;
+  --space-160: 160px;
+  --space-200: 200px;
+
+  --radius-4: 4px;
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-24: 24px;
+  --radius-32: 32px;
+  --radius-full: 100px;
+}
+
+/* ==========================================================================
+   LEGACY TOKENS — previous design. Still used by case studies, exploration
+   detail pages, 404, the fog background and tests. Remove each token once
+   nothing references it; delete this whole block when the redesign is done.
+   ========================================================================== */
 @theme {
   /* Colours — from Figma `Portfolio Asset`, frame main-page (8920:2112).
      Every text tier clears WCAG AA on --color-bg-primary:
