@@ -26,7 +26,7 @@ const tabs = [
 ---
 <nav
   aria-label={t.tabs.label}
-  class="sticky top-[80px] z-40 bg-neutral-900 desktop:top-[84px] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-neutral-800 desktop:border-y desktop:border-neutral-800 desktop:before:hidden desktop:after:hidden"
+  class="sticky top-[80px] z-40 transition-colors duration-300 data-stuck:bg-neutral-900/88 data-stuck:backdrop-blur-lg desktop:top-[84px] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-neutral-800 desktop:border-y desktop:border-neutral-800 desktop:before:hidden desktop:after:hidden"
   data-figma="tab-bar"
   data-tab-bar
 >
@@ -104,6 +104,9 @@ const tabs = [
     const stuck = bar.getBoundingClientRect().top <= header.offsetHeight + 0.5
     if (stuck === shown) return
     shown = stuck
+    // At rest the bar is see-through like the page (video under the page
+    // scrim); once stuck it needs its own surface over the scrolling content.
+    bar.toggleAttribute('data-stuck', stuck)
     header.toggleAttribute('data-shown', stuck)
     header.setAttribute('aria-hidden', String(!stuck))
     header.inert = !stuck

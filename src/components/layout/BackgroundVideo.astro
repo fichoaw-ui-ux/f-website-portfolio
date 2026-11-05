@@ -37,8 +37,10 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--color-bg-primary);
-    opacity: 0.72;
+    /* Redesigned pages swap the scrim to the redesign's #252525 at a higher
+       opacity through these two variables (global.css, [data-redesign]). */
+    background: var(--bg-video-scrim, var(--color-bg-primary));
+    opacity: var(--bg-video-scrim-opacity, 0.72);
   }
 
   /* Reduced motion keeps the still poster (the wrapper's background) and

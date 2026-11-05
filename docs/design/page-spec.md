@@ -11,8 +11,12 @@ intentional exceptions. Values come from Figma and `src/styles/tokens.css`.
 - Fonts: Aileron only (heading + body), weights 400 / 600
 - Theme: dark page (#252525, `--color-neutral-900`) with light cards; white top band behind the avatar on desktop
 - Background: the existing storm video (`BackgroundVideo`, `public/videos/bg-storm-light*`)
-  keeps playing behind the page, muted under a semi-transparent #252525 layer so
-  the page still reads as the design's #252525. Intentional exception (Ficho).
+  keeps playing behind the page, under a #252525 scrim at 0.88 (ASSUMED; tune
+  `--bg-video-scrim-opacity` in global.css) so the page still reads as Figma's
+  #252525. Intentional exception (Ficho). Done: `<BaseLayout redesign>` sets
+  `data-redesign`; redesigned sections have no fill of their own; the legacy light
+  patches and grain are off there. The tab bar gets a #252525/88 + blur surface
+  only while stuck; the compact header always has it.
 
 ## Section map
 Figma file **Draft** (`OXwf8tiGQHyIw6XX4ZhSrj`). Refer to sections by name.

@@ -61,6 +61,21 @@ describe('home page structure', () => {
       }
     })
 
+    it('sits faintly under #252525 on the redesigned home page only', async () => {
+      // Ficho: keep the storm video, faint behind the redesign's #252525.
+      expect(html).toMatch(/<html[^>]*data-redesign/)
+      const hrefs = [...html.matchAll(/<link[^>]+href="(\/_astro\/[^"]+\.css)"/g)].map((m) => m[1])
+      const css = (await Promise.all(hrefs.map((h) => readFile(join(DIST, h), 'utf8')))).join('\n')
+      expect(css).toMatch(/\[data-redesign\]\{[^}]*--bg-video-scrim:var\(--color-neutral-900\)/)
+      expect(css).toMatch(/\[data-redesign\]\{[^}]*--bg-video-scrim-opacity:\s*\.88/)
+      // Sections are see-through so the footage shows; the hero's white band stays.
+      const experience = html.match(/<section[^>]*id="experience"[^>]*>/)?.[0] ?? ''
+      expect(experience).not.toContain('bg-neutral-900')
+      // Legacy pages keep the legacy scrim.
+      const legacy = await readFile(join(DIST, 'work', 'quick-transfer', 'index.html'), 'utf8')
+      expect(legacy).not.toMatch(/<html[^>]*data-redesign/)
+    })
+
     it('offers HEVC first with an H.264 fallback', () => {
       expect(html).toMatch(/bg-storm-light-hevc\.mp4[^>]*hvc1[\s\S]*?bg-storm-light\.mp4/)
     })

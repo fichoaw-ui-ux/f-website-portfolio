@@ -13,6 +13,21 @@
 @import "@fontsource/aileron/700.css";
 @import "./tokens.css";
 
+/* Redesigned pages (`<BaseLayout redesign>`): the storm video stays behind the
+   page but under the redesign's #252525 instead of the legacy #0B0B0B, and
+   strong enough that the page still reads as Figma's #252525 (Ficho: "samar
+   di balik #252525"). ASSUMED 0.88: the brightest crest (#E8EAEE) lands near
+   #3C3C3C, where #BBBBC0 text still has > 6:1 contrast. The legacy light
+   patches and grain are off, so the colour stays Figma's. */
+[data-redesign] {
+  --bg-video-scrim: var(--color-neutral-900);
+  --bg-video-scrim-opacity: 0.88;
+}
+[data-redesign] body::before,
+[data-redesign] body::after {
+  display: none;
+}
+
 /* Height of what sticks to the top of the redesigned home page: compact header
    + tab bar (mobile 80 + 56, desktop 84 + 68.4). Sections scroll to just
    under it when a tab is clicked. Derived from Figma, not a Figma variable. */
