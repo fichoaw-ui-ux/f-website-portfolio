@@ -16,7 +16,9 @@ const generateId = ({ entry }: { entry: string }) => entry.replace(/\.mdx?$/, ''
 
 const caseStudies = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/case-studies', generateId }),
-  schema: z.object({
+  // cover/thumbnail go through astro:assets (resized + WebP) — the sources are
+  // 7680×4800 PNGs that were served as-is (1.3 / 2.5 MB).
+  schema: ({ image }) => z.object({
     title: z.string(),
     slug: z.string(),
     icon: z.string(),
@@ -25,9 +27,9 @@ const caseStudies = defineCollection({
     year: z.number().int(),
     duration: z.string(),
     tags: z.array(z.string()),
-    cover: z.string(),
+    cover: image(),
     coverAlt: z.string(),
-    thumbnail: z.string(),
+    thumbnail: image(),
     thumbnailAlt: z.string(),
     summary: z.string(),
     overview: z.string(),

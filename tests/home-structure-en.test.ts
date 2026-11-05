@@ -90,9 +90,22 @@ describe('home page structure', () => {
       expect(html).not.toContain('Selected work</')
     })
 
-    it('labels each card with its upper-cased tags and a View Details pill', () => {
+    it('labels each card with its tags and a View Details pill', () => {
       expect(html).toContain('View Details')
       expect(html).not.toContain('View case study')
+    })
+
+    it('lists the featured case studies as a plain list linking to each study', () => {
+      const section = html.match(/<section[^>]*id="work"[\s\S]*?<\/section>/)?.[0] ?? ''
+      const links = [...section.matchAll(/<a[^>]*href="(\/work\/[^"]+)"/g)].map(m => m[1])
+      expect(links).toEqual(['/work/quick-transfer/', '/work/voucher-points-banner/'])
+      // The pill's accessible name says which study it opens.
+      expect(section).toContain('<span class="sr-only">: Quick Transfer: Boosting Portal Payments</span>')
+      // Ficho: industry/platform tags only, as in the design.
+      expect(section).toContain('Fintech B2B')
+      expect(section).not.toMatch(/>\s*Product Design\s*</)
+      // The legacy sticky-stack effect is gone.
+      expect(html).not.toContain('stack-card')
     })
   })
 

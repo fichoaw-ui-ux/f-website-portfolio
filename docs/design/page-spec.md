@@ -94,9 +94,21 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
 - Replaces the legacy About section (deleted; bio and photo are in the hero).
   Legacy header nav "About" now reads "Skills" / "Skill" and links to `#skills`.
 
-### Study Case / Exploration
-- Card images are placeholders in Figma; content comes from the existing
-  case-study and exploration collections.
+### Study Case — done (`src/components/home/StudyCase.astro`, `#work`)
+- Measured equal to Figma: desktop rows (cover 504×360, content centred, 40+1+40
+  dividers; section 1058 with 2 studies), mobile cards (532 each, section 1255).
+- Featured case studies from the collection (2; Figma's 3rd card is a duplicate).
+  Real thumbnails fill Figma's placeholder covers. Tags exclude "Product Design"
+  (Ficho), so Voucher shows its real tags (Fintech, Mobile App, Remittance), not
+  the "Fintech B2B, Web Portal" copied in Figma.
+- Replaces the legacy SelectedWork sticky-stack (deleted).
+- Covers live in `src/assets/case-studies/` and go through astro:assets (content
+  schema `image()`): WebP at the rendered widths (home 302/504 at 1×/2×, case
+  study header up to 1088, next-project card up to 700). Home downloads 3–15 KB
+  per cover instead of the 1.3 / 2.5 MB 7680×4800 PNGs. og:image is a 1200px JPG.
+
+### Exploration
+- Card images are placeholders in Figma; content comes from the exploration collection.
 
 ## Intentional exceptions
 - Hero top band (white, 164px) and section dividers are full-bleed; content sits in the 1040 band.
