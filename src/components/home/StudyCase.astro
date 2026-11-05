@@ -60,7 +60,8 @@ const HIDDEN_TAGS = new Set(['Product Design'])
 
               <div class="flex min-w-0 flex-col items-start desktop:flex-1" data-figma={`study-case/${p.data.slug}/content`}>
                 {/* Order and gaps differ: mobile title → 12 → tags → 12 → summary → 32 → button;
-                    desktop tags → 16 → title → 16 → summary → 16 → button. */}
+                    desktop tags → 16 → title → 8 → summary → 16 → button (title → summary
+                    is 8 instead of Figma's 16, Ficho). */}
                 <h3 class="order-1 w-full text-title-md text-neutral-100 desktop:order-2 desktop:mt-(--space-16) desktop:text-title-lg">{p.data.title}</h3>
                 <ul class="order-2 mt-(--space-12) flex flex-wrap gap-(--space-8) desktop:order-1 desktop:mt-0" aria-label="Tags">
                   {tags.map((tag) => (
@@ -72,7 +73,7 @@ const HIDDEN_TAGS = new Set(['Product Design'])
                 </ul>
                 {/* Desktop summary: Figma 16/26, raised to 18/29 (Ficho, +2px; not in tokens).
                     Tags (labels) and the View Details button keep Figma's sizes. */}
-                <p class="order-3 mt-(--space-12) w-full text-body-sm text-neutral-100 desktop:mt-(--space-16) desktop:text-[18px] desktop:leading-[29px]">{p.data.summary}</p>
+                <p class="order-3 mt-(--space-12) w-full text-body-sm text-neutral-100 desktop:mt-(--space-8) desktop:text-[18px] desktop:leading-[29px]">{p.data.summary}</p>
                 {/* Mobile button: Figma has a 1px stroke the same colour as the fill,
                     inside the 36px height — invisible, so it is left out. */}
                 <a
