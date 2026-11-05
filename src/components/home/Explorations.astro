@@ -29,7 +29,7 @@ function embedSrc(url: string) {
   return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(`${cleanUrl}${sep}show-proto-sidebar=0`)}`
 }
 
-const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(--radius-full) bg-neutral-800 px-(--space-12) py-(--space-8) text-button-sm whitespace-nowrap text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md'
+const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(--radius-full) bg-neutral-800 px-(--space-12) py-(--space-8) text-button-sm whitespace-nowrap text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md'
 ---
 <section
   id="explorations"

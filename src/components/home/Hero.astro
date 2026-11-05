@@ -7,7 +7,7 @@
    ordered into the single column with `order`. */
 import { Image } from 'astro:assets'
 import ContentBand from '../layout/ContentBand.astro'
-import LanguageSwitch from '../layout/LanguageSwitch.astro'
+import HeaderActions from '../layout/HeaderActions.astro'
 import portrait from '../../assets/hero/portrait.png'
 import { getSite } from '../../content/site'
 import { resolveLocale } from '../../i18n/ui'
@@ -56,7 +56,8 @@ const socials = ['WhatsApp', 'LinkedIn', 'Email']
         class="absolute left-[calc(50%+0.5px)] top-[calc(50%+6px)] h-[128px] w-[96px] max-w-none -translate-x-1/2 -translate-y-1/2 object-cover desktop:left-1/2 desktop:top-[calc(50%+0.5px)] desktop:h-[267px] desktop:w-[200px]"
       />
     </div>
-    <LanguageSwitch class="desktop:absolute desktop:top-[78px] desktop:right-(--space-24)" data-figma-place="hero" />
+    {/* Language switch + Contact (Ficho), right-aligned like the compact header. */}
+    <HeaderActions place="hero" boxedIcon class="desktop:absolute desktop:top-[78px] desktop:right-(--space-24)" />
     </div>
 
     {/* Avatar → content: mobile 20 (frame gap); desktop 60 = Profile pt 160 − 100px overlap. */}
@@ -94,7 +95,7 @@ const socials = ['WhatsApp', 'LinkedIn', 'Email']
                 target={s.href.startsWith('http') ? '_blank' : undefined}
                 rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 aria-label={s.label}
-                class="flex items-center justify-center rounded-(--radius-8) border border-neutral-800 p-(--space-8) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:rounded-(--radius-12) desktop:p-(--space-16)"
+                class="flex items-center justify-center rounded-(--radius-8) border border-neutral-800 p-(--space-8) transition-colors duration-200 hover:border-neutral-600 hover:bg-neutral-100/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:rounded-(--radius-12) desktop:p-(--space-16)"
                 data-figma={`hero/socials/${s.label.toLowerCase()}`}
               >
                 <img src={socialIcons[s.label]} alt="" width="24" height="24" class="size-5 desktop:size-6" />

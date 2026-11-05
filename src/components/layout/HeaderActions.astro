@@ -1,0 +1,49 @@
+---
+/* Header actions — language switch + Contact, shared by the hero (default
+   state) and the compact header (scrolled state).
+   Figma: compact header desktop `25:1722` (switch + Contact pill, gap 16),
+   mobile `25:2233` (switch + 24px icon, gap 12). The hero copies the same
+   group (Ficho: a Contact button beside the language switch).
+   Mobile's icon is the Contact section's envelope in white (Figma's glyph is
+   a menu icon; Ficho meant a contact icon).
+   `boxedIcon` (hero): the mobile hero group straddles the white band's edge,
+   where a bare white icon disappears, so the icon sits in a 32px #6C6C71
+   circle matching the switch's height (ASSUMED — no Figma for this spot).
+   Hover (not in Figma, Ficho): the pill brightens and its arrow nudges right;
+   the icon dims to #BBBBC0 (boxed: the circle brightens). */
+import LanguageSwitch from './LanguageSwitch.astro'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+interface Props { place: string; class?: string; boxedIcon?: boolean }
+const { place, class: className = '', boxedIcon = false } = Astro.props
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
+---
+<div class:list={['flex shrink-0 items-center gap-(--space-12) desktop:gap-(--space-16)', className]} data-figma={`${place}/actions`}>
+  <LanguageSwitch data-figma-place={place} />
+  {/* Mobile: 24px contact icon (envelope, white); boxed in a 32px circle in the hero. */}
+  {boxedIcon ? (
+    <a
+      href="#contact"
+      aria-label={t.compactHeader.contact}
+      class="flex size-8 shrink-0 items-center justify-center rounded-(--radius-full) bg-neutral-800 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:hidden"
+      data-figma={`${place}/contact-icon`}
+    ><span class="size-5 bg-neutral-100 [mask-image:url(/images/icons/envelope.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain]" aria-hidden="true"></span></a>
+  ) : (
+    <a
+      href="#contact"
+      aria-label={t.compactHeader.contact}
+      class="size-6 shrink-0 bg-neutral-100 transition-colors duration-200 [mask-image:url(/images/icons/envelope.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] hover:bg-neutral-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:hidden"
+      data-figma={`${place}/contact-icon`}
+    ></a>
+  )}
+  {/* Desktop: Contact pill, Button/Medium 16/1 — 12 + 20 + 12 = 44 tall. */}
+  <a
+    href="#contact"
+    class="group hidden shrink-0 items-center gap-(--space-8) rounded-(--radius-full) bg-neutral-800 px-(--space-20) py-(--space-12) text-button-md text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:flex"
+    data-figma={`${place}/contact`}
+  >
+    {t.compactHeader.contact}
+    <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 transition-transform duration-200 group-hover:translate-x-1" />
+  </a>
+</div>

@@ -14,7 +14,7 @@
    the #252525 background, so it is invisible and left out. */
 import { Image } from 'astro:assets'
 import ContentBand from '../layout/ContentBand.astro'
-import LanguageSwitch from '../layout/LanguageSwitch.astro'
+import HeaderActions from '../layout/HeaderActions.astro'
 import portrait from '../../assets/hero/portrait.png'
 import { getSite } from '../../content/site'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
@@ -50,24 +50,6 @@ const t = useTranslations(lang)
       <p class="text-button-sm text-neutral-600 desktop:text-[15px] desktop:leading-[23px] desktop:font-normal">{site.handle}</p>
     </div>
 
-    <div class="flex shrink-0 items-center gap-(--space-12) desktop:gap-(--space-16)" data-figma="compact-header/actions">
-      <LanguageSwitch data-figma-place="compact-header" />
-      {/* Mobile: 24px contact icon (envelope, white). */}
-      <a
-        href="#contact"
-        aria-label={t.compactHeader.contact}
-        class="size-6 shrink-0 bg-neutral-100 [mask-image:url(/images/icons/envelope.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:hidden"
-        data-figma="compact-header/contact-icon"
-      ></a>
-      {/* Desktop: Contact pill, Button/Medium 16/1 — 12 + 20 + 12 = 44 tall. */}
-      <a
-        href="#contact"
-        class="hidden shrink-0 items-center gap-(--space-8) rounded-(--radius-full) bg-neutral-800 px-(--space-20) py-(--space-12) text-button-md text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:flex"
-        data-figma="compact-header/contact"
-      >
-        {t.compactHeader.contact}
-        <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5" />
-      </a>
-    </div>
+    <HeaderActions place="compact-header" />
   </ContentBand>
 </div>

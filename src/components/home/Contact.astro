@@ -32,7 +32,7 @@ const rows = [
       <p class="text-mobile-subheading text-neutral-100 desktop:text-section-subheading">
         {t.contact.bodyBefore}<a
           href={`mailto:${site.email}`}
-          class="font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:font-bold desktop:underline"
+          class="font-semibold underline-offset-4 transition-colors duration-200 hover:text-neutral-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:font-bold desktop:underline"
         >{site.email}</a>{t.contact.bodyAfter}
       </p>
     </div>
@@ -44,17 +44,17 @@ const rows = [
             href={row.href}
             target={row.href.startsWith('http') ? '_blank' : undefined}
             rel={row.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-            class="flex items-center gap-(--space-16) py-(--space-20) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100"
+            class="group/row flex items-center gap-(--space-16) py-(--space-20) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100"
             data-figma={`contact/${row.label.toLowerCase()}`}
           >
-            <span class="flex shrink-0 items-center justify-center rounded-(--radius-12) border border-neutral-800 p-(--space-16)" aria-hidden="true">
+            <span class="flex shrink-0 items-center justify-center rounded-(--radius-12) border border-neutral-800 p-(--space-16) transition-colors duration-200 group-hover/row:border-neutral-600 group-hover/row:bg-neutral-100/5" aria-hidden="true">
               <img src={row.icon} alt="" width="24" height="24" class="size-6" />
             </span>
             <span class="flex min-w-0 flex-1 flex-col gap-(--space-4) text-neutral-100">
               <span class="text-title-xmd">{row.label}</span>
               <span class="truncate text-body-xmd">{row.value}</span>
             </span>
-            <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 shrink-0" />
+            <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 shrink-0 transition-transform duration-200 group-hover/row:translate-x-1" />
           </a>
         </li>
       ))}

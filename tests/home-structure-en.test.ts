@@ -381,6 +381,13 @@ describe('home page structure', () => {
       expect(html).toMatch(/<a[^>]*href="#contact"[^>]*aria-label="Contact"[^>]*data-figma="compact-header\/contact-icon"/)
     })
 
+    it('puts a Contact button beside the switch in the hero too', () => {
+      const hero = html.match(/<section[^>]*data-figma="hero"[\s\S]*?<\/section>/)?.[0] ?? ''
+      expect(hero).toMatch(/data-figma="hero\/actions"/)
+      expect(hero).toMatch(/<a[^>]*href="#contact"[^>]*data-figma="hero\/contact"/)
+      expect(hero).toMatch(/<a[^>]*href="#contact"[^>]*aria-label="Contact"[^>]*data-figma="hero\/contact-icon"/)
+    })
+
     it('keeps the tab bar sticky right under it', () => {
       const bar = html.match(/<nav[^>]*data-tab-bar[^>]*>/)?.[0] ?? ''
       expect(bar).toContain('sticky')

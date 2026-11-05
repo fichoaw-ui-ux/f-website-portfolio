@@ -42,14 +42,14 @@ const tabs = [
             data-tab={tab.id}
             data-active={i === 0 ? '' : undefined}
             aria-current={i === 0 ? 'true' : undefined}
-            class="group flex h-[56px] flex-1 items-center justify-center gap-(--space-6) whitespace-nowrap px-(--space-24) text-body-sm font-normal text-neutral-600 data-active:font-semibold data-active:text-neutral-100 data-active:shadow-[inset_0_-2px_0_var(--color-neutral-100)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-100 desktop:h-auto desktop:gap-(--space-8) desktop:py-(--space-20) desktop:text-button-md desktop:font-semibold"
+            class="group flex h-[56px] flex-1 items-center justify-center gap-(--space-6) whitespace-nowrap px-(--space-24) text-body-sm transition-colors duration-200 font-normal text-neutral-600 data-active:font-semibold data-active:text-neutral-100 data-active:shadow-[inset_0_-2px_0_var(--color-neutral-100)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-100 desktop:h-auto desktop:gap-(--space-8) desktop:py-(--space-20) desktop:text-button-md desktop:font-semibold"
             data-figma={`tab-bar/${tab.id}`}
           >
             {/* Icon sizes: mobile 20 (Exploration 24), desktop 22 (Exploration 26.4). */}
             <span
               aria-hidden="true"
               class:list={[
-                'shrink-0 bg-neutral-800 group-data-active:bg-neutral-100 [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain]',
+                'shrink-0 bg-neutral-800 transition-colors duration-200 group-data-active:bg-neutral-100 [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain]',
                 tab.large ? 'size-6 desktop:size-[26.4px]' : 'size-5 desktop:size-[22px]',
               ]}
               style={`mask-image: url(${tab.icon}); -webkit-mask-image: url(${tab.icon});`}
@@ -61,6 +61,15 @@ const tabs = [
     </ul>
   </div>
 </nav>
+
+<style>
+  /* Hover (not in Figma, Ficho): an inactive tab's label turns white and its
+     icon lightens to #BBBBC0. The active tab is already white and stays put. */
+  @media (hover: hover) {
+    a[data-tab]:not([data-active]):hover { color: var(--color-neutral-100); }
+    a[data-tab]:not([data-active]):hover > span[aria-hidden] { background-color: var(--color-neutral-600); }
+  }
+</style>
 
 <script>
   // Scroll-spy: the active tab is the last section whose top has passed a

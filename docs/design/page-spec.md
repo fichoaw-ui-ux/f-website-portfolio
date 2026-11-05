@@ -155,6 +155,16 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   exploration pages keep the legacy footer until they are redesigned.
 
 ## Intentional exceptions
+- Hover states (not in Figma, Ficho), 200ms, only on devices that hover:
+  filled pills (Contact, View Details, See Prototype / Visit Live Site) brighten
+  ×1.1 and their arrow nudges 4px right; bordered tiles (hero socials, contact row
+  icons) get a #BBBBC0 border + 5% white fill; inactive tabs turn white with a
+  #BBBBC0 icon; the inactive language option gets a 15% white wash; the compact
+  header's envelope dims to #BBBBC0; job names underline; the contact e-mail
+  turns #BBBBC0.
+- The hero also has the language switch + Contact group (Ficho), shared with the
+  compact header (`HeaderActions.astro`). On mobile its envelope sits in a 32px
+  #6C6C71 circle (ASSUMED) because the group straddles the white band's edge.
 - Study case and exploration covers are black & white and turn to colour (with a
   1.02 zoom, 500ms) while their card is hovered — kept from the previous design
   (Ficho). Exploration pills stack vertically, full width. The profile photo has no
