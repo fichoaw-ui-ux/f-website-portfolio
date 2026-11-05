@@ -10,24 +10,26 @@ const shared = {
   // International format for wa.me deep links (Indonesia country code 62, leading 0 dropped).
   // Local number is 082111183273.
   whatsapp: '6282111183273',
+  // Skills & Tools follow the mobile Figma frame (8:753), on every breakpoint
+  // (Ficho). Desktop Figma lacks Information Architecture; the old site listed
+  // "Claude Code" and Mixpanel.
   skills: [
     'Product Design',
     'Usability Testing',
     'Wireframing',
     'Prototyping',
     'User Flows',
-    'Information Architecture',
     'Design Systems',
     'Graphic Design',
     'HTML/CSS',
+    'Information Architecture',
   ],
   tools: [
     'Figma',
-    'Claude Code',
+    'Claude',
     'Notion',
     'Slack',
     'Jira',
-    'Mixpanel',
     'Bitbucket',
     'Github',
     'Photoshop',
@@ -50,7 +52,7 @@ const perLang = {
     ],
     nav: [
       { label: 'Karya', href: '#work' },
-      { label: 'Tentang', href: '#about' },
+      { label: 'Skill', href: '#skills' },
       { label: 'Pengalaman', href: '#experience' },
       { label: 'Eksplorasi', href: '#explorations' },
     ],
@@ -119,7 +121,7 @@ const perLang = {
     ],
     nav: [
       { label: 'Work', href: '#work' },
-      { label: 'About', href: '#about' },
+      { label: 'Skills', href: '#skills' },
       { label: 'Experience', href: '#experience' },
       { label: 'Exploration', href: '#explorations' },
     ],

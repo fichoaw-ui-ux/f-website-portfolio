@@ -55,8 +55,8 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   Mobile tab widths hug the rendered text: 146/155/145/149 vs Figma 147/156/146/150.
 - Mobile: tabs scroll horizontally (scrollbar hidden); the active tab is scrolled
   into view inside the bar.
-- Targets: Experience → `#experience`, Skills & Tools → `#about` (legacy About
-  holds the skills until rebuilt), Study Case → `#work`, Exploration → `#explorations`.
+- Targets: Experience → `#experience`, Skills & Tools → `#skills`,
+  Study Case → `#work`, Exploration → `#explorations`.
 - The scrolled desktop frame sets the tabs in Inter; built in Aileron from the
   default frame (`8:156`) styles.
 
@@ -84,6 +84,15 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
 - Copy follows the mobile frame: Transfez — UI/UX Designer, October 2025 – Now;
   Jack Finance — Associate UI/UX Designer, October 2022 – September 2025.
   The desktop frame's duplicated dates are a copy error.
+
+### Skills & Tools — done (`src/components/home/SkillsTools.astro`, `#skills`)
+- Chip lists follow the mobile frame on every breakpoint (Ficho): 9 skills with
+  Information Architecture last, 10 tools with "Claude", no Mixpanel.
+- Mobile measured equal to Figma (517). Desktop matches Figma per element; the
+  section is 461 instead of 407 because the 9th skill wraps to a 4th row (the
+  desktop frame only has 8).
+- Replaces the legacy About section (deleted; bio and photo are in the hero).
+  Legacy header nav "About" now reads "Skills" / "Skill" and links to `#skills`.
 
 ### Study Case / Exploration
 - Card images are placeholders in Figma; content comes from the existing

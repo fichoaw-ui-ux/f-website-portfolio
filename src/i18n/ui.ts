@@ -16,12 +16,7 @@ const dictionary = {
       studyCase: 'Studi Kasus',
       exploration: 'Eksplorasi',
     },
-    about: {
-      heading: 'Profil',
-      skills: 'SKILL',
-      tools: 'TOOLS',
-      portraitAlt: (name: string) => `Potret ${name}`,
-    },
+    skillsTools: { skills: 'Skill', tools: 'Tools' },
     contact: {
       heading: 'Terbuka untuk peluang kerja dan freelance',
       bodyBefore: 'Terbuka untuk kerja product design dan kolaborasi. Bisa hubungi saya di ',
@@ -60,12 +55,7 @@ const dictionary = {
       studyCase: 'Study Case',
       exploration: 'Exploration',
     },
-    about: {
-      heading: 'About me',
-      skills: 'SKILLS',
-      tools: 'TOOLS',
-      portraitAlt: (name: string) => `Portrait of ${name}`,
-    },
+    skillsTools: { skills: 'Skills', tools: 'Tools' },
     contact: {
       heading: "Let's build something together",
       bodyBefore: 'Open to product design work and collaborations. You can reach me at ',

@@ -93,22 +93,18 @@ describe('home page structure (id)', () => {
     })
   })
 
-  describe('about', () => {
-    it('runs the bio as two paragraphs and drops the section badge pattern', () => {
-      expect(html).toContain('Profil')
-      // Proves site.bio renders as two separate <p> tags, not one joined blob.
-      expect(html).toMatch(/\(KYC (&|&amp;) KYB\)\.<\/p><p>Berlatar belakang Sistem Informasi/)
+  describe('skills and tools', () => {
+    it('lists the mobile Figma chips under Skill and Tools headings', () => {
+      const section = html.match(/<section[^>]*id="skills"[\s\S]*?<\/section>/)?.[0] ?? ''
+      expect(section).toMatch(/<h2[^>]*>\s*Skill\s*<\/h2>/)
+      expect(section).toMatch(/<h2[^>]*>\s*Tools\s*<\/h2>/)
+      const chips = section.match(/<li[^>]*data-chip/g) ?? []
+      expect(chips).toHaveLength(19)
     })
 
-    it('shows the real portrait, described rather than decorative', () => {
-      expect(html).toMatch(/<img[^>]+ficho-portrait\.png[^>]+alt="Potret Ficho"/)
-    })
-
-    it('keeps the skills and tools groups labelled', () => {
-      expect(html).toContain('SKILL')
-      expect(html).toContain('TOOLS')
-      expect(html).toContain('Mixpanel')
-      expect(html).not.toContain('Framer')
+    it('drops the old About section', () => {
+      expect(html).not.toContain('>Profil<')
+      expect(html).not.toContain('ficho-portrait.png')
     })
   })
 
@@ -182,7 +178,7 @@ describe('home page structure (id)', () => {
       expect(html).not.toContain('src="/images/logo-ficho.svg"')
       expect(html).toContain('Hubungi Saya')
       expect(html).toContain('href="/id/#work"')
-      expect(html).toContain('href="/id/#about"')
+      expect(html).toContain('href="/id/#skills"')
       expect(html).toContain('href="/id/#experience"')
       expect(html).toContain('href="/id/#explorations"')
       expect(html).not.toContain('Get in touch')

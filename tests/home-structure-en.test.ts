@@ -96,27 +96,23 @@ describe('home page structure', () => {
     })
   })
 
-  describe('about', () => {
-    it('runs the bio as two paragraphs and drops the section badge pattern', () => {
-      expect(html).toContain('About me')
-      expect(html).not.toContain('Designer with a bias for shipping')
-      // Proves site.bio renders as two separate <p> tags, not one joined blob.
-      expect(html).toMatch(/\(KYC (&|&amp;) KYB\)\.<\/p><p>Background in Information Systems/)
+  describe('skills and tools', () => {
+    it('lists the mobile Figma chips under Skills and Tools headings', () => {
+      const section = html.match(/<section[^>]*id="skills"[\s\S]*?<\/section>/)?.[0] ?? ''
+      expect(section).toMatch(/<h2[^>]*>\s*Skills\s*<\/h2>/)
+      expect(section).toMatch(/<h2[^>]*>\s*Tools\s*<\/h2>/)
+      // 9 skills + 10 tools, in the mobile frame's order (Ficho's pick).
+      const chips = [...section.matchAll(/<li[^>]*data-chip[^>]*>\s*([^<]+?)\s*<\/li>/g)].map(m => m[1])
+      expect(chips).toHaveLength(19)
+      expect(chips.slice(0, 9).at(-1)).toBe('Information Architecture')
+      expect(chips).toContain('Claude')
+      expect(chips).not.toContain('Mixpanel')
+      expect(chips).not.toContain('Claude Code')
     })
 
-    it('shows the real portrait, described rather than decorative', () => {
-      // Scoped to the About image. A bare `not.toContain('placeholder.svg')`
-      // fails on unrelated content: five of the six explorations legitimately
-      // still use placeholder.svg as their cover. The alt is what separates
-      // this image from the hero's decorative copy of the same file.
-      expect(html).toMatch(/<img[^>]+ficho-portrait\.png[^>]+alt="Portrait of Ficho"/)
-    })
-
-    it('keeps the skills and tools groups labelled', () => {
-      expect(html).toContain('SKILLS')
-      expect(html).toContain('TOOLS')
-      expect(html).toContain('Mixpanel')
-      expect(html).not.toContain('Framer')
+    it('drops the old About section (bio and portrait moved to the hero)', () => {
+      expect(html).not.toContain('About me')
+      expect(html).not.toContain('ficho-portrait.png')
     })
   })
 
@@ -231,7 +227,7 @@ describe('home page structure', () => {
       //
       // English is the default locale (no URL prefix), so these stay bare.
       expect(html).toContain('href="/#work"')
-      expect(html).toContain('href="/#about"')
+      expect(html).toContain('href="/#skills"')
       expect(html).toContain('href="/#experience"')
       expect(html).toContain('href="/#explorations"')
       expect(html).not.toContain('Get in touch')
@@ -294,7 +290,7 @@ describe('tab bar', () => {
     expect(nav).toBeDefined()
     expect(nav).toContain('aria-label="Section navigation"')
     const targets = [...nav!.matchAll(/data-tab="([^"]+)"/g)].map(m => m[1])
-    expect(targets).toEqual(['experience', 'about', 'work', 'explorations'])
+    expect(targets).toEqual(['experience', 'skills', 'work', 'explorations'])
     for (const label of ['Experience', 'Skills &amp; Tools', 'Study Case', 'Exploration']) {
       expect(nav).toContain(label)
     }
@@ -303,7 +299,7 @@ describe('tab bar', () => {
   })
 
   it('points every tab at a section that exists on the page', () => {
-    for (const id of ['experience', 'about', 'work', 'explorations']) {
+    for (const id of ['experience', 'skills', 'work', 'explorations']) {
       expect(html).toContain(`href="#${id}"`)
       expect(html).toMatch(new RegExp(`<section[^>]*id="${id}"`))
     }
