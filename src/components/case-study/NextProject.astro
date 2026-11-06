@@ -30,7 +30,9 @@ const href = getRelativeLocaleUrl(lang, `/work/${slug}`)
       class="group mt-(--space-32) flex flex-col gap-(--space-24) rounded-(--radius-container) border border-neutral-800 p-[23px] [filter:drop-shadow(0_4px_6px_rgba(22,34,51,0.12))_drop-shadow(0_16px_16px_rgba(22,34,51,0.16))] desktop:mt-(--space-40) desktop:flex-row desktop:items-center desktop:gap-(--space-32) desktop:border-0 desktop:p-0 desktop:[filter:none]"
       data-figma={`case-study/next/${slug}`}
     >
-      <div class="h-[200px] shrink-0 overflow-hidden rounded-(--radius-container) border-2 border-neutral-600 bg-neutral-200 desktop:h-[360px] desktop:min-w-0 desktop:flex-1 desktop:border-0">
+      {/* Cover links to the study too (Ficho), as on the home page: out of the tab
+          order and hidden from screen readers; hovering it lights the button. */}
+      <a href={href} tabindex="-1" aria-hidden="true" data-cover-link class="block h-[200px] shrink-0 overflow-hidden rounded-(--radius-container) border-2 border-neutral-600 bg-neutral-200 desktop:h-[360px] desktop:min-w-0 desktop:flex-1 desktop:border-0">
         <Image
           src={cover}
           alt={coverAlt}
@@ -39,7 +41,7 @@ const href = getRelativeLocaleUrl(lang, `/work/${slug}`)
           loading="lazy"
           class="size-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
         />
-      </div>
+      </a>
 
       <div class="flex min-w-0 flex-col items-start desktop:flex-1">
         <h3 class="order-1 w-full text-title-md text-neutral-100 desktop:order-2 desktop:mt-(--space-16) desktop:text-title-lg">{title}</h3>
@@ -52,10 +54,10 @@ const href = getRelativeLocaleUrl(lang, `/work/${slug}`)
         <p class="order-3 mt-(--space-12) w-full text-body-sm text-neutral-100 desktop:mt-(--space-8) desktop:text-[18px] desktop:leading-[29px]">{summary}</p>
         <a
           href={href}
-          class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-pill) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-24) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
+          class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-pill) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 group-has-[[data-cover-link]:hover]:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-24) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
         >
           {t.common.viewDetails}<span class="sr-only">: {title}</span>
-          <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 transition-transform duration-200 group-hover/button:translate-x-1" />
+          <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 transition-transform duration-200 group-hover/button:translate-x-1 group-has-[[data-cover-link]:hover]:translate-x-1" />
         </a>
       </div>
     </article>

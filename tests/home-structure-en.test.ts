@@ -115,7 +115,16 @@ describe('home page structure', () => {
     it('lists the featured case studies as a plain list linking to each study', () => {
       const section = html.match(/<section[^>]*id="work"[\s\S]*?<\/section>/)?.[0] ?? ''
       const links = [...section.matchAll(/<a[^>]*href="(\/work\/[^"]+)"/g)].map(m => m[1])
-      expect(links).toEqual(['/work/quick-transfer/', '/work/voucher-points-banner/', '/work/local-transfer-mobile/'])
+      expect([...new Set(links)]).toEqual(['/work/local-transfer-mobile/', '/work/quick-transfer/', '/work/voucher-points-banner/'])
+      // Each cover links to its study too (Ficho), as a mouse/touch shortcut only:
+      // out of the tab order and hidden from screen readers, so the View Details
+      // pill stays the one accessible link per study.
+      const covers = section.match(/<a[^>]*\sdata-cover-link[\s>][^>]*>/g) ?? []
+      expect(covers).toHaveLength(3)
+      for (const c of covers) {
+        expect(c).toContain('tabindex="-1"')
+        expect(c).toContain('aria-hidden="true"')
+      }
       // The pill's accessible name says which study it opens.
       expect(section).toContain('<span class="sr-only">: Quick Transfer: Boosting Portal Payments</span>')
       // Ficho: industry/platform tags only, as in the design.

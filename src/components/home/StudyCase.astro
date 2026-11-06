@@ -45,8 +45,18 @@ const HIDDEN_TAGS = new Set(['Product Design'])
               class="group flex flex-col gap-(--space-24) rounded-(--radius-container) border border-neutral-800 p-[23px] [filter:drop-shadow(0_4px_6px_rgba(22,34,51,0.12))_drop-shadow(0_16px_16px_rgba(22,34,51,0.16))] desktop:flex-row desktop:items-center desktop:gap-(--space-32) desktop:rounded-none desktop:border-0 desktop:p-0 desktop:[filter:none]"
               data-figma={`study-case/${p.data.slug}`}
             >
-              {/* Cover: mobile 200 tall, 2px #BBBBC0 stroke; desktop 504×360, no stroke. */}
-              <div class="h-[200px] shrink-0 overflow-hidden rounded-(--radius-container) border-2 border-neutral-600 bg-neutral-200 desktop:h-[360px] desktop:min-w-0 desktop:flex-1 desktop:border-0" data-figma={`study-case/${p.data.slug}/cover`}>
+              {/* Cover: mobile 200 tall, 2px #BBBBC0 stroke; desktop 504×360, no stroke.
+                  Also a link to the study (Ficho): a mouse/touch shortcut beside View
+                  Details, so it is out of the tab order and hidden from screen readers
+                  (the button is the one accessible link). Hovering it lights the button. */}
+              <a
+                href={href}
+                tabindex="-1"
+                aria-hidden="true"
+                data-cover-link
+                class="block h-[200px] shrink-0 overflow-hidden rounded-(--radius-container) border-2 border-neutral-600 bg-neutral-200 desktop:h-[360px] desktop:min-w-0 desktop:flex-1 desktop:border-0"
+                data-figma={`study-case/${p.data.slug}/cover`}
+              >
                 {/* Rendered 302 wide on mobile (306 box − 2px stroke), 504 on desktop; 1× and 2×. */}
                 <Image
                   src={p.data.thumbnail}
@@ -56,7 +66,7 @@ const HIDDEN_TAGS = new Set(['Product Design'])
                   loading="lazy"
                   class="size-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
                 />
-              </div>
+              </a>
 
               <div class="flex min-w-0 flex-col items-start desktop:flex-1" data-figma={`study-case/${p.data.slug}/content`}>
                 {/* Order and gaps differ: mobile title → 12 → tags → 12 → summary → 32 → button;
@@ -78,11 +88,11 @@ const HIDDEN_TAGS = new Set(['Product Design'])
                     inside the 36px height — invisible, so it is left out. */}
                 <a
                   href={href}
-                  class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-pill) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-24) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
+                  class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-pill) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 group-has-[[data-cover-link]:hover]:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-24) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
                   data-figma={`study-case/${p.data.slug}/button`}
                 >
                   {t.common.viewDetails}<span class="sr-only">: {p.data.title}</span>
-                  <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 transition-transform duration-200 group-hover/button:translate-x-1" />
+                  <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 transition-transform duration-200 group-hover/button:translate-x-1 group-has-[[data-cover-link]:hover]:translate-x-1" />
                 </a>
               </div>
             </article>
