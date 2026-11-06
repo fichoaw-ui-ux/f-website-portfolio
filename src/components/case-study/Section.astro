@@ -4,7 +4,7 @@
    - body: the Experience bullet text (14/22 mobile, 18/29 desktop, white),
      measure 720 on desktop as there;
    - bullets: the Experience 6px #6C6C71 dot in a 16px box, 4px gap;
-   - quotes: the mobile Study Case card (r24, 1px #6C6C71, 23 + 1 padding)
+   - quotes: the mobile Study Case card (container radius, Ficho; 1px #6C6C71, 23 + 1 padding)
      with the title style inside;
    - links: as the Contact e-mail (underline, #BBBBC0 on hover).
    Indent only from the desktop breakpoint (mobile has 354px to work with):
@@ -71,7 +71,7 @@ const titleClass = 'mb-(--space-12) text-title-md text-neutral-100 desktop:mb-(-
     top: 8px;
     width: 6px;
     height: 6px;
-    border-radius: 9999px;
+    border-radius: var(--radius-pill);
     background: var(--color-neutral-800);
   }
   .cs-prose ol { counter-reset: cs-ol; }
@@ -86,12 +86,28 @@ const titleClass = 'mb-(--space-12) text-title-md text-neutral-100 desktop:mb-(-
     margin: var(--space-24) 0;
     padding: 23px; /* 24 with the 1px stroke inside, as the Study Case card */
     border: 1px solid var(--color-neutral-800);
-    border-radius: var(--radius-24);
+    border-radius: var(--radius-container);
     font-size: var(--text-title-md);
     line-height: var(--text-title-md--line-height);
     font-weight: 600;
   }
   .cs-prose blockquote p { margin: 0; }
+  .cs-prose blockquote p + p { margin-top: var(--space-12); }
+  /* Tables: rows ruled like the Contact list / Project Snapshot. */
+  .cs-prose table {
+    width: 100%;
+    margin: var(--space-24) 0;
+    border-collapse: collapse;
+    border-top: 1px solid var(--color-neutral-800);
+  }
+  .cs-prose tr { border-bottom: 1px solid var(--color-neutral-800); }
+  .cs-prose th,
+  .cs-prose td {
+    padding: var(--space-12) var(--space-16) var(--space-12) 0;
+    text-align: left;
+    vertical-align: top;
+  }
+  .cs-prose th { font-weight: 400; color: var(--color-neutral-600); }
 
   @media (width >= 64rem) {
     .cs-prose {

@@ -34,8 +34,8 @@ const homeHref = `${getRelativeLocaleUrl(lang, '/').replace(/\/$/, '')}/`
     >
       <span class="sr-only">{t.header.backToHome}</span>
       <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 shrink-0 rotate-180 transition-transform duration-200 group-hover:-translate-x-1 desktop:size-6" />
-      {/* Photo: as the compact header — mobile 64 r16, desktop 56 r6.72 (not in tokens). */}
-      <span class="relative size-16 shrink-0 overflow-hidden rounded-[16px] desktop:size-14 desktop:rounded-[6.72px]" aria-hidden="true">
+      {/* Photo: as the compact header — mobile 64, desktop 56, container radius. */}
+      <span class="relative size-16 shrink-0 overflow-hidden rounded-(--radius-container) desktop:size-14" aria-hidden="true">
         <Image
           src={portrait}
           alt=""

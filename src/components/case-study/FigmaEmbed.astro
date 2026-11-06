@@ -13,7 +13,7 @@ const protoUrl = `${cleanUrl}${sep}show-proto-sidebar=0`
 const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(protoUrl)}`
 ---
 <figure class:list={['mb-(--space-48)', indentClass]}>
-  <div class="overflow-hidden rounded-(--radius-24) border border-neutral-800">
+  <div class="overflow-hidden rounded-(--radius-container) border border-neutral-800">
     <div class="flex items-center justify-between gap-(--space-16) border-b border-neutral-800 px-(--space-16) py-(--space-12)">
       <div class="flex min-w-0 items-center gap-(--space-8)">
         <span class="shrink-0 text-button-sm text-neutral-600">{t.figmaEmbed.prototypeLabel}</span>

@@ -30,9 +30,12 @@ code; don't reinterpret it.
   `/* not in tokens: Figma <value> */`.
 - Tailwind: no default spacing/colour classes for design values (`gap-4`,
   `text-gray-400`). Use token utilities (`text-neutral-600`, `text-title-lg`) or
-  `gap-(--space-24)` / `rounded-(--radius-32)`; non-token values as arbitrary
+  `gap-(--space-24)` / `rounded-(--radius-container)`; non-token values as arbitrary
   values with the exact number (`gap-[18px]`).
 - Don't add colors, shadows, radii, borders, fonts or effects not in the design.
+- Exception — corner radius: code leads Figma for now. Use only
+  `rounded-(--radius-container)` (8px) or `rounded-(--radius-pill)`, never Figma's
+  radius values (page spec → Intentional exceptions; `tests/radius.test.ts`).
 - One typeface: Aileron. Figma layers set in TypeFezStd or Inter render in Aileron.
 - Auto layout → flex/grid. Absolute positioning only for real overlays.
 - Mark key elements with `data-figma="<layer path>"`.

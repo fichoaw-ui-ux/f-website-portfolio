@@ -29,7 +29,7 @@ function embedSrc(url: string) {
   return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(`${cleanUrl}${sep}show-proto-sidebar=0`)}`
 }
 
-const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(--radius-full) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm whitespace-nowrap text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md'
+const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(--radius-pill) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm whitespace-nowrap text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md'
 ---
 <section
   id="explorations"
@@ -49,7 +49,7 @@ const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(-
           const hasLive = !!e.data.liveUrl
           return (
             <li
-              class="group relative h-[400px] overflow-hidden rounded-(--radius-32) bg-neutral-200 desktop:h-[420px]"
+              class="group relative h-[400px] overflow-hidden rounded-(--radius-container) bg-neutral-200 desktop:h-[420px]"
               data-figma={`explorations/${e.data.slug}`}
             >
               {/* Card: mobile 354 wide, desktop (1040 − 2×24) / 3 ≈ 331; 1× and 2×. */}
@@ -96,7 +96,7 @@ const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(-
     class="fixed inset-0 m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 text-neutral-100 backdrop:bg-black/70 backdrop:backdrop-blur-sm"
   >
     <div class="flex h-full w-full items-center justify-center p-4 md:p-8">
-      <div data-proto-inner class="flex h-full w-full max-w-[1400px] flex-col overflow-hidden rounded-(--radius-24) border border-neutral-800 bg-neutral-900">
+      <div data-proto-inner class="flex h-full w-full max-w-[1400px] flex-col overflow-hidden rounded-(--radius-container) border border-neutral-800 bg-neutral-900">
         <div class="flex items-center justify-between gap-(--space-16) border-b border-neutral-800 px-(--space-16) py-(--space-12)">
           <div class="flex min-w-0 items-center gap-(--space-8)">
             <span class="text-button-sm text-neutral-600">{t.figmaEmbed.prototypeLabel}</span>

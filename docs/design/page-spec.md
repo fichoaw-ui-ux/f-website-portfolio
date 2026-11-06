@@ -172,11 +172,21 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   heading size (32 → 56) in white, summary in the Contact body style.
 - Parts: home section opening (1px rule, 48 / 88, grey 24 → 32 heading). Body text
   = Experience bullets (14/22 → 18/29, measure 720), titles = job titles, bullets =
-  Experience dots, quotes/metrics = the mobile Study Case card, image frames r24
-  with a #6C6C71 stroke. Bottom section indicator styled like the tab bar.
+  Experience dots, quotes/metrics = the mobile Study Case card, image frames
+  with a #6C6C71 stroke. Containers use the container radius (see Intentional exceptions). Prototypes are
+  full-width embeds, one per row. Bottom section indicator styled like the tab bar.
 - Next project: the home Study Case row/card with one entry.
 
 ## Intentional exceptions
+- Corner radius (Ficho, 2026-11-06): code leads Figma until the design is synced.
+  Components use only the semantic tokens in `tokens.css`: `--radius-container`
+  (8px — cards, covers, exploration cards, photos, logo tiles, role badges,
+  social/contact tiles, image and prototype frames, quotes, metrics, modals) and
+  `--radius-pill` (tags, pill buttons, language switch, round icons, bullet dots).
+  A box inside a box uses `calc(var(--radius-container) - <gap>)` (role badge).
+  `tests/radius.test.ts` fails on any other radius in redesigned files. Case study
+  image frames are always `<ImageFull>` (no hand-written frames in MDX).
+  To do: add `radius/container` and `radius/pill` variables to Figma and bind them.
 - Mobile has no 12px text (Ficho): hero meta, Experience bullets and Study Case
   tags are 14px (meta/tags 14/1 semibold, bullets 14/22). Mobile text buttons
   (View Details, See Prototype / Visit Live Site) use 12px padding on all sides.

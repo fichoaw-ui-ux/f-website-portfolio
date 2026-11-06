@@ -1,5 +1,5 @@
 ---
-/* Image frame — home styles (no Figma frame): r24 frame with a 1px #6C6C71
+/* Image frame — home styles (no Figma frame): container-radius frame (Ficho) with a 1px #6C6C71
    stroke and divider, labels #BBBBC0 Button/Small, title white Body/Small. */
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
@@ -22,7 +22,7 @@ if (caption) {
 }
 ---
 <figure class:list={['mb-(--space-48)', indentClass]}>
-  <div class="overflow-hidden rounded-(--radius-24) border border-neutral-800">
+  <div class="overflow-hidden rounded-(--radius-container) border border-neutral-800">
     <div class="flex items-center justify-between gap-(--space-16) border-b border-neutral-800 px-(--space-16) py-(--space-12)">
       <div class="flex min-w-0 items-center gap-(--space-8)">
         <span class="shrink-0 text-button-sm text-neutral-600">{resolvedLabel}</span>
@@ -32,7 +32,7 @@ if (caption) {
     </div>
     {mobile ? (
       <div class="flex justify-center py-(--space-24)">
-        <img src={src} alt={alt} class="block h-auto w-full max-w-[320px]" loading="lazy" />
+        <img src={src} alt={alt} class="block h-auto w-full max-w-[300px]" loading="lazy" />
       </div>
     ) : (
       <img src={src} alt={alt} class="block h-auto w-full" loading="lazy" />

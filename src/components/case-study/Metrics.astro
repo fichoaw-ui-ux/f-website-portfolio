@@ -1,5 +1,5 @@
 ---
-/* Metrics — cards as the mobile Study Case card (r24, 1px #6C6C71, 23 + 1
+/* Metrics — cards as the mobile Study Case card (container radius, Ficho; 1px #6C6C71, 23 + 1
    padding); value in the Contact heading style (32 → 56, white), label in
    #BBBBC0 Body/Small. No Figma frame. */
 interface Props { items: { value: string; label: string }[] }
@@ -7,7 +7,7 @@ const { items } = Astro.props
 ---
 <div class="my-(--space-24) grid grid-cols-1 gap-(--space-16) desktop:grid-cols-3 desktop:gap-(--space-24)">
   {items.map(m => (
-    <div class="flex flex-col gap-(--space-8) rounded-(--radius-24) border border-neutral-800 p-[23px]">
+    <div class="flex flex-col gap-(--space-8) rounded-(--radius-container) border border-neutral-800 p-[23px]">
       <div class="text-mobile-h1 text-neutral-100 desktop:text-section-heading">{m.value}</div>
       <div class="text-body-sm text-neutral-600">{m.label}</div>
     </div>

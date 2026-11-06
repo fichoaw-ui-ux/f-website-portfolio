@@ -40,13 +40,13 @@ const socials = ['WhatsApp', 'LinkedIn', 'Email']
        right edge, 142 from the hero top (= 78 into the band, which starts at
        the 64px top padding) — Figma 25:1273, straddling the white band's edge. */}
     <div class="flex items-center justify-between gap-(--space-20)" data-figma="hero/avatar-row">
-    {/* Photo: mobile 97×96 r16 (image 96×128, nudged +0.5 / +6);
+    {/* Photo: mobile 97×96 (image 96×128, nudged +0.5 / +6);
         desktop 200×200 r24 (image 200×267, nudged 0 / +0.5). */}
     <div
-      class="relative h-[96px] w-[97px] overflow-hidden rounded-[16px] border-2 border-border-strong desktop:size-[200px] desktop:rounded-(--radius-24)"
+      class="relative h-[96px] w-[97px] overflow-hidden rounded-(--radius-container) border-2 border-border-strong desktop:size-[200px]"
       data-figma="hero/avatar"
     >
-      {/* rounded-[16px]: not in tokens — Figma radius/radius-lg 16 */}
+      {/* container radius on every breakpoint (Ficho; Figma 16 / 24) */}
       <Image
         src={portrait}
         alt=""
@@ -95,7 +95,7 @@ const socials = ['WhatsApp', 'LinkedIn', 'Email']
                 target={s.href.startsWith('http') ? '_blank' : undefined}
                 rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 aria-label={s.label}
-                class="flex items-center justify-center rounded-(--radius-8) border border-neutral-800 p-(--space-8) transition-colors duration-200 hover:border-neutral-600 hover:bg-neutral-100/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:rounded-(--radius-12) desktop:p-(--space-16)"
+                class="flex items-center justify-center rounded-(--radius-container) border border-neutral-800 p-(--space-8) transition-colors duration-200 hover:border-neutral-600 hover:bg-neutral-100/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:p-(--space-16)"
                 data-figma={`hero/socials/${s.label.toLowerCase()}`}
               >
                 <img src={socialIcons[s.label]} alt="" width="24" height="24" class="size-5 desktop:size-6" />

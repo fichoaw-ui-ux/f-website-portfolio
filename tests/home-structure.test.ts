@@ -125,7 +125,7 @@ describe('home page structure (id)', () => {
       expect(buttons).toHaveLength(2)
       expect(buttons[0]).toContain('aria-expanded="true"')
       expect(buttons[1]).toContain('aria-expanded="false"')
-      const dots = section.match(/<li[^>]*>\s*<span[^>]*before:rounded-full[^>]*aria-hidden="true"/g) ?? []
+      const dots = section.match(/<li[^>]*>\s*<span[^>]*before:rounded-\(--radius-pill\)[^>]*aria-hidden="true"/g) ?? []
       expect(dots).toHaveLength(7)
       expect(section).toContain('<strong')
       expect(section).not.toContain('**')

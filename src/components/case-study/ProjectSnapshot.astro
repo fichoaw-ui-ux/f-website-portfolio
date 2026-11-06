@@ -13,7 +13,7 @@ const { items } = Astro.props
       <dt class="text-body-sm text-neutral-600 desktop:text-[18px] desktop:leading-[29px]">{item.label}</dt>
       <dd>
         {item.pill ? (
-          <span class="inline-flex rounded-(--radius-full) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-neutral-600 desktop:px-(--space-10)">{item.value}</span>
+          <span class="inline-flex rounded-(--radius-pill) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-neutral-600 desktop:px-(--space-10)">{item.value}</span>
         ) : (
           <span class="text-body-sm text-neutral-100 desktop:text-[18px] desktop:leading-[29px]">{item.value}</span>
         )}

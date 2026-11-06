@@ -26,7 +26,7 @@ const options = [
 ---
 <nav
   aria-label={t.languageSwitch.label}
-  class:list={['flex w-max items-center gap-(--space-4) rounded-(--radius-full) bg-neutral-800 p-(--space-2) desktop:p-(--space-4)', className]}
+  class:list={['flex w-max items-center gap-(--space-4) rounded-(--radius-pill) bg-neutral-800 p-(--space-2) desktop:p-(--space-4)', className]}
   data-figma="language-switch"
   {...rest}
 >
@@ -41,7 +41,7 @@ const options = [
         aria-current={current ? 'true' : undefined}
         data-lang-switch
         class:list={[
-          'flex size-7 items-center justify-center rounded-(--radius-full) text-button-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:size-9 desktop:text-button-md',
+          'flex size-7 items-center justify-center rounded-(--radius-pill) text-button-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:size-9 desktop:text-button-md',
           current ? 'bg-neutral-100 text-neutral-700' : 'text-neutral-100 transition-colors duration-200 hover:bg-neutral-100/15 desktop:font-normal',
         ]}
       >{o.label}</a>

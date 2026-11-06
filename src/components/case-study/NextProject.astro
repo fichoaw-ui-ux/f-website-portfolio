@@ -27,10 +27,10 @@ const href = getRelativeLocaleUrl(lang, `/work/${slug}`)
     <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1">{t.caseStudy.nextProject}</h2>
 
     <article
-      class="group mt-(--space-32) flex flex-col gap-(--space-24) rounded-(--radius-24) border border-neutral-800 p-[23px] [filter:drop-shadow(0_4px_6px_rgba(22,34,51,0.12))_drop-shadow(0_16px_16px_rgba(22,34,51,0.16))] desktop:mt-(--space-40) desktop:flex-row desktop:items-center desktop:gap-(--space-32) desktop:rounded-none desktop:border-0 desktop:p-0 desktop:[filter:none]"
+      class="group mt-(--space-32) flex flex-col gap-(--space-24) rounded-(--radius-container) border border-neutral-800 p-[23px] [filter:drop-shadow(0_4px_6px_rgba(22,34,51,0.12))_drop-shadow(0_16px_16px_rgba(22,34,51,0.16))] desktop:mt-(--space-40) desktop:flex-row desktop:items-center desktop:gap-(--space-32) desktop:border-0 desktop:p-0 desktop:[filter:none]"
       data-figma={`case-study/next/${slug}`}
     >
-      <div class="h-[200px] shrink-0 overflow-hidden rounded-(--radius-24) border-2 border-neutral-600 bg-neutral-200 desktop:h-[360px] desktop:min-w-0 desktop:flex-1 desktop:border-0">
+      <div class="h-[200px] shrink-0 overflow-hidden rounded-(--radius-container) border-2 border-neutral-600 bg-neutral-200 desktop:h-[360px] desktop:min-w-0 desktop:flex-1 desktop:border-0">
         <Image
           src={cover}
           alt={coverAlt}
@@ -45,14 +45,14 @@ const href = getRelativeLocaleUrl(lang, `/work/${slug}`)
         <h3 class="order-1 w-full text-title-md text-neutral-100 desktop:order-2 desktop:mt-(--space-16) desktop:text-title-lg">{title}</h3>
         <ul class="order-2 mt-(--space-12) flex flex-wrap gap-(--space-8) desktop:order-1 desktop:mt-0" aria-label="Tags">
           {tags.map((tag) => (
-            <li class="rounded-(--radius-full) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-neutral-600 desktop:px-(--space-10)">{tag}</li>
+            <li class="rounded-(--radius-pill) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-neutral-600 desktop:px-(--space-10)">{tag}</li>
           ))}
         </ul>
         {/* Desktop summary 18/29 as on the home page (not in tokens). */}
         <p class="order-3 mt-(--space-12) w-full text-body-sm text-neutral-100 desktop:mt-(--space-8) desktop:text-[18px] desktop:leading-[29px]">{summary}</p>
         <a
           href={href}
-          class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-full) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-24) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
+          class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-pill) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-24) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
         >
           {t.common.viewDetails}<span class="sr-only">: {title}</span>
           <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 transition-transform duration-200 group-hover/button:translate-x-1" />

@@ -32,9 +32,9 @@ const t = useTranslations(lang)
 >
   {/* max-w 402 below the desktop breakpoint follows the 402px mobile artboard lock (global.css). */}
   <ContentBand class="flex items-center gap-(--space-16) py-(--space-8) desktop:pt-(--space-16) desktop:pb-(--space-12)">
-    {/* Photo: mobile 64 r16 (image 64×85, +5.5), desktop 56 r6.72 (image 56.07×74.76, +0.14). */}
-    <div class="relative size-16 shrink-0 overflow-hidden rounded-[16px] desktop:size-14 desktop:rounded-[6.72px]">
-      {/* radii: not in tokens — mobile Figma radius/radius-lg 16; desktop 6.72 is the hero's 24 scaled ×0.28 */}
+    {/* Photo: mobile 64 (image 64×85, +5.5), desktop 56 (image 56.07×74.76, +0.14). */}
+    <div class="relative size-16 shrink-0 overflow-hidden rounded-(--radius-container) desktop:size-14">
+      {/* container radius (Ficho; Figma 16 / 6.72) */}
       <Image
         src={portrait}
         alt=""

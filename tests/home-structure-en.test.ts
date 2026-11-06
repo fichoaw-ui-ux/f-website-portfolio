@@ -115,7 +115,7 @@ describe('home page structure', () => {
     it('lists the featured case studies as a plain list linking to each study', () => {
       const section = html.match(/<section[^>]*id="work"[\s\S]*?<\/section>/)?.[0] ?? ''
       const links = [...section.matchAll(/<a[^>]*href="(\/work\/[^"]+)"/g)].map(m => m[1])
-      expect(links).toEqual(['/work/quick-transfer/', '/work/voucher-points-banner/'])
+      expect(links).toEqual(['/work/quick-transfer/', '/work/voucher-points-banner/', '/work/local-transfer-mobile/'])
       // The pill's accessible name says which study it opens.
       expect(section).toContain('<span class="sr-only">: Quick Transfer: Boosting Portal Payments</span>')
       // Ficho: industry/platform tags only, as in the design.
@@ -171,7 +171,7 @@ describe('home page structure', () => {
       expect(panels).toHaveLength(2)
       expect(panels[1]).toMatch(/\sinert/)
       // 2 Transfez + 5 Jack Finance bullets, each drawn as a decorative dot.
-      const dots = section.match(/<li[^>]*>\s*<span[^>]*before:rounded-full[^>]*aria-hidden="true"/g) ?? []
+      const dots = section.match(/<li[^>]*>\s*<span[^>]*before:rounded-\(--radius-pill\)[^>]*aria-hidden="true"/g) ?? []
       expect(dots).toHaveLength(7)
       // **bold** in site.ts arrives as <strong>, never as literal asterisks.
       expect(section).toContain('<strong')
@@ -200,7 +200,7 @@ describe('home page structure', () => {
   describe('explorations', () => {
     it('shows covers in black & white, colour on card hover, with stacked pills', () => {
       const covers = html.match(/<img[^>]+\/_astro\/(exp-0|cover\.)[^>]*>/g) ?? []
-      expect(covers.length).toBe(9) // 7 explorations + 2 case studies
+      expect(covers.length).toBe(10) // 7 explorations + 3 case studies
       covers.forEach(img => {
         expect(img).toContain('grayscale')
         expect(img).toContain('group-hover:grayscale-0')

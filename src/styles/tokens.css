@@ -113,6 +113,15 @@
   --radius-24: 24px;
   --radius-32: 32px;
   --radius-full: 100px;
+
+  /* Semantic radii — what components use. Only these two (plus rounded-none)
+     are allowed in redesigned code; tests/radius.test.ts enforces it.
+     Code leads Figma here (Ficho, 2026-11-06): the design's 6–32px corners
+     felt too round; containers use this one radius (8px since
+     2026-11-06, after trying 0 and 4). Figma gets synced later.
+     Nested box: calc(var(--radius-container) - <gap to the outer edge>). */
+  --radius-container: var(--radius-8);  /* cards, covers, frames, tiles, photos */
+  --radius-pill: var(--radius-full);    /* tags, pill buttons, switches, round icons, dots */
 }
 
 /* ==========================================================================
