@@ -124,7 +124,24 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
                             y8 of 22 (mobile) / y10 of 26 (desktop), as in Figma. */}
                         <span class="relative h-[22px] w-4 shrink-0 before:absolute before:left-[5px] before:top-[8px] before:size-[6px] before:rounded-(--radius-pill) before:bg-neutral-800 desktop:h-[29px] desktop:before:top-[11.5px]" aria-hidden="true"></span>
                         {/* mobile 14/22 = Body/Small (Figma 12/19, raised by Ficho) */}
-                        <span class="min-w-0 text-body-sm text-neutral-100 desktop:max-w-[720px] desktop:text-[18px] desktop:leading-[29px]" set:html={highlight(item)} />
+                        <div class="flex min-w-0 flex-col items-start gap-(--space-8)">
+                          <span class="text-body-sm text-neutral-100 desktop:max-w-[720px] desktop:text-[18px] desktop:leading-[29px]" set:html={highlight(typeof item === 'string' ? item : item.text)} />
+                          {/* Case study link under the bullet, as in the CV (Ficho; not in
+                              Figma): #BBBBC0 Button/Small with the home arrow, which nudges
+                              right on hover like the pills. External links (Notion, the
+                              staging website) open in a new tab, arrow turned to ↗. */}
+                          {typeof item !== 'string' && (
+                            <a
+                              href={item.link.href}
+                              target={item.link.href.startsWith('http') ? '_blank' : undefined}
+                              rel={item.link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                              class="group/cs inline-flex items-center gap-(--space-4) text-button-sm text-neutral-600 transition-colors duration-200 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100"
+                            >
+                              {item.link.label}
+                              <img src="/images/icons/arrow-forward.svg" alt="" width="16" height="16" class:list={['size-4 opacity-70 transition-transform duration-200', item.link.href.startsWith('http') ? '-rotate-45 group-hover/cs:translate-x-[3px] group-hover/cs:-translate-y-[3px]' : 'group-hover/cs:translate-x-1']} />
+                            </a>
+                          )}
+                        </div>
                       </li>
                     ))}
                   </ul>

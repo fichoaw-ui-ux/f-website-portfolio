@@ -99,6 +99,10 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
 - Content: Transfez + Jack Finance only (`site.jobs`); General Responsibilities and
   the intern role moved to `experienceArchive`, not shown (Ficho). Key numbers stay
   semibold via `**x**` (Ficho, not in Figma).
+- Copy follows the CV (Ficho, 2026-11-07): both roles "UI/UX Designer", Transfez
+  "October 2025 - Present", 5 + 5 bullets. A bullet with `link` shows a "Case study"
+  link under it (#BBBBC0 Button/Small + 16px arrow; not in Figma), as in the CV —
+  to the site's own case study pages.
 - Desktop role-badge strokes are 1.33px inset shadows (borders round down to 1px).
 - Accordion, one entry open at a time: the top entry (Transfez) starts open on
   every breakpoint; opening another entry closes the one that was open.
@@ -109,8 +113,8 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   The desktop frame's duplicated dates are a copy error.
 
 ### Skills & Tools — done (`src/components/home/SkillsTools.astro`, `#skills`)
-- Chip lists follow the mobile frame on every breakpoint (Ficho): 9 skills with
-  Information Architecture last, 10 tools with "Claude", no Mixpanel.
+- Chip lists follow the CV on every breakpoint (Ficho, 2026-11-07): 10 skills (with
+  UX Writing (EN/ID)), 12 tools (Claude, Claude Code, Figma MCP, Mixpanel; no Slack).
 - Mobile measured equal to Figma (517). Desktop matches Figma per element; the
   section is 461 instead of 407 because the 9th skill wraps to a 4th row (the
   desktop frame only has 8).

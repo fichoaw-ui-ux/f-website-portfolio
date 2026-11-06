@@ -26,7 +26,7 @@ describe('home page structure', () => {
       expect(h1s).toHaveLength(1)
       expect(html).toMatch(/<h1[^>]*>\s*Ficho Aji Wibowo\s*<\/h1>/)
       expect(html).toContain('@fichoaw')
-      expect(html).toContain('Product Designer with 4+ years of experience')
+      expect(html).toContain('UI/UX Designer with 4+ years in fintech')
       for (const label of ['WhatsApp', 'LinkedIn', 'Email']) {
         expect(html).toContain(`aria-label="${label}"`)
       }
@@ -136,17 +136,16 @@ describe('home page structure', () => {
   })
 
   describe('skills and tools', () => {
-    it('lists the mobile Figma chips under Skills and Tools headings', () => {
+    it('lists the CV chips under Skills and Tools headings', () => {
       const section = html.match(/<section[^>]*id="skills"[\s\S]*?<\/section>/)?.[0] ?? ''
       expect(section).toMatch(/<h2[^>]*>\s*Skills\s*<\/h2>/)
       expect(section).toMatch(/<h2[^>]*>\s*Tools\s*<\/h2>/)
-      // 9 skills + 10 tools, in the mobile frame's order (Ficho's pick).
+      // 10 skills + 12 tools, in the CV's order (Ficho, 2026-11-07).
       const chips = [...section.matchAll(/<li[^>]*data-chip[^>]*>\s*([^<]+?)\s*<\/li>/g)].map(m => m[1])
-      expect(chips).toHaveLength(19)
-      expect(chips.slice(0, 9).at(-1)).toBe('Information Architecture')
-      expect(chips).toContain('Claude')
-      expect(chips).not.toContain('Mixpanel')
-      expect(chips).not.toContain('Claude Code')
+      expect(chips).toHaveLength(22)
+      expect(chips.slice(0, 10).at(-1)).toBe('HTML/CSS')
+      for (const c of ['UX Writing (EN/ID)', 'Claude Code', 'Figma MCP', 'Mixpanel']) expect(chips).toContain(c)
+      expect(chips).not.toContain('Slack')
     })
 
     it('drops the old About section (bio and portrait moved to the hero)', () => {
@@ -160,8 +159,8 @@ describe('home page structure', () => {
       // Regex for the heading: Astro passes literal text through unescaped but
       // escapes {expression} output, so the apostrophe may arrive as an entity.
       expect(html).toMatch(/Where I(&#39;|&rsquo;|&apos;|'|’)ve worked/)
-      for (const text of ['Transfez', 'Jack Finance', 'Associate UI/UX Designer',
-        'October 2025 - Now', 'October 2022 - September 2025']) {
+      for (const text of ['Transfez', 'Jack Finance', 'UI/UX Designer',
+        'October 2025 - Present', 'October 2022 - September 2025']) {
         expect(html).toContain(text)
       }
       // Ficho: follow the design — the intern role and the general
@@ -179,9 +178,9 @@ describe('home page structure', () => {
       const panels = section.match(/<div[^>]*data-accordion-panel[^>]*>/g) ?? []
       expect(panels).toHaveLength(2)
       expect(panels[1]).toMatch(/\sinert/)
-      // 2 Transfez + 5 Jack Finance bullets, each drawn as a decorative dot.
+      // 5 Transfez + 5 Jack Finance bullets (CV), each drawn as a decorative dot.
       const dots = section.match(/<li[^>]*>\s*<span[^>]*before:rounded-\(--radius-pill\)[^>]*aria-hidden="true"/g) ?? []
-      expect(dots).toHaveLength(7)
+      expect(dots).toHaveLength(10)
       // **bold** in site.ts arrives as <strong>, never as literal asterisks.
       expect(section).toContain('<strong')
       expect(section).not.toContain('**')

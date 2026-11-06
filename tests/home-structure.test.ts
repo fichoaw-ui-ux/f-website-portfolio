@@ -26,7 +26,7 @@ describe('home page structure (id)', () => {
       expect(h1s).toHaveLength(1)
       expect(html).toMatch(/<h1[^>]*>\s*Ficho Aji Wibowo\s*<\/h1>/)
       expect(html).toContain('@fichoaw')
-      expect(html).toContain('Product Designer dengan 4+ tahun pengalaman')
+      expect(html).toContain('UI/UX Designer dengan pengalaman 4+ tahun di fintech')
       for (const label of ['WhatsApp', 'LinkedIn', 'Email']) {
         expect(html).toContain(`aria-label="${label}"`)
       }
@@ -94,12 +94,12 @@ describe('home page structure (id)', () => {
   })
 
   describe('skills and tools', () => {
-    it('lists the mobile Figma chips under Skill and Tools headings', () => {
+    it('lists the CV chips under Skill and Tools headings', () => {
       const section = html.match(/<section[^>]*id="skills"[\s\S]*?<\/section>/)?.[0] ?? ''
       expect(section).toMatch(/<h2[^>]*>\s*Skill\s*<\/h2>/)
       expect(section).toMatch(/<h2[^>]*>\s*Tools\s*<\/h2>/)
       const chips = section.match(/<li[^>]*data-chip/g) ?? []
-      expect(chips).toHaveLength(19)
+      expect(chips).toHaveLength(22)
     })
 
     it('drops the old About section', () => {
@@ -111,7 +111,7 @@ describe('home page structure (id)', () => {
   describe('experience', () => {
     it('lists the two jobs from the redesign with role and period', () => {
       expect(html).toContain('Pengalaman Kerja')
-      for (const text of ['Transfez', 'Jack Finance', 'Associate UI/UX Designer',
+      for (const text of ['Transfez', 'Jack Finance', 'UI/UX Designer',
         'Oktober 2025 - Sekarang', 'Oktober 2022 - September 2025']) {
         expect(html).toContain(text)
       }
@@ -126,7 +126,7 @@ describe('home page structure (id)', () => {
       expect(buttons[0]).toContain('aria-expanded="true"')
       expect(buttons[1]).toContain('aria-expanded="false"')
       const dots = section.match(/<li[^>]*>\s*<span[^>]*before:rounded-\(--radius-pill\)[^>]*aria-hidden="true"/g) ?? []
-      expect(dots).toHaveLength(7)
+      expect(dots).toHaveLength(10)
       expect(section).toContain('<strong')
       expect(section).not.toContain('**')
     })
