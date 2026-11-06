@@ -1,12 +1,13 @@
 ---
+import { indentMargin } from './indent'
 /* Quote — the mobile Study Case card (container radius, Ficho; 1px #6C6C71, 23 + 1 padding) with
    the Experience job-title style inside; author as the hero handle (#BBBBC0
    Button/Small). No Figma frame. */
 interface Props { author?: string; indent?: boolean | 1 | 2 }
 const { author, indent = false } = Astro.props
-const indentClass = indent === 2 ? 'desktop:ml-(--space-48)' : indent ? 'desktop:ml-(--space-24)' : ''
+const indentClass = indentMargin(indent)
 ---
-<figure class:list={['mb-(--space-48) rounded-(--radius-container) border border-neutral-800 p-[23px]', indentClass]}>
+<figure class:list={['mb-(--space-24) desktop:mb-(--space-32) rounded-(--radius-container) border border-neutral-800 p-[23px]', indentClass]}>
   <blockquote class="text-title-md text-neutral-100 desktop:text-title-lg [&_p]:m-0">
     <slot />
   </blockquote>

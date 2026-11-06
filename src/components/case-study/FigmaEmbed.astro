@@ -1,34 +1,44 @@
 ---
-/* Figma prototype frame — same frame as ImageFull (home styles). */
+import { indentPadding } from './indent'
+/* Figma prototype frame — same layout as ImageFull: title above, frame, note
+   under it (home styles). */
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
 interface Props { url: string; title?: string; caption?: string; indent?: boolean | 1 | 2 }
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 const { url, title = t.figmaEmbed.defaultTitle, caption, indent = false } = Astro.props
-const indentClass = indent === 2 ? 'desktop:pl-(--space-48)' : indent ? 'desktop:pl-(--space-24)' : ''
-const cleanUrl = url.replace(/[?&]show-proto-sidebar=[^&]*/g, '')
-const sep = cleanUrl.includes('?') ? '&' : '?'
-const protoUrl = `${cleanUrl}${sep}show-proto-sidebar=0`
+const indentClass = indentPadding(indent)
+// Every embed fits its frame (Ficho: like the Quick Transfer one). Links copied
+// from Figma/Notion often carry `scaling=min-zoom`, which renders at 100% and
+// crops the screen; force `scale-down` + fixed content scaling, and hide the
+// prototype sidebar.
+const proto = new URL(url)
+proto.searchParams.set('scaling', 'scale-down')
+proto.searchParams.set('content-scaling', 'fixed')
+proto.searchParams.set('show-proto-sidebar', '0')
+const protoUrl = proto.toString()
 const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(protoUrl)}`
 ---
-<figure class:list={['mb-(--space-48)', indentClass]}>
-  <div class="overflow-hidden rounded-(--radius-container) border border-neutral-800">
-    <div class="flex items-center justify-between gap-(--space-16) border-b border-neutral-800 px-(--space-16) py-(--space-12)">
-      <div class="flex min-w-0 items-center gap-(--space-8)">
-        <span class="shrink-0 text-button-sm text-neutral-600">{t.figmaEmbed.prototypeLabel}</span>
-        <span class="truncate text-body-sm text-neutral-100">{title}</span>
+<figure class:list={['mb-(--space-24) grid gap-y-(--space-12) desktop:mb-(--space-32)', indentClass]}>
+  {/* As ImageFull: title above the frame (Ficho); inside, a bar with the
+      "Prototype" label and the "Open in Figma" CTA. */}
+  <figcaption class="text-title-xmd text-neutral-100" data-figma="case-study/prototype/title">{title.replace(/\.$/, '')}</figcaption>
+  <div>
+    <div class="overflow-hidden rounded-(--radius-container) border border-neutral-800">
+      <div class="flex items-center justify-between gap-(--space-16) border-b border-neutral-800 px-(--space-16) py-(--space-12)" data-figma="case-study/prototype/bar">
+        <span class="text-button-sm text-neutral-600">{t.figmaEmbed.prototypeLabel}</span>
+        <a href={url} target="_blank" rel="noopener" class="shrink-0 whitespace-nowrap text-button-sm text-neutral-600 transition-colors duration-200 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100">{t.figmaEmbed.openInFigma}</a>
       </div>
-      <a href={url} target="_blank" rel="noopener" class="shrink-0 cursor-pointer text-button-sm text-neutral-600 transition-colors duration-200 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100">{t.figmaEmbed.openInFigma}</a>
+      <iframe
+        src={embedUrl}
+        title={title}
+        loading="lazy"
+        allowfullscreen
+        class="block w-full"
+        style="height: 600px; border: 0;"
+      ></iframe>
     </div>
-    <iframe
-      src={embedUrl}
-      title={title}
-      loading="lazy"
-      allowfullscreen
-      class="block w-full"
-      style="height: 600px; border: 0;"
-    ></iframe>
+    {caption && <p class="mt-(--space-12) text-body-sm text-neutral-600">{caption}</p>}
   </div>
-  {caption && <figcaption class="mt-(--space-12) text-center text-body-sm text-neutral-600">{caption}</figcaption>}
 </figure>

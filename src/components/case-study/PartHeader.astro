@@ -1,12 +1,14 @@
 ---
 /* Part header — styled as a home section opening (no Figma frame): 1px
    #6C6C71 rule, section padding 48 / 88 above, heading in the home section
-   heading style (24 → 32, #BBBBC0), 32 / 40 to the content. */
+   heading style (24 → 32, #BBBBC0), 32 / 40 to the content.
+   id `part-<n>` is what the case study tab bar links to; it lands under the
+   sticky header + tab bar (--sticky-offset), as home sections do. */
 interface Props { number: string; title: string }
 const { number, title } = Astro.props
 const n = String(parseInt(number, 10))
 ---
-<div class="mt-(--space-48) mb-(--space-32) border-t border-neutral-800 pt-(--space-48) desktop:mt-(--space-88) desktop:mb-(--space-40) desktop:pt-(--space-88)" data-part-header data-part-num={`${n}.`} data-part-title={title} data-figma="case-study/part">
+<div id={`part-${n}`} class="scroll-mt-(--sticky-offset) mt-(--space-48) mb-(--space-32) border-t border-neutral-800 pt-(--space-48) desktop:mt-(--space-88) desktop:mb-(--space-40) desktop:pt-(--space-88)" data-part-header data-figma="case-study/part">
   <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1">
     <span class="mr-(--space-8) text-neutral-800">{n}.</span>{title}
   </h2>

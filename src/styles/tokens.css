@@ -23,6 +23,10 @@
   --color-text-disabled: #bbbbc0;       /* color/text/color-text-disabled */
   --color-border-strong: #252525;       /* color/border/color-border-strong */
   --color-transfez-pink: #da649f;       /* Primary/Transfez Pink */
+  /* Before / After labels on case study images — not in Figma (Ficho, 2026-11-06).
+     Muted so they read on #252525: before 5.5:1, after 8.8:1. */
+  --color-state-before: #f87171;
+  --color-state-after: #4ade80;
 
   /* Text styles — Figma text styles (size / line-height / weight).
      Line heights are the px Figma renders, not the style's percentage: Figma

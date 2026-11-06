@@ -58,10 +58,12 @@ Tim Growth datang dengan satu kejanggalan yang tidak bisa diabaikan:
 
 > **Dari 6.297 user yang masuk ke halaman Send Money, hanya 1.979 (31.43%) yang membuka halaman pemilihan voucher.**
 
+*Sumber: Mixpanel, tim Growth.*
+
 Artinya: **hampir 7 dari 10 user melewatkan voucher yang tersedia** — bukan karena tidak ada voucher yang tersedia, tapi karena tidak pernah terpikir untuk tap.
 </Section>
 
-<ImageFull indent mobile src="/images/cs-voucher-points-banner/context-mixpanel.png" alt="Mixpanel funnel — 6.297 user masuk Send Money, hanya 31.43% buka halaman voucher" caption="Source: Mixpanel from Growth Team." />
+<ImageFull indent mobile src="/images/cs-voucher-points-banner/context-mixpanel.png" alt="Layar Send Money sebelum didesain ulang, dengan entry voucher 'Check your available voucher here'" caption="Send Money — Posisi entry voucher sebelum didesain ulang" />
 
 <Section title=" " indent>
 Setelah itu, saya masuk dari tahap analisis — bersama lead, kami menelusuri root cause-nya. Hipotesis awal dari tim: komponen voucher di *default state* secara visual terlihat seperti sudah "applied". User melihatnya, merasa diskon sudah jalan, dan lanjut tanpa eksplorasi.
@@ -75,7 +77,7 @@ Tapi ketika kami menggali lebih dalam, masalahnya ternyata tidak berhenti di vou
 Untuk membantu Anda memahami *context problem* di atas, berikut adalah gambaran pengalaman dan UI *Send Money* saat ini sebelum dilakukan optimasi.
 </Section>
 
-<FigmaEmbed indent url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/template_file?page-id=961%3A9&node-id=6863-1835&viewport=1018%2C212%2C0.62&t=AaHU0eUqWPfkKv7V-1&scaling=contain&content-scaling=fixed&starting-point-node-id=6863%3A1442" title="Current Experience — Send Money" caption="Prototype halaman Send Money versi lama — coba jalankan untuk merasakan friction-nya." />
+<FigmaEmbed indent url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/template_file?page-id=961%3A9&node-id=6863-1835&viewport=1018%2C212%2C0.62&t=AaHU0eUqWPfkKv7V-1&scaling=contain&content-scaling=fixed&starting-point-node-id=6863%3A1442" title="Current experience — Send Money" caption="Prototype halaman Send Money versi lama — coba jalankan untuk merasakan friction-nya." />
 
 <Section title="C. The Friction Points">
 Setelah saya dan lead menelusuri halaman Send Money lebih dalam, satu hal langsung terasa janggal: **masalahnya nggak datang dari satu tempat**. Ada tiga komponen berbeda yang masing-masing punya perannya — dan ketiganya diam-diam saling memperparah.
@@ -87,8 +89,8 @@ Setelah saya dan lead menelusuri halaman Send Money lebih dalam, satu hal langsu
 </Section>
 
 <ImageGrid cols={2} indent>
-  <ImageFull mobile src="/images/cs-voucher-points-banner/friction-1-default.png" alt="Voucher — Default State" caption="Default State" />
-  <ImageFull mobile src="/images/cs-voucher-points-banner/friction-1-active.png" alt="Voucher — Active State" caption="Active State" />
+  <ImageFull mobile src="/images/cs-voucher-points-banner/friction-1-default.png" alt="Voucher — Default State" caption="Default state" />
+  <ImageFull mobile src="/images/cs-voucher-points-banner/friction-1-active.png" alt="Voucher — Active State" caption="Active state" />
 </ImageGrid>
 
 <Section title=" " indent>
@@ -136,8 +138,8 @@ Copy lama cuma bilang *"Check your available voucher here"* — nggak ada value 
 </Section>
 
 <ImageGrid cols={2} indent={2}>
-  <ImageFull mobile src="/images/cs-voucher-points-banner/decision-a1-quantity-first.png" alt="Alt 1 — Quantity First" caption="Alt 1 — Quantity First" />
-  <ImageFull mobile src="/images/cs-voucher-points-banner/decision-a1-value-first.png" alt="Alt 2 — Value First" caption="Alt 2 — Value First" />
+  <ImageFull mobile src="/images/cs-voucher-points-banner/decision-a1-quantity-first.png" alt="Alt 1 — Quantity First" caption="Alt 1 — Quantity first" />
+  <ImageFull mobile src="/images/cs-voucher-points-banner/decision-a1-value-first.png" alt="Alt 2 — Value First" caption="Alt 2 — Value first" />
 </ImageGrid>
 
 <Section title=" " indent={2}>
@@ -215,20 +217,14 @@ Voucher kini hadir sebagai peluang yang jelas belum diambil — bukan benefit ya
 Points banner tetap hadir, tapi bukan lagi kompetitor di reward slot yang sama — perannya turun menjadi informasi pendukung yang kalem di bagian bawah halaman.
 </Section>
 
-<Section title="Before">
-</Section>
-
 <ImageGrid cols={2}>
-  <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-before.png" alt="Before — Send Money default state" caption="Before — Default" />
-  <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-before.png" alt="Before — Send Money applied state" caption="Before — Applied" />
+  <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-before.png" alt="Before — Send Money default state" caption="Before — Default state" />
+  <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-after.png" alt="After — Send Money default state" caption="After — Default state" />
 </ImageGrid>
 
-<Section title="After">
-</Section>
-
 <ImageGrid cols={2}>
-  <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-after.png" alt="After — Send Money default state" caption="After — Default" />
-  <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-after.png" alt="After — Send Money applied state" caption="After — Applied" />
+  <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-before.png" alt="Before — Send Money applied state" caption="Before — Applied state" />
+  <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-after.png" alt="After — Send Money applied state" caption="After — Applied state" />
 </ImageGrid>
 
 <Section title=" ">

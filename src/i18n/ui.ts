@@ -32,7 +32,7 @@ const dictionary = {
       heading: 'Studi Kasus',
       noProjects: 'Belum ada proyek.',
     },
-    caseStudy: { titleSuffix: ' — Studi Kasus', nextProject: 'Proyek selanjutnya' },
+    caseStudy: { titleSuffix: ' — Studi Kasus', nextProject: 'Proyek selanjutnya', partsLabel: 'Bagian studi kasus' },
     exploration: {
       heading: 'Eksplorasi',
       backToExplorations: '← Kembali ke eksplorasi',
@@ -74,7 +74,7 @@ const dictionary = {
       heading: 'My selected works',
       noProjects: 'No projects yet.',
     },
-    caseStudy: { titleSuffix: ' — Case Study', nextProject: 'Next project' },
+    caseStudy: { titleSuffix: ' — Case Study', nextProject: 'Next project', partsLabel: 'Case study sections' },
     exploration: {
       heading: 'Explorations',
       backToExplorations: '← Back to explorations',

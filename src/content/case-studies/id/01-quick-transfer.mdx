@@ -64,7 +64,7 @@ Ketika saya dan Fira menggali lebih dalam, masalahnya bukan satu titik. Ada tiga
 Untuk membantu Anda memahami *context problem* di atas, berikut adalah gambaran pengalaman dan UI *Local Transfer* saat ini sebelum dilakukan optimasi.
 </Section>
 
-<FigmaEmbed indent url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-44005&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1875%3A43955&page-id=411%3A2&show-proto-sidebar=1" title="Current Experience — Local Transfer" caption="Prototype flow Local Transfer versi lama — coba jalankan untuk merasakan friction-nya." />
+<FigmaEmbed indent url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-44005&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1875%3A43955&page-id=411%3A2&show-proto-sidebar=1" title="Current experience — Local Transfer" caption="Prototype flow Local Transfer versi lama — coba jalankan untuk merasakan friction-nya." />
 
 <Section title="C. The Friction Points">
 Setelah menelusuri flow batch yang selama ini terpaksa dipakai user untuk transaksi tunggal, hambatannya tidak datang dari satu titik. **Ada tiga friction yang tersebar di tiga tahap berbeda dalam satu flow** — dan ketiganya harus dilewati berurutan, bahkan untuk transfer sesimpel satu penerima.
@@ -123,7 +123,7 @@ Flow Single Transfer yang kami uji dirancang langsung untuk menghilangkan ketiga
 Saya mulai sesi dengan walkthrough end-to-end: saya jalanin user melalui proses Single Transfer dari awal sampai submit, lalu tanya pendapat mereka soal alur keseluruhan. Sengaja ditaruh di awal supaya user dapat konteks utuh sebelum diminta pendapat soal entry point.
 </Section>
 
-<ImageFull indent={2} src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Walkthrough full journey Single Transfer" caption="Hasil: semua user bilang nggak merasakan kesulitan — flow ter-validasi sebagai mudah dilalui." />
+<ImageFull indent={2} src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Walkthrough full journey Single Transfer" caption="Hasil — Semua user bilang tidak merasakan kesulitan; flow tervalidasi mudah dilalui." />
 
 <Section title=" " indent={2}>
 **Hasil → Semua user** nggak merasakan kesulitan. Tidak ada yang tersangkut di nama batch, tidak ada yang bingung soal tabel validasi — ketiga friction yang selama ini menghambat tidak terasa di flow ini. Flow ter-validasi sebagai mudah dilalui.
@@ -175,7 +175,7 @@ Dua perubahan ini yang bikin Quick Transfer **bener-bener** fleksibel — bukan 
 </Section>
 
 <ImageGrid cols={2} indent={2}>
-  <ImageFull src="/images/cs-quick-transfer/entry-point-final-before.png" alt="Before — Alt 2 (Toggle dua pilihan)" caption="Before — Alt 2 (Toggle)" />
+  <ImageFull src="/images/cs-quick-transfer/entry-point-final-before.png" alt="Before — Alt 2 (Toggle dua pilihan)" caption="Before — Alt 2 (toggle)" />
   <ImageFull src="/images/cs-quick-transfer/entry-point-final-after.png" alt="After — Alt 1 dengan grouping deskriptif" caption="After — Alt 1 dengan grouping" />
 </ImageGrid>
 
@@ -184,8 +184,8 @@ Dua perubahan ini yang bikin Quick Transfer **bener-bener** fleksibel — bukan 
 </Section>
 
 <ImageGrid cols={2} indent={2}>
-  <ImageFull src="/images/cs-quick-transfer/recipient-details-before.png" alt="Before — Recipient Details tanpa multi-select" caption="Before — tanpa multi-select" />
-  <ImageFull src="/images/cs-quick-transfer/recipient-details-after.png" alt="After — Recipient Details dengan multi-select" caption="After — dengan multi-select" />
+  <ImageFull src="/images/cs-quick-transfer/recipient-details-before.png" alt="Before — Recipient Details tanpa multi-select" caption="Before — Tanpa multi-select" />
+  <ImageFull src="/images/cs-quick-transfer/recipient-details-after.png" alt="After — Recipient Details dengan multi-select" caption="After — Dengan multi-select" />
 </ImageGrid>
 
 <Section title="C.3 CTA Banner di Transfer Details" indent>
@@ -193,8 +193,8 @@ Dua perubahan ini yang bikin Quick Transfer **bener-bener** fleksibel — bukan 
 </Section>
 
 <ImageGrid cols={2} indent={2}>
-  <ImageFull src="/images/cs-quick-transfer/transfer-details-before.png" alt="Before — Transfer Details tanpa CTA banner" caption="Before — tanpa banner" />
-  <ImageFull src="/images/cs-quick-transfer/transfer-details-after.png" alt="After — Transfer Details dengan CTA banner" caption="After — dengan CTA banner" />
+  <ImageFull src="/images/cs-quick-transfer/transfer-details-before.png" alt="Before — Transfer Details tanpa CTA banner" caption="Before — Tanpa banner" />
+  <ImageFull src="/images/cs-quick-transfer/transfer-details-after.png" alt="After — Transfer Details dengan CTA banner" caption="After — Dengan CTA banner" />
 </ImageGrid>
 
 <Section title="Recap: Tiga Keputusan Desain Final">
@@ -215,7 +215,7 @@ Ketiganya bekerja bersama untuk membuat Quick Transfer cepat bagi mayoritas, tan
 **How do you want to send money?** Jadi sekarang kalau mereka mau melakukan transaksi, jawabannya sekarang ada: **Quick Transfer**. Ketik nama bank, pilih dari dropdown, masukin nomor rekening → step 2 isi nominal + transfer note → submit. Selesai. Dua step, form pendek — tanpa satu pun dari tiga friction yang selama ini menghambat mereka.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/solution-1-quick-transfer.gif" alt="Flow Quick Transfer end-to-end" caption="Quick Transfer — dua step, form pendek." />
+<ImageFull src="/images/cs-quick-transfer/solution-1-quick-transfer.gif" alt="Flow Quick Transfer end-to-end" caption="Quick Transfer — Dua step, form pendek." />
 
 <Section title="Dua Pintu ke Batch">
 Friction untuk 72% sudah terjawab. Yang belum — itu datang dari Bang Edo. Quick Transfer dirancang bukan hanya untuk cepat, tapi juga untuk tidak memutus jalan bagi yang tiba-tiba butuh lebih.
@@ -223,9 +223,9 @@ Friction untuk 72% sudah terjawab. Yang belum — itu datang dari Bang Edo. Quic
 Untuk menjawab celah yang Bang Edo temukan, saya buka dua pintu masuk ke batch dari dalam flow Quick Transfer.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/solution-2-add-recipient.gif" alt="Multi-select di Recipient Details" caption="Di Recipient Details — centang beberapa nama sekaligus, data terbawa." />
+<ImageFull src="/images/cs-quick-transfer/solution-2-add-recipient.gif" alt="Multi-select di Recipient Details" caption="Di Recipient Details — Centang beberapa nama sekaligus, data terbawa." />
 
-<ImageFull src="/images/cs-quick-transfer/solution-3-transfer-details.gif" alt="CTA banner di Transfer Details" caption="Di Transfer Details — klik banner, data yang sudah diisi terbawa ke Empty Table." />
+<ImageFull src="/images/cs-quick-transfer/solution-3-transfer-details.gif" alt="CTA banner di Transfer Details" caption="Di Transfer Details — Klik banner, data yang sudah diisi terbawa ke Empty Table." />
 
 <Section title="Full Prototype">
 Dan bagi yang dari awal tahu perlu kirim ke puluhan orang, Upload Excel dan Empty Table tetap ada — tidak berubah, tidak terganggu.
@@ -233,7 +233,7 @@ Dan bagi yang dari awal tahu perlu kirim ke puluhan orang, Upload Excel dan Empt
 Kalau mau rasain full experience-nya, ada prototype lengkapnya di bawah.
 </Section>
 
-<FigmaEmbed url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-46677&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1875%3A46627&page-id=411%3A2&show-proto-sidebar=1" title="Full Prototype — Quick Transfer" caption="Prototype lengkap Quick Transfer end-to-end." />
+<FigmaEmbed url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-46677&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1875%3A46627&page-id=411%3A2&show-proto-sidebar=1" title="Full prototype — Quick Transfer" caption="Prototype lengkap Quick Transfer end-to-end." />
 
 <PartHeader number="05" title="Impact" />
 

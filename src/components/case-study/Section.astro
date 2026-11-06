@@ -1,35 +1,60 @@
 ---
 /* Case study text section — home styles (no Figma frame):
-   - title: the Experience job title (18/29 → 24/38, white), no uppercase;
+   - title: sized by nesting level (Ficho: sub-points read smaller), from the
+     home title scale, mobile → desktop:
+       level 1  "A.", "Kickoff"        Title/Medium 18/29 → Title/Large 24/38
+       level 2  "A.1"                  Title/X-Medium 16/26 → Title/X-Large 20/32
+       level 3  "A.1.1" / deeper       Title/X-Medium 16/26 → Title/Medium 18/29
+     The level is the prefix depth ("A.1" = 2); an un-numbered title takes it
+     from its indent (none 1, indent 2, indent={2} 3). `level` overrides both;
    - body: the Experience bullet text (14/22 mobile, 18/29 desktop, white),
      measure 720 on desktop as there;
    - bullets: the Experience 6px #6C6C71 dot in a 16px box, 4px gap;
    - quotes: the mobile Study Case card (container radius, Ficho; 1px #6C6C71, 23 + 1 padding)
      with the title style inside;
    - links: as the Contact e-mail (underline, #BBBBC0 on hover).
-   Indent only from the desktop breakpoint (mobile has 354px to work with):
-   24 or 48 per level, like Notion's nested blocks in the 720 reading column. */
-interface Props { title?: string; indent?: boolean | 1 | 2 }
-const { title, indent = false } = Astro.props
-const indentClass = indent === 2 ? 'desktop:pl-(--space-48)' : indent ? 'desktop:pl-(--space-24)' : ''
-const gridColsClass = indent ? 'grid-cols-[40px_1fr]' : 'grid-cols-[24px_1fr]'
+   Indent: the shared rule in ./indent.ts (desktop 0 / 32 / 80), so a child
+   section's heading and every asset start where the parent's text starts.
+   The "A." / "A.1" prefix hangs in its own column on desktop (24 at level 1,
+   40 when indented, + 8 gap) and sits inline on mobile, where nothing is
+   indented and all text starts at 0. */
+import { indentPadding } from './indent'
+
+interface Props { title?: string; indent?: boolean | 1 | 2; level?: 1 | 2 | 3 }
+const { title, indent = false, level: levelProp } = Astro.props
+const indentClass = indentPadding(indent)
+// Prefix column 24 / 40 + gap 8 (not in tokens: the sums in ./indent.ts).
+const prefixWidth = indent ? 'desktop:w-[40px]' : 'desktop:w-(--space-24)'
+const bodyOffset = indent ? 'desktop:ml-(--space-48)' : 'desktop:ml-(--space-32)'
 const trimmed = title?.trim() ?? ''
 const hasTitle = trimmed.length > 0
 const prefixMatch = trimmed.match(/^([A-Z][.\d]*)\s+(.+)$/)
 const prefix = prefixMatch?.[1] ?? ''
 const titleBody = prefixMatch?.[2] ?? trimmed
-const sectionClass = 'mb-(--space-24) [&:has(+section)]:mb-(--space-64) [&:has(+section[data-indent])]:mb-(--space-32)'
-const titleClass = 'mb-(--space-12) text-title-md text-neutral-100 desktop:mb-(--space-16) desktop:text-title-lg'
+const prefixDepth = prefix ? prefix.split('.').filter(Boolean).length : 0
+const level = Math.min(levelProp ?? (prefixDepth || (indent === 2 ? 3 : indent ? 2 : 1)), 3)
+const Heading = (['h3', 'h4', 'h5'] as const)[level - 1]
+const titleSize = [
+  'text-title-md desktop:text-title-lg',
+  'text-title-xmd desktop:text-title-xl',
+  'text-title-xmd desktop:text-title-md',
+][level - 1]
+// Gaps = home scale (CaseStudyLayout): block 24/32, sub-section 32/40; an indented
+// continuation is a block of the same sub-section.
+const sectionClass = 'mb-(--space-24) desktop:mb-(--space-32) [&:has(+section)]:mb-(--space-32) desktop:[&:has(+section)]:mb-(--space-40) [&:has(+section[data-indent])]:mb-(--space-24) desktop:[&:has(+section[data-indent])]:mb-(--space-32)'
+const titleClass = `mb-(--space-12) text-neutral-100 desktop:mb-(--space-16) ${titleSize}`
 ---
 {prefix ? (
-  <section class:list={[sectionClass, 'grid gap-x-(--space-8)', gridColsClass, indentClass]} data-indent={indent ? '' : undefined}>
-    <h3 class:list={[titleClass, 'col-start-1 text-neutral-600']}>{prefix}</h3>
-    <h3 class:list={[titleClass, 'col-start-2']}>{titleBody}</h3>
-    <div class="cs-prose col-start-2"><slot /></div>
+  <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined}>
+    <Heading class:list={[titleClass, 'flex gap-x-(--space-8)']}>
+      <span class:list={['shrink-0 text-neutral-600', prefixWidth]}>{prefix}</span>
+      <span class="min-w-0">{titleBody}</span>
+    </Heading>
+    <div class:list={['cs-prose', bodyOffset]}><slot /></div>
   </section>
 ) : (
   <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined}>
-    {hasTitle && <h3 class={titleClass}>{trimmed}</h3>}
+    {hasTitle && <Heading class={titleClass}>{trimmed}</Heading>}
     <div class="cs-prose"><slot /></div>
   </section>
 )}
@@ -83,7 +108,7 @@ const titleClass = 'mb-(--space-12) text-title-md text-neutral-100 desktop:mb-(-
     color: var(--color-neutral-600);
   }
   .cs-prose blockquote {
-    margin: var(--space-24) 0;
+    margin: var(--space-24) 0; /* block gap; 32 on desktop */
     padding: 23px; /* 24 with the 1px stroke inside, as the Study Case card */
     border: 1px solid var(--color-neutral-800);
     border-radius: var(--radius-container);
@@ -96,7 +121,7 @@ const titleClass = 'mb-(--space-12) text-title-md text-neutral-100 desktop:mb-(-
   /* Tables: rows ruled like the Contact list / Project Snapshot. */
   .cs-prose table {
     width: 100%;
-    margin: var(--space-24) 0;
+    margin: var(--space-24) 0; /* block gap; 32 on desktop */
     border-collapse: collapse;
     border-top: 1px solid var(--color-neutral-800);
   }
@@ -114,9 +139,10 @@ const titleClass = 'mb-(--space-12) text-title-md text-neutral-100 desktop:mb-(-
       font-size: 18px; /* not in tokens: Experience desktop 18/29 */
       line-height: 29px;
     }
-    .cs-prose p { margin-bottom: var(--space-20); }
     .cs-prose ul,
-    .cs-prose ol { margin: var(--space-20) 0; }
+    .cs-prose ol { margin: var(--space-16) 0; }
+    .cs-prose blockquote,
+    .cs-prose table { margin: var(--space-32) 0; }
     .cs-prose ul > li::before { top: 11.5px; }
     .cs-prose blockquote {
       font-size: var(--text-title-lg);

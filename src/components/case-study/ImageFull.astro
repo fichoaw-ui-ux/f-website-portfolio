@@ -1,46 +1,79 @@
 ---
-/* Image frame — home styles (no Figma frame): container-radius frame (Ficho) with a 1px #6C6C71
-   stroke and divider, labels #BBBBC0 Button/Small, title white Body/Small. */
+import { indentPadding } from './indent'
+/* Image frame — home styles (no Figma frame).
+   Title outside the frame (Ficho): the caption's first sentence sits above the
+   frame as a title (Title/X-Medium 16/26, white); the rest of the caption sits
+   under the frame (#BBBBC0 Body/Small). Inside the frame — container radius,
+   1px #6C6C71 — a bar says what the asset is ("Image" / "Placeholder", left)
+   and holds the "View full" CTA (right), both #BBBBC0 Button/Small, above the
+   asset, which sits 16px in from the frame's edge.
+   Before / After (Ficho): "Before — …" / "After — …" keeps the whole caption
+   as the title, the state word in --color-state-before / --color-state-after.
+   The figure is a two-row grid (title | frame + note) so ImageGrid can line
+   frames up across a row with subgrid even when one title wraps. */
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
-interface Props { src: string; alt: string; caption?: string; label?: string; indent?: boolean | 1 | 2; mobile?: boolean }
+interface Props { src: string; alt: string; caption?: string; indent?: boolean | 1 | 2; mobile?: boolean }
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
-const { src, alt, caption, label, indent = false, mobile = false } = Astro.props
-const indentClass = indent === 2 ? 'desktop:pl-(--space-48)' : indent ? 'desktop:pl-(--space-24)' : ''
+const { src, alt, caption, indent = false, mobile = false } = Astro.props
+const indentClass = indentPadding(indent)
 const isPlaceholder = src.includes('placeholder')
-const resolvedLabel = isPlaceholder ? t.imageFull.placeholderLabel : (label ?? t.imageFull.imageLabel)
 
-let title = caption
-let description = ''
-if (caption) {
+// "Before — Default state" → state "before".
+const stateMatch = caption?.match(/^(Before|After)\s*[—–-]\s*(.+)$/s)
+const state = stateMatch ? (stateMatch[1].toLowerCase() as 'before' | 'after') : null
+
+// Otherwise the first sentence is the title and the rest a note under the frame.
+let title = caption ?? ''
+let note = ''
+if (caption && !state) {
   const match = caption.match(/^([^.!?]+[.!?])\s+(.+)$/s)
   if (match) {
     title = match[1]
-    description = match[2]
+    note = match[2]
   }
 }
+// Titles carry no trailing period (one caption form across case studies:
+// "Label — Phrase"); notes under the frame keep theirs.
+title = title.replace(/\.$/, '')
+const typeLabel = isPlaceholder ? t.imageFull.placeholderLabel : t.imageFull.imageLabel
 ---
-<figure class:list={['mb-(--space-48)', indentClass]}>
-  <div class="overflow-hidden rounded-(--radius-container) border border-neutral-800">
-    <div class="flex items-center justify-between gap-(--space-16) border-b border-neutral-800 px-(--space-16) py-(--space-12)">
-      <div class="flex min-w-0 items-center gap-(--space-8)">
-        <span class="shrink-0 text-button-sm text-neutral-600">{resolvedLabel}</span>
-        {title && <span class="truncate text-body-sm text-neutral-100">{title}</span>}
+<figure class:list={['mb-(--space-24) grid gap-y-(--space-12) desktop:mb-(--space-32)', indentClass]} data-state={state ?? undefined}>
+  {title && (
+    <figcaption class="text-title-xmd text-neutral-100" data-figma="case-study/image/title">
+        {state ? (
+          <>
+            <span class:list={[state === 'before' ? 'text-state-before' : 'text-state-after']}>{stateMatch![1]}</span>
+            {' — '}{stateMatch![2].replace(/\.$/, '')}
+          </>
+        ) : title}
+    </figcaption>
+  )}
+  <div>
+    <div class="overflow-hidden rounded-(--radius-container) border border-neutral-800">
+      <div class="flex items-center justify-between gap-(--space-16) border-b border-neutral-800 px-(--space-16) py-(--space-12)" data-figma="case-study/image/bar">
+        <span class="text-button-sm text-neutral-600">{typeLabel}</span>
+        {!isPlaceholder && (
+          <button
+            type="button"
+            data-lightbox-trigger
+            data-lightbox-src={src}
+            data-lightbox-alt={alt}
+            class="shrink-0 cursor-pointer whitespace-nowrap text-button-sm text-neutral-600 transition-colors duration-200 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100"
+          >{t.imageFull.viewFull}</button>
+        )}
       </div>
-      {!isPlaceholder && <button type="button" data-lightbox-trigger data-lightbox-src={src} data-lightbox-alt={alt} class="shrink-0 cursor-pointer text-button-sm text-neutral-600 transition-colors duration-200 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100">{t.imageFull.viewFull}</button>}
+      {mobile ? (
+        <div class="flex justify-center p-(--space-16)">
+          <img src={src} alt={alt} class="block h-auto w-full max-w-[300px]" loading="lazy" />
+        </div>
+      ) : (
+        <div class="p-(--space-16)">
+          <img src={src} alt={alt} class="block h-auto w-full" loading="lazy" />
+        </div>
+      )}
     </div>
-    {mobile ? (
-      <div class="flex justify-center py-(--space-24)">
-        <img src={src} alt={alt} class="block h-auto w-full max-w-[300px]" loading="lazy" />
-      </div>
-    ) : (
-      <img src={src} alt={alt} class="block h-auto w-full" loading="lazy" />
-    )}
-    {description && (
-      <div class="border-t border-neutral-800 px-(--space-16) py-(--space-12)">
-        <span class="text-body-sm text-neutral-100">{description}</span>
-      </div>
-    )}
+    {note && <p class="mt-(--space-12) text-body-sm text-neutral-600">{note}</p>}
   </div>
 </figure>

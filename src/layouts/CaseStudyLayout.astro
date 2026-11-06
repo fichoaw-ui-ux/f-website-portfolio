@@ -7,6 +7,10 @@
    - column: ContentBand (1040 desktop, 24px gutters);
    - title block: tags as the Study Case tag pills, title in the Contact
      heading style (32 → 56) but white, summary in the Contact body style;
+   - gaps: the home scale only — part 48 / 88 (section padding), part
+     heading → content 32 / 40, sub-section 32 / 40 (Study Case rows), block
+     (paragraph group, figure, quote, metrics) 24 / 32 (Experience jobs),
+     title → text 12 / 16, paragraphs 16, list items 12, caption 12;
    - cover: Study Case cover, container radius (Ficho), B&W → colour on hover. */
 import BaseLayout from './BaseLayout.astro'
 import ContentBand from '../components/layout/ContentBand.astro'
@@ -15,7 +19,7 @@ import CaseStudyHeader from '../components/case-study/CaseStudyHeader.astro'
 import NextProject from '../components/case-study/NextProject.astro'
 import ProjectSnapshot from '../components/case-study/ProjectSnapshot.astro'
 import Lightbox from '../components/case-study/Lightbox.astro'
-import SectionIndicator from '../components/case-study/SectionIndicator.astro'
+import TabBar from '../components/home/TabBar.astro'
 import { resolveLocale, useTranslations } from '../i18n/ui'
 import type { CollectionEntry } from 'astro:content'
 import { Image, getImage } from 'astro:assets'
@@ -37,14 +41,24 @@ const tags = d.tags.filter((tag) => !HIDDEN_TAGS.has(tag))
 // Link previews want a modest JPEG at the classic 1200px width, not the
 // 7680px source PNG.
 const ogImage = await getImage({ src: d.cover, width: 1200, format: 'jpg' })
+
+// Tab bar (Ficho: same concept as home): one tab per <PartHeader> in the MDX,
+// linking to its `part-<n>` id.
+const parts = [...(entry.body ?? '').matchAll(/<PartHeader\s+number="(\d+)"\s+title="([^"]+)"/g)]
+  .map(([, num, title]) => {
+    const n = String(parseInt(num, 10))
+    return { id: `part-${n}`, num: `${n}.`, label: title }
+  })
 ---
 <BaseLayout title={`${d.title}${t.caseStudy.titleSuffix}`} description={d.summary} ogImage={ogImage.src} redesign showHeader={false}>
   <CaseStudyHeader />
-  <article class="pt-(--space-24) pb-(--space-48) desktop:pt-(--space-64) desktop:pb-(--space-88)" data-figma="case-study">
+  <article data-figma="case-study">
     {/* Reading layout like Notion (Ficho): everything sits in one centred
         720 column (the home Experience measure, not in tokens), the cover
-        included (Ficho). */}
-    <ContentBand>
+        included (Ficho). Like the home page: intro (hero spacing 24 / 64 top,
+        48 / 88 bottom), the sticky tab bar, then the parts with section
+        padding 48 / 88. */}
+    <ContentBand class="pt-(--space-24) pb-(--space-48) desktop:pt-(--space-64) desktop:pb-(--space-88)">
       <Reveal class="mx-auto max-w-[720px]">
         <header class="flex flex-col items-start" data-figma="case-study/title">
           <ul class="flex flex-wrap gap-(--space-8)" aria-label="Tags">
@@ -71,6 +85,11 @@ const ogImage = await getImage({ src: d.cover, width: 1200, format: 'jpg' })
         </div>
       </Reveal>
 
+    </ContentBand>
+
+    {parts.length > 0 && <TabBar items={parts} label={t.caseStudy.partsLabel} />}
+
+    <ContentBand class="py-(--space-48) desktop:py-(--space-88)">
       <div class="mx-auto max-w-[720px]" data-figma="case-study/body">
         {d.snapshot && d.snapshot.length > 0 && <ProjectSnapshot items={d.snapshot} />}
 
@@ -79,6 +98,5 @@ const ogImage = await getImage({ src: d.cover, width: 1200, format: 'jpg' })
     </ContentBand>
   </article>
   <NextProject slug={next.data.slug} title={next.data.title} summary={next.data.summary} tags={next.data.tags.filter((tag) => !HIDDEN_TAGS.has(tag))} cover={next.data.thumbnail} coverAlt={next.data.thumbnailAlt} />
-  <SectionIndicator />
   <Lightbox />
 </BaseLayout>

@@ -10,22 +10,33 @@
    keep each path's alpha, including the 0.2-opacity duotone fill.
 
    The active underline is an inset box-shadow, not a border: Figma's 2px
-   stroke sits inside the tab and does not move its content. */
+   stroke sits inside the tab and does not move its content.
+
+   Also the case study tab bar (Ficho: same concept as the home page): pass
+   `items` (one per part, a `num` instead of an icon) and `label`. There the
+   header is always shown, so the script only marks the bar stuck. Desktop tabs
+   are at least 66.4 tall (the height the 26.4px Exploration icon gives the home
+   bar), so a bar without icons is the same 68.4 and --sticky-offset holds. */
 import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+interface Item { id: string; label: string; icon?: string; large?: boolean; num?: string }
+interface Props { items?: Item[]; label?: string }
 
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 
 // Targets are the current section ids; redesigned sections keep them.
-const tabs = [
+const homeTabs: Item[] = [
   { id: 'experience', label: t.tabs.experience, icon: '/images/icons/tab-experience.svg', large: false },
   { id: 'skills', label: t.tabs.skills, icon: '/images/icons/tab-skills.svg', large: false },
   { id: 'work', label: t.tabs.studyCase, icon: '/images/icons/tab-study-case.svg', large: false },
   { id: 'explorations', label: t.tabs.exploration, icon: '/images/icons/tab-exploration.svg', large: true },
 ]
+const { items = homeTabs, label = t.tabs.label } = Astro.props
+const tabs = items
 ---
 <nav
-  aria-label={t.tabs.label}
+  aria-label={label}
   class="sticky top-[80px] z-40 transition-colors duration-300 data-stuck:bg-neutral-900/88 data-stuck:backdrop-blur-lg desktop:top-[84px] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-neutral-800 desktop:border-y desktop:border-neutral-800 desktop:before:hidden desktop:after:hidden"
   data-figma="tab-bar"
   data-tab-bar
@@ -42,10 +53,12 @@ const tabs = [
             data-tab={tab.id}
             data-active={i === 0 ? '' : undefined}
             aria-current={i === 0 ? 'true' : undefined}
-            class="group flex h-[56px] flex-1 items-center justify-center gap-(--space-6) whitespace-nowrap px-(--space-24) text-body-sm transition-colors duration-200 font-normal text-neutral-600 data-active:font-semibold data-active:text-neutral-100 data-active:shadow-[inset_0_-2px_0_var(--color-neutral-100)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-100 desktop:h-auto desktop:gap-(--space-8) desktop:py-(--space-20) desktop:text-button-md desktop:font-semibold"
+            class="group flex h-[56px] flex-1 items-center justify-center gap-(--space-6) whitespace-nowrap px-(--space-24) text-body-sm transition-colors duration-200 font-normal text-neutral-600 data-active:font-semibold data-active:text-neutral-100 data-active:shadow-[inset_0_-2px_0_var(--color-neutral-100)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-100 desktop:h-auto desktop:min-h-[66.4px] desktop:gap-(--space-8) desktop:py-(--space-20) desktop:text-button-md desktop:font-semibold"
             data-figma={`tab-bar/${tab.id}`}
           >
-            {/* Icon sizes: mobile 20 (Exploration 24), desktop 22 (Exploration 26.4). */}
+            {/* Icon sizes: mobile 20 (Exploration 24), desktop 22 (Exploration 26.4).
+                Case study parts show their number instead. */}
+            {tab.num ? <span>{tab.num}</span> : (
             <span
               aria-hidden="true"
               class:list={[
@@ -54,6 +67,7 @@ const tabs = [
               ]}
               style={`mask-image: url(${tab.icon}); -webkit-mask-image: url(${tab.icon});`}
             ></span>
+            )}
             <span>{tab.label}</span>
           </a>
         </li>
@@ -78,7 +92,9 @@ const tabs = [
   // (scroll-mt-32), which is above that line. Before the first section the
   // first tab stays active, as in the Figma default frame.
   const bar = document.querySelector<HTMLElement>('[data-tab-bar]')
-  const header = document.querySelector<HTMLElement>('[data-compact-header]')
+  // Home: the compact header that slides in. Case study: the always-on header.
+  const compact = document.querySelector<HTMLElement>('[data-compact-header]')
+  const header = compact ?? document.querySelector<HTMLElement>('[data-case-header]')
   const scroller = bar?.querySelector<HTMLElement>('[data-tab-scroller]')
   const links = Array.from(bar?.querySelectorAll<HTMLAnchorElement>('[data-tab]') ?? [])
   const sections = links
@@ -116,9 +132,10 @@ const tabs = [
     // At rest the bar is see-through like the page (video under the page
     // scrim); once stuck it needs its own surface over the scrolling content.
     bar.toggleAttribute('data-stuck', stuck)
-    header.toggleAttribute('data-shown', stuck)
-    header.setAttribute('aria-hidden', String(!stuck))
-    header.inert = !stuck
+    if (!compact) return
+    compact.toggleAttribute('data-shown', stuck)
+    compact.setAttribute('aria-hidden', String(!stuck))
+    compact.inert = !stuck
   }
 
   function update() {

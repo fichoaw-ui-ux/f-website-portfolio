@@ -163,9 +163,13 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
 - No Figma frame (Ficho: match the home page exactly). Every value reuses a home
   token or a value already used on the home page; nothing new was introduced.
 - Page: `<BaseLayout redesign>` (#252525 over the storm video, redesign footer).
-- Header (`CaseStudyHeader.astro`): the compact header, always visible and sticky;
-  the profile group is a "Back to Home" link led by the arrow icon turned back;
-  Contact goes to the home page's `#contact`. ASSUMED.
+- Header (`CaseStudyHeader.astro`): the compact header's surface and height (80 / 84),
+  always visible and sticky; left a "Back to Home" text link with the back arrow (no
+  profile, Ficho), right the language switch + Contact (to the home `#contact`).
+- Tab bar (Ficho: same concept as home): the home `TabBar` with one tab per
+  `<PartHeader>` ("1. Project Snapshot" …), numbers instead of icons, between the
+  intro and the parts; sticky under the header, scroll-spy, tabs land parts at
+  --sticky-offset. Replaces the bottom section indicator and its progress bar.
 - Reading layout like Notion (Ficho): everything, cover included, sits in one
   centred 720 column; nested blocks indent 24 / 48 on desktop.
 - Title block: Study Case tag pills ("Product Design" hidden), title in the Contact
@@ -174,10 +178,37 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   = Experience bullets (14/22 → 18/29, measure 720), titles = job titles, bullets =
   Experience dots, quotes/metrics = the mobile Study Case card, image frames
   with a #6C6C71 stroke. Containers use the container radius (see Intentional exceptions). Prototypes are
-  full-width embeds, one per row. Bottom section indicator styled like the tab bar.
+  full-width embeds, one per row.
 - Next project: the home Study Case row/card with one entry.
+- Alignment (audit, 2026-11-06): every block lines up with the text of the section
+  it belongs to — one rule in `src/components/case-study/indent.ts`, desktop indent
+  0 / 32 / 80 (= the text of an un-numbered section / "A." / "A.1"). The "A." /
+  "A.1" prefix hangs in a 24 / 40 column on desktop and sits inline on mobile,
+  where all text and assets start at 0.
+- Asset captions: one form, "Label — Phrase" in sentence case, the phrase
+  capitalised, no trailing period in the title (stripped by the components).
+  A prototype's title says what it is; no caption that repeats it.
+- Metrics: desktop columns follow the item count (2 or 3).
+- Sub-section titles shrink with nesting (Ficho), home title scale, mobile / desktop:
+  level 1 ("A.", "Kickoff") 18 / 24, level 2 ("A.1") 16 / 20, level 3 ("A.1.1",
+  or an un-numbered title at indent={2}) 16 / 18. Level = prefix depth, else the
+  indent; `<Section level={n}>` overrides. Headings are h3 / h4 / h5 to match.
+- Spacing (mobile / desktop), home values only: part 48 / 88 + rule + 48 / 88;
+  part heading → content 32 / 40; between sub-sections (A, B, …) 32 / 40; between
+  blocks (text group, figure, prototype, quote, metrics) 24 / 32; title → text
+  12 / 16; paragraphs 16; list items 12; caption 12; snapshot rows 20.
+  Measured on Local Transfer Mobile at 1440 and 402: every gap is on this scale.
 
 ## Intentional exceptions
+- Asset titles (Ficho, 2026-11-06): every image and prototype frame shows its
+  title above the frame (16/26 white); inside the frame a bar keeps the type label
+  ("Image" / "Prototype" / "Placeholder", left) and the CTA ("View full" / "Open in
+  Figma", right), then the asset; a caption's later sentences sit under the frame
+  (14/22 #BBBBC0). In an ImageGrid the
+  frames of one row start level (subgrid). A caption "Before — …" / "After — …"
+  keeps its whole text as the title,
+  the state word in `--color-state-before` #F87171 / `--color-state-after` #4ADE80
+  (not in Figma; 5.5:1 and 8.8:1 on #252525). Write captions in that form to get it.
 - Corner radius (Ficho, 2026-11-06): code leads Figma until the design is synced.
   Components use only the semantic tokens in `tokens.css`: `--radius-container`
   (8px — cards, covers, exploration cards, photos, logo tiles, role badges,

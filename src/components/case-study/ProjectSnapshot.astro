@@ -7,9 +7,9 @@ interface Item { label: string; value: string; pill?: boolean }
 interface Props { items: Item[] }
 const { items } = Astro.props
 ---
-<dl class="mt-(--space-32) border-t border-neutral-800 desktop:mt-(--space-40)" data-figma="case-study/snapshot">
+<dl class="border-t border-neutral-800" data-figma="case-study/snapshot">
   {items.map((item) => (
-    <div class="grid grid-cols-1 gap-(--space-4) border-b border-neutral-800 py-(--space-16) last:border-b-0 desktop:grid-cols-[220px_1fr] desktop:items-center desktop:gap-(--space-32) desktop:py-(--space-20)">
+    <div class="grid grid-cols-1 gap-(--space-4) border-b border-neutral-800 py-(--space-20) last:border-b-0 desktop:grid-cols-[220px_1fr] desktop:items-center desktop:gap-(--space-32)">
       <dt class="text-body-sm text-neutral-600 desktop:text-[18px] desktop:leading-[29px]">{item.label}</dt>
       <dd>
         {item.pill ? (
