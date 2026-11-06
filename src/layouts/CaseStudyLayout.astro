@@ -1,8 +1,17 @@
 ---
+/* Case study page — no Figma frame; styled from the redesigned home page
+   (Ficho: "sesuaikan dengan halaman utamanya, sama persis"). Every value is a
+   home-page token or a value already used there:
+   - page: redesign surface (#252525 over the storm video), redesign footer;
+   - header: the home compact header (CaseStudyHeader.astro);
+   - column: ContentBand (1040 desktop, 24px gutters);
+   - title block: tags as the Study Case tag pills, title in the Contact
+     heading style (32 → 56) but white, summary in the Contact body style;
+   - cover: Study Case cover (r24, B&W → colour on hover). */
 import BaseLayout from './BaseLayout.astro'
-import Container from '../components/layout/Container.astro'
+import ContentBand from '../components/layout/ContentBand.astro'
 import Reveal from '../components/ui/Reveal.astro'
-import Tag from '../components/ui/Tag.astro'
+import CaseStudyHeader from '../components/case-study/CaseStudyHeader.astro'
 import NextProject from '../components/case-study/NextProject.astro'
 import ProjectSnapshot from '../components/case-study/ProjectSnapshot.astro'
 import Lightbox from '../components/case-study/Lightbox.astro'
@@ -18,66 +27,58 @@ interface Props {
 const { entry, next } = Astro.props
 const d = entry.data
 
-// Case studies keep their brand colour. The global accent tokens default to
-// neutral so the home page stays monochrome; this layout supplies a fallback
-// for entries that don't declare one.
-//
-// These two hexes are COMPATIBILITY VALUES, not a chosen brand palette: they
-// reproduce the pre-redesign global `--gradient-accent` default (blue fading to
-// red) that brand-less case studies used to inherit from tokens.css. Don't treat
-// them as a design decision — a case study that wants a real colour declares
-// `brandColor` in its frontmatter.
-const DEFAULT_CASE_STUDY_ACCENT = '#1E4FCF'
-const DEFAULT_CASE_STUDY_ACCENT_ALT = '#DC2626'
-const accent = d.brandColor ?? DEFAULT_CASE_STUDY_ACCENT
-const accentAlt = d.brandColorAlt ?? (d.brandColor ? accent : DEFAULT_CASE_STUDY_ACCENT_ALT)
-
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
+
+// Same rule as the home Study Case list: industry/platform only (Ficho).
+const HIDDEN_TAGS = new Set(['Product Design'])
+const tags = d.tags.filter((tag) => !HIDDEN_TAGS.has(tag))
 
 // Link previews want a modest JPEG at the classic 1200px width, not the
 // 7680px source PNG.
 const ogImage = await getImage({ src: d.cover, width: 1200, format: 'jpg' })
 ---
-<BaseLayout title={`${d.title}${t.caseStudy.titleSuffix}`} description={d.summary} ogImage={ogImage.src} showBackToHome>
-  <style set:html={`
-    :root{
-      --color-accent: ${accent};
-      --gradient-accent: linear-gradient(135deg, ${accent} 0%, ${accent} 60%, ${accentAlt} 100%);
-    }
-  `} />
-  <article class="pt-12 md:pt-16">
-    <Container>
-      <div class="mx-auto w-full max-w-[1088px]">
-        <Reveal>
-          <header class="mt-8">
-            <div class="mb-6 flex flex-wrap gap-2">{d.tags.map(t => <Tag>{t}</Tag>)}</div>
-            <h1 class="font-display font-semibold text-display-xl text-text-primary">{d.title}</h1>
-          </header>
-        </Reveal>
+<BaseLayout title={`${d.title}${t.caseStudy.titleSuffix}`} description={d.summary} ogImage={ogImage.src} redesign showHeader={false}>
+  <CaseStudyHeader />
+  <article class="pt-(--space-24) pb-(--space-48) desktop:pt-(--space-64) desktop:pb-(--space-88)" data-figma="case-study">
+    {/* Reading layout like Notion (Ficho): everything sits in one centred
+        720 column (the home Experience measure, not in tokens), the cover
+        included (Ficho). */}
+    <ContentBand>
+      <Reveal class="mx-auto max-w-[720px]">
+        <header class="flex flex-col items-start" data-figma="case-study/title">
+          <ul class="flex flex-wrap gap-(--space-8)" aria-label="Tags">
+            {tags.map((tag) => (
+              <li class="rounded-(--radius-full) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-neutral-600 desktop:px-(--space-10)">{tag}</li>
+            ))}
+          </ul>
+          <h1 class="mt-(--space-16) text-mobile-h1 text-neutral-100 desktop:text-section-heading">{d.title}</h1>
+          <p class="mt-(--space-16) text-mobile-subheading text-neutral-100 desktop:text-section-subheading">{d.summary}</p>
+        </header>
+      </Reveal>
 
-        <Reveal delay={100}>
-          <div class="mt-16 mb-16 overflow-hidden rounded-card bg-bg-secondary">
-            {/* Column is at most 1088 wide; 1× and 2× sources up to that. */}
-            <Image
-              src={d.cover}
-              alt={d.coverAlt}
-              widths={[402, 804, 1088, 2176]}
-              sizes="(min-width: 1088px) 1088px, 100vw"
-              loading="eager"
-              class="block h-auto w-full grayscale transition duration-500 hover:grayscale-0"
-            />
-          </div>
-        </Reveal>
+      <Reveal delay={100} class="mx-auto max-w-[720px]">
+        <div class="group mt-(--space-32) overflow-hidden rounded-(--radius-24) bg-neutral-200 desktop:mt-(--space-40)" data-figma="case-study/cover">
+          {/* Column is at most 720 wide (354 on mobile); 1× and 2× sources. */}
+          <Image
+            src={d.cover}
+            alt={d.coverAlt}
+            widths={[354, 708, 720, 1440]}
+            sizes="(min-width: 1024px) 720px, 354px"
+            loading="eager"
+            class="block h-auto w-full grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
+          />
+        </div>
+      </Reveal>
 
+      <div class="mx-auto max-w-[720px]" data-figma="case-study/body">
         {d.snapshot && d.snapshot.length > 0 && <ProjectSnapshot items={d.snapshot} />}
 
         <slot />
-
-        <NextProject slug={next.data.slug} title={next.data.title} cover={next.data.thumbnail} coverAlt={next.data.thumbnailAlt} />
       </div>
-    </Container>
+    </ContentBand>
   </article>
+  <NextProject slug={next.data.slug} title={next.data.title} summary={next.data.summary} tags={next.data.tags.filter((tag) => !HIDDEN_TAGS.has(tag))} cover={next.data.thumbnail} coverAlt={next.data.thumbnailAlt} />
   <SectionIndicator />
   <Lightbox />
 </BaseLayout>

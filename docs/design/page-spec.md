@@ -156,8 +156,25 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
 ### Footer — done (`src/components/layout/FooterRedesign.astro`)
 - Measured equal to Figma: desktop 83 with a 1px top rule, text left; mobile 74, no
   rule, text centred.
-- Only on redesigned pages (`<BaseLayout redesign>`, both home pages). Case study and
-  exploration pages keep the legacy footer until they are redesigned.
+- Only on redesigned pages (`<BaseLayout redesign>`: home and case study pages).
+  Exploration pages keep the legacy footer until they are redesigned.
+
+### Case study page — restyled from the home page (`src/layouts/CaseStudyLayout.astro`)
+- No Figma frame (Ficho: match the home page exactly). Every value reuses a home
+  token or a value already used on the home page; nothing new was introduced.
+- Page: `<BaseLayout redesign>` (#252525 over the storm video, redesign footer).
+- Header (`CaseStudyHeader.astro`): the compact header, always visible and sticky;
+  the profile group is a "Back to Home" link led by the arrow icon turned back;
+  Contact goes to the home page's `#contact`. ASSUMED.
+- Reading layout like Notion (Ficho): everything, cover included, sits in one
+  centred 720 column; nested blocks indent 24 / 48 on desktop.
+- Title block: Study Case tag pills ("Product Design" hidden), title in the Contact
+  heading size (32 → 56) in white, summary in the Contact body style.
+- Parts: home section opening (1px rule, 48 / 88, grey 24 → 32 heading). Body text
+  = Experience bullets (14/22 → 18/29, measure 720), titles = job titles, bullets =
+  Experience dots, quotes/metrics = the mobile Study Case card, image frames r24
+  with a #6C6C71 stroke. Bottom section indicator styled like the tab bar.
+- Next project: the home Study Case row/card with one entry.
 
 ## Intentional exceptions
 - Mobile has no 12px text (Ficho): hero meta, Experience bullets and Study Case

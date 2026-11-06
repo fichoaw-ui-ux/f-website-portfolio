@@ -1,0 +1,56 @@
+---
+/* Case study header — no Figma frame (Ficho: match the home page). Built from
+   the home compact header (CompactHeader.astro, Figma 25:1716 / 25:2226):
+   same #252525/88 + blur surface, photo, name/handle and actions, sizes as
+   there (desktop 84 tall, mobile 80). Differences, ASSUMED:
+   - always visible and sticky (there is no hero to scroll past);
+   - the profile group is one "Back to Home" link, led by the home page's
+     arrow icon turned to point back (it nudges left on hover, mirroring the
+     pills' nudge right);
+   - Contact links to the home page's #contact section. */
+import { Image } from 'astro:assets'
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import ContentBand from '../layout/ContentBand.astro'
+import HeaderActions from '../layout/HeaderActions.astro'
+import portrait from '../../assets/hero/portrait.png'
+import { getSite } from '../../content/site'
+import { resolveLocale, useTranslations } from '../../i18n/ui'
+
+const lang = resolveLocale(Astro.currentLocale)
+const site = getSite(lang)
+const t = useTranslations(lang)
+const homeHref = `${getRelativeLocaleUrl(lang, '/').replace(/\/$/, '')}/`
+---
+<header
+  class="sticky top-0 z-40 bg-neutral-900/88 backdrop-blur-lg"
+  data-case-header
+  data-figma="case-study/header"
+>
+  <ContentBand class="flex items-center gap-(--space-16) py-(--space-8) desktop:pt-(--space-16) desktop:pb-(--space-12)">
+    <a
+      href={homeHref}
+      class="group flex min-w-0 flex-1 items-center gap-(--space-12) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:gap-(--space-16)"
+      data-figma="case-study/header/back"
+    >
+      <span class="sr-only">{t.header.backToHome}</span>
+      <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 shrink-0 rotate-180 transition-transform duration-200 group-hover:-translate-x-1 desktop:size-6" />
+      {/* Photo: as the compact header — mobile 64 r16, desktop 56 r6.72 (not in tokens). */}
+      <span class="relative size-16 shrink-0 overflow-hidden rounded-[16px] desktop:size-14 desktop:rounded-[6.72px]" aria-hidden="true">
+        <Image
+          src={portrait}
+          alt=""
+          widths={[64, 128]}
+          sizes="64px"
+          class="absolute left-1/2 top-[calc(50%+5.5px)] h-[85px] w-16 max-w-none -translate-x-1/2 -translate-y-1/2 object-cover desktop:top-[calc(50%+0.14px)] desktop:h-[74.76px] desktop:w-[56.07px]"
+        />
+      </span>
+      <span class="flex min-w-0 flex-1 flex-col gap-(--space-4) whitespace-nowrap desktop:gap-(--space-2)" aria-hidden="true">
+        {/* Desktop 20/30 + 15/23: not in tokens (compact header, Figma Inter 150%). */}
+        <span class="text-title-md text-neutral-100 decoration-neutral-600 underline-offset-4 group-hover:underline desktop:text-[20px] desktop:leading-[30px]">Ficho Aji W</span>
+        <span class="text-button-sm text-neutral-600 desktop:text-[15px] desktop:leading-[23px] desktop:font-normal">{site.handle}</span>
+      </span>
+    </a>
+
+    <HeaderActions place="case-study/header" contactHref={`${homeHref}#contact`} />
+  </ContentBand>
+</header>

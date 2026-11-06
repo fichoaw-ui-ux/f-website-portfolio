@@ -1,11 +1,13 @@
 ---
+/* Image frame — home styles (no Figma frame): r24 frame with a 1px #6C6C71
+   stroke and divider, labels #BBBBC0 Button/Small, title white Body/Small. */
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
 interface Props { src: string; alt: string; caption?: string; label?: string; indent?: boolean | 1 | 2; mobile?: boolean }
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 const { src, alt, caption, label, indent = false, mobile = false } = Astro.props
-const indentClass = indent === 2 ? 'md:pl-20' : indent ? 'md:pl-8' : ''
+const indentClass = indent === 2 ? 'desktop:pl-(--space-48)' : indent ? 'desktop:pl-(--space-24)' : ''
 const isPlaceholder = src.includes('placeholder')
 const resolvedLabel = isPlaceholder ? t.imageFull.placeholderLabel : (label ?? t.imageFull.imageLabel)
 
@@ -19,25 +21,25 @@ if (caption) {
   }
 }
 ---
-<figure class:list={['mb-12', indentClass]}>
-  <div class="overflow-hidden rounded-media glass">
-    <div class="flex items-center justify-between gap-4 border-b border-border px-4 py-3">
-      <div class="flex min-w-0 items-center gap-2">
-        <span class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-tertiary">{resolvedLabel}</span>
-        {title && <span class="truncate font-mono text-sm text-text-primary">{title}</span>}
+<figure class:list={['mb-(--space-48)', indentClass]}>
+  <div class="overflow-hidden rounded-(--radius-24) border border-neutral-800">
+    <div class="flex items-center justify-between gap-(--space-16) border-b border-neutral-800 px-(--space-16) py-(--space-12)">
+      <div class="flex min-w-0 items-center gap-(--space-8)">
+        <span class="shrink-0 text-button-sm text-neutral-600">{resolvedLabel}</span>
+        {title && <span class="truncate text-body-sm text-neutral-100">{title}</span>}
       </div>
-      {!isPlaceholder && <button type="button" data-lightbox-trigger data-lightbox-src={src} data-lightbox-alt={alt} class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-text-tertiary transition hover:text-text-primary">{t.imageFull.viewFull}</button>}
+      {!isPlaceholder && <button type="button" data-lightbox-trigger data-lightbox-src={src} data-lightbox-alt={alt} class="shrink-0 cursor-pointer text-button-sm text-neutral-600 transition-colors duration-200 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100">{t.imageFull.viewFull}</button>}
     </div>
     {mobile ? (
-      <div class="flex justify-center bg-bg-primary py-6">
+      <div class="flex justify-center py-(--space-24)">
         <img src={src} alt={alt} class="block h-auto w-full max-w-[320px]" loading="lazy" />
       </div>
     ) : (
       <img src={src} alt={alt} class="block h-auto w-full" loading="lazy" />
     )}
     {description && (
-      <div class="border-t border-border px-4 py-3">
-        <span class="font-mono text-sm text-text-primary">{description}</span>
+      <div class="border-t border-neutral-800 px-(--space-16) py-(--space-12)">
+        <span class="text-body-sm text-neutral-100">{description}</span>
       </div>
     )}
   </div>

@@ -14,8 +14,10 @@
 import LanguageSwitch from './LanguageSwitch.astro'
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
-interface Props { place: string; class?: string; boxedIcon?: boolean }
-const { place, class: className = '', boxedIcon = false } = Astro.props
+/* `contactHref`: pages without a Contact section (case studies) link to the
+   home page's #contact instead. */
+interface Props { place: string; class?: string; boxedIcon?: boolean; contactHref?: string }
+const { place, class: className = '', boxedIcon = false, contactHref = '#contact' } = Astro.props
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 ---
@@ -24,14 +26,14 @@ const t = useTranslations(lang)
   {/* Mobile: 24px contact icon (envelope, white); boxed in a 32px circle in the hero. */}
   {boxedIcon ? (
     <a
-      href="#contact"
+      href={contactHref}
       aria-label={t.compactHeader.contact}
       class="flex size-8 shrink-0 items-center justify-center rounded-(--radius-full) bg-neutral-800 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:hidden"
       data-figma={`${place}/contact-icon`}
     ><span class="size-5 bg-neutral-100 [mask-image:url(/images/icons/envelope.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain]" aria-hidden="true"></span></a>
   ) : (
     <a
-      href="#contact"
+      href={contactHref}
       aria-label={t.compactHeader.contact}
       class="size-6 shrink-0 bg-neutral-100 transition-colors duration-200 [mask-image:url(/images/icons/envelope.svg)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] hover:bg-neutral-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:hidden"
       data-figma={`${place}/contact-icon`}
@@ -39,7 +41,7 @@ const t = useTranslations(lang)
   )}
   {/* Desktop: Contact pill, Button/Medium 16/1 — 12 + 20 + 12 = 44 tall. */}
   <a
-    href="#contact"
+    href={contactHref}
     class="group hidden shrink-0 items-center gap-(--space-8) rounded-(--radius-full) bg-neutral-800 px-(--space-20) py-(--space-12) text-button-md text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:flex"
     data-figma={`${place}/contact`}
   >

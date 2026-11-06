@@ -1,17 +1,21 @@
 ---
+/* Project snapshot — home styles (no Figma frame): rows split by 1px #6C6C71
+   rules like the Contact list (none under the last row: the part rule follows), label in #BBBBC0 and value in white at the
+   home body sizes (14/22 mobile, 18/29 desktop as in Experience), pill values
+   as the Study Case tag pills. */
 interface Item { label: string; value: string; pill?: boolean }
 interface Props { items: Item[] }
 const { items } = Astro.props
 ---
-<dl class="mb-16 max-w-3xl">
-  {items.map((item, i) => (
-    <div class="grid grid-cols-1 gap-1 py-4 md:grid-cols-[220px_1fr] md:items-center md:gap-8" class:list={i < items.length - 1 ? 'border-b border-border' : ''}>
-      <dt class="text-text-secondary text-base">{item.label}</dt>
+<dl class="mt-(--space-32) border-t border-neutral-800 desktop:mt-(--space-40)" data-figma="case-study/snapshot">
+  {items.map((item) => (
+    <div class="grid grid-cols-1 gap-(--space-4) border-b border-neutral-800 py-(--space-16) last:border-b-0 desktop:grid-cols-[220px_1fr] desktop:items-center desktop:gap-(--space-32) desktop:py-(--space-20)">
+      <dt class="text-body-sm text-neutral-600 desktop:text-[18px] desktop:leading-[29px]">{item.label}</dt>
       <dd>
         {item.pill ? (
-          <span class="inline-flex items-center px-3 py-1 rounded glass text-base text-text-primary">{item.value}</span>
+          <span class="inline-flex rounded-(--radius-full) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-neutral-600 desktop:px-(--space-10)">{item.value}</span>
         ) : (
-          <span class="text-text-primary text-base">{item.value}</span>
+          <span class="text-body-sm text-neutral-100 desktop:text-[18px] desktop:leading-[29px]">{item.value}</span>
         )}
       </dd>
     </div>

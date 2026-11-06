@@ -1,24 +1,25 @@
 ---
+/* Figma prototype frame — same frame as ImageFull (home styles). */
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
 interface Props { url: string; title?: string; caption?: string; indent?: boolean | 1 | 2 }
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 const { url, title = t.figmaEmbed.defaultTitle, caption, indent = false } = Astro.props
-const indentClass = indent === 2 ? 'md:pl-20' : indent ? 'md:pl-8' : ''
+const indentClass = indent === 2 ? 'desktop:pl-(--space-48)' : indent ? 'desktop:pl-(--space-24)' : ''
 const cleanUrl = url.replace(/[?&]show-proto-sidebar=[^&]*/g, '')
 const sep = cleanUrl.includes('?') ? '&' : '?'
 const protoUrl = `${cleanUrl}${sep}show-proto-sidebar=0`
 const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(protoUrl)}`
 ---
-<figure class:list={['mb-12', indentClass]}>
-  <div class="overflow-hidden rounded-media glass">
-    <div class="flex items-center justify-between gap-4 border-b border-border px-4 py-3">
-      <div class="flex min-w-0 items-center gap-2">
-        <span class="font-mono text-xs uppercase tracking-widest text-text-tertiary">{t.figmaEmbed.prototypeLabel}</span>
-        <span class="truncate font-mono text-sm text-text-primary">{title}</span>
+<figure class:list={['mb-(--space-48)', indentClass]}>
+  <div class="overflow-hidden rounded-(--radius-24) border border-neutral-800">
+    <div class="flex items-center justify-between gap-(--space-16) border-b border-neutral-800 px-(--space-16) py-(--space-12)">
+      <div class="flex min-w-0 items-center gap-(--space-8)">
+        <span class="shrink-0 text-button-sm text-neutral-600">{t.figmaEmbed.prototypeLabel}</span>
+        <span class="truncate text-body-sm text-neutral-100">{title}</span>
       </div>
-      <a href={url} target="_blank" rel="noopener" class="shrink-0 font-mono text-xs uppercase tracking-widest text-text-tertiary transition hover:text-text-primary">{t.figmaEmbed.openInFigma}</a>
+      <a href={url} target="_blank" rel="noopener" class="shrink-0 cursor-pointer text-button-sm text-neutral-600 transition-colors duration-200 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100">{t.figmaEmbed.openInFigma}</a>
     </div>
     <iframe
       src={embedUrl}
@@ -29,5 +30,5 @@ const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURICo
       style="height: 600px; border: 0;"
     ></iframe>
   </div>
-  {caption && <figcaption class="mt-4 text-center font-mono text-base text-text-tertiary">{caption}</figcaption>}
+  {caption && <figcaption class="mt-(--space-12) text-center text-body-sm text-neutral-600">{caption}</figcaption>}
 </figure>

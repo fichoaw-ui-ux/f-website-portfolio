@@ -1,11 +1,14 @@
 ---
+/* Quote — the mobile Study Case card (r24, 1px #6C6C71, 23 + 1 padding) with
+   the Experience job-title style inside; author as the hero handle (#BBBBC0
+   Button/Small). No Figma frame. */
 interface Props { author?: string; indent?: boolean | 1 | 2 }
 const { author, indent = false } = Astro.props
-const indentClass = indent === 2 ? 'md:ml-20' : indent ? 'md:ml-8' : ''
+const indentClass = indent === 2 ? 'desktop:ml-(--space-48)' : indent ? 'desktop:ml-(--space-24)' : ''
 ---
-<figure class:list={['mb-12 max-w-3xl rounded-card glass p-6 md:p-8', indentClass]}>
-  <blockquote class="font-display font-semibold text-xl leading-snug text-text-primary md:text-2xl [&_p]:mb-0 [&_p]:font-display [&_p]:font-semibold [&_p]:text-xl [&_p]:leading-snug [&_p]:md:text-2xl">
+<figure class:list={['mb-(--space-48) rounded-(--radius-24) border border-neutral-800 p-[23px]', indentClass]}>
+  <blockquote class="text-title-md text-neutral-100 desktop:text-title-lg [&_p]:m-0">
     <slot />
   </blockquote>
-  {author && <figcaption class="mt-6 font-mono text-sm uppercase tracking-widest text-text-tertiary">— {author}</figcaption>}
+  {author && <figcaption class="mt-(--space-16) text-button-sm text-neutral-600">— {author}</figcaption>}
 </figure>

@@ -1,27 +1,110 @@
 ---
+/* Case study text section — home styles (no Figma frame):
+   - title: the Experience job title (18/29 → 24/38, white), no uppercase;
+   - body: the Experience bullet text (14/22 mobile, 18/29 desktop, white),
+     measure 720 on desktop as there;
+   - bullets: the Experience 6px #6C6C71 dot in a 16px box, 4px gap;
+   - quotes: the mobile Study Case card (r24, 1px #6C6C71, 23 + 1 padding)
+     with the title style inside;
+   - links: as the Contact e-mail (underline, #BBBBC0 on hover).
+   Indent only from the desktop breakpoint (mobile has 354px to work with):
+   24 or 48 per level, like Notion's nested blocks in the 720 reading column. */
 interface Props { title?: string; indent?: boolean | 1 | 2 }
 const { title, indent = false } = Astro.props
-// Indent only from md up. On mobile the container gutter already leaves ~327px
-// of column width; adding another 32-80px of left padding on top squeezes body
-// copy into 5-6 words per line and makes lists unreadable.
-const indentClass = indent === 2 ? 'md:pl-20' : indent ? 'md:pl-8' : ''
-const gridColsClass = indent ? 'grid-cols-[2.5rem_1fr]' : 'grid-cols-[1.5rem_1fr]'
+const indentClass = indent === 2 ? 'desktop:pl-(--space-48)' : indent ? 'desktop:pl-(--space-24)' : ''
+const gridColsClass = indent ? 'grid-cols-[40px_1fr]' : 'grid-cols-[24px_1fr]'
 const trimmed = title?.trim() ?? ''
 const hasTitle = trimmed.length > 0
 const prefixMatch = trimmed.match(/^([A-Z][.\d]*)\s+(.+)$/)
 const prefix = prefixMatch?.[1] ?? ''
 const titleBody = prefixMatch?.[2] ?? trimmed
-const proseClasses = "prose max-w-none [&>*:last-child]:mb-0 prose-p:text-text-primary prose-p:text-lg prose-p:leading-relaxed prose-p:mb-6 prose-headings:font-display prose-headings:font-semibold prose-a:text-text-primary prose-a:underline prose-strong:text-text-primary prose-ul:pl-0 prose-ol:pl-0 prose-ul:my-6 prose-ol:my-6 prose-li:text-text-primary prose-li:text-lg prose-li:leading-relaxed prose-li:pl-0 prose-li:my-3 marker:text-text-primary [&_ul>li]:list-inside [&_ol>li]:list-inside [&_blockquote]:p-6 [&_blockquote]:md:p-8 [&_blockquote]:my-8 [&_blockquote]:rounded-card [&_blockquote]:glass [&_blockquote]:not-italic prose-blockquote:font-display prose-blockquote:font-semibold prose-blockquote:leading-snug prose-blockquote:text-text-primary [&_blockquote_p]:font-display [&_blockquote_p]:font-semibold [&_blockquote_p]:not-italic [&_blockquote_p]:text-xl [&_blockquote_p]:md:text-2xl [&_blockquote_p]:leading-snug [&_blockquote_p]:m-0 [&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none [&_blockquote_strong]:font-semibold"
+const sectionClass = 'mb-(--space-24) [&:has(+section)]:mb-(--space-64) [&:has(+section[data-indent])]:mb-(--space-32)'
+const titleClass = 'mb-(--space-12) text-title-md text-neutral-100 desktop:mb-(--space-16) desktop:text-title-lg'
 ---
 {prefix ? (
-  <section class:list={['mb-6 [&:has(+section)]:mb-16 [&:has(+section[class*="pl-8"])]:mb-8 max-w-3xl grid gap-x-2', gridColsClass, indentClass]}>
-    <h3 class="font-display font-semibold text-lg md:text-xl text-text-primary mb-4 uppercase tracking-wide col-start-1">{prefix}</h3>
-    <h3 class="font-display font-semibold text-lg md:text-xl text-text-primary mb-4 uppercase tracking-wide col-start-2">{titleBody}</h3>
-    <div class={`col-start-2 ${proseClasses}`}><slot /></div>
+  <section class:list={[sectionClass, 'grid gap-x-(--space-8)', gridColsClass, indentClass]} data-indent={indent ? '' : undefined}>
+    <h3 class:list={[titleClass, 'col-start-1 text-neutral-600']}>{prefix}</h3>
+    <h3 class:list={[titleClass, 'col-start-2']}>{titleBody}</h3>
+    <div class="cs-prose col-start-2"><slot /></div>
   </section>
 ) : (
-  <section class:list={['mb-6 [&:has(+section)]:mb-16 [&:has(+section[class*="pl-8"])]:mb-8 max-w-3xl', indentClass]}>
-    {hasTitle && <h3 class="font-display font-semibold text-lg md:text-xl text-text-primary mb-4 uppercase tracking-wide">{trimmed}</h3>}
-    <div class={proseClasses}><slot /></div>
+  <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined}>
+    {hasTitle && <h3 class={titleClass}>{trimmed}</h3>}
+    <div class="cs-prose"><slot /></div>
   </section>
 )}
+
+<style is:global>
+  /* Global: the children come from MDX, outside this component's scope. */
+  .cs-prose {
+    max-width: 720px; /* not in tokens: Experience bullet measure */
+    font-size: var(--text-body-sm);
+    line-height: var(--text-body-sm--line-height);
+    color: var(--color-neutral-100);
+  }
+  .cs-prose > :last-child { margin-bottom: 0; }
+  .cs-prose p { margin: 0 0 var(--space-16); }
+  .cs-prose strong { font-weight: 600; }
+  .cs-prose a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color 200ms;
+  }
+  .cs-prose a:hover { color: var(--color-neutral-600); }
+  .cs-prose ul,
+  .cs-prose ol {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin: var(--space-16) 0;
+    padding: 0;
+    list-style: none;
+  }
+  .cs-prose li {
+    position: relative;
+    padding-left: 20px; /* 16px dot box + 4px gap, as Experience */
+  }
+  .cs-prose ul > li::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--color-neutral-800);
+  }
+  .cs-prose ol { counter-reset: cs-ol; }
+  .cs-prose ol > li { counter-increment: cs-ol; }
+  .cs-prose ol > li::before {
+    content: counter(cs-ol) '.';
+    position: absolute;
+    left: 0;
+    color: var(--color-neutral-600);
+  }
+  .cs-prose blockquote {
+    margin: var(--space-24) 0;
+    padding: 23px; /* 24 with the 1px stroke inside, as the Study Case card */
+    border: 1px solid var(--color-neutral-800);
+    border-radius: var(--radius-24);
+    font-size: var(--text-title-md);
+    line-height: var(--text-title-md--line-height);
+    font-weight: 600;
+  }
+  .cs-prose blockquote p { margin: 0; }
+
+  @media (width >= 64rem) {
+    .cs-prose {
+      font-size: 18px; /* not in tokens: Experience desktop 18/29 */
+      line-height: 29px;
+    }
+    .cs-prose p { margin-bottom: var(--space-20); }
+    .cs-prose ul,
+    .cs-prose ol { margin: var(--space-20) 0; }
+    .cs-prose ul > li::before { top: 11.5px; }
+    .cs-prose blockquote {
+      font-size: var(--text-title-lg);
+      line-height: var(--text-title-lg--line-height);
+    }
+  }
+</style>

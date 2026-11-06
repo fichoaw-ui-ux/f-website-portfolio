@@ -1,57 +1,63 @@
 ---
+/* Next project — no Figma frame; it is the home Study Case section with one
+   entry (StudyCase.astro, Figma 8:290 / 8:798): full-bleed top rule, grey
+   heading, then the same row (desktop: cover 504×360 | tags, title, summary,
+   View Details) or card (mobile). Values and comments as there. */
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 import { getRelativeLocaleUrl } from 'astro:i18n'
 import { Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
+import ContentBand from '../layout/ContentBand.astro'
 
 interface Props {
   slug: string
   title: string
+  summary: string
+  tags: string[]
   cover: ImageMetadata
   coverAlt: string
 }
-const { slug, title, cover, coverAlt } = Astro.props
+const { slug, title, summary, tags, cover, coverAlt } = Astro.props
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
+const href = getRelativeLocaleUrl(lang, `/work/${slug}`)
 ---
-<div class="mt-24">
-  <div class="mb-6 font-mono text-sm uppercase tracking-widest text-text-tertiary">{t.caseStudy.nextProject}</div>
-  <a
-    href={getRelativeLocaleUrl(lang, `/work/${slug}`)}
-    class="group block rounded-[32px] glass p-6 transition duration-500 hover:-translate-y-1 md:p-12"
-  >
-    <div class="grid items-center gap-8 lg:grid-cols-[36%_1fr] lg:items-stretch lg:gap-12">
-      <div class="order-2 lg:order-1">
-        <h3 class="font-display font-semibold text-display-md text-text-primary">{title}</h3>
-        <span
-          class="mt-8 inline-flex h-12 items-center gap-2 rounded-full glass px-5 text-base font-semibold leading-none text-text-primary transition duration-300 group-hover:[--stroke-fill:linear-gradient(var(--color-bg-elevated),var(--color-bg-elevated))]"
-        >
-          <span>{t.common.viewDetails}</span>
-          <svg
-            class="h-5 w-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M5 12h14" />
-            <path d="m13 5 7 7-7 7" />
-          </svg>
-        </span>
-      </div>
-      <div class="order-1 aspect-[730/438] overflow-hidden rounded-media bg-bg-primary lg:order-2 lg:aspect-auto lg:h-full">
+<section class="border-t border-neutral-800 py-(--space-48) desktop:py-(--space-88)" data-figma="case-study/next">
+  <ContentBand>
+    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1">{t.caseStudy.nextProject}</h2>
+
+    <article
+      class="group mt-(--space-32) flex flex-col gap-(--space-24) rounded-(--radius-24) border border-neutral-800 p-[23px] [filter:drop-shadow(0_4px_6px_rgba(22,34,51,0.12))_drop-shadow(0_16px_16px_rgba(22,34,51,0.16))] desktop:mt-(--space-40) desktop:flex-row desktop:items-center desktop:gap-(--space-32) desktop:rounded-none desktop:border-0 desktop:p-0 desktop:[filter:none]"
+      data-figma={`case-study/next/${slug}`}
+    >
+      <div class="h-[200px] shrink-0 overflow-hidden rounded-(--radius-24) border-2 border-neutral-600 bg-neutral-200 desktop:h-[360px] desktop:min-w-0 desktop:flex-1 desktop:border-0">
         <Image
           src={cover}
           alt={coverAlt}
-          widths={[402, 700, 804, 1400]}
-          sizes="(min-width: 1088px) 700px, 100vw"
+          widths={[302, 504, 604, 1008]}
+          sizes="(min-width: 1024px) 504px, 302px"
           loading="lazy"
-          class="h-full w-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
+          class="size-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
         />
       </div>
-    </div>
-  </a>
-</div>
+
+      <div class="flex min-w-0 flex-col items-start desktop:flex-1">
+        <h3 class="order-1 w-full text-title-md text-neutral-100 desktop:order-2 desktop:mt-(--space-16) desktop:text-title-lg">{title}</h3>
+        <ul class="order-2 mt-(--space-12) flex flex-wrap gap-(--space-8) desktop:order-1 desktop:mt-0" aria-label="Tags">
+          {tags.map((tag) => (
+            <li class="rounded-(--radius-full) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-neutral-600 desktop:px-(--space-10)">{tag}</li>
+          ))}
+        </ul>
+        {/* Desktop summary 18/29 as on the home page (not in tokens). */}
+        <p class="order-3 mt-(--space-12) w-full text-body-sm text-neutral-100 desktop:mt-(--space-8) desktop:text-[18px] desktop:leading-[29px]">{summary}</p>
+        <a
+          href={href}
+          class="group/button order-4 mt-(--space-32) inline-flex items-center gap-(--space-4) rounded-(--radius-full) bg-neutral-800 px-(--space-12) py-(--space-12) text-button-sm text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:mt-(--space-24) desktop:gap-(--space-8) desktop:px-(--space-20) desktop:py-(--space-12) desktop:text-button-md"
+        >
+          {t.common.viewDetails}<span class="sr-only">: {title}</span>
+          <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 transition-transform duration-200 group-hover/button:translate-x-1" />
+        </a>
+      </div>
+    </article>
+  </ContentBand>
+</section>

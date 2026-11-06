@@ -1,7 +1,7 @@
 ---
 interface Props { cols?: 2 | 3; indent?: boolean | 1 | 2 }
 const { cols = 2, indent = false } = Astro.props
-const colClass = cols === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'
-const indentClass = indent === 2 ? 'md:pl-20' : indent ? 'md:pl-8' : ''
+const colClass = cols === 3 ? 'desktop:grid-cols-3' : 'desktop:grid-cols-2'
+const indentClass = indent === 2 ? 'desktop:pl-(--space-48)' : indent ? 'desktop:pl-(--space-24)' : ''
 ---
-<div class:list={['mb-12 grid grid-cols-1 gap-6', colClass, indentClass]}><slot /></div>
+<div class:list={['mb-(--space-48) grid grid-cols-1 gap-(--space-24)', colClass, indentClass]}><slot /></div>

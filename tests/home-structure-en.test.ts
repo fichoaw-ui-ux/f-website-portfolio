@@ -71,8 +71,10 @@ describe('home page structure', () => {
       // Sections are see-through so the footage shows; the hero's white band stays.
       const experience = html.match(/<section[^>]*id="experience"[^>]*>/)?.[0] ?? ''
       expect(experience).not.toContain('bg-neutral-900')
-      // Legacy pages keep the legacy scrim.
-      const legacy = await readFile(join(DIST, 'work', 'quick-transfer', 'index.html'), 'utf8')
+      // Case studies are redesigned too; legacy pages (explorations) keep the legacy scrim.
+      const caseStudy = await readFile(join(DIST, 'work', 'quick-transfer', 'index.html'), 'utf8')
+      expect(caseStudy).toMatch(/<html[^>]*data-redesign/)
+      const legacy = await readFile(join(DIST, 'explorations', 'exploration-01', 'index.html'), 'utf8')
       expect(legacy).not.toMatch(/<html[^>]*data-redesign/)
     })
 
