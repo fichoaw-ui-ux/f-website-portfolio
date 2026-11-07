@@ -412,8 +412,9 @@ describe('home page structure', () => {
     it('keeps the tab bar sticky right under it', () => {
       const bar = html.match(/<nav[^>]*data-tab-bar[^>]*>/)?.[0] ?? ''
       expect(bar).toContain('sticky')
-      expect(bar).toContain('top-[80px]')
-      expect(bar).toContain('desktop:top-[84px]')
+      // Sticks at the header's height (global.css --header-height: home
+      // compact header 64 mobile / 79 desktop, case study header 64 / 84).
+      expect(bar).toContain('top-(--header-height)')
     })
   })
 })

@@ -71,7 +71,7 @@ const socials = ['WhatsApp', 'LinkedIn', 'Email']
           <p class="text-button-sm text-neutral-600 desktop:text-body-xl desktop:font-normal">{site.handle}</p>
         </div>
 
-        <ul class="order-2 mt-(--space-16) flex items-center gap-(--space-22) desktop:order-none desktop:mt-(--space-20) desktop:gap-(--space-28)" data-figma="hero/meta">
+        <ul class="order-2 mt-(--space-24) flex items-center gap-(--space-22) desktop:order-none desktop:mt-(--space-20) desktop:gap-(--space-28)" data-figma="hero/meta">
           <li class="flex items-center gap-(--space-6) desktop:gap-(--space-8)">
             <img src="/images/icons/user.svg" alt="" width="20" height="20" class="size-4 desktop:size-5" />
             {/* mobile 14/1 semibold (Figma 12, raised by Ficho) = Button/Small */}
@@ -83,11 +83,14 @@ const socials = ['WhatsApp', 'LinkedIn', 'Email']
           </li>
         </ul>
 
-        {/* Mobile divider is a 0-height vector with a 1px stroke in Figma, so it
-            takes no layout space: -mb-px cancels the 1px. Desktop is a 1px rect. */}
-        <div class="order-2 mt-(--space-16) -mb-px h-px w-full bg-neutral-800 desktop:order-none desktop:mt-(--space-28) desktop:mb-0" data-figma="hero/divider"></div>
+        {/* Mobile: bio → 24 → meta → 24 → divider → 24 → socials (Ficho; Figma 16s,
+            divider a 0-height vector). Here the divider is a real 1px line so both
+            gaps around it are a full 24. Desktop is a 1px rect, 20 / 28 / 28. */}
+        <div class="order-2 mt-(--space-24) h-px w-full bg-neutral-800 desktop:order-none desktop:mt-(--space-28)" data-figma="hero/divider"></div>
 
-        <ul class="order-2 mt-(--space-16) flex items-center gap-(--space-8) desktop:order-none desktop:mt-(--space-28) desktop:gap-(--space-12)" data-figma="hero/socials">
+        {/* Social buttons: mobile 48 × 48, 20 icon centred (Ficho; Figma 38 = 8 + 20 + 8 + 2);
+            desktop 58 (16 padding + 24 icon + border), as in Figma. */}
+        <ul class="order-2 mt-(--space-24) flex items-center gap-(--space-8) desktop:order-none desktop:mt-(--space-28) desktop:gap-(--space-12)" data-figma="hero/socials">
           {socials.map((s) => (
             <li>
               <a
@@ -95,7 +98,7 @@ const socials = ['WhatsApp', 'LinkedIn', 'Email']
                 target={s.href.startsWith('http') ? '_blank' : undefined}
                 rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 aria-label={s.label}
-                class="flex items-center justify-center rounded-(--radius-container) border border-neutral-800 p-(--space-8) transition-colors duration-200 hover:border-neutral-600 hover:bg-neutral-100/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:p-(--space-16)"
+                class="flex size-(--space-48) items-center justify-center rounded-(--radius-container) border border-neutral-800 transition-colors duration-200 hover:border-neutral-600 hover:bg-neutral-100/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:size-auto desktop:p-(--space-16)"
                 data-figma={`hero/socials/${s.label.toLowerCase()}`}
               >
                 <img src={socialIcons[s.label]} alt="" width="24" height="24" class="size-5 desktop:size-6" />

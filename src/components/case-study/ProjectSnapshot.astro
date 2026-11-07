@@ -1,22 +1,20 @@
 ---
 /* Project snapshot — home styles (no Figma frame): rows split by 1px #6C6C71
-   rules like the Contact list (none under the last row: the part rule follows), label in #BBBBC0 and value in white at the
-   home body sizes (14/22 mobile, 18/29 desktop as in Experience), pill values
-   as the Study Case tag pills. */
-interface Item { label: string; value: string; pill?: boolean }
+   rules like the Contact list, only between rows: no rule above the first or
+   under the last (the part rule follows), and no padding above the first or
+   under the last row (Ficho: less white space). Label in #BBBBC0 and value in white at the
+   home body sizes (14/22 mobile, 18/29 desktop as in Experience), every value plain
+   text (Ficho: no pills). */
+interface Item { label: string; value: string }
 interface Props { items: Item[] }
 const { items } = Astro.props
 ---
-<dl class="border-t border-neutral-800" data-figma="case-study/snapshot">
+<dl data-figma="case-study/snapshot">
   {items.map((item) => (
-    <div class="grid grid-cols-1 gap-(--space-4) border-b border-neutral-800 py-(--space-20) last:border-b-0 desktop:grid-cols-[220px_1fr] desktop:items-center desktop:gap-(--space-32)">
+    <div class="grid grid-cols-1 gap-(--space-4) border-b border-neutral-800 py-(--space-20) first:pt-0 last:border-b-0 last:pb-0 desktop:grid-cols-[220px_1fr] desktop:items-center desktop:gap-(--space-32)">
       <dt class="text-body-sm text-neutral-600 desktop:text-[18px] desktop:leading-[29px]">{item.label}</dt>
       <dd>
-        {item.pill ? (
-          <span class="inline-flex rounded-(--radius-pill) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-neutral-600 desktop:px-(--space-10)">{item.value}</span>
-        ) : (
-          <span class="text-body-sm text-neutral-100 desktop:text-[18px] desktop:leading-[29px]">{item.value}</span>
-        )}
+        <span class="text-body-sm text-neutral-100 desktop:text-[18px] desktop:leading-[29px]">{item.value}</span>
       </dd>
     </div>
   ))}

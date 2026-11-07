@@ -2,7 +2,8 @@
 /* Tab bar — Figma Draft: desktop `8:156`, mobile `8:662`.
    Navigation, not content switching (page spec): every section stays on the
    page, a tab scrolls to its section, and the active tab follows the section
-   in view. The bar sticks under the compact header (mobile 80, desktop 84),
+   in view. The bar sticks under the header at --header-height (global.css: mobile 64,
+   desktop 79 home / 84 case study),
    and the compact header slides in when the bar reaches it.
 
    Icons are the Figma SVGs used as CSS masks, so the active (white) and
@@ -37,7 +38,7 @@ const tabs = items
 ---
 <nav
   aria-label={label}
-  class="sticky top-[80px] z-40 transition-colors duration-300 data-stuck:bg-neutral-900/88 data-stuck:backdrop-blur-lg desktop:top-[84px] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-neutral-800 desktop:border-y desktop:border-neutral-800 desktop:before:hidden desktop:after:hidden"
+  class="sticky top-(--header-height) z-40 transition-colors duration-300 data-stuck:bg-neutral-900/88 data-stuck:backdrop-blur-lg before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-neutral-800 desktop:border-y desktop:border-neutral-800 desktop:before:hidden desktop:after:hidden"
   data-figma="tab-bar"
   data-tab-bar
 >

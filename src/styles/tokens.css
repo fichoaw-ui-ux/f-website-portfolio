@@ -43,6 +43,9 @@
   --text-mobile-h1: 32px;                       /* Mobile/Display/Heading (H1) */
   --text-mobile-h1--line-height: 1.25;
   --text-mobile-h1--font-weight: 600;
+  --text-mobile-h2: 28px;                       /* Not a Figma style (Ficho): mobile Contact and case study headings */
+  --text-mobile-h2--line-height: 1.25;
+  --text-mobile-h2--font-weight: 600;
   --text-mobile-h3: 24px;                       /* Mobile/Display/Heading (H3) */
   --text-mobile-h3--line-height: 1.25;
   --text-mobile-h3--font-weight: 600;

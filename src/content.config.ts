@@ -41,7 +41,6 @@ const caseStudies = defineCollection({
     snapshot: z.array(z.object({
       label: z.string(),
       value: z.string(),
-      pill: z.boolean().optional(),
     })).optional(),
     brandColor: hexColor.optional(),
     brandColorAlt: hexColor.optional(),

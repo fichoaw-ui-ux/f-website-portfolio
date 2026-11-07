@@ -3,7 +3,9 @@
    Desktop: headline (520 wide) | contact list, gap 96, vertically centred.
    Mobile: headline, then the list, gap 24.
    Each list row is one link (icon tile, label + value, arrow), separated by
-   1px rules: 1 + (20 + 58 + 20 + 1) × 3 = 298, as in Figma.
+   1px rules. Icon tile 48 × 48 (Ficho; Figma 58 = 16 + 24 + 16 + 2), so the
+   56 text column sets the row; row padding 16 (Ficho; Figma 20):
+   1 + (16 + 56 + 16 + 1) × 3 = 268.
    Figma's "LinkedInd" label is a typo; rendered as "LinkedIn". */
 import ContentBand from '../layout/ContentBand.astro'
 import { getSite } from '../../content/site'
@@ -27,7 +29,8 @@ const rows = [
 >
   <ContentBand class="flex flex-col gap-(--space-24) desktop:flex-row desktop:items-center desktop:gap-(--space-96)">
     <div class="flex flex-col gap-(--space-16) desktop:w-[520px] desktop:shrink-0" data-figma="contact/headline">
-      <h2 class="text-mobile-h1 text-neutral-600 desktop:text-section-heading">{t.contact.heading}</h2>
+      {/* Mobile 28/1.25 = mobile-h2 (Ficho; Figma Mobile/Display/Heading H1 32). */}
+      <h2 class="text-mobile-h2 text-neutral-600 desktop:text-section-heading">{t.contact.heading}</h2>
       {/* E-mail: mobile SemiBold, desktop Bold + underline (Figma). */}
       <p class="text-mobile-subheading text-neutral-100 desktop:text-section-subheading">
         {t.contact.bodyBefore}<a
@@ -44,10 +47,10 @@ const rows = [
             href={row.href}
             target={row.href.startsWith('http') ? '_blank' : undefined}
             rel={row.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-            class="group/row flex items-center gap-(--space-16) py-(--space-20) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100"
+            class="group/row flex items-center gap-(--space-16) py-(--space-16) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100"
             data-figma={`contact/${row.label.toLowerCase()}`}
           >
-            <span class="flex shrink-0 items-center justify-center rounded-(--radius-container) border border-neutral-800 p-(--space-16) transition-colors duration-200 group-hover/row:border-neutral-600 group-hover/row:bg-neutral-100/5" aria-hidden="true">
+            <span class="flex shrink-0 items-center justify-center size-(--space-48) rounded-(--radius-container) border border-neutral-800 transition-colors duration-200 group-hover/row:border-neutral-600 group-hover/row:bg-neutral-100/5" aria-hidden="true">
               <img src={row.icon} alt="" width="24" height="24" class="size-6" />
             </span>
             <span class="flex min-w-0 flex-1 flex-col gap-(--space-4) text-neutral-100">

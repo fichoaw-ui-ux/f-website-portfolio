@@ -5,8 +5,7 @@
    - page: redesign surface (#252525 over the storm video), redesign footer;
    - header: the home compact header (CaseStudyHeader.astro);
    - column: ContentBand (1040 desktop, 24px gutters);
-   - title block: tags as the Study Case tag pills, title in the Contact
-     heading style (32 → 56) but white, summary in the Contact body style;
+   - title block: no tags (Ficho), title in the Contact heading style (28 → 56) but white, summary in the Contact body style;
    - gaps: the home scale only — part 48 / 88 (section padding), part
      heading → content 32 / 40, sub-section 32 / 40 (Study Case rows), block
      (paragraph group, figure, quote, metrics) 24 / 32 (Experience jobs),
@@ -36,7 +35,6 @@ const t = useTranslations(lang)
 
 // Same rule as the home Study Case list: industry/platform only (Ficho).
 const HIDDEN_TAGS = new Set(['Product Design'])
-const tags = d.tags.filter((tag) => !HIDDEN_TAGS.has(tag))
 
 // Link previews want a modest JPEG at the classic 1200px width, not the
 // 7680px source PNG.
@@ -55,18 +53,14 @@ const parts = [...(entry.body ?? '').matchAll(/<PartHeader\s+number="(\d+)"\s+ti
   <article data-figma="case-study">
     {/* Reading layout like Notion (Ficho): everything sits in one centred
         720 column (the home Experience measure, not in tokens), the cover
-        included (Ficho). Like the home page: intro (hero spacing 24 / 64 top,
+        included (Ficho). Like the home page: intro (top 48 mobile (Ficho; hero 24) / 64 desktop,
         48 / 88 bottom), the sticky tab bar, then the parts with section
         padding 48 / 88. */}
-    <ContentBand class="pt-(--space-24) pb-(--space-48) desktop:pt-(--space-64) desktop:pb-(--space-88)">
+    <ContentBand class="pt-(--space-48) pb-(--space-48) desktop:pt-(--space-64) desktop:pb-(--space-88)">
       <Reveal class="mx-auto max-w-[720px]">
         <header class="flex flex-col items-start" data-figma="case-study/title">
-          <ul class="flex flex-wrap gap-(--space-8)" aria-label="Tags">
-            {tags.map((tag) => (
-              <li class="rounded-(--radius-pill) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-neutral-600 desktop:px-(--space-10)">{tag}</li>
-            ))}
-          </ul>
-          <h1 class="mt-(--space-16) text-mobile-h1 text-neutral-100 desktop:text-section-heading">{d.title}</h1>
+          {/* Mobile 28/1.25 = mobile-h2, as the Contact heading (Ficho; Figma H1 32). */}
+          <h1 class="text-mobile-h2 text-neutral-100 desktop:text-section-heading">{d.title}</h1>
           <p class="mt-(--space-16) text-mobile-subheading text-neutral-100 desktop:text-section-subheading">{d.summary}</p>
         </header>
       </Reveal>

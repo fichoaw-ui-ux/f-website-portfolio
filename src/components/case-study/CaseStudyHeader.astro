@@ -1,7 +1,7 @@
 ---
 /* Case study header — no Figma frame (Ficho: match the home page). Same
    surface and height as the home compact header (CompactHeader.astro, Figma
-   25:1716 / 25:2226): #252525/88 + blur, mobile 80, desktop 84 — kept fixed so
+   25:1716 / 25:2226): #252525/88 + blur; mobile 64 (Ficho), desktop 84 (home's is 79 since its 48 photo) — kept fixed so
    the tab bar sticks flush under it and --sticky-offset (global.css) holds.
    Left: a "Back to Home" text link (Ficho: no profile here), led by the home
    page's arrow turned back, which nudges left on hover. Right: the language
@@ -21,11 +21,12 @@ const homeHref = `${getRelativeLocaleUrl(lang, '/').replace(/\/$/, '')}/`
   data-case-header
   data-figma="case-study/header"
 >
-  <ContentBand class="flex h-[80px] items-center gap-(--space-16) desktop:h-[84px]">
-    {/* Heights: the compact header's 80 / 84 (Figma), not in tokens. */}
+  <ContentBand class="flex h-(--space-64) items-center gap-(--space-16) desktop:h-[84px]">
+    {/* Heights: mobile 64 (Ficho; --header-height in global.css follows it),
+        desktop the compact header's 84 (Figma), not in tokens. */}
     <a
       href={homeHref}
-      class="group flex min-w-0 flex-1 items-center gap-(--space-8) text-title-md text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100"
+      class="group flex min-w-0 flex-1 items-center gap-(--space-8) text-title-xmd text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100"
       data-figma="case-study/header/back"
     >
       <img src="/images/icons/arrow-forward.svg" alt="" width="20" height="20" class="size-5 shrink-0 rotate-180 transition-transform duration-200 group-hover:-translate-x-1" />

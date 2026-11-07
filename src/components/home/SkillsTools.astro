@@ -28,12 +28,12 @@ const groups = [
       <div class="flex min-w-0 flex-col gap-(--space-32) desktop:flex-1 desktop:gap-(--space-40)" data-figma={`skills-tools/${g.key}`}>
         {/* Headings: mobile 24/1.25 (Mobile/Display/Heading H3), desktop 32/1.25 (H1). */}
         <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1">{g.heading}</h2>
-        {/* Chips: mobile px8 py4, 14/22 regular (32 tall); desktop px16 py12,
-            16/1 semibold (42 tall). Gaps 8 / 12. */}
+        {/* Chips: mobile px12 py4 (Ficho; Figma px8), 14/22 regular (32 tall);
+            desktop px16 py12, 16/1 semibold (42 tall). Gaps 8 / 12. */}
         <ul class="flex flex-wrap gap-(--space-8) desktop:gap-(--space-12)" data-figma={`skills-tools/${g.key}/chips`}>
           {g.items.map((item) => (
             <li
-              class="rounded-(--radius-pill) border border-neutral-800 px-(--space-8) py-(--space-4) text-body-sm whitespace-nowrap text-neutral-100 desktop:px-(--space-16) desktop:py-(--space-12) desktop:text-button-md"
+              class="rounded-(--radius-pill) border border-neutral-800 px-(--space-12) py-(--space-4) text-body-sm whitespace-nowrap text-neutral-100 desktop:px-(--space-16) desktop:py-(--space-12) desktop:text-button-md"
               data-chip
             >{item}</li>
           ))}

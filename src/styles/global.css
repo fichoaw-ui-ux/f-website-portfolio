@@ -28,11 +28,17 @@
   display: none;
 }
 
-/* Height of what sticks to the top of the redesigned home page: compact header
-   + tab bar (mobile 80 + 56, desktop 84 + 68.4). Sections scroll to just
-   under it when a tab is clicked. Derived from Figma, not a Figma variable. */
-:root { --sticky-offset: 136px; }
-@media (width >= 64rem) { :root { --sticky-offset: 152.4px; } }
+/* Height of what sticks to the top of the redesigned pages: header
+   (--header-height) + tab bar (mobile 56, desktop 68.4). Sections scroll to
+   just under it when a tab is clicked; the tab bar sticks at --header-height.
+   Headers: home compact header mobile 64, desktop 79 (48 photo, Ficho; the
+   text column 26 + 2 + 23 = 51 sets it); case study header mobile 64 (Ficho),
+   desktop 84. Not Figma variables. */
+:root { --header-height: 64px; --sticky-offset: 120px; }
+@media (width >= 64rem) {
+  :root { --header-height: 79px; --sticky-offset: 147.4px; }
+  :root:has([data-case-header]) { --header-height: 84px; --sticky-offset: 152.4px; }
+}
 
 @layer base {
   html {
