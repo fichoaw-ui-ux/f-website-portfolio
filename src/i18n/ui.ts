@@ -10,7 +10,7 @@ const dictionary = {
   id: {
     header: { backToHome: 'Kembali ke Beranda', contactMe: 'Hubungi Saya', menu: 'Menu' },
     footer: { rights: 'Hak cipta dilindungi.' },
-    hero: { greeting: 'Halo!', intro: "Saya Ficho.", roleLine: 'product designer' },
+    hero: { greeting: 'Halo!', intro: "Saya Ficho.", roleLine: 'UI/UX designer' },
     tabs: {
       label: 'Navigasi section',
       experience: 'Pengalaman',
@@ -52,7 +52,7 @@ const dictionary = {
   en: {
     header: { backToHome: 'Back to Home', contactMe: 'Contact Me', menu: 'Menu' },
     footer: { rights: 'All rights reserved.' },
-    hero: { greeting: 'Hello!', intro: "I'm Ficho.", roleLine: 'a product designer' },
+    hero: { greeting: 'Hello!', intro: "I'm Ficho.", roleLine: 'a UI/UX designer' },
     tabs: {
       label: 'Section navigation',
       experience: 'Experience',
