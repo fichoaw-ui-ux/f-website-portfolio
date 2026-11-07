@@ -193,3 +193,25 @@
     transform: none !important;
   }
 }
+
+/* Language switch (BaseLayout + LanguageSwitch). The switch is a full page
+   load, so without this it cuts to a blank frame and replays the page's
+   entrance animations. The browser cross-fades old → new page instead (only
+   for the language switch; BaseLayout skips it for other navigations), and
+   while the landing page carries data-lang-switch the compact header, tab bar
+   and Reveal content render in their end state. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms; /* not in tokens: language switch cross-fade */
+}
+html[data-lang-switch] [data-compact-header],
+html[data-lang-switch] [data-tab-bar] {
+  transition: none;
+}
+html[data-lang-switch] .reveal {
+  opacity: 1 !important;
+  transform: none !important;
+}

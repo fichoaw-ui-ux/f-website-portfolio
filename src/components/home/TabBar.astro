@@ -117,7 +117,9 @@ const tabs = items
       // without scrolling the page itself.
       if (on && scroller && scroller.scrollWidth > scroller.clientWidth) {
         const left = a.offsetLeft - (scroller.clientWidth - a.offsetWidth) / 2
-        scroller.scrollTo({ left, behavior: reduceMotion.matches ? 'auto' : 'smooth' })
+        // Language switch landing: jump, as the page itself does.
+        const instant = reduceMotion.matches || document.documentElement.hasAttribute('data-lang-switch')
+        scroller.scrollTo({ left, behavior: instant ? 'auto' : 'smooth' })
       }
     }
   }

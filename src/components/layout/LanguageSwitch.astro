@@ -51,10 +51,20 @@ const options = [
 
 <script is:inline>
   // Switching language is a full navigation to the other locale's route, so
-  // the browser resets scroll. Stash the position; BaseLayout restores it.
+  // the browser resets scroll. Stash the position — as the last section with
+  // an id that starts at or above the viewport top, plus the offset into it —
+  // and BaseLayout restores it (and cross-fades, see BaseLayout's head).
   document.querySelectorAll('a[data-lang-switch]').forEach(function (a) {
     a.addEventListener('click', function () {
-      sessionStorage.setItem('langSwitchScrollY', String(window.scrollY))
+      var id = null
+      var offset = 0
+      document.querySelectorAll('main section[id], main [id^="part-"]').forEach(function (el) {
+        var top = el.getBoundingClientRect().top
+        if (top <= 0) { id = el.id; offset = -top }
+      })
+      try {
+        sessionStorage.setItem('langSwitchScroll', JSON.stringify({ id: id, offset: offset, y: window.scrollY }))
+      } catch (e) {}
     })
   })
 </script>

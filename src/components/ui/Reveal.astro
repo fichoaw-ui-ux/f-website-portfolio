@@ -19,9 +19,22 @@ const { as: Tag = 'div', delay = 0, class: className = '' } = Astro.props
   // and a Web Animations API animation would override it while running.
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+  // Language switch landing (BaseLayout sets data-lang-switch before first
+  // paint): what is already on screen was on screen a moment ago in the other
+  // language, so it shows as is; only content further down still reveals.
+  const langSwitch = document.documentElement.hasAttribute('data-lang-switch')
+
   if (!prefersReducedMotion) {
     const els = document.querySelectorAll<HTMLElement>('.reveal')
     els.forEach(el => {
+      if (langSwitch) {
+        const r = el.getBoundingClientRect()
+        if (r.bottom > 0 && r.top < window.innerHeight) {
+          el.style.opacity = '1'
+          el.style.transform = 'none'
+          return
+        }
+      }
       inView(el, () => {
         const delay = Number(el.dataset.revealDelay ?? 0) / 1000
         animate(el, { opacity: 1, transform: 'translateY(0px)' }, { duration: 0.5, delay, easing: [0.22, 1, 0.36, 1] })
