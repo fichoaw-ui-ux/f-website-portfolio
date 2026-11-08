@@ -8,24 +8,30 @@ year: 2024
 duration: "Q1 2024"
 tags: ["Product Design", "Fintech B2B", "Web Portal"]
 cover: "../../../assets/case-studies/quick-transfer/cover.png"
-coverAlt: "Quick Transfer — case study cover"
+coverAlt: "Quick Transfer, case study cover"
 thumbnail: "../../../assets/case-studies/quick-transfer/cover.png"
-thumbnailAlt: "Quick Transfer — case study cover"
-summary: "72% of batch transfers only had one recipient. I designed a new path that's 52% faster — with an easy way back to batch if someone suddenly needs it."
-overview: "Local Transfer in Jack Portal was built for batch transfers (hundreds of recipients). But the data showed 72% of batches only had one recipient — people were stuck using the batch flow because there was no other option. I designed Quick Transfer as a faster single path, with transition logic that kept batch access open the whole time."
-team: ["Fira Alliyah — Product Manager", "Bang Edo — CEO", "Designers", "Writers", "Engineers"]
+thumbnailAlt: "Quick Transfer, case study cover"
+summary: "Paying one person in Jack Portal meant going through a flow built for hundreds. I designed Quick Transfer, a two-step path that cut transfer initiation time by 52%, with a way back to batch at any point."
+overview: "Local Transfer in Jack Portal was built for batch transfers (hundreds of recipients). But the data showed 72% of batches only had one recipient: people were stuck using the batch flow because there was no other option. I designed Quick Transfer as a faster single path, with transition logic that kept batch access open the whole time."
+team: ["Fira Alliyah, Product Manager", "Edo, CEO", "Designers", "Writers", "Engineers"]
 deliverables: ["User research (internal usability testing)", "Entry point design alternatives", "Full flow prototype", "Transition logic to batch", "Handoff to engineering"]
 tools: ["Figma", "Prototype"]
 featured: true
 order: 2
 brandColor: "#B9FC00"
 snapshot:
-  - label: "Designer"
-    value: "Ficho Aji Wibowo — UI/UX Designer"
+  - label: "Problem"
+    value: "72% of Local Transfer batches in Jack Portal held one recipient, yet every transfer had to go through a batch name, a table or upload, and bulk validation."
+  - label: "My role"
+    value: "UI/UX Designer: solution ideation, usability testing, UI and transition logic, interactive prototype, and handoff to engineering."
+  - label: "Key decisions"
+    value: "A two-step Quick Transfer path, an entry point that states each option's capacity, and two doors into batch from inside the flow."
+  - label: "Outcome"
+    value: "Transfer initiation time cut by 52%; Quick Transfer used in 41% of all Local Transfer initiations within two weeks of launch."
   - label: "Most Collaborated with"
-    value: "Fira Alliyah — Product Manager"
+    value: "Fira Alliyah, Product Manager"
   - label: "Brand & Industry"
-    value: "Jack Finance & Fintech B2B"
+    value: "Jack Finance · Fintech B2B"
   - label: "Platform"
     value: "Web Portal"
   - label: "Timeline"
@@ -45,6 +51,8 @@ import Metrics from '../../../components/case-study/Metrics.astro'
 Jack Finance is a business financial services provider offering integrated financial management solutions. One of its main services is ***Local Transfer***, built to help companies manage domestic payments in one place.
 
 Since its main audience is corporate clients with high-volume transaction needs, **Local Transfer was designed from day one to handle bulk payments (*batch processing*)**.
+
+This project and [Local Transfer Mobile](/work/local-transfer-mobile/) grew out of the same discovery: 72% of Local Transfer batches held a single transaction. This project answered it in the Portal; Local Transfer Mobile answered it on the phone. Both follow the same principle: **single first, batch as a branch**.
 </Section>
 
 <PartHeader number="02" title="Context & Problem" />
@@ -54,59 +62,61 @@ Fira (my PM) came to me with one data point:
 
 > **72% of batch transfers on Jack Portal only had one recipient.**
 
-That 72% wasn't because people chose batch — it was because there was no other option. Every time someone wanted to send to just one person, they still had to go through a flow built for hundreds of recipients: name the batch, pick an upload method, work through a validation table. For a single transaction.
+People didn't choose batch for those transfers. There was simply no other option. Every time someone wanted to send to just one person, they still had to go through a flow built for hundreds of recipients: name the batch, pick an upload method, work through a validation table. For a single transaction.
 
-When Fira and I dug deeper, the problem wasn't just one thing. There were three friction points stacked in a row in the same flow — each one slowing users down before they even got to the transfer itself.
+When Fira and I dug deeper, we found three friction points stacked in a row in the same flow, each one slowing users down before they even got to the transfer itself.
 </Section>
 
 <Section title="B. Current Experience">
-To help you follow the context above, here's a look at the current Local Transfer experience and UI before any of this was optimized.
+Sending to one person meant going through the full batch flow, from the Create menu to bulk validation. The screenshot and prototype below show that journey.
 </Section>
 
-<FigmaEmbed indent url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-44005&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1875%3A43955&page-id=411%3A2&show-proto-sidebar=1" title="Current experience — Local Transfer" caption="Prototype of the old Local Transfer flow — try running it to feel the friction yourself." />
+<ImageFull indent src="/images/cs-local-transfer-mobile/current-experience-portal.png" alt="Jack Portal dashboard with the Create menu open and Local Transfer highlighted" caption="Current experience: Local Transfer starts from the Create menu in the Portal." />
+
+<FigmaEmbed indent url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-44005&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1875%3A43955&page-id=411%3A2&show-proto-sidebar=1" title="Current experience: Local Transfer" caption="Prototype of the old Local Transfer flow, from batch name to validation." />
 
 <Section title="C. The Friction Points">
-After tracing through the batch flow that people were forced to use for single transfers, the friction wasn't coming from one spot. **There were three friction points spread across three different stages of the same flow** — and all three had to be cleared in order, even for something as simple as sending to one person.
+Tracing the batch flow that people were forced to use for single transfers, **we found three friction points spread across three different stages of the same flow**. All three had to be cleared in order, even for something as simple as sending to one person.
 
 **1. Name the batch first, then you can transfer.**
 
-Before doing anything else, users had to name their batch — something like *"Transfer for A"*. For most people who just wanted to send to one person, this was a first step that meant nothing to them.
+Before doing anything else, users had to name their batch, something like *"Transfer for A"*. For most people who just wanted to send to one person, this first step meant nothing to them.
 </Section>
 
-<ImageFull indent src="/images/cs-quick-transfer/friction-1.png" alt="'Add Batch Name' screen that had to be completed before transferring" caption="Friction #1 — Name the batch first, then you can transfer." />
+<ImageFull indent src="/images/cs-quick-transfer/friction-1.png" alt="'Add Batch Name' screen that had to be completed before transferring" caption="Friction #1: name the batch first, then you can transfer." />
 
 <Section title=" " indent>
-**2. No form — just a table and Excel upload.**
+**2. No form, just a table and Excel upload.**
 
-There were only two options: upload an Excel file or fill in an empty table. Both were built to handle dozens or hundreds of recipients at once. Anyone who wanted to send to one person had no other way in — they had to pick one of the two anyway.
+There were only two options: upload an Excel file or fill in an empty table. Both were built to handle dozens or hundreds of recipients at once. Anyone who wanted to send to one person had to pick one of the two anyway.
 </Section>
 
-<ImageFull indent src="/images/cs-quick-transfer/friction-2.png" alt="Screen with two options: Upload Excel or Empty Table" caption="Friction #2 — No form. Just a table and Excel upload." />
+<ImageFull indent src="/images/cs-quick-transfer/friction-2.png" alt="Screen with two options: Upload Excel or Empty Table" caption="Friction #2: no form, just a table and Excel upload." />
 
 <Section title=" " indent>
 **3. Validation built for 100 people, used for 1.**
 
-After entering the data, users still had to go through a table-based validation screen — designed to review hundreds of rows at once. For someone with a single recipient, this was a final step that was completely irrelevant, but couldn't be skipped.
+After entering the data, users still had to go through a table-based validation screen designed to review hundreds of rows at once. For someone with a single recipient, this final step was irrelevant, and it couldn't be skipped.
 </Section>
 
-<ImageFull indent src="/images/cs-quick-transfer/friction-3.png" alt="Table-based validation screen" caption="Friction #3 — Validation built for 100 people, used for 1." />
+<ImageFull indent src="/images/cs-quick-transfer/friction-3.png" alt="Table-based validation screen" caption="Friction #3: validation built for 100 people, used for 1." />
 
 <Section title="D. Design Opportunity">
-Once the three friction points were mapped out, the real challenge wasn't just removing the roadblocks. The harder part was designing a solution that actually fit the majority — without creating new problems for everyone else.
+Removing the three roadblocks was the easy part. The harder part was designing a solution that fit the majority without creating new problems for everyone else.
 
-> **How do you give 72% of users a much faster path — without creating a dead end for the ones who still need batch?**
+> **How do you give 72% of users a much faster path, without creating a dead end for the ones who still need batch?**
 
-This wasn't just about bolting a new feature onto what already existed. The real challenge was designing two paths that stood on their own but still felt like one product — a simple single-transaction path for most people, without taking away the batch path that power users relied on. Get one side wrong, and the other side would suffer too.
+That meant designing two paths that stood on their own but still felt like one product: a simple single-transaction path for most people, next to the batch path that power users relied on. Get one side wrong, and the other side would suffer too.
 </Section>
 
 <PartHeader number="03" title="Design Decisions" />
 
 <Section title="Kickoff">
-I joined after Fira had wrapped up discovery — the data was already mapped out, and the problem statement was clear. My job started from ideating solutions through to detailed UI and transition logic, all the way to an interactive prototype and handoff to engineering.
+I joined after Fira had wrapped up discovery, with the data mapped out and the problem statement clear. My job ran from ideating solutions to detailed UI and transition logic, an interactive prototype, and handoff to engineering.
 
-Out of the three friction points we found, the solution pointed in one direction: design a new path made specifically for single transactions. A path with no batch name, no required table, and no bulk validation to skip past — just a short form that gets straight to the point: who's it for, how much are you sending. This is what we designed as Single Transfer.
+The three friction points pointed in one direction: a new path made specifically for single transactions. No batch name, no required table, no bulk validation to skip past. Just a short form that asks who it's for and how much. We called it Single Transfer.
 
-After I sketched out the first alternatives, we ran a **forum with the wider team (Designers + Writers + PM)** to align on direction and decide what needed validating. The forum's output: two things we needed to test with users:
+After I sketched the first alternatives, we ran a **forum with the wider team (Designers + Writers + PM)** to align on direction and decide what needed validating. The forum agreed on two things to test with users:
 
 - How users experience the full *Single Transfer* journey end-to-end.
 - Which entry point option communicates the choice most clearly.
@@ -114,139 +124,141 @@ After I sketched out the first alternatives, we ran a **forum with the wider tea
 I tested both with 8 internal users in usability testing sessions.
 </Section>
 
-<Section title="A. Testing with Users">
-The Single Transfer flow we tested was designed to remove all three friction points we'd found earlier — no batch name, no table, no validation built for 100 people. This round of testing validated two things: whether the new flow actually felt easier in users' hands, and which entry point most clearly communicated the difference between the two paths.
+<Section title="Exploration & Validation">
+The Single Transfer flow we tested had none of the three friction points: no batch name, no table, no validation built for 100 people. The sessions checked two things: how the new flow came across to users, and which entry point most clearly communicated the difference between the two paths.
 </Section>
 
-<Section title="A.1 Testing the Single Transfer Flow" indent>
-I started the session with an end-to-end walkthrough: I walked users through the Single Transfer process from start to submit, then asked what they thought of the overall flow. This was intentionally placed first so users had full context before being asked about entry points.
+<Section title="Concept Feedback on the Single Transfer Flow" indent>
+I started each session with an end-to-end walkthrough: I walked users through the Single Transfer process from start to submit, then asked what they thought of the overall flow. This came first so users had full context before being asked about entry points.
 </Section>
 
-<ImageFull indent={2} src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Full journey walkthrough of Single Transfer" caption="Result — Every user said they didn't run into any friction; the flow was validated as easy to complete." />
+<ImageFull indent src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Full journey walkthrough of Single Transfer" caption="The Single Transfer journey shown to participants in the walkthrough." />
 
-<Section title=" " indent={2}>
-**Result → Every user** found it effortless. Nobody got stuck on naming a batch, nobody was confused by a validation table — none of the three friction points that used to slow people down showed up in this flow. The flow was validated as easy to complete.
+<Section title=" " indent>
+**Every participant** said the flow felt easy to follow. None of them raised the batch name or the validation table as a concern. Because I guided them through the flow, this is concept feedback: it shows the direction made sense to users, not that they could complete it on their own.
 </Section>
 
-<Section title="A.2 User Feedback on the Entry Point" indent>
+<Section title="Feedback on the Entry Point" indent>
 Once users understood the full journey, I asked for their thoughts on the entry point. Three alternatives were tested:
 </Section>
 
-<ImageFull indent={2} src="/images/cs-quick-transfer/entry-point-alt-1.png" alt="Entry point Alt 1: Three-option hierarchy" caption="Alt 1 — Three-option hierarchy: Single Local Transfer + Batch (Upload Excel / Empty Table)." />
+<ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-1.png" alt="Entry point Alt 1: Three-option hierarchy" caption="Alt 1: three-option hierarchy, Single Local Transfer + Batch (Upload Excel / Empty Table)." />
 
-<ImageFull indent={2} src="/images/cs-quick-transfer/entry-point-alt-2.png" alt="Entry point Alt 2: Two-option toggle" caption="Alt 2 — Two-option toggle: Single vs Batch only." />
+<ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-2.png" alt="Entry point Alt 2: Two-option toggle" caption="Alt 2: two-option toggle, Single vs Batch only." />
 
-<ImageFull indent={2} src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3 — Direct list. We were tempted by this one: if 72% of transactions are single anyway, why not skip the choice entirely and just show the list?" />
+<ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. We were tempted by this one. If 72% of transactions are single anyway, why not skip the choice entirely and just show the list?" />
 
-<Section title="Testing Results" indent={2}>
-Alt 1 and Alt 2 got the same number of user votes, but based on a pros/cons breakdown, **Alt 2 won** — clearer, and with the fewest cons. Alt 3 got zero votes — users who needed batch couldn't find their way to it.
+<Section title=" " indent>
+Alt 1 and Alt 2 got the same number of user votes. Based on a pros/cons breakdown, **Alt 2 won**: it was clearer and had the fewest cons. Alt 3 got zero votes, because users who needed batch couldn't find their way to it.
 </Section>
 
-<Section title="B. Bringing the Results to the CEO">
-Fira and I presented both sets of testing results to **Bang Edo (our CEO)**. Two key findings we highlighted:
+<Section title="Bringing the Results to the CEO" indent>
+Fira and I presented both sets of findings to **Edo, our CEO**. We highlighted two:
 
-1. The Single Transfer flow was validated as easy to complete — no user ran into friction.
+1. Participants found the Single Transfer flow easy to follow.
 2. The clearest entry point option was Alt 2 (just two buttons).
 
-Alongside that, we pitched the direction we were leaning toward: **going more aggressively single-only**, based on the 72% data point plus both testing findings pointing the same way.
+Alongside that, we pitched the direction we were leaning toward: **going more aggressively single-only**, based on the 72% data point plus both findings pointing the same way.
 
-The reaction wasn't what we expected. Bang Edo raised a perspective the testing hadn't captured — not about how often people switch between single and batch, but about what happens when that switch isn't possible at all.
+The reaction wasn't what we expected. Edo raised a perspective the testing hadn't captured. His concern was what happens when the switch from single to batch isn't possible at all, however rarely it's needed.
 </Section>
 
-<Quote indent author="Bang Edo, CEO">
+<Quote indent author="Edo, CEO">
 This feature can handle single transactions through its own dedicated flow, but users should still be able to switch over and do a batch transaction too.
 </Quote>
 
 <Section title=" " indent>
-The testing confirmed that users rarely need to switch from single to batch — but it never tested what happens when that need shows up mid-flow. That's the risk Bang Edo saw that we'd missed: a rigid Quick Transfer could become a *dead end* at the exact moment it mattered most.
+Our sessions never tested what happens when the need for batch shows up mid-flow. That's the risk Edo saw and we'd missed: a rigid single-only flow could become a *dead end* at the exact moment it mattered most.
 
-This is where the feature got its name: **Quick Transfer** — not *"Single"*, because *"Single"* closes a door that should stay open. **Framing the feature turned out to matter just as much as the flow itself.**
+This is where the feature got its name: **Quick Transfer**. *"Single"* closes a door that should stay open. **Framing the feature turned out to matter just as much as the flow itself.**
 </Section>
 
-<Section title="C. Iterating After Bang Edo's Feedback">
-After Bang Edo's pivot, I made two fundamental changes. First, the testing recommendation (Alt 2) no longer applied — the feature now needed to show all three methods at once for the transition logic to work. Second, I opened up **two entry points into batch from inside the Quick Transfer flow** — so users who suddenly needed to switch wouldn't hit a dead end.
-
-Together, these two changes made Quick Transfer **genuinely** flexible — not just single transfer locked into one path.
+<Section title=" ">
+At this point the three friction points were already solved, together, by the Single Transfer flow itself. What was left was the risk Edo raised: a dead end for users who need batch. The three final decisions below each answer that risk.
 </Section>
 
-<Section title="C.1 Entry Point: Alt 2 → Alt 1 with Grouping" indent>
-**The testing recommendation (Alt 2) no longer applied.** After the pivot, the feature needed to show all three methods (Quick + Upload Excel + Empty Table) at once for the transition logic to work. The structure ended up using **Alt 1**, but I handled the *"too many choices"* con with descriptive grouping: *"Suitable for 1-5 recipients"* for Quick Transfer, *"For up to 1000 recipients"* for the two batch options.
+<Section title="A. Entry Point: Alt 2 → Alt 1 with Grouping">
+**Risk addressed:** picking the wrong path up front, and losing sight of batch once inside Quick Transfer.
+
+The testing recommendation (Alt 2) no longer applied. With transition logic, the feature needed to show all three methods (Quick + Upload Excel + Empty Table) at once. The structure ended up using **Alt 1**, and I handled its *"too many choices"* con with descriptive grouping: *"Suitable for 1-5 recipients"* for Quick Transfer, *"For up to 1000 recipients"* for the two batch options.
 </Section>
 
-<ImageGrid cols={2} indent={2}>
-  <ImageFull src="/images/cs-quick-transfer/entry-point-final-before.png" alt="Before — Alt 2 (two-option toggle)" caption="Before — Alt 2 (toggle)" />
-  <ImageFull src="/images/cs-quick-transfer/entry-point-final-after.png" alt="After — Alt 1 with descriptive grouping" caption="After — Alt 1 with grouping" />
+<ImageGrid cols={2} indent>
+  <ImageFull src="/images/cs-quick-transfer/entry-point-final-before.png" alt="Before: Alt 2 (two-option toggle)" caption="Before: Alt 2 (toggle)" />
+  <ImageFull src="/images/cs-quick-transfer/entry-point-final-after.png" alt="After: Alt 1 with descriptive grouping" caption="After: Alt 1 with grouping" />
 </ImageGrid>
 
-<Section title="C.2 Multi-select in Recipient Details" indent>
-**The first door into batch from inside the Quick Transfer flow.** I added multi-select. A checkbox column appeared next to each recipient, plus an *"X recipients selected"* indicator in the footer with a Continue button. Users who knew from the start they wanted to send to several people could just select them all here, without having to start over in single mode.
+<Section title="B. Multi-select in Recipient Details">
+**Risk addressed:** a dead end for users who know from the start that they need several recipients.
+
+This is the first door into batch from inside the Quick Transfer flow. I added multi-select: a checkbox column next to each recipient, plus an *"X recipients selected"* indicator in the footer with a Continue button. Users who knew from the start they wanted to send to several people could select them all here, without starting over.
 </Section>
 
-<ImageGrid cols={2} indent={2}>
-  <ImageFull src="/images/cs-quick-transfer/recipient-details-before.png" alt="Before — Recipient Details without multi-select" caption="Before — No multi-select" />
-  <ImageFull src="/images/cs-quick-transfer/recipient-details-after.png" alt="After — Recipient Details with multi-select" caption="After — With multi-select" />
+<ImageGrid cols={2} indent>
+  <ImageFull src="/images/cs-quick-transfer/recipient-details-before.png" alt="Before: Recipient Details without multi-select" caption="Before: no multi-select" />
+  <ImageFull src="/images/cs-quick-transfer/recipient-details-after.png" alt="After: Recipient Details with multi-select" caption="After: with multi-select" />
 </ImageGrid>
 
-<Section title="C.3 CTA Banner in Transfer Details" indent>
-**The second door, with data preservation.** I added a black CTA banner reading *"Click here to add more recipients"* below the form. For a user who's already filled in 1 recipient plus an amount, then realizes they need to send to a few more people — one click, and everything they've entered carries over to Empty Table.
+<Section title="C. CTA Banner in Transfer Details">
+**Risk addressed:** a dead end, and lost data, for users who realise mid-flow that they need batch.
+
+This is the second door, with data preservation. I added a black CTA banner reading *"Click here to add more recipients"* below the form. A user who has already filled in 1 recipient plus an amount, then realises they need to send to a few more people, clicks once and everything they've entered carries over to Empty Table.
 </Section>
 
-<ImageGrid cols={2} indent={2}>
-  <ImageFull src="/images/cs-quick-transfer/transfer-details-before.png" alt="Before — Transfer Details without CTA banner" caption="Before — No banner" />
-  <ImageFull src="/images/cs-quick-transfer/transfer-details-after.png" alt="After — Transfer Details with CTA banner" caption="After — With CTA banner" />
+<ImageGrid cols={2} indent>
+  <ImageFull src="/images/cs-quick-transfer/transfer-details-before.png" alt="Before: Transfer Details without CTA banner" caption="Before: no banner" />
+  <ImageFull src="/images/cs-quick-transfer/transfer-details-after.png" alt="After: Transfer Details with CTA banner" caption="After: with CTA banner" />
 </ImageGrid>
 
 <Section title="Recap: Three Final Design Decisions">
-Out of this whole process — testing, Bang Edo's feedback, and the iteration that followed — three final design decisions took shape:
+Out of testing, Edo's feedback, and the iteration that followed, three final design decisions took shape:
 
-1. **Entry point Alt 1 with descriptive grouping** — communicates what each path can actually handle, not just a label.
-2. **Multi-select in Recipient Details** — the first door into batch, for users who know from the start they need to send to more than one person.
-3. **CTA banner in Transfer Details** — the second door, with data preservation, for users who realize mid-flow that they need batch.
+1. **Entry point Alt 1 with descriptive grouping.** Each option says what it can handle, beyond a plain label.
+2. **Multi-select in Recipient Details.** The first door into batch, for users who know from the start they need to send to more than one person.
+3. **CTA banner in Transfer Details.** The second door, with data preservation, for users who realise mid-flow that they need batch.
 
-Together, these three make Quick Transfer fast for the majority, without shutting the door on anyone who still needs batch.
+Together, these three keep Quick Transfer fast for the majority while leaving batch open to anyone who needs it.
 </Section>
 
 <PartHeader number="04" title="Solution" />
 
 <Section title="Quick Transfer Flow">
-The 72% of users who used to be stuck going through the batch flow — now have their own path. No batch name. No table. No validation process built for 100 people.
+The 72% of users who used to be stuck in the batch flow now have their own path. No batch name. No table. No validation process built for 100 people.
 
-**How do you want to send money?** Now, when someone wants to make a transaction, there's an answer ready: **Quick Transfer**. Type the bank name, pick it from the dropdown, enter the account number → step 2, fill in the amount and transfer note → submit. Done. Two steps, a short form — none of the three friction points that used to slow them down.
+**How do you want to send money?** When someone starts a transaction, the answer is ready: **Quick Transfer**. Type the bank name, pick it from the dropdown, enter the account number → step 2, fill in the amount and transfer note → submit. Two steps and a short form, with none of the three friction points.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/solution-1-quick-transfer.gif" alt="End-to-end Quick Transfer flow" caption="Quick Transfer — Two steps, a short form." />
+<ImageFull src="/images/cs-quick-transfer/solution-1-quick-transfer.gif" alt="End-to-end Quick Transfer flow" caption="Quick Transfer: two steps, a short form." />
 
 <Section title="Two Doors Into Batch">
-The friction for the 72% is solved. What's left came from Bang Edo. Quick Transfer wasn't just designed to be fast — it was designed not to cut off the path for anyone who suddenly needs more.
-
-To close the gap Bang Edo pointed out, I opened up two entry points into batch from inside the Quick Transfer flow.
+With the friction for the 72% solved, what's left is the gap Edo pointed out. Two entry points into batch from inside the Quick Transfer flow keep the path open for anyone who suddenly needs more.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/solution-2-add-recipient.gif" alt="Multi-select in Recipient Details" caption="In Recipient Details — Check off several names at once, data carries over." />
+<ImageFull src="/images/cs-quick-transfer/solution-2-add-recipient.gif" alt="Multi-select in Recipient Details" caption="In Recipient Details: check off several names at once, data carries over." />
 
-<ImageFull src="/images/cs-quick-transfer/solution-3-transfer-details.gif" alt="CTA banner in Transfer Details" caption="In Transfer Details — Click the banner, whatever's filled in carries over to Empty Table." />
+<ImageFull src="/images/cs-quick-transfer/solution-3-transfer-details.gif" alt="CTA banner in Transfer Details" caption="In Transfer Details: click the banner, whatever's filled in carries over to Empty Table." />
 
 <Section title="Full Prototype">
-And for anyone who knew from the start they needed to send to dozens of people, Upload Excel and Empty Table are still there — unchanged, untouched.
+For anyone who knows from the start they need to send to dozens of people, Upload Excel and Empty Table are still there, unchanged.
 
-If you want to feel the full experience yourself, there's a complete prototype below.
+The complete prototype is below.
 </Section>
 
-<FigmaEmbed url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-46677&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1875%3A46627&page-id=411%3A2&show-proto-sidebar=1" title="Full prototype — Quick Transfer" caption="The complete Quick Transfer end-to-end prototype." />
+<FigmaEmbed url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-46677&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1875%3A46627&page-id=411%3A2&show-proto-sidebar=1" title="Full prototype: Quick Transfer" caption="The complete Quick Transfer end-to-end prototype." />
 
 <PartHeader number="05" title="Impact" />
 
-<Section title="Results, 2 Weeks After Launch">
+<Section title="Results">
 <Metrics items={[
-  { value: "52%", label: "Faster time-to-transfer" },
-  { value: "41%", label: "Adoption within 2 weeks" },
+  { value: "52%", label: "Faster transfer initiation time, within 2 weeks of launch" },
+  { value: "41%", label: "Of all Local Transfer initiations went through Quick Transfer, within 2 weeks of launch" },
 ]} />
 
-*Customer success* report: the old recurring question — *"why do I need to name a batch to send to one person?"* — disappeared from incoming tickets.
+*Customer success* report: the old recurring question, *"why do I need to name a batch to send to one person?"*, disappeared from incoming tickets.
 </Section>
 
 <Section title="Reflection">
-What satisfied me most wasn't the 52% or 41% by themselves — it was the **reason** those numbers got that high.
+What satisfied me most was the **reason** behind the 52% and 41%.
 
-**Bang Edo's feedback turned out to be the deciding factor.** If this feature had stayed a rigid *"Single Transfer,"* users who suddenly needed to add more recipients would have bounced back to the old batch flow, gotten frustrated, and maybe never come back to Quick Transfer next time. **It's the transition logic that made Quick Transfer something people actually use, not just something they try once.**
+**Edo's feedback turned out to be the deciding factor.** If this feature had stayed a rigid *"Single Transfer,"* users who suddenly needed to add more recipients would have bounced back to the old batch flow, gotten frustrated, and maybe never come back to Quick Transfer. **The transition logic is what made Quick Transfer something people keep using after the first try.**
 </Section>

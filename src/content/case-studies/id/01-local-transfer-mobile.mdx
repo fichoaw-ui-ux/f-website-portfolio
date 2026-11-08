@@ -8,23 +8,29 @@ year: 2024
 duration: "Q1 2024"
 tags: ["Product Design", "Fintech B2B", "Mobile App"]
 cover: "../../../assets/case-studies/local-transfer-mobile/cover.png"
-coverAlt: "Local Transfer Mobile — cover studi kasus"
+coverAlt: "Local Transfer Mobile, cover studi kasus"
 thumbnail: "../../../assets/case-studies/local-transfer-mobile/cover.png"
-thumbnailAlt: "Local Transfer Mobile — cover studi kasus"
-summary: "Drafter harus buka laptop hanya untuk kirim satu pembayaran. Saya bawa Local Transfer ke Jack Mobile App dengan alur single-first — 56% adopsi di bulan pertama, 40% lebih cepat dari Portal."
+thumbnailAlt: "Local Transfer Mobile, cover studi kasus"
+summary: "Drafter harus buka laptop hanya untuk kirim satu pembayaran. Saya bawa Local Transfer ke Jack Mobile App dengan alur single-first: 56% adopsi di bulan pertama, 40% lebih cepat dari Portal."
 overview: "Di Jack, semua pembuatan Local Transfer hanya bisa dilakukan di Portal, padahal 72% batch cuma berisi satu transaksi. Saya merancang Local Transfer untuk Jack Mobile App: tombol Create sebagai pintu masuk, alur yang dimulai dari memilih penerima, dan batch sebagai cabang dari alur single."
-team: ["Fira Alliyah — Product Manager", "Engineer Mobile"]
+team: ["Fira Alliyah, Product Manager", "Engineer Mobile"]
 deliverables: ["Eksplorasi user flow (3 iterasi)", "Usability testing (10 user internal)", "UI mobile", "Handoff ke engineering mobile"]
 tools: ["Figma", "Prototype"]
 featured: true
 order: 1
 snapshot:
-  - label: "Designer"
-    value: "Ficho Aji Wibowo — UI/UX Designer"
+  - label: "Problem"
+    value: "Drafter hanya bisa membuat Local Transfer di Portal, lewat alur yang dirancang untuk batch, padahal 72% batch berisi satu transaksi."
+  - label: "My role"
+    value: "UI/UX Designer: eksplorasi user flow, UI mobile, usability testing, dan handoff ke engineering mobile."
+  - label: "Key decisions"
+    value: "Tombol Create di bottom navigation, alur yang dimulai dari penerima, dan batch sebagai cabang opsional dari alur single."
+  - label: "Outcome"
+    value: "56% adopsi mobile di bulan pertama; transfer tunggal 40% lebih cepat dibanding di Portal."
   - label: "Most Collaborated with"
-    value: "Fira Alliyah — Product Manager"
+    value: "Fira Alliyah, Product Manager"
   - label: "Brand & Industry"
-    value: "Jack Finance & Fintech B2B"
+    value: "Jack Finance · Fintech B2B"
   - label: "Platform"
     value: "Mobile App"
   - label: "Timeline"
@@ -42,17 +48,17 @@ import Metrics from '../../../components/case-study/Metrics.astro'
 <Section title="Background">
 Jack Finance adalah penyedia layanan keuangan bisnis yang menawarkan berbagai solusi manajemen keuangan terintegrasi. Salah satu layanan utamanya adalah ***Local Transfer / Kirim Uang Domestik***, layanan untuk membantu perusahaan mengelola pembayaran domestik secara terpusat.
 
-Jack hadir di dua platform: **Jack Portal (web)** dan **Jack Mobile App**. Tapi perannya tidak seimbang. Semua pembuatan transaksi *Local Transfer* hanya bisa dilakukan di Portal.
+Jack hadir di dua platform: **Jack Portal (web)** dan **Jack Mobile App**. Perannya tidak seimbang: semua pembuatan transaksi *Local Transfer* hanya bisa dilakukan di Portal.
 
-Setiap transaksi di Jack melewati tiga peran: **Drafter** yang membuat transaksi, **Approver** yang menyetujuinya, dan **Releaser** yang melepas dana dari saldo perusahaan. Untuk *Local Transfer*, Mobile App saat itu hanya melayani Approver dan Releaser — Drafter, orang yang memulai semua transaksi, tetap harus membuka Portal. Satu-satunya yang bisa Drafter buat dari ponsel hanyalah *reimbursement*.
+Setiap transaksi di Jack melewati tiga peran: **Drafter** yang membuat transaksi, **Approver** yang menyetujuinya, dan **Releaser** yang melepas dana dari saldo perusahaan. Untuk *Local Transfer*, Mobile App saat itu hanya melayani Approver dan Releaser. Drafter, orang yang memulai semua transaksi, tetap harus membuka Portal. Satu-satunya yang bisa Drafter buat dari ponsel hanyalah *reimbursement*.
 
-Studi kasus ini membahas bagaimana *Local Transfer* dibawa ke Jack Mobile App — bukan dengan mengecilkan versi Portal, tapi dengan merancang ulang alurnya untuk cara orang memakai ponsel.
+Proyek ini berangkat dari discovery yang sama dengan [Quick Transfer](/id/work/quick-transfer/): temuan bahwa 72% batch Local Transfer hanya berisi satu transaksi. Quick Transfer menjawabnya di Portal, proyek ini menjawabnya di ponsel. Keduanya memakai prinsip yang sama: **single dulu, batch sebagai cabang**.
 </Section>
 
 <PartHeader number="02" title="Context & Problem" />
 
 <Section title="A. Context Problem">
-Sinyal pertamanya datang dari pemakaian Mobile App yang rendah. Pengguna aktif bulanan di semua modul mobile hanya berkisar **31–50 user** per bulan (April–September 2023). Penyebabnya jelas: *drafter* — orang yang membuat transaksi — tidak punya alasan untuk membuka aplikasinya.
+Sinyal pertamanya datang dari pemakaian Mobile App yang rendah. Pengguna aktif bulanan di semua modul mobile hanya berkisar **31–50 user** per bulan (April–September 2023). Penyebabnya jelas: *drafter*, orang yang membuat transaksi, tidak punya alasan untuk membuka aplikasinya.
 
 | Bulan (2023) | Unique Users |
 | --- | --- |
@@ -67,27 +73,27 @@ Sinyal pertamanya datang dari pemakaian Mobile App yang rendah. Pengguna aktif b
 
 > **72% batch Local Transfer di Jack Portal hanya berisi satu transaksi.**
 
-Artinya, banyak user — terutama pemilik UMKM dan founder — sebenarnya hanya butuh kirim satu pembayaran. Tapi untuk itu mereka tetap harus duduk di depan laptop dan melewati flow yang dirancang untuk pembayaran massal.
+Artinya, banyak user, terutama pemilik UMKM dan founder, sebenarnya hanya butuh kirim satu pembayaran. Untuk itu mereka tetap harus duduk di depan laptop dan melewati flow yang dirancang untuk pembayaran massal.
 
 Fira memperkuat temuan ini lewat *review* feedback user dan interview singkat dengan beberapa klien serta stakeholder internal. Hasilnya konsisten: **keharusan memakai desktop untuk pembayaran cepat dan tunggal terasa merepotkan**.
 </Section>
 
 <Section title="B. Current Experience">
-Bayangkan seorang Drafter sedang di luar kantor dan perlu membayar supplier hari itu juga. Ia membuka Jack Mobile App — tapi tidak ada tombol untuk membuat transaksi baru. Satu-satunya tombol **Create New** di Home hanya ada di kartu *Reimbursement*. Mau tidak mau, ia harus menunggu sampai bisa membuka laptop, lalu melewati flow *Local Transfer* di Portal yang dirancang untuk banyak penerima, padahal ia hanya mengirim ke satu orang.
+Bayangkan seorang Drafter sedang di luar kantor dan perlu membayar supplier hari itu juga. Ia membuka Jack Mobile App, tapi tidak ada tombol untuk membuat transaksi baru. Satu-satunya tombol **Create New** di Home hanya ada di kartu *Reimbursement*. Ia harus menunggu sampai bisa membuka laptop, lalu melewati flow *Local Transfer* di Portal yang dirancang untuk banyak penerima, untuk mengirim ke satu orang.
 
-> **Tidak ada di mobile** — Jack Mobile App belum punya fitur Local Transfer.
+> **Tidak ada di mobile:** Jack Mobile App belum punya fitur Local Transfer.
 >
-> **Harus lewat Portal** — satu-satunya jalan: buka laptop, lalu lewati flow batch, meski hanya untuk satu penerima.
+> **Harus lewat Portal:** satu-satunya jalan adalah membuka laptop dan melewati flow batch, meski hanya untuk satu penerima.
 
-Gambar dan prototipe di bawah memperlihatkan proses membuat Local Transfer di Portal. Perhatikan berapa banyak langkah yang harus dilalui, meski hanya untuk satu penerima.
+Screenshot dan prototipe di bawah memperlihatkan proses membuat Local Transfer di Portal.
 </Section>
 
-<ImageFull indent src="/images/cs-local-transfer-mobile/current-experience-portal.png" alt="Dashboard Jack Portal dengan menu Create terbuka dan Local Transfer ditandai" caption="Current experience — Alur Local Transfer di Portal." />
+<ImageFull indent src="/images/cs-local-transfer-mobile/current-experience-portal.png" alt="Dashboard Jack Portal dengan menu Create terbuka dan Local Transfer ditandai" caption="Current experience: alur Local Transfer di Portal." />
 
-<FigmaEmbed indent url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-44005&viewport=-990%2C1194%2C0.11&t=S4WF9ntqElof5SH8-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1875%3A43955&page-id=411%3A2" title="Current experience — Local Transfer di Portal" caption="Prototipe alur Local Transfer di Portal — coba jalankan untuk merasakan langkah-langkahnya." />
+<FigmaEmbed indent url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-44005&viewport=-990%2C1194%2C0.11&t=S4WF9ntqElof5SH8-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1875%3A43955&page-id=411%3A2" title="Current experience: Local Transfer di Portal" caption="Prototipe alur Local Transfer di Portal. Hitung berapa langkah yang dibutuhkan untuk membayar satu penerima." />
 
 <Section title=" " indent>
-Dari perjalanan ini, ada dua titik yang paling menghambat Drafter — keduanya dibahas di bagian berikutnya.
+Dari perjalanan ini, ada dua titik yang paling menghambat Drafter. Keduanya dibahas di bagian berikutnya.
 </Section>
 
 <Section title="C. The Friction Points">
@@ -98,14 +104,14 @@ Dua titik tersebut menjadi **dua friction** yang perlu dijawab sekaligus kalau f
 Di Jack Mobile App, satu-satunya transaksi yang bisa dibuat Drafter adalah *reimbursement*, lewat tombol *Create New* di kartu Reimbursement. Tidak ada fitur Local Transfer, dan tidak ada tombol Create umum yang bisa menjadi pintu masuknya.
 </Section>
 
-<ImageFull indent mobile src="/images/cs-local-transfer-mobile/friction-1-home.png" alt="Home Jack Mobile App dengan tombol Create New hanya di kartu Reimbursement" caption="Friction #1 — Satu-satunya tombol untuk membuat transaksi di Home: Create New di kartu Reimbursement." />
+<ImageFull indent mobile src="/images/cs-local-transfer-mobile/friction-1-home.png" alt="Home Jack Mobile App dengan tombol Create New hanya di kartu Reimbursement" caption="Friction #1: satu-satunya tombol untuk membuat transaksi di Home adalah Create New di kartu Reimbursement." />
 
 <Section title=" " indent>
 Akibatnya, untuk pembayaran mendesak seperti membayar supplier atau mengganti biaya ad-hoc, Drafter yang sedang di luar kantor harus menunggu sampai bisa membuka laptop. Business owner dan finance manager yang sehari-hari bekerja dari ponsel tidak punya pilihan lain.
 
 **2. Portal memperlakukan setiap transfer sebagai batch.**
 
-Alur Portal selalu dimulai sebagai batch — nama batch, tabel atau upload file, lalu validasi massal. Padahal 72% batch hanya berisi satu penerima.
+Alur Portal selalu dimulai sebagai batch: nama batch, tabel atau upload file, lalu validasi massal. Padahal 72% batch hanya berisi satu penerima.
 </Section>
 
 <ImageFull indent src="/images/cs-quick-transfer/friction-1.png" alt="Layar nama batch di Jack Portal" caption="Nama batch di awal." />
@@ -115,64 +121,64 @@ Alur Portal selalu dimulai sebagai batch — nama batch, tabel atau upload file,
 <ImageFull indent src="/images/cs-quick-transfer/friction-3.png" alt="Layar validasi massal di Jack Portal" caption="Validasi massal." />
 
 <Section title=" " indent>
-Di ponsel, beban ini makin terasa — alur batch-first tidak bisa dibawa apa adanya ke mobile.
+Di ponsel, beban ini makin terasa. Alur batch-first tidak bisa dibawa apa adanya ke mobile.
 </Section>
 
 <Section title="D. Design Opportunity">
-Dari dua friction ini, tantangannya bukan sekadar "pindahkan fitur ke mobile". Pertanyaan yang jadi titik awal desain:
+Dari dua friction ini, memindahkan fitur ke mobile baru separuh pekerjaan. Pertanyaan yang jadi titik awal desain:
 
-> **Bagaimana membuat Local Transfer terasa natural di ponsel untuk transfer tunggal — tanpa menutup jalan bagi yang tetap butuh batch?**
+> **Bagaimana membuat Local Transfer terasa natural di ponsel untuk transfer tunggal, sambil tetap membuka jalan bagi yang butuh batch?**
 
-Ini bukan sekadar memindahkan fitur dari Portal ke ponsel. Dua friction tadi saling terkait: Drafter butuh jalur di mobile, tapi flow yang ada dirancang untuk batch dan tidak bisa dibawa apa adanya. Kalau flow Portal hanya dikecilkan, fiturnya memang ada di mobile, tapi tetap merepotkan untuk 72% kasus yang hanya butuh satu penerima.
+Dua friction tadi saling terkait. Drafter butuh jalur di mobile, tapi flow yang ada dirancang untuk batch dan tidak bisa dibawa apa adanya. Flow Portal yang hanya dikecilkan memang membuat fiturnya ada di mobile, tapi tetap merepotkan untuk 72% kasus yang hanya butuh satu penerima.
 
-Sebaliknya, kalau batch dibuang sepenuhnya, user yang sesekali perlu kirim ke beberapa orang kembali terpaksa membuka laptop. Tantangannya adalah merancang satu alur yang cepat untuk transfer tunggal — tapi tetap bisa berkembang menjadi batch tanpa harus mulai dari awal.
+Kalau batch dibuang sepenuhnya, user yang sesekali perlu kirim ke beberapa orang kembali terpaksa membuka laptop. Targetnya adalah satu alur yang cepat untuk transfer tunggal dan tetap bisa berkembang menjadi batch tanpa harus mulai dari awal.
 </Section>
 
 <PartHeader number="03" title="Design Decisions" />
 
 <Section title="Kickoff">
-Setelah Fira menyelesaikan *discovery* — data sudah dipetakan, problem statement sudah jelas — saya masuk sebagai UI Designer. Tugas saya mulai dari eksplorasi user flow, iterasi UI, usability testing, sampai handoff ke engineering mobile.
+Setelah Fira menyelesaikan *discovery*, dengan data yang sudah dipetakan dan problem statement yang jelas, saya masuk sebagai UI/UX Designer. Tugas saya mulai dari eksplorasi user flow, iterasi UI, usability testing, sampai handoff ke engineering mobile.
 </Section>
 
-<Section title="Eksplorasi & Usability Testing">
-Saya merancang **tiga iterasi flow end-to-end**. Masing-masing adalah jawaban utuh untuk kedua friction — bedanya ada di dua hal: **urutan langkah**, dan **kapan batch muncul**.
+<Section title="Eksplorasi & Validasi">
+Saya merancang **tiga iterasi flow end-to-end**. Masing-masing adalah jawaban utuh untuk kedua friction. Bedanya ada di dua hal: **urutan langkah**, dan **kapan batch muncul**.
 
-- **Iterasi 1** — Pilih penerima lebih dulu. Batch ditentukan di awal lewat checkbox; jumlah penerima yang dicentang menentukan single atau batch.
-- **Iterasi 2** — Urutan yang sama dengan Portal: tentukan tujuan dan detail transaksi lebih dulu.
-- **Iterasi 3** — Pilih penerima lebih dulu. Single jadi default; batch dibuka belakangan lewat ikon tambah penerima.
+- **Iterasi 1:** Pilih penerima lebih dulu. Batch ditentukan di awal lewat checkbox; jumlah penerima yang dicentang menentukan single atau batch.
+- **Iterasi 2:** Urutan yang sama dengan Portal. Tentukan tujuan dan detail transaksi lebih dulu.
+- **Iterasi 3:** Pilih penerima lebih dulu. Single jadi default; batch dibuka belakangan lewat ikon tambah penerima.
 </Section>
 
-<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iterasi 1 — Pilih penerima dulu, batch lewat checkbox" />
+<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iterasi 1: pilih penerima dulu, batch lewat checkbox" />
 
-<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-151975&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A151975&page-id=343%3A14094" title="Iterasi 2 — Urutan Portal" />
+<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-151975&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A151975&page-id=343%3A14094" title="Iterasi 2: urutan Portal" />
 
-<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-133367&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A133367&page-id=343%3A14094" title="Iterasi 3 — Single jadi default, batch lewat ikon tambah penerima" />
+<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-133367&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A133367&page-id=343%3A14094" title="Iterasi 3: single jadi default, batch lewat ikon tambah penerima" />
 
 <Section title=" ">
-Ketiga iterasi diuji ke **10 user internal Jack/Transfez** — 5 orang sudah familiar dengan flow Local Transfer di Portal, 5 orang belum. Tujuannya mengetahui flow mana yang paling dipilih dan paling mudah dipahami.
+Ketiga iterasi diuji ke **10 user internal Jack/Transfez**: 5 orang sudah familiar dengan flow Local Transfer di Portal, 5 orang belum. Tujuannya mengetahui flow mana yang paling dipilih dan paling mudah dipahami. Pesertanya karyawan internal, bukan Drafter sungguhan, jadi hasilnya menunjukkan flow mana yang paling mudah dipahami, bukan perilaku Drafter sehari-hari.
 
 > **6 dari 10 user memilih Iterasi 3.** 3 user memilih Iterasi 1, dan 1 user memilih Iterasi 2.
 
-Hasil ini kemudian dibaca dari dua sisi — urutan langkah dan kapan batch muncul. Masing-masing membentuk satu keputusan desain yang menjawab satu friction.
+Hasil ini saya baca dari dua sisi: urutan langkah dan kapan batch muncul. Masing-masing membentuk satu keputusan desain yang menjawab satu friction.
 </Section>
 
-<Section title="A. Jalur Drafter di Mobile — Dari Portal-only ke Native di Ponsel">
-**Friction yang dijawab:** #1 — Local Transfer belum ada di mobile.
+<Section title="A. Jalur Drafter di Mobile: Dari Portal-only ke Native di Ponsel">
+**Friction yang dijawab:** #1, Local Transfer belum ada di mobile.
 </Section>
 
-<Section title="A.1 Pintu Masuk — Dari Kartu Reimbursement ke Tombol Create" indent>
-Langkah pertamanya adalah memberi Drafter pintu masuk. Sebelumnya, pembuatan transaksi di Home hanya tersedia lewat kartu Reimbursement. Kini ada tombol **Create** di tengah bottom navigation, yang membuka pilihan jenis transaksi — termasuk Local Transfer.
+<Section title="A.1 Pintu Masuk: Dari Kartu Reimbursement ke Tombol Create" indent>
+Langkah pertamanya adalah memberi Drafter pintu masuk. Sebelumnya, pembuatan transaksi di Home hanya tersedia lewat kartu Reimbursement. Kini ada tombol **Create** di tengah bottom navigation, yang membuka pilihan jenis transaksi, termasuk Local Transfer.
 </Section>
 
 <ImageGrid cols={2} indent={2}>
-  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-before.png" alt="Home sebelum: tanpa tombol Create" caption="Before — Tanpa tombol Create." />
-  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-after.png" alt="Home sesudah: tombol Create di tengah bottom navigation" caption="After — Create di tengah navigasi." />
+  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-before.png" alt="Home sebelum: tanpa tombol Create" caption="Before: tanpa tombol Create." />
+  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-after.png" alt="Home sesudah: tombol Create di tengah bottom navigation" caption="After: Create di tengah navigasi." />
 </ImageGrid>
 
 <ImageFull indent={2} src="/images/cs-local-transfer-mobile/entry-create-sheet.png" alt="Tombol Create membuka pilihan transaksi: Local Transfer dan Reimbursement" caption="Local Transfer kini sejajar dengan Reimbursement." />
 
-<Section title="A.2 Alur — Dari Urutan Portal ke “Pilih Penerima Dulu”" indent>
-Tapi pintu masuk saja tidak cukup. Pertanyaan berikutnya: urutan langkahnya mengikuti Portal, atau mengikuti pola aplikasi bank dan e-wallet?
+<Section title="A.2 Alur: Dari Urutan Portal ke “Pilih Penerima Dulu”" indent>
+Pintu masuk saja tidak cukup. Pertanyaan berikutnya: urutan langkahnya mengikuti Portal, atau mengikuti pola aplikasi bank dan e-wallet?
 
 | | Urutan Portal (Iterasi 2) | Pola bank & e-wallet (Iterasi 1 & 3) |
 | --- | --- | --- |
@@ -185,60 +191,62 @@ User memilih pola yang sudah mereka kenal dari aplikasi bank dan e-wallet.
 Bahkan sebagian user yang sudah familiar dengan Portal memilih pola ini. **Konsistensi dengan kebiasaan di ponsel ternyata lebih penting daripada konsistensi dengan Portal.**
 </Section>
 
-<Section title="B. Beban Batch — Dari Batch-first ke Single-first">
-**Friction yang dijawab:** #2 — Portal memperlakukan setiap transfer sebagai batch.
+<Section title="B. Beban Batch: Dari Batch-first ke Single-first">
+**Friction yang dijawab:** #2, Portal memperlakukan setiap transfer sebagai batch.
 
-Beban batch dari Portal tidak boleh ikut pindah ke ponsel — 72% batch hanya berisi satu transaksi. Tapi batch juga tidak boleh hilang.
+Beban batch dari Portal tidak boleh ikut pindah ke ponsel, karena 72% batch hanya berisi satu transaksi. Batch juga tidak boleh hilang.
 
-Iterasi 1 dan 3 sama-sama dimulai dari penerima (Keputusan A). Bedanya ada di **kapan batch muncul**: di Iterasi 1, batch ditentukan di awal lewat checkbox; di Iterasi 3, single jadi default dan batch baru dibuka lewat ikon tambah penerima.
+Iterasi 1 dan 3 sama-sama dimulai dari penerima (Keputusan A). Bedanya ada di **kapan batch muncul**. Di Iterasi 1, batch ditentukan di awal lewat checkbox. Di Iterasi 3, single jadi default dan batch baru dibuka lewat ikon tambah penerima.
 </Section>
 
-<FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iterasi 1 — Batch dipilih di awal lewat checkbox" />
+<FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iterasi 1: batch dipilih di awal lewat checkbox" />
 
-<FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-133367&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A133367&page-id=343%3A14094" title="Iterasi 3 — Batch dibuka lewat ikon tambah penerima" />
+<FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-133367&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A133367&page-id=343%3A14094" title="Iterasi 3: batch dibuka lewat ikon tambah penerima" />
 
 <Section title=" " indent>
 Di antara 9 user tadi, **6 memilih Iterasi 3** karena pemisahan single dan batch lebih mudah dipahami. Transfer tunggal tidak membawa langkah batch sama sekali, dan batch tetap ada saat dibutuhkan.
 
-*Batch menjadi cabang dari alur single, bukan jalur terpisah sejak awal.*
+*Batch menjadi cabang dari alur single, alih-alih jalur terpisah sejak awal.*
 </Section>
 
-<ImageFull indent src="/images/cs-local-transfer-mobile/batch-flow.png" alt="User flow Local Transfer mobile: single sebagai default, batch sebagai cabang opsional" caption="User flow — Single jadi default, batch jadi cabang opsional." />
+<ImageFull indent src="/images/cs-local-transfer-mobile/batch-flow.png" alt="User flow Local Transfer mobile: single sebagai default, batch sebagai cabang opsional" caption="User flow: single jadi default, batch jadi cabang opsional." />
 
 <Section title="Recap: Dua Keputusan Desain Final">
-1. **Jalur Drafter di mobile (Friction #1).** Tombol Create di bottom navigation membuka jalan ke Local Transfer, dengan alur yang dimulai dari memilih penerima — dipilih 9 dari 10 user di UT.
+1. **Jalur Drafter di mobile (Friction #1).** Tombol Create di bottom navigation membuka jalan ke Local Transfer, dengan alur yang dimulai dari memilih penerima, dipilih 9 dari 10 user saat pengujian.
 2. **Lepas beban batch (Friction #2).** Single jadi jalur utama tanpa nama batch di awal; batch dibuka lewat ikon tambah penerima (Iterasi 3, dipilih 6 dari 9 user). Maksimal 10 penerima, tanpa upload file.
 </Section>
 
 <PartHeader number="04" title="Solution" />
 
 <Section title="Local Transfer di Ponsel">
-User yang selama ini harus menunggu sampai bisa membuka laptop — sekarang bisa membuat Local Transfer langsung dari Jack Mobile App.
-
-> **Transfer lokal, kapan saja, di mana saja.**
+Drafter yang selama ini harus menunggu sampai bisa membuka laptop sekarang bisa membuat Local Transfer langsung dari Jack Mobile App, dengan single sebagai default dan batch hanya sejauh satu ketukan.
 </Section>
 
-<ImageFull mobile src="/images/cs-local-transfer-mobile/placeholder.svg" alt="Prototipe final Local Transfer di Jack Mobile App" caption="Prototipe — Local Transfer di Jack Mobile App." />
-
-<Section title="Single Dulu, Batch Saat Dibutuhkan">
+<Section title="Flow Final">
 Untuk transfer tunggal: buka **Create** → pilih **Local Transfer** → pilih penerima → isi nominal → konfirmasi dan submit. Tanpa nama batch, tanpa tabel.
+</Section>
 
-Kalau di tengah jalan ternyata perlu kirim ke beberapa orang, user cukup mengetuk **ikon tambah penerima** — alur bergeser ke batch tanpa mengulang dari awal. Detail batch baru diminta di akhir, dan sebelum submit user cukup melihat ringkasan dengan opsi Edit/Delete per transaksi. Batch di mobile dibatasi **10 penerima** (rata-rata batch di Portal berisi 8 transaksi) tanpa upload file — batch besar tetap lewat Portal.
+<ImageFull mobile src="/images/cs-local-transfer-mobile/placeholder.svg" alt="Flow final Local Transfer di Jack Mobile App" caption="Flow final: Local Transfer di Jack Mobile App." />
+
+<Section title="Detail Kunci">
+- **Batch tanpa mengulang.** Kalau di tengah jalan ternyata perlu kirim ke beberapa orang, user cukup mengetuk **ikon tambah penerima** dan alur bergeser ke batch, dengan data yang sudah diisi tetap terbawa.
+- **Detail batch di akhir.** Detail batch baru diminta di akhir. Sebelum submit, user melihat ringkasan dengan opsi Edit/Delete per transaksi.
+- **Maksimal 10 penerima.** Batch di mobile dibatasi **10 penerima** (rata-rata batch di Portal berisi 8 transaksi) tanpa upload file. Batch besar tetap lewat Portal.
 </Section>
 
 <PartHeader number="05" title="Impact" />
 
-<Section title="Hasil Setelah Rilis">
+<Section title="Hasil">
 <Metrics items={[
-  { value: "56%", label: "Mobile transaction adoption rate Local Transfer di bulan pertama setelah rilis" },
-  { value: "40%", label: "Lebih cepat — rata-rata time-to-completion transfer tunggal dibanding Portal" },
+  { value: "56%", label: "Mobile transaction adoption rate Local Transfer, bulan pertama setelah rilis" },
+  { value: "40%", label: "Lebih cepat: rata-rata time-to-completion transfer tunggal dibanding Portal, bulan pertama setelah rilis" },
 ]} />
 
-Selain angka, klien UMKM dan startup memberi feedback positif — terutama soal kemudahan dan eksekusi dana yang lebih cepat.
+Klien UMKM dan startup juga memberi feedback positif, terutama soal kemudahan dan eksekusi dana yang lebih cepat.
 </Section>
 
 <Section title="Refleksi">
-**Yang paling saya pelajari dari proyek ini:** mendesain untuk mobile bukan soal mengecilkan fitur desktop. Versi yang paling mirip Portal justru yang paling sedikit dipilih user.
+**Yang paling saya pelajari dari proyek ini:** mendesain untuk mobile berarti memikirkan ulang alurnya untuk ponsel. Mengecilkan fitur desktop tidak cukup. Versi yang paling mirip Portal justru yang paling sedikit dipilih user.
 
-> **User membawa kebiasaan dari aplikasi lain di ponselnya — dan desain yang baik mengikuti kebiasaan itu.**
+> **User membawa kebiasaan dari aplikasi lain di ponselnya, dan desain yang baik mengikuti kebiasaan itu.**
 </Section>
