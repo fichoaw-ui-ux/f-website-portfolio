@@ -28,7 +28,7 @@ snapshot:
   - label: "Key decisions"
     value: "Voucher dengan default dan applied state yang jelas berbeda dan langsung menampilkan nilai terbaik, points banner yang diredam, dan payment method yang dipindah ke bawah voucher."
   - label: "Outcome"
-    value: "Disetujui tim Growth dan masuk ke development. Belum rilis saat studi kasus ini ditulis."
+    value: "Disetujui tim Growth dan masuk ke development. Target: voucher attach rate ≥40% dalam 30 hari setelah rilis. Belum rilis saat studi kasus ini ditulis."
   - label: "Most Collaborated with"
     value: "Mas Andre, VP of Growth · Bang Fathur, Design Lead"
   - label: "Brand & Industry"
@@ -123,6 +123,8 @@ Memperbaiki satu komponen saja tidak akan cukup. Analisis menunjukkan ada tiga k
 Saya masuk di tahap analisis. Bersama Bang Fathur, lead saya, saya menelusuri root cause lewat tiga komponen di atas.
 
 Solusi paling mudah sebenarnya *auto-apply*: sistem langsung memotong biaya tanpa user perlu melakukan apa-apa. Setelah berdiskusi dengan tim Growth, kami sepakat tidak memilih jalan itu. Voucher yang ditemukan dan dipakai sendiri menciptakan momen kepuasan tersendiri, elemen gamifikasi yang hilang begitu prosesnya jadi otomatis. **Mekanismenya tetap; yang perlu diperbaiki adalah cara menampilkannya.**
+
+PRD-nya menjadikan ini batasan yang tegas: perubahannya murni di front-end. Eligibility, ranking, dan apply voucher sudah tersedia di backend, jadi semua perbaikan harus datang dari cara halaman menampilkannya.
 
 Setelah analisis selesai, arahnya sudah jelas: ketiga komponen harus dibenahi bersama, tidak satu per satu. Eksekusi desain sepenuhnya saya pegang: eksplorasi iterasi, restrukturisasi halaman, sampai handoff ke engineering. Dari sini lahir tiga keputusan utama, masing-masing menjawab satu friction.
 </Section>
@@ -249,17 +251,34 @@ Solusi ini belum dirilis ke production saat studi kasus ini ditulis. Data baseli
 
 Persentase pembukaan halaman voucher kurang tepat sebagai metrik sukses desain ini. Entry voucher yang baru menampilkan nilai terbaik di permukaan dan bisa dipakai dengan satu tap, jadi desain yang berhasil justru bisa menurunkan jumlah user yang membuka halaman voucher.
 
-**Metrik target:** tingkat pemakaian voucher di antara user yang punya voucher eligible.
+Karena itu PRD memakai angka lain: **voucher attach rate**, yaitu persentase transaksi dengan minimal satu voucher eligible yang benar-benar memakai voucher.
+
+<Metrics items={[
+  { value: "≥40%", label: "Target: voucher attach rate dalam 30 hari setelah rilis" },
+  { value: "10–15%", label: "Estimasi attach rate saat ini (bukan data live)" },
+]} />
+
+Angka 10–15% adalah estimasi, disimpulkan dari keluhan user dan aplikasi fintech mobile yang sebanding. Baseline live akan diambil selama 7 hari sebelum rilis.
+
+**Guardrail (tidak boleh turun):**
+
+- Completion rate dari Send Money ke konfirmasi turun maksimal 3% dibanding baseline sebelum rilis.
+- Waktu muat Send Money (P95) naik maksimal 150ms.
+- Kegagalan apply voucher tetap di bawah 2% dari total percobaan apply.
 </Section>
 
 <Section title="Validasi & Next Step">
 Validasi dilakukan lewat konfirmasi langsung dengan tim Growth sebagai stakeholder utama. Desain disetujui dan masuk ke pipeline development.
 
-Setelah rilis, tingkat pemakaian voucher di antara user eligible akan menunjukkan apakah redesign ini berhasil. Kalau angkanya naik, user mendapat lebih banyak value dari setiap transaksi, yang berkontribusi ke retention jangka panjang.
+Rilisnya bertahap lewat feature flag. Kalau completion rate Send Money turun lebih dari 3% dalam 7 hari pertama, widget voucher lama dikembalikan.
+
+Setelah rilis, voucher attach rate di transaksi yang eligible akan menunjukkan apakah redesign ini berhasil. Kalau angkanya naik, user mendapat lebih banyak value dari setiap transaksi, yang berkontribusi ke retention jangka panjang.
 </Section>
 
 <Section title="Refleksi">
 **Yang paling saya pelajari dari proyek ini:** masalah yang terlihat seperti satu komponen bisa jadi kumpulan komponen yang berebut perhatian yang sama. Memperbaiki voucher saja akan membiarkan points banner dan urutan halaman tetap melawannya.
 
 Saya juga belajar untuk tidak terlalu terpaku pada rekomendasi sendiri. Saya ingin points banner hilang dari Send Money; pertimbangan tim Growth soal motivasi justru menghasilkan jalan tengah yang lebih baik: tetap ada, tapi lebih kalem.
+
+**Yang akan saya lakukan berbeda:** menguji hipotesis "default state terlihat sudah applied" sebelum mendesain berdasarkan hipotesis itu. Kami tidak punya session recording atau feedback user, jadi redesign voucher ini berdiri di atas asumsi. Tes singkat dengan beberapa user untuk membandingkan state lama dan baru akan membuat argumennya jauh lebih kuat, dan itu yang pertama akan saya lakukan sebelum iterasi berikutnya.
 </Section>

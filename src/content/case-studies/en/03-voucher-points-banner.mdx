@@ -28,7 +28,7 @@ snapshot:
   - label: "Key decisions"
     value: "A voucher with distinct default and applied states that shows its best value up front, a de-emphasised points banner, and payment method moved below the voucher."
   - label: "Outcome"
-    value: "Approved by the Growth team and moved into development. Not yet live at the time of writing."
+    value: "Approved by the Growth team and moved into development. Target: ≥40% voucher attach rate within 30 days of launch. Not yet live at the time of writing."
   - label: "Most Collaborated with"
     value: "Andre, VP of Growth · Fathur, Design Lead"
   - label: "Brand & Industry"
@@ -123,6 +123,8 @@ Fixing one component wouldn't be enough. The analysis showed three components co
 I joined at the analysis stage. Together with Fathur, my lead, I traced the root cause through the three components above.
 
 The easiest fix would have been *auto-apply*: the system deducts the discount without the user doing anything. After talking it through with the Growth team, we all agreed not to go that route. A voucher that users find and apply themselves creates its own small moment of satisfaction, a bit of gamification that disappears once the process becomes automatic. **The mechanism stayed; what needed fixing was how it was presented.**
+
+The PRD made that a hard constraint: this was a front-end change only. Voucher eligibility, ranking and apply were already built on the backend, so every improvement had to come from how the page presented them.
 
 With the analysis done, the direction was set: the three components had to be fixed together, not one at a time. I owned the full design execution: exploring iterations, restructuring the page, and handing off to engineering. Three main decisions followed, each answering a different friction point.
 </Section>
@@ -249,17 +251,34 @@ This solution hadn't shipped to production at the time this case study was writt
 
 The page-open rate is a weak success metric for this design. The new voucher entry shows the best value on the surface and applies in one tap, so a successful design could lower the number of people who open the voucher page.
 
-**Target metric:** voucher usage rate among users who hold an eligible voucher.
+So the PRD tracks a different number: **voucher attach rate**, the share of transactions with at least one eligible voucher where a voucher was actually applied.
+
+<Metrics items={[
+  { value: "≥40%", label: "Target: voucher attach rate within 30 days of launch" },
+  { value: "10–15%", label: "Estimated current attach rate (not live data)" },
+]} />
+
+The 10–15% is an estimate, inferred from user complaints and comparable mobile fintech apps. The live baseline will be captured in the 7 days before launch.
+
+**Guardrails (must not regress):**
+
+- Send Money to confirmation completion rate drops by no more than 3% against the pre-launch baseline.
+- Send Money load time (P95) increases by no more than 150ms.
+- Voucher apply failures stay under 2% of apply attempts.
 </Section>
 
 <Section title="Validation & Next Steps">
 Validation happened through direct confirmation with the Growth team as the main stakeholder. The design was approved and moved into the development pipeline.
 
-Once it ships, voucher usage among eligible users shows whether the redesign worked. If it rises, users get more value out of every transaction, which feeds into long-term retention.
+Rollout runs behind a feature flag. If Send Money completion drops more than 3% in the first 7 days, the old voucher widget comes back.
+
+Once it ships, voucher attach rate among eligible transactions shows whether the redesign worked. If it rises, users get more value out of every transaction, which feeds into long-term retention.
 </Section>
 
 <Section title="Reflection">
 **What I learned most from this project:** a problem that looks like one component can be a set of components competing for the same attention. Fixing the voucher alone would have left the points banner and the page order working against it.
 
 I also learned to hold a recommendation loosely. I wanted the points banner gone from Send Money; the Growth team's reasoning about motivation led to a better middle ground: keep it, and make it quieter.
+
+**What I'd do differently:** test the "looks already applied" hypothesis before designing around it. We had no session recordings or user feedback, so the voucher redesign rests on an assumption. A quick test of the old and new states with a few users would have made the case much stronger, and that's the first thing I'd do before the next iteration.
 </Section>
