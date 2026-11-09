@@ -149,7 +149,15 @@ Once users understood the full journey, I asked for their thoughts on the entry 
 <ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. We were tempted by this one. If 72% of transactions are single anyway, why not skip the choice entirely and just show the list?" />
 
 <Section title=" " indent>
-Alt 1 and Alt 2 got the same number of user votes. Based on a pros/cons breakdown, **Alt 2 won**: it was clearer and had the fewest cons. Alt 3 got zero votes, because users who needed batch couldn't find their way to it.
+Alt 1 and Alt 2 got the same number of user votes. Here's what participants said about each:
+
+| | Pros | Cons |
+| --- | --- | --- |
+| Alt 1: three-option hierarchy | The options help users decide which input method to use. Familiar to users who already know the Portal. | Less clear than the alternatives. Too many choices. Some components distract, so users need time to take in the options. |
+| Alt 2: two-option toggle | Cleaner, with just enough information. Easier to tell the transfer methods apart. | Takes some getting used to, since input methods aren't offered up front. |
+| Alt 3: direct list | None. No participant picked it. | Layout too different from the Portal users know. Batch methods aren't shown up front. |
+
+Weighing these, **Alt 2 won**: it was the clearest and had the fewest cons. Alt 3 got zero votes; participants felt it couldn't work for the Portal, mostly because batch wasn't visible from the start.
 </Section>
 
 <Section title="Bringing the Results to the CEO" indent>
@@ -193,7 +201,7 @@ So the structure moved to **Alt 1**, with all three methods (Quick + Upload Exce
 <Section title="B. Multi-select in Recipient Details">
 **Risk addressed:** a dead end for users who know from the start that they need several recipients.
 
-This is the first door into batch from inside the Quick Transfer flow. I added multi-select: a checkbox column next to each recipient, plus an *"X recipients selected"* indicator in the footer with a Continue button. Users who knew from the start they wanted to send to several people could select them all here, without starting over.
+This is the first door into batch from inside the Quick Transfer flow. I added multi-select: a checkbox column next to each recipient, plus an *"X recipients selected"* indicator in the footer with a Continue button. Continue takes them to Empty Table with the selected recipients already in place, where they fill in the amount, email and notes for each one. Users who knew from the start they wanted to send to several people could select them all here, without starting over.
 </Section>
 
 <ImageGrid cols={2} indent>

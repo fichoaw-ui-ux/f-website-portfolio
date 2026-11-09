@@ -149,7 +149,15 @@ Setelah user paham full journey-nya, baru saya minta pendapat mereka soal entry 
 <ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. Kami sempat condong ke arah ini. Kalau 72% transaksi cuma single, kenapa tidak lewati semua pilihan dan langsung tampilkan list?" />
 
 <Section title=" " indent>
-Alt 1 dan Alt 2 mendapat jumlah pilihan user yang sama. Dari analisis pros/cons, **Alt 2 menang**: lebih jelas dan cons-nya paling sedikit. Alt 3 tidak dipilih sama sekali, karena user yang butuh batch tidak menemukan jalannya.
+Alt 1 dan Alt 2 mendapat jumlah pilihan user yang sama. Ini pendapat peserta tentang masing-masing alternatif:
+
+| | Kelebihan | Kekurangan |
+| --- | --- | --- |
+| Alt 1: hierarki tiga pilihan | Opsi yang ada membantu user memutuskan metode input yang mau dipakai. Familiar bagi user yang sudah memakai Portal. | Kurang clear dibanding alternatif lain. Pilihannya terlalu banyak. Beberapa komponen mengalihkan perhatian, jadi user butuh waktu untuk mencerna opsinya. |
+| Alt 2: toggle dua pilihan | Lebih menarik, dengan informasi secukupnya. Metode transfer lebih mudah dibedakan. | User perlu waktu beradaptasi, karena opsi input data tidak ditampilkan di awal. |
+| Alt 3: direct list | Tidak ada. Tidak satu pun peserta memilihnya. | Layout terlalu berbeda dari Portal yang sudah dikenal user. Metode batch tidak ditampilkan di awal. |
+
+Dari perbandingan ini, **Alt 2 menang**: paling clear dan kekurangannya paling sedikit. Alt 3 tidak dipilih sama sekali; peserta merasa opsi ini tidak cocok untuk Portal, terutama karena batch tidak terlihat sejak awal.
 </Section>
 
 <Section title="Membawa Hasil ke CEO" indent>
@@ -193,7 +201,7 @@ Karena itu strukturnya pindah ke **Alt 1**, dengan ketiga metode (Quick + Upload
 <Section title="B. Multi-select di Recipient Details">
 **Risiko yang dijawab:** dead-end bagi user yang sejak awal tahu perlu kirim ke beberapa penerima.
 
-Ini pintu pertama ke batch dari dalam flow Quick Transfer. Saya menambahkan multi-select: kolom checkbox di setiap recipient, plus indikator *"X recipients selected"* di footer dengan tombol Continue. User yang dari awal tahu mau kirim ke beberapa orang bisa langsung memilih semuanya di sini, tanpa mengulang dari awal.
+Ini pintu pertama ke batch dari dalam flow Quick Transfer. Saya menambahkan multi-select: kolom checkbox di setiap recipient, plus indikator *"X recipients selected"* di footer dengan tombol Continue. Continue membawa user ke Empty Table dengan recipient yang dipilih sudah terisi, lalu user tinggal melengkapi amount, email, dan notes untuk masing-masing. User yang dari awal tahu mau kirim ke beberapa orang bisa langsung memilih semuanya di sini, tanpa mengulang dari awal.
 </Section>
 
 <ImageGrid cols={2} indent>
