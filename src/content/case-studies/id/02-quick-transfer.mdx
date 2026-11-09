@@ -52,7 +52,7 @@ Jack Finance adalah penyedia layanan keuangan bisnis yang menawarkan berbagai so
 
 Mengingat target utamanya adalah klien korporasi dengan kebutuhan transaksi bervolume tinggi, **produk *Local Transfer* ini sejak awal dirancang secara spesifik untuk menangani pembayaran massal (*batch processing*)**.
 
-Proyek ini dan [Local Transfer Mobile](/id/work/local-transfer-mobile/) berangkat dari discovery yang sama: 72% batch Local Transfer hanya berisi satu transaksi. Proyek ini menjawabnya di Portal, Local Transfer Mobile menjawabnya di ponsel. Keduanya memakai prinsip yang sama: **single dulu, batch sebagai cabang**.
+Proyek ini dan [Local Transfer Mobile](/id/work/local-transfer-mobile/) berangkat dari discovery yang sama: 72% batch Local Transfer hanya berisi satu transaksi. Local Transfer Mobile dikerjakan lebih dulu dan menjawabnya di ponsel; proyek ini menyusul dan menjawabnya di Portal. Keduanya memakai prinsip yang sama: **single dulu, batch sebagai cabang**.
 </Section>
 
 <PartHeader number="02" title="Context & Problem" />
@@ -178,9 +178,11 @@ Sampai di titik ini, ketiga friction sudah terjawab bersama oleh alur Single Tra
 </Section>
 
 <Section title="A. Entry Point: Alt 2 → Alt 1 dengan Grouping">
-**Risiko yang dijawab:** salah memilih jalur di awal, dan kehilangan jejak batch begitu masuk ke Quick Transfer.
+**Risiko yang dijawab:** jalur cepat yang hanya bisa untuk satu transaksi, dan salah memilih jalur di awal.
 
-Rekomendasi hasil pengujian (Alt 2) jadi tidak berlaku. Dengan transition logic, fitur ini perlu menampilkan tiga metode (Quick + Upload Excel + Empty Table) sekaligus. Strukturnya akhirnya memakai **Alt 1**, dan kekurangan *"terlalu banyak pilihan"* saya tangani dengan grouping deskriptif: *"Suitable for 1-5 recipients"* untuk Quick Transfer, *"For up to 1000 recipients"* untuk dua opsi batch.
+Rekomendasi hasil pengujian (Alt 2) jadi tidak berlaku. Toggle-nya membagi pilihan menjadi *Single* vs *Batch*, yang memberi kesan jalur cepat hanya untuk tepat satu transfer. Bang Edo justru ingin jalur cepat yang tetap bisa dipakai saat user punya beberapa penerima.
+
+Karena itu strukturnya pindah ke **Alt 1**, dengan ketiga metode (Quick + Upload Excel + Empty Table) tampil sejajar. Pilihannya kini dikelompokkan berdasarkan seberapa besar pekerjaan user, alih-alih *satu vs banyak*. Kekurangan Alt 1, *"terlalu banyak pilihan"*, saya tangani dengan grouping deskriptif: *"Suitable for 1-5 recipients"* untuk Quick Transfer, *"For up to 1000 recipients"* untuk dua opsi batch, yang menandakan keduanya jalur untuk pembayaran bulk dalam jumlah besar. User bisa memilih jalur yang tepat sejak layar pertama.
 </Section>
 
 <ImageGrid cols={2} indent>

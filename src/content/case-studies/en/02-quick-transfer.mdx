@@ -52,7 +52,7 @@ Jack Finance is a business financial services provider offering integrated finan
 
 Since its main audience is corporate clients with high-volume transaction needs, **Local Transfer was designed from day one to handle bulk payments (*batch processing*)**.
 
-This project and [Local Transfer Mobile](/work/local-transfer-mobile/) grew out of the same discovery: 72% of Local Transfer batches held a single transaction. This project answered it in the Portal; Local Transfer Mobile answered it on the phone. Both follow the same principle: **single first, batch as a branch**.
+This project and [Local Transfer Mobile](/work/local-transfer-mobile/) grew out of the same discovery: 72% of Local Transfer batches held a single transaction. Local Transfer Mobile came first and answered it on the phone; this project followed and answered it in the Portal. Both follow the same principle: **single first, batch as a branch**.
 </Section>
 
 <PartHeader number="02" title="Context & Problem" />
@@ -178,9 +178,11 @@ At this point the three friction points were already solved, together, by the Si
 </Section>
 
 <Section title="A. Entry Point: Alt 2 → Alt 1 with Grouping">
-**Risk addressed:** picking the wrong path up front, and losing sight of batch once inside Quick Transfer.
+**Risk addressed:** a path that's only for one transaction, and picking the wrong path up front.
 
-The testing recommendation (Alt 2) no longer applied. With transition logic, the feature needed to show all three methods (Quick + Upload Excel + Empty Table) at once. The structure ended up using **Alt 1**, and I handled its *"too many choices"* con with descriptive grouping: *"Suitable for 1-5 recipients"* for Quick Transfer, *"For up to 1000 recipients"* for the two batch options.
+The testing recommendation (Alt 2) no longer applied. Its toggle split the choice into *Single* vs *Batch*, which tells users the fast path is for exactly one transfer. Edo wanted the opposite: a fast path that still works when a user has a few recipients.
+
+So the structure moved to **Alt 1**, with all three methods (Quick + Upload Excel + Empty Table) side by side. The options are now grouped by how much work the user has, instead of *one vs many*. I handled Alt 1's *"too many choices"* con with descriptive grouping: *"Suitable for 1-5 recipients"* for Quick Transfer, *"For up to 1000 recipients"* for the two batch options, which marks them as the path for larger bulk payments. Users can pick the right path from the first screen.
 </Section>
 
 <ImageGrid cols={2} indent>
