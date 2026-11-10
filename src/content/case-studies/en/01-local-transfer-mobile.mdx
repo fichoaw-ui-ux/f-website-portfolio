@@ -13,8 +13,8 @@ thumbnail: "../../../assets/case-studies/local-transfer-mobile/cover.png"
 thumbnailAlt: "Local Transfer Mobile, case study cover"
 summary: "Drafters had to open a laptop just to send one payment. I brought Local Transfer to the Jack Mobile App with a single-first flow: 56% adoption in the first month, 40% faster than the Portal."
 overview: "At Jack, every Local Transfer could only be created in the Portal, even though 72% of batches held a single transaction. I designed Local Transfer for the Jack Mobile App: a Create button as the way in, a flow that starts with picking the recipient, and batch as a branch of the single flow."
-team: ["Fira Alliyah, Product Manager", "Mobile Engineers"]
-deliverables: ["User flow exploration (3 iterations)", "Usability testing (10 internal users)", "Mobile UI", "Handoff to mobile engineering"]
+team: ["Fira Alliyah, Product Manager", "Edo, CEO", "Mobile Engineers"]
+deliverables: ["User flow exploration (3 iterations)", "Usability testing (8 internal users)", "Mobile UI", "Handoff to mobile engineering"]
 tools: ["Figma", "Prototype"]
 featured: true
 order: 1
@@ -141,25 +141,22 @@ After Fira wrapped up *discovery*, with the data mapped out and the problem stat
 </Section>
 
 <Section title="Exploration & Validation">
-I designed **three end-to-end flow iterations**. Each one was a complete answer to both friction points. They differed in two things: **the order of steps**, and **when batch appears**.
+I designed **two end-to-end flow iterations** for testing. Each one was a complete answer to both friction points. They differed in **the order of steps**.
 
 - **Iteration 1:** Pick the recipient first. Batch is decided up front with checkboxes; the number of recipients checked decides single or batch.
 - **Iteration 2:** The same order as the Portal. Set the destination and transaction details first.
-- **Iteration 3:** Pick the recipient first. Single is the default; batch opens later through an add-recipient icon.
 </Section>
 
 <FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iteration 1: recipient first, batch via checkboxes" />
 
 <FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-151975&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A151975&page-id=343%3A14094" title="Iteration 2: the Portal order" />
 
-<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-133367&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A133367&page-id=343%3A14094" title="Iteration 3: single by default, batch via the add-recipient icon" />
-
 <Section title=" ">
-All three iterations were tested with **10 internal Jack/Transfez users**: 5 already familiar with the Portal's Local Transfer flow, 5 not. The goal was to find out which flow was preferred and easiest to understand. Participants were internal staff rather than real Drafters, so the results show which flow was easiest to understand, not how Drafters behave day to day.
+Iterations 1 and 2 were tested with **8 internal Jack/Transfez users**: 5 already familiar with the Portal's Local Transfer flow, 3 not. The goal was to find out which flow was preferred and easiest to understand. Participants were internal staff rather than real Drafters, so the results show which flow was easiest to understand, not how Drafters behave day to day.
 
-> **6 out of 10 users picked Iteration 3.** 3 users picked Iteration 1, and 1 user picked Iteration 2.
+> **5 out of 8 users picked Iteration 1**, which starts with the recipient. 3 users picked Iteration 2, the Portal order.
 
-I read these results from two angles: the order of steps, and when batch appears. Each angle shaped a design decision that answers one friction point.
+Testing settled the order of steps. When batch appears was settled afterwards, in a review that led to Iteration 3. Each shaped a design decision that answers one friction point.
 </Section>
 
 <Section title="A. A Path for Drafters on Mobile: From Portal-only to Native on the Phone">
@@ -180,15 +177,15 @@ The first step was giving Drafters a way in. Before, creating a transaction on H
 <Section title="A.2 Flow: From the Portal’s Order to “Pick the Recipient First”" indent>
 An entry point alone wasn't enough. The next question: should the steps follow the Portal, or follow the pattern of banking and e-wallet apps?
 
-| | Portal order (Iteration 2) | Banking & e-wallet pattern (Iterations 1 & 3) |
+| | Portal order (Iteration 2) | Banking & e-wallet pattern (Iteration 1) |
 | --- | --- | --- |
 | Single | Transfer details → Recipient | Recipient → Transfer details |
 | Batch | Batch details → Recipient → Transfer details | Recipient → Transfer details → Batch details |
-| Picked by | **1 user** | **9 users** |
+| Picked by | **3 users** | **5 users** |
 
-Users picked the pattern they already knew from banking and e-wallet apps.
+Most users picked the pattern they already knew from banking and e-wallet apps.
 
-Even some users who were familiar with the Portal picked this pattern. **Consistency with phone habits turned out to matter more than consistency with the Portal.**
+Familiarity with the Portal didn't decide it. Of the 5 users who knew the Portal, 3 still picked this pattern; on a phone, being asked for batch details first felt off. The other 2 picked the Portal order to keep it consistent and to know what a batch is for before adding recipients. **For most users, consistency with phone habits mattered more than consistency with the Portal.**
 </Section>
 
 <Section title="B. The Batch Load: From Batch-first to Single-first">
@@ -204,7 +201,7 @@ Iterations 1 and 3 both start from the recipient (Decision A). The difference is
 <FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-133367&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A133367&page-id=343%3A14094" title="Iteration 3: batch opened through the add-recipient icon" />
 
 <Section title=" " indent>
-Of those 9 users, **6 picked Iteration 3** because the split between single and batch was easier to understand. A single transfer carries no batch steps at all, and batch is still there when it's needed.
+Testing confirmed the recipient-first order, but Iteration 1 still asked about batch up front with checkboxes. After reviewing it, **Edo, our CEO**, leaned toward opening straight on the recipient list without checkboxes, so every transfer starts as a single one. The data backed this up: 72% of batches held only one transaction. That became **Iteration 3**. A single transfer carries no batch steps at all, and batch is still there through the add-recipient icon when it's needed.
 
 *Batch became a branch of the single flow instead of a separate path from the start.*
 </Section>
@@ -212,8 +209,8 @@ Of those 9 users, **6 picked Iteration 3** because the split between single and 
 <ImageFull indent src="/images/cs-local-transfer-mobile/batch-flow.png" alt="Local Transfer mobile user flow: single by default, batch as an optional branch" caption="User flow: single by default, batch as an optional branch." />
 
 <Section title="Recap: Two Final Design Decisions">
-1. **A path for Drafters on mobile (Friction #1).** A Create button in the bottom navigation opens the way to Local Transfer, with a flow that starts by picking the recipient, chosen by 9 out of 10 users in testing.
-2. **Drop the batch load (Friction #2).** Single is the main path with no batch name up front; batch opens through the add-recipient icon (Iteration 3, chosen by 6 out of 9 users). Up to 10 recipients, no file upload.
+1. **A path for Drafters on mobile (Friction #1).** A Create button in the bottom navigation opens the way to Local Transfer, with a flow that starts by picking the recipient, chosen by 5 out of 8 users in testing.
+2. **Drop the batch load (Friction #2).** Single is the main path with no batch name up front; batch opens through the add-recipient icon (Iteration 3, from Edo's review and the 72% single-transaction data). Up to 10 recipients, no file upload.
 </Section>
 
 <PartHeader number="04" title="Solution" />
@@ -248,7 +245,7 @@ SME and startup clients also gave positive feedback, especially about how easy i
 </Section>
 
 <Section title="Reflection">
-**What I learned most from this project:** designing for mobile means rethinking the flow for the phone. Shrinking the desktop feature doesn't work. The version closest to the Portal was the one users picked least.
+**What I learned most from this project:** designing for mobile means rethinking the flow for the phone. Shrinking the desktop feature doesn't work. Even among users who knew the Portal, most picked the phone pattern over the Portal's order. Testing wasn't the last word either: the final flow came from a review after testing, backed by usage data.
 
 > **Users bring habits from the other apps on their phones, and good design follows those habits.**
 </Section>
