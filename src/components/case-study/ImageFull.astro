@@ -20,9 +20,11 @@ const { src, alt, caption, indent = false, mobile = false } = Astro.props
 const indentClass = indentPadding(indent)
 const isPlaceholder = src.includes('placeholder')
 
-// "Before — Default state" → state "before".
-const stateMatch = caption?.match(/^(Before|After)\s*[—–-]\s*(.+)$/s)
+// "Before — Default state" or "Before: Default state" → state "before"; the
+// separator is kept as written.
+const stateMatch = caption?.match(/^(Before|After)\s*([:—–-])\s*(.+)$/s)
 const state = stateMatch ? (stateMatch[1].toLowerCase() as 'before' | 'after') : null
+const stateSep = stateMatch?.[2] === ':' ? ': ' : ' — '
 
 // Otherwise the first sentence is the title and the rest a note under the frame.
 let title = caption ?? ''
@@ -45,7 +47,7 @@ const typeLabel = isPlaceholder ? t.imageFull.placeholderLabel : t.imageFull.ima
         {state ? (
           <>
             <span class:list={[state === 'before' ? 'text-state-before' : 'text-state-after']}>{stateMatch![1]}</span>
-            {' — '}{stateMatch![2].replace(/\.$/, '')}
+            {stateSep}{stateMatch![3].replace(/\.$/, '')}
           </>
         ) : title}
     </figcaption>
