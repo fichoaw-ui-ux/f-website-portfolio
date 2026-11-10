@@ -141,42 +141,44 @@ Setelah Fira menyelesaikan *discovery*, dengan data yang sudah dipetakan dan pro
 </Section>
 
 <Section title="Eksplorasi & Validasi">
-Saya merancang **dua iterasi flow end-to-end** untuk diuji. Masing-masing adalah jawaban utuh untuk kedua friction. Bedanya ada di **urutan langkah**.
+Saya merancang **dua iterasi flow end-to-end** dan mengujinya ke **8 user internal Jack/Transfez**: 5 orang sudah familiar dengan flow Local Transfer di Portal, 3 orang belum. Pesertanya karyawan internal, bukan Drafter sungguhan, jadi hasilnya menunjukkan flow mana yang paling mudah dipahami, bukan perilaku Drafter sehari-hari.
+
+Hasilnya lalu saya bawa ke **Bang Edo (CEO kami)**. Dari proses ini lahir tiga keputusan desain:
+
+- **A. Pintu masuk** (Friction #1): bagaimana Drafter masuk ke Local Transfer di mobile, diputuskan bersama tim.
+- **B. Urutan langkah** (Friction #1): dijawab lewat pengujian user.
+- **C. Beban batch** (Friction #2): kapan batch muncul, dijawab lewat review CEO atas hasil pengujian.
+</Section>
+
+<Section title="A. Pintu Masuk: Dari Kartu Reimbursement ke Tombol Create">
+**Friction yang dijawab:** #1, Local Transfer belum ada di mobile.
+
+Langkah pertamanya adalah memberi Drafter pintu masuk. Sebelumnya, pembuatan transaksi di Home hanya tersedia lewat kartu Reimbursement. Kini ada tombol **Create** di tengah bottom navigation, yang membuka pilihan jenis transaksi, termasuk Local Transfer.
+
+Ini keputusan tim. Fitur di aplikasi terus bertambah, jadi perlu satu tempat terpusat untuk memulai semuanya.
+</Section>
+
+<ImageGrid cols={2} indent>
+  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-before.png" alt="Home sebelum: tanpa tombol Create" caption="Before: tanpa tombol Create." />
+  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-after.png" alt="Home sesudah: tombol Create di tengah bottom navigation" caption="After: Create di tengah navigasi." />
+</ImageGrid>
+
+<ImageFull indent src="/images/cs-local-transfer-mobile/entry-create-sheet.png" alt="Tombol Create membuka pilihan transaksi: Local Transfer dan Reimbursement" caption="Local Transfer kini sejajar dengan Reimbursement." />
+
+<Section title="B. Urutan Langkah: Dari Urutan Portal ke “Pilih Penerima Dulu”">
+**Friction yang dijawab:** #1, Local Transfer belum ada di mobile.
+
+Pintu masuk saja tidak cukup. Pertanyaan berikutnya: urutan langkahnya mengikuti Portal, atau mengikuti pola aplikasi bank dan e-wallet? Saya mengujinya lewat dua iterasi:
 
 - **Iterasi 1:** Pilih penerima lebih dulu. Batch ditentukan di awal lewat checkbox; jumlah penerima yang dicentang menentukan single atau batch.
 - **Iterasi 2:** Urutan yang sama dengan Portal. Tentukan tujuan dan detail transaksi lebih dulu.
 </Section>
 
-<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iterasi 1: pilih penerima dulu, batch lewat checkbox" />
+<FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iterasi 1: pilih penerima dulu, batch lewat checkbox" />
 
-<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-151975&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A151975&page-id=343%3A14094" title="Iterasi 2: urutan Portal" />
+<FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-151975&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A151975&page-id=343%3A14094" title="Iterasi 2: urutan Portal" />
 
-<Section title=" ">
-Iterasi 1 dan 2 diuji ke **8 user internal Jack/Transfez**: 5 orang sudah familiar dengan flow Local Transfer di Portal, 3 orang belum. Tujuannya mengetahui flow mana yang paling dipilih dan paling mudah dipahami. Pesertanya karyawan internal, bukan Drafter sungguhan, jadi hasilnya menunjukkan flow mana yang paling mudah dipahami, bukan perilaku Drafter sehari-hari.
-
-> **5 dari 8 user memilih Iterasi 1**, yang dimulai dari penerima. 3 user memilih Iterasi 2, urutan Portal.
-
-Pengujian menjawab soal urutan langkah. Soal kapan batch muncul baru terjawab setelahnya, lewat review yang melahirkan Iterasi 3. Masing-masing membentuk satu keputusan desain yang menjawab satu friction.
-</Section>
-
-<Section title="A. Jalur Drafter di Mobile: Dari Portal-only ke Native di Ponsel">
-**Friction yang dijawab:** #1, Local Transfer belum ada di mobile.
-</Section>
-
-<Section title="A.1 Pintu Masuk: Dari Kartu Reimbursement ke Tombol Create" indent>
-Langkah pertamanya adalah memberi Drafter pintu masuk. Sebelumnya, pembuatan transaksi di Home hanya tersedia lewat kartu Reimbursement. Kini ada tombol **Create** di tengah bottom navigation, yang membuka pilihan jenis transaksi, termasuk Local Transfer.
-</Section>
-
-<ImageGrid cols={2} indent={2}>
-  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-before.png" alt="Home sebelum: tanpa tombol Create" caption="Before: tanpa tombol Create." />
-  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-after.png" alt="Home sesudah: tombol Create di tengah bottom navigation" caption="After: Create di tengah navigasi." />
-</ImageGrid>
-
-<ImageFull indent={2} src="/images/cs-local-transfer-mobile/entry-create-sheet.png" alt="Tombol Create membuka pilihan transaksi: Local Transfer dan Reimbursement" caption="Local Transfer kini sejajar dengan Reimbursement." />
-
-<Section title="A.2 Alur: Dari Urutan Portal ke “Pilih Penerima Dulu”" indent>
-Pintu masuk saja tidak cukup. Pertanyaan berikutnya: urutan langkahnya mengikuti Portal, atau mengikuti pola aplikasi bank dan e-wallet?
-
+<Section title=" " indent>
 | | Urutan Portal (Iterasi 2) | Pola bank & e-wallet (Iterasi 1) |
 | --- | --- | --- |
 | Single | Detail transfer → Penerima | Penerima → Detail transfer |
@@ -188,29 +190,28 @@ Sebagian besar user memilih pola yang sudah mereka kenal dari aplikasi bank dan 
 Familiar dengan Portal tidak jadi penentu. Dari 5 user yang sudah mengenal Portal, 3 tetap memilih pola ini; di ponsel, ditanya detail batch di awal terasa janggal. 2 lainnya memilih urutan Portal supaya konsisten dan supaya tahu tujuan batch-nya sebelum menambahkan penerima. **Bagi sebagian besar user, konsistensi dengan kebiasaan di ponsel lebih penting daripada konsistensi dengan Portal.**
 </Section>
 
-<Section title="B. Beban Batch: Dari Batch-first ke Single-first">
+<Section title="C. Beban Batch: Dari Batch-first ke Single-first">
 **Friction yang dijawab:** #2, Portal memperlakukan setiap transfer sebagai batch.
 
-Beban batch dari Portal tidak boleh ikut pindah ke ponsel, karena 72% batch hanya berisi satu transaksi. Batch juga tidak boleh hilang.
+Beban batch dari Portal tidak boleh ikut pindah ke ponsel, tapi batch juga tidak boleh hilang. Iterasi 1 unggul soal urutan, tapi masih menanyakan batch di awal: setiap transfer dimulai dengan checkbox.
 
-Iterasi 1 dan 3 sama-sama dimulai dari penerima (Keputusan A). Bedanya ada di **kapan batch muncul**. Di Iterasi 1, batch ditentukan di awal lewat checkbox. Di Iterasi 3, single jadi default dan batch baru dibuka lewat ikon tambah penerima.
+Saat hasil pengujian ini saya presentasikan, **Bang Edo** lebih condong membuka alur langsung di daftar penerima tanpa checkbox, sehingga setiap transfer dimulai sebagai transaksi tunggal. Datanya mendukung: 72% batch hanya berisi satu transaksi. Dari situ saya merancang **Iterasi 3**: urutannya tetap dimulai dari penerima, tapi batch baru dibuka lewat ikon tambah penerima.
 </Section>
-
-<FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iterasi 1: batch dipilih di awal lewat checkbox" />
 
 <FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-133367&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A133367&page-id=343%3A14094" title="Iterasi 3: batch dibuka lewat ikon tambah penerima" />
 
 <Section title=" " indent>
-Pengujian mengonfirmasi urutan "pilih penerima dulu", tapi Iterasi 1 masih menanyakan batch di awal lewat checkbox. Setelah me-review-nya, **Bang Edo (CEO kami)** lebih condong membuka alur langsung di daftar penerima tanpa checkbox, sehingga setiap transfer dimulai sebagai transaksi tunggal. Datanya mendukung: 72% batch hanya berisi satu transaksi. Dari situ lahir **Iterasi 3**. Transfer tunggal tidak membawa langkah batch sama sekali, dan batch tetap ada lewat ikon tambah penerima saat dibutuhkan.
+**Iterasi 3** menjadi alur final. Transfer tunggal tidak membawa langkah batch sama sekali, dan batch tetap ada lewat ikon tambah penerima saat dibutuhkan.
 
 *Batch menjadi cabang dari alur single, alih-alih jalur terpisah sejak awal.*
 </Section>
 
 <ImageFull indent src="/images/cs-local-transfer-mobile/batch-flow.png" alt="User flow Local Transfer mobile: single sebagai default, batch sebagai cabang opsional" caption="User flow: single jadi default, batch jadi cabang opsional." />
 
-<Section title="Recap: Dua Keputusan Desain Final">
-1. **Jalur Drafter di mobile (Friction #1).** Tombol Create di bottom navigation membuka jalan ke Local Transfer, dengan alur yang dimulai dari memilih penerima, dipilih 5 dari 8 user saat pengujian.
-2. **Lepas beban batch (Friction #2).** Single jadi jalur utama tanpa nama batch di awal; batch dibuka lewat ikon tambah penerima (Iterasi 3, dari review Bang Edo dan data 72% transaksi tunggal). Maksimal 10 penerima, tanpa upload file.
+<Section title="Recap: Tiga Keputusan Desain Final">
+1. **Pintu masuk di mobile (Friction #1).** Tombol Create di tengah bottom navigation membuka Local Transfer, sejajar dengan Reimbursement.
+2. **Pilih penerima dulu (Friction #1).** Alurnya mengikuti pola aplikasi bank dan e-wallet, dipilih 5 dari 8 user saat pengujian.
+3. **Single sebagai default (Friction #2).** Tanpa nama batch di awal; batch dibuka lewat ikon tambah penerima (Iterasi 3, dari review Bang Edo atas hasil pengujian). Maksimal 10 penerima, tanpa upload file.
 </Section>
 
 <PartHeader number="04" title="Solution" />

@@ -141,42 +141,44 @@ After Fira wrapped up *discovery*, with the data mapped out and the problem stat
 </Section>
 
 <Section title="Exploration & Validation">
-I designed **two end-to-end flow iterations** for testing. Each one was a complete answer to both friction points. They differed in **the order of steps**.
+I designed **two end-to-end flow iterations** and tested them with **8 internal Jack/Transfez users**: 5 already familiar with the Portal's Local Transfer flow, 3 not. Participants were internal staff rather than real Drafters, so the results show which flow was easiest to understand, not how Drafters behave day to day.
+
+I then brought the results to **Edo, our CEO**. Three design decisions came out of this work:
+
+- **A. Entry point** (Friction #1): how Drafters get into Local Transfer on mobile, settled as a team decision.
+- **B. Order of steps** (Friction #1): settled by user testing.
+- **C. The batch load** (Friction #2): when batch appears, settled by the CEO review of the test results.
+</Section>
+
+<Section title="A. Entry Point: From the Reimbursement Card to a Create Button">
+**Friction addressed:** #1, Local Transfer didn't exist on mobile.
+
+The first step was giving Drafters a way in. Before, creating a transaction on Home was only possible through the Reimbursement card. Now there's a **Create** button in the middle of the bottom navigation, which opens a choice of transaction types, including Local Transfer.
+
+This was a team decision. More and more features were being built into the app, so they needed one central place to start from.
+</Section>
+
+<ImageGrid cols={2} indent>
+  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-before.png" alt="Home before: no Create button" caption="Before: no Create button." />
+  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-after.png" alt="Home after: Create button in the middle of the bottom navigation" caption="After: Create in the middle of the navigation." />
+</ImageGrid>
+
+<ImageFull indent src="/images/cs-local-transfer-mobile/entry-create-sheet.png" alt="The Create button opens the transaction choices: Local Transfer and Reimbursement" caption="Local Transfer now sits alongside Reimbursement." />
+
+<Section title="B. Order of Steps: From the Portal’s Order to “Pick the Recipient First”">
+**Friction addressed:** #1, Local Transfer didn't exist on mobile.
+
+An entry point alone wasn't enough. The next question: should the steps follow the Portal, or follow the pattern of banking and e-wallet apps? I tested this with two iterations:
 
 - **Iteration 1:** Pick the recipient first. Batch is decided up front with checkboxes; the number of recipients checked decides single or batch.
 - **Iteration 2:** The same order as the Portal. Set the destination and transaction details first.
 </Section>
 
-<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iteration 1: recipient first, batch via checkboxes" />
+<FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iteration 1: recipient first, batch via checkboxes" />
 
-<FigmaEmbed url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-151975&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A151975&page-id=343%3A14094" title="Iteration 2: the Portal order" />
+<FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-151975&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A151975&page-id=343%3A14094" title="Iteration 2: the Portal order" />
 
-<Section title=" ">
-Iterations 1 and 2 were tested with **8 internal Jack/Transfez users**: 5 already familiar with the Portal's Local Transfer flow, 3 not. The goal was to find out which flow was preferred and easiest to understand. Participants were internal staff rather than real Drafters, so the results show which flow was easiest to understand, not how Drafters behave day to day.
-
-> **5 out of 8 users picked Iteration 1**, which starts with the recipient. 3 users picked Iteration 2, the Portal order.
-
-Testing settled the order of steps. When batch appears was settled afterwards, in a review that led to Iteration 3. Each shaped a design decision that answers one friction point.
-</Section>
-
-<Section title="A. A Path for Drafters on Mobile: From Portal-only to Native on the Phone">
-**Friction addressed:** #1, Local Transfer didn't exist on mobile.
-</Section>
-
-<Section title="A.1 Entry Point: From the Reimbursement Card to a Create Button" indent>
-The first step was giving Drafters a way in. Before, creating a transaction on Home was only possible through the Reimbursement card. Now there's a **Create** button in the middle of the bottom navigation, which opens a choice of transaction types, including Local Transfer.
-</Section>
-
-<ImageGrid cols={2} indent={2}>
-  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-before.png" alt="Home before: no Create button" caption="Before: no Create button." />
-  <ImageFull mobile src="/images/cs-local-transfer-mobile/entry-after.png" alt="Home after: Create button in the middle of the bottom navigation" caption="After: Create in the middle of the navigation." />
-</ImageGrid>
-
-<ImageFull indent={2} src="/images/cs-local-transfer-mobile/entry-create-sheet.png" alt="The Create button opens the transaction choices: Local Transfer and Reimbursement" caption="Local Transfer now sits alongside Reimbursement." />
-
-<Section title="A.2 Flow: From the Portal’s Order to “Pick the Recipient First”" indent>
-An entry point alone wasn't enough. The next question: should the steps follow the Portal, or follow the pattern of banking and e-wallet apps?
-
+<Section title=" " indent>
 | | Portal order (Iteration 2) | Banking & e-wallet pattern (Iteration 1) |
 | --- | --- | --- |
 | Single | Transfer details → Recipient | Recipient → Transfer details |
@@ -188,29 +190,28 @@ Most users picked the pattern they already knew from banking and e-wallet apps.
 Familiarity with the Portal didn't decide it. Of the 5 users who knew the Portal, 3 still picked this pattern; on a phone, being asked for batch details first felt off. The other 2 picked the Portal order to keep it consistent and to know what a batch is for before adding recipients. **For most users, consistency with phone habits mattered more than consistency with the Portal.**
 </Section>
 
-<Section title="B. The Batch Load: From Batch-first to Single-first">
+<Section title="C. The Batch Load: From Batch-first to Single-first">
 **Friction addressed:** #2, the Portal treated every transfer as a batch.
 
-The Portal's batch load couldn't come along to the phone, since 72% of batches held only one transaction. Batch couldn't disappear either.
+The Portal's batch load couldn't come along to the phone, but batch couldn't disappear either. Iteration 1 won on order, yet it still asked about batch up front: every transfer started with checkboxes.
 
-Iterations 1 and 3 both start from the recipient (Decision A). The difference is **when batch appears**. In Iteration 1, batch is decided up front with checkboxes. In Iteration 3, single is the default and batch only opens through the add-recipient icon.
+When I presented the test results, **Edo** leaned toward opening straight on the recipient list without checkboxes, so every transfer starts as a single one. The data backed him up: 72% of batches held only one transaction. From there I designed **Iteration 3**: the same recipient-first order, with batch opening only through the add-recipient icon.
 </Section>
-
-<FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-136231&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A136231&page-id=343%3A14094" title="Iteration 1: batch chosen up front with checkboxes" />
 
 <FigmaEmbed indent url="https://www.figma.com/proto/ymvw1daaIRX7ZnVo9vGxmO/Local-Transfer?node-id=3829-133367&viewport=161%2C19%2C0.05&t=gG3FZ9d28lRsHvml-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=3829%3A133367&page-id=343%3A14094" title="Iteration 3: batch opened through the add-recipient icon" />
 
 <Section title=" " indent>
-Testing confirmed the recipient-first order, but Iteration 1 still asked about batch up front with checkboxes. After reviewing it, **Edo, our CEO**, leaned toward opening straight on the recipient list without checkboxes, so every transfer starts as a single one. The data backed this up: 72% of batches held only one transaction. That became **Iteration 3**. A single transfer carries no batch steps at all, and batch is still there through the add-recipient icon when it's needed.
+**Iteration 3** became the final flow. A single transfer carries no batch steps at all, and batch is still there through the add-recipient icon when it's needed.
 
 *Batch became a branch of the single flow instead of a separate path from the start.*
 </Section>
 
 <ImageFull indent src="/images/cs-local-transfer-mobile/batch-flow.png" alt="Local Transfer mobile user flow: single by default, batch as an optional branch" caption="User flow: single by default, batch as an optional branch." />
 
-<Section title="Recap: Two Final Design Decisions">
-1. **A path for Drafters on mobile (Friction #1).** A Create button in the bottom navigation opens the way to Local Transfer, with a flow that starts by picking the recipient, chosen by 5 out of 8 users in testing.
-2. **Drop the batch load (Friction #2).** Single is the main path with no batch name up front; batch opens through the add-recipient icon (Iteration 3, from Edo's review and the 72% single-transaction data). Up to 10 recipients, no file upload.
+<Section title="Recap: Three Final Design Decisions">
+1. **A way in on mobile (Friction #1).** A Create button in the middle of the bottom navigation opens Local Transfer, alongside Reimbursement.
+2. **Pick the recipient first (Friction #1).** The flow follows the banking and e-wallet pattern, chosen by 5 out of 8 users in testing.
+3. **Single by default (Friction #2).** No batch name up front; batch opens through the add-recipient icon (Iteration 3, from Edo's review of the test results). Up to 10 recipients, no file upload.
 </Section>
 
 <PartHeader number="04" title="Solution" />
