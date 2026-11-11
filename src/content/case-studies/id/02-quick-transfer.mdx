@@ -121,7 +121,7 @@ Setelah saya rancang alternatif awal, kami mengadakan **forum dengan tim besar (
 - Bagaimana user menjalani full journey *Single Transfer* secara end-to-end.
 - Bentuk pilihan entry point yang paling jelas mengomunikasikan pilihan.
 
-Saya tes keduanya ke 8 user internal di sesi usability testing.
+Saya tes keduanya ke 8 user internal di sesi usability testing: 3 dari Ops, 1 dari Finance, dan 4 dari Marketing. Tujuh di antaranya sudah biasa memakai Local Transfer di Portal; satu belum.
 </Section>
 
 <Section title="Eksplorasi & Validasi">
@@ -149,13 +149,19 @@ Setelah user paham full journey-nya, baru saya minta pendapat mereka soal entry 
 <ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. Kami sempat condong ke arah ini. Kalau 72% transaksi cuma single, kenapa tidak lewati semua pilihan dan langsung tampilkan list?" />
 
 <Section title=" " indent>
-Alt 1 dan Alt 2 mendapat jumlah pilihan user yang sama. Ini pendapat peserta tentang masing-masing alternatif:
+Alt 1 dan Alt 2 seri, masing-masing dipilih 4 peserta. Ini pendapat peserta tentang masing-masing alternatif:
 
 | | Kelebihan | Kekurangan |
 | --- | --- | --- |
 | Alt 1: hierarki tiga pilihan | Opsi yang ada membantu user memutuskan metode input yang mau dipakai. Familiar bagi user yang sudah memakai Portal. | Kurang clear dibanding alternatif lain. Pilihannya terlalu banyak. Beberapa komponen mengalihkan perhatian, jadi user butuh waktu untuk mencerna opsinya. |
 | Alt 2: toggle dua pilihan | Lebih menarik, dengan informasi secukupnya. Metode transfer lebih mudah dibedakan. | User perlu waktu beradaptasi, karena opsi input data tidak ditampilkan di awal. |
 | Alt 3: direct list | Tidak ada. Tidak satu pun peserta memilihnya. | Layout terlalu berbeda dari Portal yang sudah dikenal user. Metode batch tidak ditampilkan di awal. |
+
+Beberapa reaksi di balik kelebihan dan kekurangan tersebut:
+
+- **Alt 1:** seorang peserta dari Marketing lebih dulu memperhatikan card dan ikonnya, baru setelah itu paham mana opsi single dan mana batch.
+- **Alt 2:** seorang peserta dari Finance merasa tampilannya lebih menarik. Opsi lain terasa penuh tulisan, dan dengan hanya dua pilihan, tidak ada yang membingungkan.
+- **Alt 3:** seorang peserta dari Ops kaget melihatnya, dan mengingatkan bahwa tidak semua user langsung berpikir dua langkah ke depan; sebagian kurang terbiasa dengan teknologi.
 
 Dari perbandingan ini, **Alt 2 menang**: paling clear dan kekurangannya paling sedikit. Alt 3 tidak dipilih sama sekali; peserta merasa opsi ini tidak cocok untuk Portal, terutama karena batch tidak terlihat sejak awal.
 </Section>
@@ -190,6 +196,8 @@ Sampai di titik ini, ketiga friction sudah terjawab bersama oleh alur Single Tra
 
 Rekomendasi hasil pengujian (Alt 2) jadi tidak berlaku. Toggle-nya membagi pilihan menjadi *Single* vs *Batch*, yang memberi kesan jalur cepat hanya untuk tepat satu transfer. Bang Edo justru ingin jalur cepat yang tetap bisa dipakai saat user punya beberapa penerima.
 
+Separuh peserta sebenarnya sudah condong ke arah ini. Keempat peserta yang memilih Alt 1 memberi alasan yang sama: semua opsi langsung terlihat di depan. Masukan Bang Edo membuat preferensi itu punya alasan kuat untuk dipilih.
+
 Karena itu strukturnya pindah ke **Alt 1**, dengan ketiga metode (Quick + Upload Excel + Empty Table) tampil sejajar. Pilihannya kini dikelompokkan berdasarkan seberapa besar pekerjaan user, alih-alih *satu vs banyak*. Kekurangan Alt 1, *"terlalu banyak pilihan"*, saya tangani dengan grouping deskriptif: *"Suitable for 1-5 recipients"* untuk Quick Transfer, *"For up to 1000 recipients"* untuk dua opsi batch, yang menandakan keduanya jalur untuk pembayaran bulk dalam jumlah besar. User bisa memilih jalur yang tepat sejak layar pertama.
 </Section>
 
@@ -202,6 +210,8 @@ Karena itu strukturnya pindah ke **Alt 1**, dengan ketiga metode (Quick + Upload
 **Risiko yang dijawab:** dead-end bagi user yang sejak awal tahu perlu kirim ke beberapa penerima.
 
 Ini pintu pertama ke batch dari dalam flow Quick Transfer. Saya menambahkan multi-select: kolom checkbox di setiap recipient, plus indikator *"X recipients selected"* di footer dengan tombol Continue. Continue membawa user ke Empty Table dengan recipient yang dipilih sudah terisi, lalu user tinggal melengkapi amount, email, dan notes untuk masing-masing. User yang dari awal tahu mau kirim ke beberapa orang bisa langsung memilih semuanya di sini, tanpa mengulang dari awal.
+
+Pengujian juga sudah memberi petunjuk ke sini. Seorang peserta meminta tombol select all untuk mengirim ke semua penerima tersimpan, dan seorang peserta dari Ops menyebut klien biasanya mengirim ke penerima yang sama berulang kali.
 </Section>
 
 <ImageGrid cols={2} indent>
