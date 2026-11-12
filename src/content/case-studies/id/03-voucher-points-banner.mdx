@@ -21,14 +21,8 @@ order: 3
 brandColor: "#DA649F"
 brandColorAlt: "#7A2A55"
 snapshot:
-  - label: "Problem"
-    value: "Hanya 31,43% user di Send Money yang membuka halaman voucher. Voucher terlihat sudah applied, points banner merebut perhatiannya, dan urutan halaman memutus fokus user."
   - label: "My role"
-    value: "UI/UX Designer: root cause analysis bersama lead, iterasi desain, restrukturisasi halaman, dan handoff ke engineering."
-  - label: "Key decisions"
-    value: "Voucher dengan default dan applied state yang jelas berbeda dan langsung menampilkan nilai terbaik, points banner yang diredam, dan payment method yang dipindah ke bawah voucher."
-  - label: "Outcome"
-    value: "Disetujui tim Growth dan masuk ke development. Target: voucher attach rate ≥40% dalam 30 hari setelah rilis. Belum rilis saat studi kasus ini ditulis."
+    value: "UI/UX Designer"
   - label: "Most Collaborated with"
     value: "Mas Andre, VP of Growth · Bang Fathur, Design Lead"
   - label: "Brand & Industry"
@@ -66,11 +60,11 @@ Tim Growth datang dengan satu angka yang sulit diabaikan:
 
 Artinya, **hampir 7 dari 10 user tidak pernah membuka halaman voucher**. Data ini tidak menunjukkan berapa di antara mereka yang punya voucher eligible, tapi jelas entry point-nya tidak mengundang user untuk masuk.
 
-Ketika kami menggali lebih dalam, masalahnya ternyata tidak berhenti di voucher. Ada dua komponen lain di halaman yang ikut berkontribusi, dan ketiganya saling memperparah.
+Dan voucher bukan satu-satunya penyebab.
 </Section>
 
 <Section title="B. Current Experience">
-User mengatur nominal, memilih metode pembayaran, lalu melewati entry voucher yang jarang disentuh dalam perjalanan ke tombol Continue. Screenshot dan prototype di bawah memperlihatkan halaman versi lama.
+User mengatur nominal, memilih metode pembayaran, lalu melewati entry voucher yang jarang disentuh dalam perjalanan ke tombol Continue.
 </Section>
 
 <ImageFull indent mobile src="/images/cs-voucher-points-banner/context-mixpanel.png" alt="Layar Send Money sebelum didesain ulang, dengan entry voucher 'Check your available voucher here'" caption="Current experience: posisi entry voucher sebelum didesain ulang." />
@@ -78,7 +72,7 @@ User mengatur nominal, memilih metode pembayaran, lalu melewati entry voucher ya
 <FigmaEmbed indent url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/template_file?page-id=961%3A9&node-id=6863-1835&viewport=1018%2C212%2C0.62&t=AaHU0eUqWPfkKv7V-1&scaling=contain&content-scaling=fixed&starting-point-node-id=6863%3A1442" title="Current experience: Send Money" caption="Prototype halaman Send Money versi lama. Perhatikan ke mana mata Anda tertuju sebelum Continue." />
 
 <Section title="C. The Friction Points">
-Setelah saya dan lead menelusuri halaman Send Money lebih dalam, satu hal langsung terlihat: **masalahnya datang dari lebih dari satu tempat**. Ada tiga komponen berbeda yang masing-masing punya peran, dan ketiganya diam-diam saling memperparah.
+Saat menelusuri halaman bersama lead saya, kami menemukan **tiga komponen yang masing-masing punya peran**, dan diam-diam saling memperparah.
 
 **1. Komponen Voucher.**
 
@@ -104,17 +98,15 @@ Setelah saya dan lead menelusuri halaman Send Money lebih dalam, satu hal langsu
 <Section title=" " indent>
 **3. Hierarki Halaman.**
 
-- **Struktur informasi tidak mencerminkan prioritas user.** Payment method tidak memengaruhi nilai transaksi sama sekali: ia tidak mengubah berapa yang dikirim, berapa fee-nya, atau berapa yang bisa dihemat. Karena posisinya di atas voucher, user yang melihatnya lebih dulu masuk ke mode *"sudah beres"* sebelum sempat menyadari ada penghematan yang bisa diambil. Calculator dan voucher seharusnya terbaca sebagai satu pikiran, *"total yang saya bayar berapa?"*, dan koneksi itu ikut terputus.
+- **Struktur informasi tidak mencerminkan prioritas user.** Payment method tidak memengaruhi nilai transaksi sama sekali: ia tidak mengubah berapa yang dikirim, berapa fee-nya, atau berapa yang bisa dihemat. Posisinya di atas voucher membuat user masuk ke mode *"sudah beres"* sebelum menyadari ada penghematan, dan memutus kaitan calculator dengan voucher: *"total yang saya bayar berapa?"*
 </Section>
 
 <ImageFull indent mobile src="/images/cs-voucher-points-banner/friction-3-hierarchy.png" alt="Hierarki halaman Send Money dengan payment method di atas voucher" caption="Payment method memutus koneksi antara calculator dan voucher." />
 
 <Section title="D. Design Opportunity">
-Dari ketiga friction ini, ada satu pertanyaan yang jadi titik awal seluruh proses desain:
+Satu pertanyaan jadi titik awal desain:
 
 > **Bagaimana membuat voucher menang di *reward slot* Send Money, tanpa mengubah mekanisme dasarnya?**
-
-Memperbaiki satu komponen saja tidak akan cukup. Analisis menunjukkan ada tiga komponen yang saling bersaing: voucher yang tidak terlihat, points banner yang mendominasi, dan payment method yang posisinya memutus fokus user sebelum sampai ke voucher. Ketiganya harus dibenahi bersama.
 </Section>
 
 <PartHeader number="03" title="Design Decisions" />
@@ -126,19 +118,17 @@ Solusi paling mudah sebenarnya *auto-apply*: sistem langsung memotong biaya tanp
 
 PRD-nya menjadikan ini batasan yang tegas: perubahannya murni di front-end. Eligibility, ranking, dan apply voucher sudah tersedia di backend, jadi semua perbaikan harus datang dari cara halaman menampilkannya.
 
-Setelah analisis selesai, arahnya sudah jelas: ketiga komponen harus dibenahi bersama, tidak satu per satu. Eksekusi desain sepenuhnya saya pegang: eksplorasi iterasi, restrukturisasi halaman, sampai handoff ke engineering. Dari sini lahir tiga keputusan utama, masing-masing menjawab satu friction.
+Eksekusi desain sepenuhnya saya pegang: eksplorasi iterasi, restrukturisasi halaman, sampai handoff ke engineering. Dari sini lahir tiga keputusan, satu untuk tiap friction.
 </Section>
 
 <Section title="A. Komponen Voucher: Dari Tidak Terlihat ke Actionable">
 **Friction yang dijawab:** #1, komponen voucher.
 
-Ada dua hal yang perlu diperbaiki sekaligus: **visual yang terlalu mirip active state**, dan **copy yang tidak memberi alasan untuk tap**. Keduanya tidak bisa diselesaikan terpisah, karena sama-sama membuat user merasa tidak perlu berinteraksi lebih jauh.
-
-Dari sini, ada dua pertanyaan desain yang perlu dijawab.
+Visual dan copy harus dibenahi bersamaan, karena keduanya sama-sama membuat user merasa tidak ada yang perlu di-tap.
 </Section>
 
 <Section title="A.1 Bagaimana memperkenalkan voucher?" indent>
-Copy lama hanya bilang *"Check your available voucher here"*, tanpa nilai yang dijanjikan, jadi tidak ada alasan untuk tap. Dua pendekatan dieksplorasi: *Quantity First* (menampilkan jumlah voucher yang tersedia) vs *Value First* (langsung menampilkan nilai voucher terbaik).
+Dua pendekatan dieksplorasi: *Quantity First* (menampilkan jumlah voucher yang tersedia) vs *Value First* (langsung menampilkan nilai voucher terbaik).
 </Section>
 
 <ImageGrid cols={2} indent>
@@ -151,7 +141,7 @@ Copy lama hanya bilang *"Check your available voucher here"*, tanpa nilai yang d
 </Section>
 
 <Section title="A.2 Bagaimana membedakan default state dari applied state?" indent>
-Masalah visualnya: komponen lama punya **satu tampilan untuk dua kondisi yang berbeda**. Default state dengan background pink gradient dan badge emas terlihat sama seperti active state, sehingga user bisa mengira voucher sudah berjalan dan melewatinya.
+Komponen lama punya **satu tampilan untuk dua kondisi yang berbeda**, sehingga user bisa mengira voucher sudah berjalan.
 
 Dua keputusan visual diambil sekaligus:
 
@@ -175,8 +165,6 @@ Dua keputusan visual diambil sekaligus:
 <Section title="B. Points Banner: Dari Dominan ke Pendukung">
 **Friction yang dijawab:** #2, komponen points banner.
 
-Friction-nya jelas: banner emas/hitam yang dominan, copy yang terasa seperti konfirmasi reward alih-alih insentif, dan posisi tepat sebelum tombol Continue. Semuanya bersaing dengan voucher di momen yang paling krusial.
-
 Rekomendasi awal saya adalah memindahkan points banner ke Success Page supaya voucher menang penuh di reward slot Send Money. Tim Growth memutuskan untuk tetap menaruhnya di Send Money, dengan pertimbangan bahwa informasi points masih relevan di tahap ini: user yang tahu reward yang akan didapat sebelum bertransaksi cenderung lebih termotivasi menyelesaikan transfer.
 
 Hasilnya, points banner diredam secara visual, dari banner emas yang dominan menjadi strip abu-abu tipis. Banner ini tidak lagi mendominasi reward slot, tapi tetap hadir sebagai informasi pendukung yang berguna.
@@ -190,7 +178,7 @@ Hasilnya, points banner diredam secara visual, dari banner emas yang dominan men
 <Section title="C. Information Architecture: Meluruskan Hierarki Halaman">
 **Friction yang dijawab:** #3, hierarki halaman.
 
-Dari ketiga friction, yang ini paling halus. Masalahnya ada di urutan, bukan di satu komponen: **payment method yang posisinya di atas voucher membuat user masuk ke mode *"sudah beres"* sebelum sempat menyadari ada penghematan yang masih bisa diambil**.
+Yang paling halus dari ketiganya: masalahnya ada di **urutan, bukan di satu komponen**.
 
 Dua pertimbangan yang mendasari keputusan ini:
 
@@ -205,14 +193,6 @@ Dua pertimbangan yang mendasari keputusan ini:
 
 <Section title=" " indent>
 **Hasilnya:** Payment Method dipindah ke bawah dengan label *"Change"* yang eksplisit. Tetap mudah dijangkau, dan tidak lagi menginterupsi alur utama.
-</Section>
-
-<Section title="Recap: Tiga Keputusan Desain Final">
-Ketiga keputusan ini masing-masing menjawab friction yang berbeda. Saat disatukan, halaman ini punya **satu alur yang konsisten bagi user**: dari kalkulasi, ke voucher, ke konfirmasi. Tanpa visual yang saling bersaing, tanpa momen *"sudah beres"* yang terlalu dini.
-
-1. **Voucher: dari tidak terlihat ke actionable.** Value First di copy, default state direset ke visual netral dengan tombol *"Apply"* yang eksplisit, active state dibedakan tegas dengan badge hijau dan *"Promo applied!"*.
-2. **Points banner: dari dominan ke pendukung.** Tetap hadir di Send Money, tanpa merebut reward slot.
-3. **Information architecture: meluruskan hierarki halaman.** Calculator dan voucher jadi satu kesatuan; payment method turun ke bawah dengan label *"Change"*.
 </Section>
 
 <PartHeader number="04" title="Solution" />

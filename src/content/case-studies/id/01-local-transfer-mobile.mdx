@@ -19,14 +19,8 @@ tools: ["Figma", "Prototype"]
 featured: true
 order: 1
 snapshot:
-  - label: "Problem"
-    value: "Drafter hanya bisa membuat Local Transfer di Portal, lewat alur yang dirancang untuk batch, padahal 72% batch berisi satu transaksi."
   - label: "My role"
-    value: "UI/UX Designer: eksplorasi user flow, UI mobile, usability testing, dan handoff ke engineering mobile."
-  - label: "Key decisions"
-    value: "Tombol Create di bottom navigation, alur yang dimulai dari penerima, dan batch sebagai cabang opsional dari alur single."
-  - label: "Outcome"
-    value: "56% adopsi mobile di bulan pertama; transfer tunggal 40% lebih cepat dibanding di Portal."
+    value: "UI/UX Designer"
   - label: "Most Collaborated with"
     value: "Fira Alliyah, Product Manager"
   - label: "Brand & Industry"
@@ -52,7 +46,7 @@ Jack hadir di dua platform: **Jack Portal (web)** dan **Jack Mobile App**. Peran
 
 Setiap transaksi di Jack melewati tiga peran: **Drafter** yang membuat transaksi, **Approver** yang menyetujuinya, dan **Releaser** yang melepas dana dari saldo perusahaan. Untuk *Local Transfer*, Mobile App saat itu hanya melayani Approver dan Releaser. Drafter, orang yang memulai semua transaksi, tetap harus membuka Portal. Satu-satunya yang bisa Drafter buat dari ponsel hanyalah *reimbursement*.
 
-Proyek ini berangkat dari discovery yang sama dengan [Quick Transfer](/id/work/quick-transfer/): temuan bahwa 72% batch Local Transfer hanya berisi satu transaksi. Proyek ini dikerjakan lebih dulu dan menjawabnya di ponsel; Quick Transfer menyusul dan menjawabnya di Portal. Keduanya memakai prinsip yang sama: **single dulu, batch sebagai cabang**.
+Proyek ini dan [Quick Transfer](/id/work/quick-transfer/) berangkat dari discovery yang sama. Proyek ini menjawabnya lebih dulu di ponsel; Quick Transfer menjawabnya di Portal. Keduanya memakai satu prinsip: **single dulu, batch sebagai cabang**.
 </Section>
 
 <PartHeader number="02" title="Context & Problem" />
@@ -80,34 +74,24 @@ Fira memperkuat temuan ini lewat *review* feedback user dan interview singkat de
 
 <Section title="B. Current Experience">
 Bayangkan seorang Drafter sedang di luar kantor dan perlu membayar supplier hari itu juga. Ia membuka Jack Mobile App, tapi tidak ada tombol untuk membuat transaksi baru. Satu-satunya tombol **Create New** di Home hanya ada di kartu *Reimbursement*. Ia harus menunggu sampai bisa membuka laptop, lalu melewati flow *Local Transfer* di Portal yang dirancang untuk banyak penerima, untuk mengirim ke satu orang.
-
-> **Tidak ada di mobile:** Jack Mobile App belum punya fitur Local Transfer.
->
-> **Harus lewat Portal:** satu-satunya jalan adalah membuka laptop dan melewati flow batch, meski hanya untuk satu penerima.
-
-Screenshot dan prototipe di bawah memperlihatkan proses membuat Local Transfer di Portal.
 </Section>
 
 <ImageFull indent src="/images/cs-local-transfer-mobile/current-experience-portal.png" alt="Dashboard Jack Portal dengan menu Create terbuka dan Local Transfer ditandai" caption="Current experience: alur Local Transfer di Portal." />
 
 <FigmaEmbed indent url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-44005&viewport=-990%2C1194%2C0.11&t=S4WF9ntqElof5SH8-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1875%3A43955&page-id=411%3A2" title="Current experience: Local Transfer di Portal" caption="Prototipe alur Local Transfer di Portal. Hitung berapa langkah yang dibutuhkan untuk membayar satu penerima." />
 
-<Section title=" " indent>
-Dari perjalanan ini, ada dua titik yang paling menghambat Drafter. Keduanya dibahas di bagian berikutnya.
-</Section>
-
 <Section title="C. The Friction Points">
-Dua titik tersebut menjadi **dua friction** yang perlu dijawab sekaligus kalau fitur ini mau benar-benar dipakai.
+Ada dua friction yang perlu dijawab sekaligus supaya fitur ini benar-benar dipakai.
 
 **1. Local Transfer belum ada di mobile.**
 
-Di Jack Mobile App, satu-satunya transaksi yang bisa dibuat Drafter adalah *reimbursement*, lewat tombol *Create New* di kartu Reimbursement. Tidak ada fitur Local Transfer, dan tidak ada tombol Create umum yang bisa menjadi pintu masuknya.
+Satu-satunya transaksi yang bisa dibuat Drafter di aplikasi adalah *reimbursement*. Tidak ada Local Transfer, dan tidak ada tombol Create umum yang bisa menjadi pintu masuknya.
 </Section>
 
 <ImageFull indent mobile src="/images/cs-local-transfer-mobile/friction-1-home.png" alt="Home Jack Mobile App dengan tombol Create New hanya di kartu Reimbursement" caption="Friction #1: satu-satunya tombol untuk membuat transaksi di Home adalah Create New di kartu Reimbursement." />
 
 <Section title=" " indent>
-Akibatnya, untuk pembayaran mendesak seperti membayar supplier atau mengganti biaya ad-hoc, Drafter yang sedang di luar kantor harus menunggu sampai bisa membuka laptop. Business owner dan finance manager yang sehari-hari bekerja dari ponsel tidak punya pilihan lain.
+Pembayaran mendesak harus menunggu laptop, bahkan bagi business owner dan finance manager yang sehari-hari bekerja dari ponsel.
 
 **2. Portal memperlakukan setiap transfer sebagai batch.**
 
@@ -125,13 +109,11 @@ Di ponsel, beban ini makin terasa. Alur batch-first tidak bisa dibawa apa adanya
 </Section>
 
 <Section title="D. Design Opportunity">
-Dari dua friction ini, memindahkan fitur ke mobile baru separuh pekerjaan. Pertanyaan yang jadi titik awal desain:
+Memindahkan fitur ke mobile baru separuh pekerjaan. Pertanyaan yang jadi titik awal desain:
 
 > **Bagaimana membuat Local Transfer terasa natural di ponsel untuk transfer tunggal, sambil tetap membuka jalan bagi yang butuh batch?**
 
-Dua friction tadi saling terkait. Drafter butuh jalur di mobile, tapi flow yang ada dirancang untuk batch dan tidak bisa dibawa apa adanya. Flow Portal yang hanya dikecilkan memang membuat fiturnya ada di mobile, tapi tetap merepotkan untuk 72% kasus yang hanya butuh satu penerima.
-
-Kalau batch dibuang sepenuhnya, user yang sesekali perlu kirim ke beberapa orang kembali terpaksa membuka laptop. Targetnya adalah satu alur yang cepat untuk transfer tunggal dan tetap bisa berkembang menjadi batch tanpa harus mulai dari awal.
+Flow Portal yang hanya dikecilkan tetap merepotkan untuk 72% transfer tunggal. Kalau batch dibuang, user yang sesekali kirim ke beberapa orang terpaksa kembali ke laptop. Targetnya satu alur yang cepat untuk transfer tunggal dan bisa berkembang menjadi batch tanpa mulai dari awal.
 </Section>
 
 <PartHeader number="03" title="Design Decisions" />
@@ -207,12 +189,6 @@ Saat hasil pengujian ini saya presentasikan, **Bang Edo** lebih condong membuka 
 </Section>
 
 <ImageFull indent src="/images/cs-local-transfer-mobile/batch-flow.png" alt="User flow Local Transfer mobile: single sebagai default, batch sebagai cabang opsional" caption="User flow: single jadi default, batch jadi cabang opsional." />
-
-<Section title="Recap: Tiga Keputusan Desain Final">
-1. **Pintu masuk di mobile (Friction #1).** Tombol Create di tengah bottom navigation membuka Local Transfer, sejajar dengan Reimbursement.
-2. **Pilih penerima dulu (Friction #1).** Alurnya mengikuti pola aplikasi bank dan e-wallet, dipilih 5 dari 8 user saat pengujian.
-3. **Single sebagai default (Friction #2).** Tanpa nama batch di awal; batch dibuka lewat ikon tambah penerima (Iterasi 3, dari review Bang Edo atas hasil pengujian). Maksimal 10 penerima, tanpa upload file.
-</Section>
 
 <PartHeader number="04" title="Solution" />
 

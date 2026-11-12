@@ -19,14 +19,8 @@ tools: ["Figma", "Prototype"]
 featured: true
 order: 1
 snapshot:
-  - label: "Problem"
-    value: "Drafters could only create a Local Transfer in the Portal, through a flow built for batches, even though 72% of batches held one transaction."
   - label: "My role"
-    value: "UI/UX Designer: user flow exploration, mobile UI, usability testing, and handoff to mobile engineering."
-  - label: "Key decisions"
-    value: "A Create button in the bottom navigation, a recipient-first flow, and batch as an optional branch of the single flow."
-  - label: "Outcome"
-    value: "56% mobile adoption in the first month; single transfers 40% faster than in the Portal."
+    value: "UI/UX Designer"
   - label: "Most Collaborated with"
     value: "Fira Alliyah, Product Manager"
   - label: "Brand & Industry"
@@ -52,7 +46,7 @@ Jack runs on two platforms: **Jack Portal (web)** and the **Jack Mobile App**. T
 
 Every transaction at Jack passes through three roles: the **Drafter** who creates it, the **Approver** who approves it, and the **Releaser** who releases the funds from the company balance. For *Local Transfer*, the Mobile App only served Approvers and Releasers. The Drafter, the person who starts every transaction, still had to open the Portal. The only thing a Drafter could create from their phone was a *reimbursement*.
 
-This project grew out of the same discovery as [Quick Transfer](/work/quick-transfer/): the finding that 72% of Local Transfer batches held a single transaction. This project came first and answered it on the phone; Quick Transfer followed and answered it in the Portal. Both follow the same principle: **single first, batch as a branch**.
+This project and [Quick Transfer](/work/quick-transfer/) grew out of the same discovery. This one answered it on the phone first; Quick Transfer answered it in the Portal. Both follow one principle: **single first, batch as a branch**.
 </Section>
 
 <PartHeader number="02" title="Context & Problem" />
@@ -80,34 +74,24 @@ Fira backed this up by reviewing user feedback and running short interviews with
 
 <Section title="B. Current Experience">
 Picture a Drafter out of the office who needs to pay a supplier that same day. They open the Jack Mobile App, but there's no button to create a new transaction. The only **Create New** button on Home sits on the *Reimbursement* card. So they wait until they can open a laptop, then go through the Portal's *Local Transfer* flow, built for many recipients, to send to one person.
-
-> **Not on mobile:** the Jack Mobile App had no Local Transfer feature.
->
-> **Portal only:** the only way was to open a laptop and go through the batch flow, even for a single recipient.
-
-The screenshot and prototype below show how a Local Transfer was created in the Portal.
 </Section>
 
 <ImageFull indent src="/images/cs-local-transfer-mobile/current-experience-portal.png" alt="Jack Portal dashboard with the Create menu open and Local Transfer highlighted" caption="Current experience: the Local Transfer flow in the Portal." />
 
 <FigmaEmbed indent url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-44005&viewport=-990%2C1194%2C0.11&t=S4WF9ntqElof5SH8-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1875%3A43955&page-id=411%3A2" title="Current experience: Local Transfer in the Portal" caption="Prototype of the Portal's Local Transfer flow. Count the steps it takes to pay one recipient." />
 
-<Section title=" " indent>
-Along this journey, two points held Drafters back the most. Both are covered next.
-</Section>
-
 <Section title="C. The Friction Points">
-Those two points became **two friction points** that had to be solved together if the feature was going to get used.
+Two friction points had to be solved together for the feature to get used.
 
 **1. Local Transfer didn't exist on mobile.**
 
-In the Jack Mobile App, the only transaction a Drafter could create was a *reimbursement*, through the *Create New* button on the Reimbursement card. There was no Local Transfer feature, and no general Create button that could lead to one.
+The only transaction a Drafter could create in the app was a *reimbursement*. There was no Local Transfer, and no general Create button that could lead to one.
 </Section>
 
 <ImageFull indent mobile src="/images/cs-local-transfer-mobile/friction-1-home.png" alt="Jack Mobile App Home with Create New only on the Reimbursement card" caption="Friction #1: the only button to create a transaction on Home was Create New on the Reimbursement card." />
 
 <Section title=" " indent>
-As a result, for urgent payments like paying a supplier or covering an ad-hoc expense, a Drafter out of the office had to wait until they could open a laptop. Business owners and finance managers who work from their phones every day had no other option.
+Urgent payments had to wait for a laptop, even for business owners and finance managers who work from their phones every day.
 
 **2. The Portal treated every transfer as a batch.**
 
@@ -125,13 +109,11 @@ On a phone, that load weighs even more. A batch-first flow can't be carried over
 </Section>
 
 <Section title="D. Design Opportunity">
-With these two friction points, moving the feature to mobile was only half the job. The question that started the design:
+Moving the feature to mobile was only half the job. The question that started the design:
 
 > **How do you make Local Transfer feel natural on a phone for a single transfer, while keeping batch open for the people who still need it?**
 
-The two friction points were tied together. Drafters needed a path on mobile, but the existing flow was built for batch and couldn't be carried over as it was. A shrunk-down Portal flow would put the feature on mobile and still be a hassle for the 72% of cases that only need one recipient.
-
-Dropping batch entirely would push users who occasionally send to several people back to their laptops. The goal was one flow that's fast for a single transfer and can still grow into a batch without starting over.
+A shrunk-down Portal flow would still be a hassle for the 72% of single transfers. Dropping batch would push users who occasionally pay several people back to their laptops. The goal was one flow that's fast for a single transfer and can grow into a batch without starting over.
 </Section>
 
 <PartHeader number="03" title="Design Decisions" />
@@ -207,12 +189,6 @@ When I presented the test results, **Edo** leaned toward opening straight on the
 </Section>
 
 <ImageFull indent src="/images/cs-local-transfer-mobile/batch-flow.png" alt="Local Transfer mobile user flow: single by default, batch as an optional branch" caption="User flow: single by default, batch as an optional branch." />
-
-<Section title="Recap: Three Final Design Decisions">
-1. **A way in on mobile (Friction #1).** A Create button in the middle of the bottom navigation opens Local Transfer, alongside Reimbursement.
-2. **Pick the recipient first (Friction #1).** The flow follows the banking and e-wallet pattern, chosen by 5 out of 8 users in testing.
-3. **Single by default (Friction #2).** No batch name up front; batch opens through the add-recipient icon (Iteration 3, from Edo's review of the test results). Up to 10 recipients, no file upload.
-</Section>
 
 <PartHeader number="04" title="Solution" />
 

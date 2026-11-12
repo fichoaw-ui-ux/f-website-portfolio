@@ -21,14 +21,8 @@ order: 3
 brandColor: "#DA649F"
 brandColorAlt: "#7A2A55"
 snapshot:
-  - label: "Problem"
-    value: "Only 31.43% of users on Send Money opened the voucher page. The voucher looked already applied, a points banner took its attention, and the page order broke the user's focus."
   - label: "My role"
-    value: "UI/UX Designer: root cause analysis with my lead, design iterations, page restructure, and handoff to engineering."
-  - label: "Key decisions"
-    value: "A voucher with distinct default and applied states that shows its best value up front, a de-emphasised points banner, and payment method moved below the voucher."
-  - label: "Outcome"
-    value: "Approved by the Growth team and moved into development. Target: ≥40% voucher attach rate within 30 days of launch. Not yet live at the time of writing."
+    value: "UI/UX Designer"
   - label: "Most Collaborated with"
     value: "Andre, VP of Growth · Fathur, Design Lead"
   - label: "Brand & Industry"
@@ -66,11 +60,11 @@ The Growth team came to me with one number that was hard to ignore:
 
 In other words, **almost 7 out of 10 users never opened the voucher page**. The data doesn't show how many of them held an eligible voucher, but the entry point clearly wasn't drawing people in.
 
-As we dug deeper, the problem turned out not to stop at the voucher. Two other components on the page were contributing, and all three were making each other worse.
+And the voucher wasn't the only cause.
 </Section>
 
 <Section title="B. Current Experience">
-Users set the amount, picked a payment method, and passed a voucher entry they rarely tapped on the way to Continue. The screenshot and prototype below show the page as it was.
+Users set the amount, picked a payment method, and passed a voucher entry they rarely tapped on the way to Continue.
 </Section>
 
 <ImageFull indent mobile src="/images/cs-voucher-points-banner/context-mixpanel.png" alt="Send Money screen before the redesign, with the voucher entry 'Check your available voucher here'" caption="Current experience: where the voucher entry sat before the redesign." />
@@ -78,7 +72,7 @@ Users set the amount, picked a payment method, and passed a voucher entry they r
 <FigmaEmbed indent url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/template_file?page-id=961%3A9&node-id=6863-1835&viewport=1018%2C212%2C0.62&t=AaHU0eUqWPfkKv7V-1&scaling=contain&content-scaling=fixed&starting-point-node-id=6863%3A1442" title="Current experience: Send Money" caption="Prototype of the old Send Money page. Watch where your eye lands before Continue." />
 
 <Section title="C. The Friction Points">
-When my lead and I traced through the Send Money page more carefully, one thing stood out: **the problem came from more than one place**. Three different components each played a part, and they were quietly making each other worse.
+Tracing the page with my lead, we found **three components each playing a part**, quietly making each other worse.
 
 **1. The Voucher Component.**
 
@@ -104,17 +98,15 @@ When my lead and I traced through the Send Money page more carefully, one thing 
 <Section title=" " indent>
 **3. Page Hierarchy.**
 
-- **The information structure didn't match what users cared about.** Payment method doesn't affect the transaction's value at all: it doesn't change how much is sent, the fee, or how much can be saved. Because it sat above the voucher, users who saw it first slipped into "all done" mode before they'd even noticed there was a saving to grab. The calculator and the voucher should have read as one thought, *"how much am I actually paying?"*, and that connection got broken along the way.
+- **The information structure didn't match what users cared about.** Payment method doesn't affect the transaction's value at all: it doesn't change how much is sent, the fee, or how much can be saved. Sitting above the voucher, it put users in "all done" mode before they noticed a saving, and broke the link between the calculator and the voucher: *"how much am I actually paying?"*
 </Section>
 
 <ImageFull indent mobile src="/images/cs-voucher-points-banner/friction-3-hierarchy.png" alt="Send Money page hierarchy with payment method above the voucher" caption="Payment method broke the connection between the calculator and the voucher." />
 
 <Section title="D. Design Opportunity">
-Out of these three friction points, one question became the starting point for the whole design process:
+One question became the starting point for the design:
 
 > **How do you make the voucher win the reward slot on Send Money, without changing how the underlying mechanism works?**
-
-Fixing one component wouldn't be enough. The analysis showed three components competing with each other: an invisible voucher, a dominant points banner, and a payment method whose position broke user focus before it reached the voucher. All three needed fixing together.
 </Section>
 
 <PartHeader number="03" title="Design Decisions" />
@@ -126,19 +118,17 @@ The easiest fix would have been *auto-apply*: the system deducts the discount wi
 
 The PRD made that a hard constraint: this was a front-end change only. Voucher eligibility, ranking and apply were already built on the backend, so every improvement had to come from how the page presented them.
 
-With the analysis done, the direction was set: the three components had to be fixed together, not one at a time. I owned the full design execution: exploring iterations, restructuring the page, and handing off to engineering. Three main decisions followed, each answering a different friction point.
+I owned the full design execution: exploring iterations, restructuring the page, and handing off to engineering. Three decisions followed, one per friction point.
 </Section>
 
 <Section title="A. The Voucher Component: From Invisible to Actionable">
 **Friction addressed:** #1, the voucher component.
 
-Two things needed fixing at once: **visuals that looked too much like the active state**, and **copy that gave no reason to tap**. They couldn't be solved separately, since both left users feeling like there was nothing more to interact with.
-
-From here, two design questions needed answers.
+The visuals and the copy had to be fixed together, since both left users feeling there was nothing to tap.
 </Section>
 
 <Section title="A.1 How do you introduce the voucher?" indent>
-The old copy just said *"Check your available voucher here"*, with no promised value and so no reason to tap. Two approaches were explored: *Quantity First* (showing how many vouchers are available) vs. *Value First* (showing the best voucher's value right away).
+Two approaches were explored: *Quantity First* (showing how many vouchers are available) vs. *Value First* (showing the best voucher's value right away).
 </Section>
 
 <ImageGrid cols={2} indent>
@@ -151,7 +141,7 @@ The old copy just said *"Check your available voucher here"*, with no promised v
 </Section>
 
 <Section title="A.2 How do you tell the default state apart from the applied state?" indent>
-The visual problem: the old component **used one look for two different states**. The default state, a pink gradient background plus a gold badge, looked identical to the active state, so users could assume the voucher was already running and skip past it.
+The old component **used one look for two different states**, so users could assume the voucher was already running.
 
 Two visual decisions were made at once:
 
@@ -175,8 +165,6 @@ Two visual decisions were made at once:
 <Section title="B. Points Banner: From Dominant to Supporting">
 **Friction addressed:** #2, the points banner component.
 
-The friction was clear: a dominant gold/black banner, copy that read like a confirmed reward instead of an incentive, and a position right before the Continue button. Together they competed with the voucher at the worst possible moment.
-
 My first instinct was to recommend moving the points banner to the Success page entirely, so the voucher could fully win the reward slot on Send Money. The Growth team decided to keep it on Send Money. Their reasoning: points information is still relevant at this stage, since users who know what reward they'll get before completing a transfer tend to be more motivated to finish it.
 
 The result: the points banner was visually de-emphasised, from a dominant gold banner down to a thin gray strip. It no longer dominates the reward slot, but still shows up as useful supporting information.
@@ -190,7 +178,7 @@ The result: the points banner was visually de-emphasised, from a dominant gold b
 <Section title="C. Information Architecture: Straightening Out the Page Hierarchy">
 **Friction addressed:** #3, page hierarchy.
 
-Of the three friction points, this one was the most subtle. The problem was order, not a single component: **payment method sitting above the voucher put users in "all done" mode before they'd noticed there was still a saving they could grab**.
+The most subtle of the three: the problem was **order, not a single component**.
 
 Two considerations drove this decision:
 
@@ -205,14 +193,6 @@ Two considerations drove this decision:
 
 <Section title=" " indent>
 **The result:** Payment Method moved further down with an explicit *"Change"* label. It's still easy to reach, and no longer interrupts the main flow.
-</Section>
-
-<Section title="Recap: Three Final Design Decisions">
-Each of these three decisions answered a different friction point. Put together, they give the page **one consistent flow for the user**: from calculation, to voucher, to confirmation. No competing visuals, no premature "all done" moment.
-
-1. **Voucher: from invisible to actionable.** Value First in the copy, default state reset to a neutral look with an explicit *"Apply"* button, active state clearly distinguished with a green badge and *"Promo applied!"*
-2. **Points banner: from dominant to supporting.** Still present on Send Money, without taking the reward slot.
-3. **Information architecture: straightening the page hierarchy.** Calculator and voucher become one unit; payment method moves down with a *"Change"* label.
 </Section>
 
 <PartHeader number="04" title="Solution" />
