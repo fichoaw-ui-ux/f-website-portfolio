@@ -206,6 +206,8 @@ Pengujian juga sudah memberi petunjuk ke sini. Seorang peserta meminta tombol se
 **Risiko yang dijawab:** dead-end, dan data yang hilang, bagi user yang baru sadar butuh batch di tengah jalan.
 
 Pintu kedua, dengan data preservation. Banner di bawah form bertuliskan *"Click here to add more recipients"*. Sekali klik, semua yang sudah diisi terbawa ke Empty Table.
+
+Copy banner ini awalnya berupa pertanyaan, *"Want to add more recipients?"*. Bersama UX writer, kami mengubahnya menjadi kalimat yang diawali aksi, supaya banner langsung menjelaskan apa yang terjadi saat diklik.
 </Section>
 
 <ImageGrid cols={2} indent>
@@ -242,6 +244,8 @@ Bagi yang sejak awal tahu perlu kirim ke puluhan orang, Upload Excel dan Empty T
   { value: "52%", label: "Lebih singkat rata-rata waktu mulai transfer ke satu penerima" },
   { value: "41%", label: "Dari semua inisiasi Local Transfer lewat Quick Transfer, dalam 2 minggu setelah rilis" },
 ]} />
+
+Dalam dua minggu, sekitar 4 dari 10 Local Transfer dimulai lewat Quick Transfer: begitu user dengan satu atau beberapa penerima punya jalur pendek, mereka memakainya.
 
 Feedback kualitatif menyebut pilihan barunya jauh lebih jelas, dan Quick Transfer terasa lebih cepat dan intuitif untuk tugas yang paling sering dilakukan user.
 
