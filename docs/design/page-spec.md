@@ -104,8 +104,8 @@ Same design in "Portfolio Asset" (`ARRQteKJDZ3K0THAdoyH0h`): desktop `9225:11713
   link under it (#BBBBC0 Button/Small + 16px arrow; not in Figma), as in the CV —
   to the site's own case study pages.
 - Desktop role-badge strokes are 1.33px inset shadows (borders round down to 1px).
-- Accordion, one entry open at a time: the top entry (Transfez) starts open on
-  every breakpoint; opening another entry closes the one that was open.
+- Accordion, each entry toggles on its own: the top entry (Transfez) starts open
+  on every breakpoint; opening another entry leaves the open one open.
   (Differs from the static Figma frames, which show desktop all open and
   mobile all closed — decided by Ficho.)
 - Copy follows the mobile frame: Transfez — UI/UX Designer, October 2025 – Now;

@@ -1,8 +1,8 @@
 ---
 /* Experience — Figma Draft: desktop `8:177`, mobile `8:684` (expanded mobile
    bullets are the hidden layers `8:705` / `8:732`).
-   Accordion (page spec): the top job starts open on every breakpoint and only
-   one job is open at a time. Collapsed jobs still show company + role/period,
+   Accordion (page spec): the top job starts open on every breakpoint and each
+   job opens and closes on its own, so several can be open at once. Collapsed jobs still show company + role/period,
    as in the mobile frame; only the bullets collapse.
    **x** in the copy renders semibold — kept on purpose (Ficho), Figma has none.
    Text that is 16px in Figma renders at 18px here (Ficho, +2px): mobile role,
@@ -156,7 +156,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 </section>
 
 <script>
-  // One job open at a time; clicking the open job closes it.
+  // Each job toggles on its own (Ficho: several can be open at once).
   const root = document.querySelector<HTMLElement>('[data-accordion]')
   const buttons = Array.from(root?.querySelectorAll<HTMLButtonElement>('[data-accordion-button]') ?? [])
 
@@ -170,9 +170,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
   for (const button of buttons) {
     button.addEventListener('click', () => {
-      const willOpen = button.getAttribute('aria-expanded') !== 'true'
-      for (const other of buttons) if (other !== button) setOpen(other, false)
-      setOpen(button, willOpen)
+      setOpen(button, button.getAttribute('aria-expanded') !== 'true')
     })
     // The whole header (company + role rows) toggles too; clicks on the
     // button itself are already handled above.
