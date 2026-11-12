@@ -116,27 +116,27 @@ Setelah saya rancang alternatif awal, kami mengadakan **forum dengan tim besar (
 Saya tes keduanya ke 8 user internal di sesi usability testing: 3 dari Ops, 1 dari Finance, dan 4 dari Marketing. Tujuh di antaranya sudah biasa memakai Local Transfer di Portal; satu belum.
 </Section>
 
-<Section title="1. Pengujian 1: Alur Single Transfer (Concept Feedback)" indent level={2}>
+<Section title="1. Pengujian 1: Alur Single Transfer (Concept Feedback)" indent="sub" level={2}>
 Setiap sesi dibuka dengan walkthrough Single Transfer dari awal sampai submit, supaya user punya konteks utuh sebelum saya tanya soal entry point.
 </Section>
 
-<ImageFull indent src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Walkthrough full journey Single Transfer" caption="Perjalanan Single Transfer yang ditunjukkan ke peserta saat walkthrough." />
+<ImageFull indent="subText" src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Walkthrough full journey Single Transfer" caption="Perjalanan Single Transfer yang ditunjukkan ke peserta saat walkthrough." />
 
-<Section title=" " indent={2}>
+<Section title=" " indent="subText">
 **Semua peserta** bilang alurnya mudah diikuti. Tidak ada yang mempersoalkan nama batch atau tabel validasi. Karena saya yang memandu mereka, hasil ini adalah concept feedback: arahnya masuk akal bagi user, tapi belum membuktikan mereka bisa menyelesaikannya sendiri.
 </Section>
 
-<Section title="2. Pengujian 2: Entry Point" indent level={2}>
+<Section title="2. Pengujian 2: Entry Point" indent="sub" level={2}>
 Setelah user paham full journey-nya, baru saya minta pendapat mereka soal entry point. Tiga alternatif yang dites:
 </Section>
 
-<ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-1.png" alt="Entry point Alt 1: Hierarki tiga pilihan" caption="Alt 1: hierarki tiga pilihan, Single Local Transfer + Batch (Upload Excel / Empty Table)." />
+<ImageFull indent="subText" src="/images/cs-quick-transfer/entry-point-alt-1.png" alt="Entry point Alt 1: Hierarki tiga pilihan" caption="Alt 1: hierarki tiga pilihan, Single Local Transfer + Batch (Upload Excel / Empty Table)." />
 
-<ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-2.png" alt="Entry point Alt 2: Toggle dua pilihan" caption="Alt 2: toggle dua pilihan, Single vs Batch saja." />
+<ImageFull indent="subText" src="/images/cs-quick-transfer/entry-point-alt-2.png" alt="Entry point Alt 2: Toggle dua pilihan" caption="Alt 2: toggle dua pilihan, Single vs Batch saja." />
 
-<ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. Kami sempat condong ke arah ini. Kalau 72% transaksi cuma single, kenapa tidak lewati semua pilihan dan langsung tampilkan list?" />
+<ImageFull indent="subText" src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. Kami sempat condong ke arah ini. Kalau 72% transaksi cuma single, kenapa tidak lewati semua pilihan dan langsung tampilkan list?" />
 
-<Section title=" " indent={2}>
+<Section title=" " indent="subText">
 Alt 1 dan Alt 2 seri, masing-masing dipilih 4 peserta. Ini pendapat peserta tentang masing-masing alternatif:
 
 | | Kelebihan | Kekurangan |
@@ -178,7 +178,7 @@ Alurnya sudah menjawab ketiga friction. Hasil pengujian dan review ini lalu mela
 - **C. Transfer Details** (dead-end bagi user yang baru sadar butuh batch di tengah jalan): diputuskan setelah review CEO.
 </Section>
 
-<Section title="A. Entry Point: Dari Toggle ke Opsi Berkelompok" indent level={2}>
+<Section title="A. Entry Point: Dari Toggle ke Opsi Berkelompok" indent="sub" level={2}>
 **Masalah yang dijawab:** jalur cepat yang hanya bisa untuk satu transaksi, dan salah memilih jalur di awal.
 
 Alt 2 jadi tidak cocok. Toggle *Single* vs *Batch*-nya memberi kesan jalur cepat hanya untuk tepat satu transfer, padahal Bang Edo ingin jalur cepat yang tetap bisa dipakai untuk beberapa penerima.
@@ -188,12 +188,12 @@ Separuh peserta sebenarnya sudah condong ke arah ini. Keempat peserta yang memil
 Karena itu strukturnya pindah ke **Alt 1**, dengan ketiga metode (Quick + Upload Excel + Empty Table) tampil sejajar, dikelompokkan berdasarkan seberapa besar pekerjaan user, alih-alih *satu vs banyak*. Untuk menjawab kekurangan Alt 1, *"terlalu banyak pilihan"*, setiap grup menyebut kapasitasnya: *"Suitable for 1-5 recipients"* untuk Quick Transfer, *"For up to 1000 recipients"* untuk dua opsi batch.
 </Section>
 
-<ImageGrid cols={1} indent>
+<ImageGrid cols={1} indent="subText">
   <ImageFull src="/images/cs-quick-transfer/entry-point-final-before.png" alt="Before: Alt 2 (toggle dua pilihan)" caption="Before: Alt 2 (toggle)" />
   <ImageFull src="/images/cs-quick-transfer/entry-point-final-after.png" alt="After: Alt 1 dengan grouping deskriptif" caption="After: Alt 1 dengan grouping" />
 </ImageGrid>
 
-<Section title="B. Recipient Details: Dari Satu Penerima ke Multi-select" indent level={2}>
+<Section title="B. Recipient Details: Dari Satu Penerima ke Multi-select" indent="sub" level={2}>
 **Masalah yang dijawab:** dead-end bagi user yang sejak awal tahu perlu kirim ke beberapa penerima.
 
 Pintu pertama ke batch. Saya menambahkan checkbox di setiap recipient dan footer *"X recipients selected"* dengan tombol Continue, yang membuka Empty Table dengan recipient terpilih sudah terisi.
@@ -201,12 +201,12 @@ Pintu pertama ke batch. Saya menambahkan checkbox di setiap recipient dan footer
 Pengujian juga sudah memberi petunjuk ke sini. Seorang peserta meminta tombol select all untuk mengirim ke semua penerima tersimpan, dan seorang peserta dari Ops menyebut klien biasanya mengirim ke penerima yang sama berulang kali.
 </Section>
 
-<ImageGrid cols={1} indent>
+<ImageGrid cols={1} indent="subText">
   <ImageFull src="/images/cs-quick-transfer/recipient-details-before.png" alt="Before: Recipient Details tanpa multi-select" caption="Before: tanpa multi-select" />
   <ImageFull src="/images/cs-quick-transfer/recipient-details-after.png" alt="After: Recipient Details dengan multi-select" caption="After: dengan multi-select" />
 </ImageGrid>
 
-<Section title="C. Transfer Details: Dari Dead-end ke Tambah Penerima" indent level={2}>
+<Section title="C. Transfer Details: Dari Dead-end ke Tambah Penerima" indent="sub" level={2}>
 **Masalah yang dijawab:** dead-end, dan data yang hilang, bagi user yang baru sadar butuh batch di tengah jalan.
 
 Pintu kedua, dengan data preservation. Banner di bawah form bertuliskan *"Click here to add more recipients"*. Sekali klik, semua yang sudah diisi terbawa ke Empty Table.
@@ -214,7 +214,7 @@ Pintu kedua, dengan data preservation. Banner di bawah form bertuliskan *"Click 
 Copy banner ini awalnya berupa pertanyaan, *"Want to add more recipients?"*. Bersama UX writer, kami mengubahnya menjadi kalimat yang diawali aksi, supaya banner langsung menjelaskan apa yang terjadi saat diklik.
 </Section>
 
-<ImageGrid cols={1} indent>
+<ImageGrid cols={1} indent="subText">
   <ImageFull src="/images/cs-quick-transfer/transfer-details-before.png" alt="Before: Transfer Details tanpa CTA banner" caption="Before: tanpa banner" />
   <ImageFull src="/images/cs-quick-transfer/transfer-details-after.png" alt="After: Transfer Details dengan CTA banner" caption="After: dengan CTA banner" />
 </ImageGrid>

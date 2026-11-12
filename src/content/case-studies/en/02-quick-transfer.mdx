@@ -116,27 +116,27 @@ After I sketched the first alternatives, we ran a **forum with the wider team (D
 I tested both with 8 internal users in usability testing sessions: 3 from Ops, 1 from Finance and 4 from Marketing. Seven of them already used Local Transfer in the Portal; one didn't.
 </Section>
 
-<Section title="1. Test 1: The Single Transfer Flow (Concept Feedback)" indent level={2}>
+<Section title="1. Test 1: The Single Transfer Flow (Concept Feedback)" indent="sub" level={2}>
 Each session opened with a walkthrough of Single Transfer from start to submit, so users had full context before I asked about entry points.
 </Section>
 
-<ImageFull indent src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Full journey walkthrough of Single Transfer" caption="The Single Transfer journey shown to participants in the walkthrough." />
+<ImageFull indent="subText" src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Full journey walkthrough of Single Transfer" caption="The Single Transfer journey shown to participants in the walkthrough." />
 
-<Section title=" " indent={2}>
+<Section title=" " indent="subText">
 **Every participant** said the flow felt easy to follow. None of them raised the batch name or the validation table as a concern. Because I guided them through the flow, this is concept feedback: it shows the direction made sense to users, not that they could complete it on their own.
 </Section>
 
-<Section title="2. Test 2: The Entry Point" indent level={2}>
+<Section title="2. Test 2: The Entry Point" indent="sub" level={2}>
 Once users understood the full journey, I asked for their thoughts on the entry point. Three alternatives were tested:
 </Section>
 
-<ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-1.png" alt="Entry point Alt 1: Three-option hierarchy" caption="Alt 1: three-option hierarchy, Single Local Transfer + Batch (Upload Excel / Empty Table)." />
+<ImageFull indent="subText" src="/images/cs-quick-transfer/entry-point-alt-1.png" alt="Entry point Alt 1: Three-option hierarchy" caption="Alt 1: three-option hierarchy, Single Local Transfer + Batch (Upload Excel / Empty Table)." />
 
-<ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-2.png" alt="Entry point Alt 2: Two-option toggle" caption="Alt 2: two-option toggle, Single vs Batch only." />
+<ImageFull indent="subText" src="/images/cs-quick-transfer/entry-point-alt-2.png" alt="Entry point Alt 2: Two-option toggle" caption="Alt 2: two-option toggle, Single vs Batch only." />
 
-<ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. We were tempted by this one. If 72% of transactions are single anyway, why not skip the choice entirely and just show the list?" />
+<ImageFull indent="subText" src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. We were tempted by this one. If 72% of transactions are single anyway, why not skip the choice entirely and just show the list?" />
 
-<Section title=" " indent={2}>
+<Section title=" " indent="subText">
 Alt 1 and Alt 2 tied at 4 votes each. Here's what participants said about each:
 
 | | Pros | Cons |
@@ -178,7 +178,7 @@ The flow already solved the three friction points. The test results and this rev
 - **C. Transfer Details** (a dead end for users who need batch mid-flow): settled after the CEO review.
 </Section>
 
-<Section title="A. Entry Point: From a Toggle to Grouped Options" indent level={2}>
+<Section title="A. Entry Point: From a Toggle to Grouped Options" indent="sub" level={2}>
 **Problem addressed:** a fast path that only works for one transaction, and picking the wrong path up front.
 
 Alt 2 no longer fit. Its *Single* vs *Batch* toggle tells users the fast path is for exactly one transfer, while Edo wanted a fast path that still works for a few recipients.
@@ -188,12 +188,12 @@ Half the participants had already leaned this way. All four who voted for Alt 1 
 So the structure moved to **Alt 1**, with all three methods (Quick + Upload Excel + Empty Table) side by side, grouped by how much work the user has instead of *one vs many*. To handle Alt 1's *"too many choices"* con, each group states its capacity: *"Suitable for 1-5 recipients"* for Quick Transfer, *"For up to 1000 recipients"* for the two batch options.
 </Section>
 
-<ImageGrid cols={1} indent>
+<ImageGrid cols={1} indent="subText">
   <ImageFull src="/images/cs-quick-transfer/entry-point-final-before.png" alt="Before: Alt 2 (two-option toggle)" caption="Before: Alt 2 (toggle)" />
   <ImageFull src="/images/cs-quick-transfer/entry-point-final-after.png" alt="After: Alt 1 with descriptive grouping" caption="After: Alt 1 with grouping" />
 </ImageGrid>
 
-<Section title="B. Recipient Details: From One Recipient to Multi-select" indent level={2}>
+<Section title="B. Recipient Details: From One Recipient to Multi-select" indent="sub" level={2}>
 **Problem addressed:** a dead end for users who know from the start that they need several recipients.
 
 The first door into batch. I added a checkbox next to each recipient and an *"X recipients selected"* footer with a Continue button, which opens Empty Table with the selected recipients already filled in.
@@ -201,12 +201,12 @@ The first door into batch. I added a checkbox next to each recipient and an *"X 
 Testing had hinted at this too. One participant asked for a select-all button to send to every saved recipient, and an Ops participant noted that clients usually send to the same recipients again and again.
 </Section>
 
-<ImageGrid cols={1} indent>
+<ImageGrid cols={1} indent="subText">
   <ImageFull src="/images/cs-quick-transfer/recipient-details-before.png" alt="Before: Recipient Details without multi-select" caption="Before: no multi-select" />
   <ImageFull src="/images/cs-quick-transfer/recipient-details-after.png" alt="After: Recipient Details with multi-select" caption="After: with multi-select" />
 </ImageGrid>
 
-<Section title="C. Transfer Details: From a Dead End to Adding Recipients" indent level={2}>
+<Section title="C. Transfer Details: From a Dead End to Adding Recipients" indent="sub" level={2}>
 **Problem addressed:** a dead end, and lost data, for users who realise mid-flow that they need batch.
 
 The second door, with data preservation. A banner below the form reads *"Click here to add more recipients"*. One click, and everything already filled in carries over to Empty Table.
@@ -214,7 +214,7 @@ The second door, with data preservation. A banner below the form reads *"Click h
 The banner copy started as a question, *"Want to add more recipients?"*. With the UX writer, we changed it to a line that starts with an action, so the banner says what a click does.
 </Section>
 
-<ImageGrid cols={1} indent>
+<ImageGrid cols={1} indent="subText">
   <ImageFull src="/images/cs-quick-transfer/transfer-details-before.png" alt="Before: Transfer Details without CTA banner" caption="Before: no banner" />
   <ImageFull src="/images/cs-quick-transfer/transfer-details-after.png" alt="After: Transfer Details with CTA banner" caption="After: with CTA banner" />
 </ImageGrid>

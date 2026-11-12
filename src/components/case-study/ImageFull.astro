@@ -1,5 +1,5 @@
 ---
-import { indentPadding } from './indent'
+import { indentPadding, type Indent } from './indent'
 /* Image frame — home styles (no Figma frame).
    Title outside the frame (Ficho): the caption's first sentence sits above the
    frame as a title (Title/X-Medium 16/26, white); the rest of the caption sits
@@ -13,7 +13,7 @@ import { indentPadding } from './indent'
    frames up across a row with subgrid even when one title wraps. */
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
-interface Props { src: string; alt: string; caption?: string; indent?: boolean | 1 | 2; mobile?: boolean }
+interface Props { src: string; alt: string; caption?: string; indent?: Indent; mobile?: boolean }
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 const { src, alt, caption, indent = false, mobile = false } = Astro.props
@@ -41,7 +41,7 @@ if (caption && !state) {
 title = title.replace(/\.$/, '')
 const typeLabel = isPlaceholder ? t.imageFull.placeholderLabel : t.imageFull.imageLabel
 ---
-<figure data-asset class:list={['mb-(--space-24) grid gap-y-(--space-12) desktop:mb-(--space-32) [&:has(+section[data-titled]:not([data-indent]))]:mb-(--space-32) desktop:[&:has(+section[data-titled]:not([data-indent]))]:mb-(--space-40)', indentClass]} data-state={state ?? undefined} data-motion="rise" data-motion-distance="lg">
+<figure data-asset class:list={['mb-(--space-24) grid gap-y-(--space-12) desktop:mb-(--space-32) [&:has(+section[data-titled]:not([data-indent]):not([data-sub]))]:mb-(--space-32) desktop:[&:has(+section[data-titled]:not([data-indent]):not([data-sub]))]:mb-(--space-40)', indentClass]} data-state={state ?? undefined} data-motion="rise" data-motion-distance="lg">
   {title && (
     <figcaption class="text-title-xmd text-neutral-100" data-figma="case-study/image/title">
         {state ? (

@@ -1,9 +1,9 @@
 ---
-import { indentMargin } from './indent'
+import { indentMargin, type Indent } from './indent'
 /* Quote — the mobile Study Case card (container radius, Ficho; 1px #6C6C71, 23 + 1 padding) with
    the Experience job-title style inside; author as the hero handle (#BBBBC0
    Button/Small). No Figma frame. */
-interface Props { author?: string; indent?: boolean | 1 | 2 }
+interface Props { author?: string; indent?: Indent }
 const { author, indent = false } = Astro.props
 const indentClass = indentMargin(indent)
 ---

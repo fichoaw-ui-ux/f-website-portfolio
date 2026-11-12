@@ -135,7 +135,7 @@ Visual dan copy harus dibenahi bersamaan, karena keduanya sama-sama membuat user
 Dua pendekatan dieksplorasi: *Quantity First* (menampilkan jumlah voucher yang tersedia) vs *Value First* (langsung menampilkan nilai voucher terbaik).
 </Section>
 
-<ImageGrid cols={2} indent>
+<ImageGrid cols={2} indent={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-a1-quantity-first.png" alt="Alt 1: Quantity First" caption="Alt 1: quantity first" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-a1-value-first.png" alt="Alt 2: Value First" caption="Alt 2: value first" />
 </ImageGrid>
@@ -152,7 +152,7 @@ Dua keputusan visual diambil sekaligus:
 - **Default state** direset ke visual netral: background putih, border outline pink, ikon tiket sederhana, dan tombol **"Apply"** yang eksplisit. Satu sinyal yang jelas: *ini belum diambil, tap untuk pakai.*
 </Section>
 
-<ImageGrid cols={2} indent>
+<ImageGrid cols={2} indent={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-before.png" alt="Before: default state" caption="Before: default state" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-after.png" alt="After: default state" caption="After: default state" />
 </ImageGrid>
@@ -161,7 +161,7 @@ Dua keputusan visual diambil sekaligus:
 - **Active state** dibedakan secara tegas: *motion icon* dengan badge hijau sebagai sinyal konfirmasi. Kode voucher muncul di atas, dan copy berubah jadi *"Promo applied!"*. Dua state ini sekarang tidak mungkin tertukar.
 </Section>
 
-<ImageGrid cols={2} indent>
+<ImageGrid cols={2} indent={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-before.png" alt="Before: active state" caption="Before: active state" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-after.png" alt="After: active state" caption="After: active state" />
 </ImageGrid>

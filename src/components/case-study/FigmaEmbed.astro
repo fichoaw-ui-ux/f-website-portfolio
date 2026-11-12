@@ -1,10 +1,10 @@
 ---
-import { indentPadding } from './indent'
+import { indentPadding, type Indent } from './indent'
 /* Figma prototype frame — same layout as ImageFull: title above, frame, note
    under it (home styles). */
 import { resolveLocale, useTranslations } from '../../i18n/ui'
 
-interface Props { url: string; title?: string; caption?: string; indent?: boolean | 1 | 2 }
+interface Props { url: string; title?: string; caption?: string; indent?: Indent }
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 const { url, title = t.figmaEmbed.defaultTitle, caption, indent = false } = Astro.props
@@ -20,7 +20,7 @@ proto.searchParams.set('show-proto-sidebar', '0')
 const protoUrl = proto.toString()
 const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(protoUrl)}`
 ---
-<figure data-asset class:list={['mb-(--space-24) grid gap-y-(--space-12) desktop:mb-(--space-32) [&:has(+section[data-titled]:not([data-indent]))]:mb-(--space-32) desktop:[&:has(+section[data-titled]:not([data-indent]))]:mb-(--space-40)', indentClass]} data-motion="rise" data-motion-distance="lg">
+<figure data-asset class:list={['mb-(--space-24) grid gap-y-(--space-12) desktop:mb-(--space-32) [&:has(+section[data-titled]:not([data-indent]):not([data-sub]))]:mb-(--space-32) desktop:[&:has(+section[data-titled]:not([data-indent]):not([data-sub]))]:mb-(--space-40)', indentClass]} data-motion="rise" data-motion-distance="lg">
   {/* As ImageFull: title above the frame (Ficho); inside, a bar with the
       "Prototype" label and the "Open in Figma" CTA. */}
   <figcaption class="text-title-xmd text-neutral-100" data-figma="case-study/prototype/title">{title.replace(/\.$/, '')}</figcaption>

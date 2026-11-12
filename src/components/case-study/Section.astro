@@ -18,20 +18,22 @@
    The "A." / "A.1" prefix hangs in its own column on desktop (24 at level 1,
    40 when indented, + 8 gap) and sits inline on mobile, where nothing is
    indented and all text starts at 0. */
-import { indentPadding } from './indent'
+import { indentPadding, type Indent } from './indent'
 
-interface Props { title?: string; indent?: boolean | 1 | 2; level?: 1 | 2 | 3 }
+interface Props { title?: string; indent?: Indent; level?: 1 | 2 | 3 }
 const { title, indent = false, level: levelProp } = Astro.props
 const indentClass = indentPadding(indent)
-// Prefix column 24 / 40 + gap 8 (not in tokens: the sums in ./indent.ts).
-const prefixWidth = indent ? 'desktop:w-[40px]' : 'desktop:w-(--space-24)'
-const bodyOffset = indent ? 'desktop:ml-(--space-48)' : 'desktop:ml-(--space-32)'
 const trimmed = title?.trim() ?? ''
 const hasTitle = trimmed.length > 0
 // "A." / "A.1" for decisions, "1." for numbered sub-sections (Ficho).
 const prefixMatch = trimmed.match(/^([A-Z][.\d]*|\d+\.)\s+(.+)$/)
 const prefix = prefixMatch?.[1] ?? ''
 const titleBody = prefixMatch?.[2] ?? trimmed
+// Prefix column: 24 for one-character numbers ("A.", "1."), 40 for "A.1";
+// + gap 8 (not in tokens: the sums in ./indent.ts).
+const widePrefix = prefix.replace('.', '').length > 1
+const prefixWidth = widePrefix ? 'desktop:w-[40px]' : 'desktop:w-(--space-24)'
+const bodyOffset = widePrefix ? 'desktop:ml-(--space-48)' : 'desktop:ml-(--space-32)'
 const prefixDepth = prefix ? prefix.split('.').filter(Boolean).length : 0
 const level = Math.min(levelProp ?? (prefixDepth || (indent === 2 ? 3 : indent ? 2 : 1)), 3)
 const Heading = (['h3', 'h4', 'h5'] as const)[level - 1]
@@ -46,13 +48,15 @@ const titleSize = [
 // as a break between the text and the asset it introduces). An asset followed
 // by a new titled section (data-titled, not indented) takes the sub-section gap
 // 32/40 too (Ficho), set on the asset components.
-// Text → a titled sub-section (A → A.1, A.1 → A.2) is 24 on every breakpoint
-// (Ficho).
-const sectionClass = 'mb-(--space-24) desktop:mb-(--space-32) [&:has(+section)]:mb-(--space-32) desktop:[&:has(+section)]:mb-(--space-40) [&:has(+section[data-indent])]:mb-(--space-24) desktop:[&:has(+section[data-indent])]:mb-(--space-32) desktop:[&:has(+[data-asset])]:mb-(--space-24) desktop:[&:has(+section[data-indent][data-titled])]:mb-(--space-24)'
+// Text → a titled sub-section (data-sub: level 2+, e.g. A → A.1, or "1." under
+// an un-numbered section) is 24 on every breakpoint (Ficho). "1." under an
+// un-numbered section steps in 16 (indent "sub"), its text and assets 48
+// (indent "subText").
+const sectionClass = 'mb-(--space-24) desktop:mb-(--space-32) [&:has(+section)]:mb-(--space-32) desktop:[&:has(+section)]:mb-(--space-40) [&:has(+section[data-indent])]:mb-(--space-24) desktop:[&:has(+section[data-indent])]:mb-(--space-32) desktop:[&:has(+[data-asset])]:mb-(--space-24) [&:has(+section[data-sub][data-titled])]:mb-(--space-24) desktop:[&:has(+section[data-sub][data-titled])]:mb-(--space-24)'
 const titleClass = `mb-(--space-12) text-neutral-100 desktop:mb-(--space-16) ${titleSize}`
 ---
 {prefix ? (
-  <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined} data-titled>
+  <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined} data-sub={level > 1 ? '' : undefined} data-titled>
     <Heading class:list={[titleClass, 'flex gap-x-(--space-8)']} data-motion="lines">
       <span class:list={['shrink-0 text-neutral-600', prefixWidth]}>{prefix}</span>
       <span class="min-w-0">{titleBody}</span>
@@ -60,7 +64,7 @@ const titleClass = `mb-(--space-12) text-neutral-100 desktop:mb-(--space-16) ${t
     <div class:list={['cs-prose', bodyOffset]} data-motion="rise"><slot /></div>
   </section>
 ) : (
-  <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined} data-titled={hasTitle ? '' : undefined}>
+  <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined} data-sub={hasTitle && level > 1 ? '' : undefined} data-titled={hasTitle ? '' : undefined}>
     {hasTitle && <Heading class={titleClass} data-motion="lines">{trimmed}</Heading>}
     <div class="cs-prose" data-motion="rise"><slot /></div>
   </section>

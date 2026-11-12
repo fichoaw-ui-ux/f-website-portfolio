@@ -1,6 +1,6 @@
 ---
-import { indentPadding } from './indent'
-interface Props { cols?: 1 | 2 | 3; indent?: boolean | 1 | 2 }
+import { indentPadding, type Indent } from './indent'
+interface Props { cols?: 1 | 2 | 3; indent?: Indent }
 const { cols = 2, indent = false } = Astro.props
 // cols 1 stacks Before above After on desktop too (Ficho: desktop screens read
 // too small side by side), 32 apart like any two assets.
@@ -9,4 +9,4 @@ const indentClass = indentPadding(indent)
 // Each figure spans two rows of this grid (title | frame) through subgrid, so
 // frames in one row start level even when a neighbour's title wraps.
 ---
-<div data-asset class:list={['mb-(--space-24) desktop:mb-(--space-32) [&:has(+section[data-titled]:not([data-indent]))]:mb-(--space-32) desktop:[&:has(+section[data-titled]:not([data-indent]))]:mb-(--space-40) grid grid-cols-1 gap-(--space-24) [&>figure]:mb-0 [&>figure]:row-span-2 [&>figure]:grid-rows-subgrid', colClass, indentClass]}><slot /></div>
+<div data-asset class:list={['mb-(--space-24) desktop:mb-(--space-32) [&:has(+section[data-titled]:not([data-indent]):not([data-sub]))]:mb-(--space-32) desktop:[&:has(+section[data-titled]:not([data-indent]):not([data-sub]))]:mb-(--space-40) grid grid-cols-1 gap-(--space-24) [&>figure]:mb-0 [&>figure]:row-span-2 [&>figure]:grid-rows-subgrid', colClass, indentClass]}><slot /></div>
