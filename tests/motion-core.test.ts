@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { DURATION, STAGGER, DISTANCE, EASE } from '../src/scripts/motion/config'
-import { shouldAnimate } from '../src/scripts/motion/gate'
-import { toGraphemes, groupByLine, lightStagger, letterStagger } from '../src/scripts/motion/split'
+import { shouldAnimate, isKind, withTimeout } from '../src/scripts/motion/gate'
+import { toGraphemes, groupByLine, lightStagger, letterStagger, batchStagger } from '../src/scripts/motion/split'
 
 /* Motion core (spec: docs/superpowers/specs/2026-11-12-site-motion-design.md).
    The gate decides whether an element gets a hidden start state at all; the
@@ -54,6 +54,37 @@ describe('letterStagger', () => {
   })
   it('caps the cascade of a long title at about 1s', () => {
     expect(letterStagger(70) * 69).toBeLessThanOrEqual(1)
+  })
+})
+
+describe('isKind', () => {
+  it('accepts the five motion kinds', () => {
+    for (const k of ['rise', 'lines', 'letters', 'light-load', 'light-scroll']) expect(isKind(k)).toBe(true)
+  })
+  it('rejects anything else, so a typo never hides an element', () => {
+    expect(isKind('fade')).toBe(false)
+    expect(isKind(undefined)).toBe(false)
+  })
+})
+
+describe('withTimeout', () => {
+  it('stops waiting for a promise that never settles (stalled web fonts)', async () => {
+    vi.useFakeTimers()
+    let done = false
+    const p = withTimeout(new Promise(() => {}), 1000).then(() => { done = true })
+    await vi.advanceTimersByTimeAsync(1000)
+    await p
+    expect(done).toBe(true)
+    vi.useRealTimers()
+  })
+})
+
+describe('batchStagger', () => {
+  it('uses the standard item stagger for a few elements', () => {
+    expect(batchStagger(4)).toBe(STAGGER.items)
+  })
+  it('caps the cascade of a large batch at 0.5s', () => {
+    expect(batchStagger(23) * 22).toBeLessThanOrEqual(0.5)
   })
 })
 

@@ -54,7 +54,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
                   button stays the keyboard/screen-reader control; clicks anywhere
                   else in the header are forwarded to it (script below). */}
               <div class="group/job flex cursor-pointer flex-col gap-(--space-12) desktop:gap-(--space-20)" data-accordion-header data-figma={`experience/${slug(job.company)}/header`}>
-                <h3 data-motion="lines">
+                <h3>
                   <button
                     type="button"
                     id={`${id}-button`}
@@ -68,7 +68,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
                     <span class="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-(--radius-container) bg-neutral-100 desktop:size-12">
                       <img src={job.logo} alt="" width="32" height="32" class="size-6 desktop:size-8" />
                     </span>
-                    <span class="min-w-0 flex-1 text-title-md text-neutral-100 decoration-neutral-600 underline-offset-4 group-hover/job:underline desktop:text-title-lg">{job.company}</span>
+                    <span class="min-w-0 flex-1 text-title-md text-neutral-100 decoration-neutral-600 underline-offset-4 group-hover/job:underline desktop:text-title-lg" data-motion="lines">{job.company}</span>
                     <img
                       src="/images/icons/chevron-down.svg"
                       alt=""

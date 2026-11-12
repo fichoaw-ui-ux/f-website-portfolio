@@ -3,8 +3,8 @@ import {
   DISTANCE, DURATION, EASE, LIGHT_SCROLL_OFFSET, LIGHT_START_OPACITY, STAGGER, VIEW_MARGIN,
   type Distance,
 } from './config'
-import { shouldAnimate } from './gate'
-import { groupByLine, letterStagger, lightStagger } from './split'
+import { isKind, shouldAnimate, withTimeout, type Kind } from './gate'
+import { batchStagger, groupByLine, letterStagger, lightStagger } from './split'
 import { restore, splitGraphemes, splitWords } from './dom-split'
 
 /* Entrance runtime (spec: docs/superpowers/specs/2026-11-12-site-motion-design.md).
@@ -18,11 +18,11 @@ import { restore, splitGraphemes, splitWords } from './dom-split'
    data-motion-delay="<ms>" adds a delay.
    Start states are set here only, after the gate, so the HTML shows
    everything without JS and under reduced motion. Elements that enter the
-   viewport together play in DOM order, STAGGER.items apart. */
+   viewport together play in DOM order, batchStagger() apart. */
 
-type Kind = 'rise' | 'lines' | 'letters' | 'light-load' | 'light-scroll'
-
-const fontsReady = (): Promise<unknown> => document.fonts?.ready ?? Promise.resolve()
+/* Split kinds measure lines, so they wait for the web font, but never more than
+   1s: a stalled font request must not keep headings hidden. */
+const fontsReady = (): Promise<void> => withTimeout(document.fonts?.ready ?? Promise.resolve(), 1000)
 
 function distance(el: HTMLElement): number {
   const d = el.dataset.motionDistance as Distance | undefined
@@ -63,38 +63,44 @@ async function play(el: HTMLElement, kind: Kind, delay: number): Promise<void> {
     return
   }
 
-  await fontsReady()
+  // Whatever happens below (a split or animate() throwing), the element ends
+  // visible and back to plain text: an entrance must never hide content.
+  try {
+    await fontsReady()
 
-  if (kind === 'lines') {
-    const words = splitWords(el)
-    const lines = groupByLine(words.map((w) => (w.parentElement as HTMLElement).offsetTop))
-    words.forEach((w) => { w.style.opacity = '0'; w.style.transform = 'translateY(100%)' })
+    if (kind === 'lines') {
+      const words = splitWords(el)
+      const lines = groupByLine(words.map((w) => (w.parentElement as HTMLElement).offsetTop))
+      words.forEach((w) => { w.style.opacity = '0'; w.style.transform = 'translateY(100%)' })
+      clear(el)
+      await Promise.all(lines.map((line, i) => animate(
+        line.map((n) => words[n]),
+        { opacity: [0, 1], transform: ['translateY(100%)', 'translateY(0%)'] },
+        { duration: DURATION.lines, delay: delay + i * STAGGER.lines, ease: EASE },
+      )))
+    } else if (kind === 'letters') {
+      const letters = splitGraphemes(el, true)
+      letters.forEach((l) => { l.style.opacity = '0'; l.style.transform = 'translateY(100%)' })
+      clear(el)
+      await animate(
+        letters,
+        { opacity: [0, 1], transform: ['translateY(100%)', 'translateY(0%)'] },
+        { duration: DURATION.letters, delay: stagger(letterStagger(letters.length), { startDelay: delay }), ease: EASE },
+      )
+    } else if (kind === 'light-load') {
+      const letters = splitGraphemes(el, false)
+      letters.forEach((l) => { l.style.opacity = String(LIGHT_START_OPACITY) })
+      clear(el)
+      await animate(
+        letters,
+        { opacity: [LIGHT_START_OPACITY, 1] },
+        { duration: DURATION.lightLetter, delay: stagger(lightStagger(letters.length), { startDelay: delay }), ease: 'linear' },
+      )
+    }
+  } finally {
     clear(el)
-    await Promise.all(lines.map((line, i) => animate(
-      line.map((n) => words[n]),
-      { opacity: [0, 1], transform: ['translateY(100%)', 'translateY(0%)'] },
-      { duration: DURATION.lines, delay: delay + i * STAGGER.lines, ease: EASE },
-    )))
-  } else if (kind === 'letters') {
-    const letters = splitGraphemes(el, true)
-    letters.forEach((l) => { l.style.opacity = '0'; l.style.transform = 'translateY(100%)' })
-    clear(el)
-    await animate(
-      letters,
-      { opacity: [0, 1], transform: ['translateY(100%)', 'translateY(0%)'] },
-      { duration: DURATION.letters, delay: stagger(letterStagger(letters.length), { startDelay: delay }), ease: EASE },
-    )
-  } else if (kind === 'light-load') {
-    const letters = splitGraphemes(el, false)
-    letters.forEach((l) => { l.style.opacity = String(LIGHT_START_OPACITY) })
-    clear(el)
-    await animate(
-      letters,
-      { opacity: [LIGHT_START_OPACITY, 1] },
-      { duration: DURATION.lightLetter, delay: stagger(lightStagger(letters.length), { startDelay: delay }), ease: 'linear' },
-    )
+    restore(el)
   }
-  restore(el)
 }
 
 /* Scrubbed light-up: never one-shot and never restored, since it reverses
@@ -124,7 +130,8 @@ export function initMotion(): void {
   const onView: HTMLElement[] = []
 
   for (const el of document.querySelectorAll<HTMLElement>('[data-motion]')) {
-    const kind = el.dataset.motion as Kind
+    const kind = el.dataset.motion
+    if (!isKind(kind)) continue
     const r = el.getBoundingClientRect()
     const onScreen = r.bottom > 0 && r.top < window.innerHeight
     if (!shouldAnimate({ reducedMotion, langSwitch, onScreen })) continue
@@ -135,7 +142,7 @@ export function initMotion(): void {
   }
 
   onLoad.forEach((el, i) => {
-    void play(el, el.dataset.motion as Kind, i * STAGGER.items + ownDelay(el))
+    void play(el, el.dataset.motion as Kind, i * batchStagger(onLoad.length) + ownDelay(el))
   })
 
   if (onView.length === 0) return
@@ -148,11 +155,12 @@ export function initMotion(): void {
     const entering = entries
       .filter((e) => e.isIntersecting && pending.has(e.target as HTMLElement))
       .map((e) => e.target as HTMLElement)
+    const step = batchStagger(entering.length)
     entering.sort(byDocumentOrder).forEach((el, i) => {
       pending.delete(el)
       line.unobserve(el)
       full.unobserve(el)
-      void play(el, el.dataset.motion as Kind, i * STAGGER.items + ownDelay(el))
+      void play(el, el.dataset.motion as Kind, i * step + ownDelay(el))
     })
   }
   const line = new IntersectionObserver(onEnter, { rootMargin: VIEW_MARGIN })

@@ -36,3 +36,11 @@ export const LETTER_CASCADE_MAX = 1
 export function letterStagger(count: number): number {
   return count <= 1 ? STAGGER.letters : Math.min(STAGGER.letters, LETTER_CASCADE_MAX / (count - 1))
 }
+
+/** Longest stagger cascade (s) for elements that enter the viewport together. */
+export const BATCH_CASCADE_MAX = 0.5
+
+/** Per-element stagger for a batch of `count`, capped so the cascade stays ≤ BATCH_CASCADE_MAX. */
+export function batchStagger(count: number): number {
+  return count <= 1 ? STAGGER.items : Math.min(STAGGER.items, BATCH_CASCADE_MAX / (count - 1))
+}

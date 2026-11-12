@@ -3,7 +3,7 @@ import { resolveLocale, useTranslations } from '../../i18n/ui'
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 ---
-<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-neutral-900/88 p-(--space-24) backdrop-blur-lg desktop:p-(--space-48)" data-lightbox-overlay>
+<div id="lightbox" data-lenis-prevent class="fixed inset-0 z-50 hidden items-center justify-center bg-neutral-900/88 p-(--space-24) backdrop-blur-lg desktop:p-(--space-48)" data-lightbox-overlay>
   <button type="button" data-lightbox-close aria-label={t.lightbox.close} class="absolute top-(--space-16) right-(--space-16) flex items-center gap-(--space-8) rounded-(--radius-pill) bg-neutral-800 px-(--space-20) py-(--space-12) text-button-md text-neutral-100 transition-[filter] duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:top-(--space-24) desktop:right-(--space-24)">
     {t.lightbox.close} <span class="text-[20px] leading-none" aria-hidden="true">×</span>
   </button>

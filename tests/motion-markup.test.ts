@@ -29,11 +29,14 @@ describe.each(['index.html', 'id/index.html'])('home motion markup (%s)', (file)
     }
   })
 
-  it('reveals each Experience company name line by line', () => {
+  it('reveals each Experience company name line by line, inside its button', () => {
+    // On the name span, not the h3: the screen-reader copy then stays inside
+    // the accordion button, and the logo and chevron are not hidden.
     const exp = section(html, 'experience')
-    const h3s = attrs(exp, /<h3[^>]*>/g)
-    expect(h3s.length).toBeGreaterThan(0)
-    for (const h of h3s) expect(h).toContain('data-motion="lines"')
+    const buttons = exp.match(/<button[\s\S]*?<\/button>/g) ?? []
+    expect(buttons.length).toBeGreaterThan(0)
+    for (const b of buttons) expect(b).toMatch(/<span[^>]*data-motion="lines"/)
+    for (const h of attrs(exp, /<h3[^>]*>/g)) expect(h).not.toContain('data-motion')
   })
 
   it('raises every Skills and Tools chip a small distance', () => {
@@ -133,6 +136,10 @@ describe.each(['work/quick-transfer/index.html', 'id/work/quick-transfer/index.h
       for (const kind of ['rise', 'lines', 'letters', 'light-load', 'light-scroll']) {
         for (const tag of tagsWith(html, kind)) expect(tag).not.toMatch(/style="[^"]*opacity/)
       }
+    })
+
+    it('keeps wheel scrolling native inside the lightbox', () => {
+      expect(html).toMatch(/<div[^>]*id="lightbox"[^>]*data-lenis-prevent/)
     })
   },
 )
