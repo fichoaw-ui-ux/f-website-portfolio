@@ -5,7 +5,7 @@ icon: "📱"
 client: "Jack Finance"
 role: "UI/UX Designer"
 year: 2024
-duration: "Q1 2024"
+duration: "Q4 2023 – Q1 2024"
 tags: ["Product Design", "B2B", "Mobile App", "Payments"]
 cover: "../../../assets/case-studies/local-transfer-mobile/cover.png"
 coverAlt: "Local Transfer Mobile, case study cover"
@@ -28,7 +28,7 @@ snapshot:
   - label: "Platform"
     value: "Mobile App"
   - label: "Timeline"
-    value: "Q1 2024"
+    value: "Q4 2023 – Q1 2024"
 ---
 import PartHeader from '../../../components/case-study/PartHeader.astro'
 import Section from '../../../components/case-study/Section.astro'
@@ -52,7 +52,7 @@ This project and [Quick Transfer](/work/quick-transfer/) grew out of the same di
 <PartHeader number="02" title="Context & Problem" />
 
 <Section title="A. Context Problem">
-The first signal was low Mobile App usage. Monthly active users across every mobile module sat at just **31–50 users** a month (April–September 2023). The reason was clear: *drafters*, the people who create transactions, had no reason to open the app.
+The first signal was low Mobile App usage. Monthly active users across every mobile module sat at just **31–50 users** a month (April–September 2023), and only **18–26** of them were clients. The rest were Transfez's own staff. The reason was clear: *drafters*, the people who create transactions, had no reason to open the app.
 
 **Fira (my PM)** then found data that made it clear who was losing out the most. From an analysis of transaction patterns from January 2023 to February 2024:
 
@@ -141,7 +141,7 @@ This was a team decision. More and more features were being built into the app, 
 <Section title="B. Order of Steps: From the Portal’s Order to “Pick the Recipient First”">
 **Problem addressed:** Friction #1, Local Transfer didn't exist on mobile.
 
-An entry point alone wasn't enough. The next question: should the steps follow the Portal, or follow the pattern of banking and e-wallet apps? I tested this with two iterations:
+An entry point alone wasn't enough. The PRD originally asked for mobile transaction creation to mirror the Portal's process. The question: should the steps still follow the Portal, or follow the pattern of banking and e-wallet apps? I tested this with two iterations:
 
 - **Iteration 1:** Pick the recipient first. Batch is decided up front with checkboxes; the number of recipients checked decides single or batch.
 - **Iteration 2:** The same order as the Portal. Set the destination and transaction details first.
@@ -160,7 +160,7 @@ An entry point alone wasn't enough. The next question: should the steps follow t
 
 Most users picked the pattern they already knew from banking and e-wallet apps. They were used to sending money that way, and to choosing who to pay before filling in the transfer details.
 
-Familiarity with the Portal pulled users toward the Portal order, but not all of them. Of the 5 users who knew the Portal, 3 picked the Portal order to keep it consistent and to know what a batch is for before adding recipients. The other 2 still picked this pattern; on a phone, being asked for batch details first felt off. **For most users, consistency with phone habits mattered more than consistency with the Portal.**
+Familiarity with the Portal pulled users toward the Portal order, but not all of them. Of the 5 users who knew the Portal, 3 picked the Portal order to keep it consistent and to know what a batch is for before adding recipients. The other 2 still picked this pattern; on a phone, being asked for batch details first felt off. **For most users, consistency with phone habits mattered more than consistency with the Portal.** That result is why the mobile order no longer follows the Portal, even though the PRD had asked it to.
 </Section>
 
 <Section title="C. The Batch Load: From Batch-first to Single-first">
@@ -203,13 +203,13 @@ For a single transfer: open **Create** → pick **Local Transfer** → pick the 
 
 <Section title="Results">
 <Metrics items={[
-  { value: "56%", label: "Mobile transaction adoption rate for Local Transfer, first month after launch" },
+  { value: "56%", label: "Mobile transaction adoption rate for Local Transfer, first month after launch (PRD target: 50%)" },
   { value: "40%", label: "Shorter average time-to-completion for a single Local Transfer, compared with the Portal version" },
 ]} />
 
 SME and startup clients also gave positive feedback, especially about how easy it was and how much faster funds went out.
 
-*Source: both metrics as reported in [Local Transfers Go Mobile](https://app.notion.com/p/Local-Transfers-Go-Mobile-56-Adoption-1e2407ef883f807f9c8ae19d27a555fa), the product portfolio of Fira Alliyah, Product Manager.*
+*Source: both metrics as reported in [Local Transfers Go Mobile](https://app.notion.com/p/Local-Transfers-Go-Mobile-56-Adoption-1e2407ef883f807f9c8ae19d27a555fa), the product portfolio of Fira Alliyah, Product Manager. The 50% target is from the feature's PRD.*
 </Section>
 
 <Section title="Reflection">

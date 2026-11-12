@@ -5,7 +5,7 @@ icon: "📱"
 client: "Jack Finance"
 role: "UI/UX Designer"
 year: 2024
-duration: "Q1 2024"
+duration: "Q4 2023 – Q1 2024"
 tags: ["Product Design", "B2B", "Mobile App", "Payments"]
 cover: "../../../assets/case-studies/local-transfer-mobile/cover.png"
 coverAlt: "Local Transfer Mobile, cover studi kasus"
@@ -28,7 +28,7 @@ snapshot:
   - label: "Platform"
     value: "Mobile App"
   - label: "Timeline"
-    value: "Q1 2024"
+    value: "Q4 2023 – Q1 2024"
 ---
 import PartHeader from '../../../components/case-study/PartHeader.astro'
 import Section from '../../../components/case-study/Section.astro'
@@ -52,7 +52,7 @@ Proyek ini dan [Quick Transfer](/id/work/quick-transfer/) berangkat dari discove
 <PartHeader number="02" title="Context & Problem" />
 
 <Section title="A. Context Problem">
-Sinyal pertamanya datang dari pemakaian Mobile App yang rendah. Pengguna aktif bulanan di semua modul mobile hanya berkisar **31–50 user** per bulan (April–September 2023). Penyebabnya jelas: *drafter*, orang yang membuat transaksi, tidak punya alasan untuk membuka aplikasinya.
+Sinyal pertamanya datang dari pemakaian Mobile App yang rendah. Pengguna aktif bulanan di semua modul mobile hanya berkisar **31–50 user** per bulan (April–September 2023), dan hanya **18–26** di antaranya klien. Sisanya karyawan internal Transfez. Penyebabnya jelas: *drafter*, orang yang membuat transaksi, tidak punya alasan untuk membuka aplikasinya.
 
 **Fira (PM saya)** lalu menemukan data yang memperjelas siapa yang paling dirugikan. Dari analisis pola transaksi Januari 2023 – Februari 2024:
 
@@ -141,7 +141,7 @@ Ini keputusan tim. Fitur di aplikasi terus bertambah, jadi perlu satu tempat ter
 <Section title="B. Urutan Langkah: Dari Urutan Portal ke “Pilih Penerima Dulu”">
 **Masalah yang dijawab:** Friction #1, Local Transfer belum ada di mobile.
 
-Pintu masuk saja tidak cukup. Pertanyaan berikutnya: urutan langkahnya mengikuti Portal, atau mengikuti pola aplikasi bank dan e-wallet? Saya mengujinya lewat dua iterasi:
+Pintu masuk saja tidak cukup. PRD awalnya meminta alur pembuatan transaksi di mobile mengikuti proses di Portal. Pertanyaannya: urutan langkahnya tetap mengikuti Portal, atau mengikuti pola aplikasi bank dan e-wallet? Saya mengujinya lewat dua iterasi:
 
 - **Iterasi 1:** Pilih penerima lebih dulu. Batch ditentukan di awal lewat checkbox; jumlah penerima yang dicentang menentukan single atau batch.
 - **Iterasi 2:** Urutan yang sama dengan Portal. Tentukan tujuan dan detail transaksi lebih dulu.
@@ -160,7 +160,7 @@ Pintu masuk saja tidak cukup. Pertanyaan berikutnya: urutan langkahnya mengikuti
 
 Sebagian besar user memilih pola yang sudah mereka kenal dari aplikasi bank dan e-wallet. Mereka terbiasa kirim uang dengan cara ini, dan terbiasa menentukan penerima dulu sebelum mengisi detail transfer.
 
-Familiar dengan Portal memang menarik user ke urutan Portal, tapi tidak semuanya. Dari 5 user yang sudah mengenal Portal, 3 memilih urutan Portal supaya konsisten dan supaya tahu tujuan batch-nya sebelum menambahkan penerima. 2 lainnya tetap memilih pola ini; di ponsel, ditanya detail batch di awal terasa janggal. **Bagi sebagian besar user, konsistensi dengan kebiasaan di ponsel lebih penting daripada konsistensi dengan Portal.**
+Familiar dengan Portal memang menarik user ke urutan Portal, tapi tidak semuanya. Dari 5 user yang sudah mengenal Portal, 3 memilih urutan Portal supaya konsisten dan supaya tahu tujuan batch-nya sebelum menambahkan penerima. 2 lainnya tetap memilih pola ini; di ponsel, ditanya detail batch di awal terasa janggal. **Bagi sebagian besar user, konsistensi dengan kebiasaan di ponsel lebih penting daripada konsistensi dengan Portal.** Hasil inilah yang membuat urutan langkah di mobile tidak lagi mengikuti Portal, meski awalnya diminta PRD.
 </Section>
 
 <Section title="C. Beban Batch: Dari Batch-first ke Single-first">
@@ -203,13 +203,13 @@ Untuk transfer tunggal: buka **Create** → pilih **Local Transfer** → pilih p
 
 <Section title="Hasil">
 <Metrics items={[
-  { value: "56%", label: "Mobile transaction adoption rate Local Transfer, bulan pertama setelah rilis" },
+  { value: "56%", label: "Mobile transaction adoption rate Local Transfer, bulan pertama setelah rilis (target PRD: 50%)" },
   { value: "40%", label: "Lebih singkat: rata-rata time-to-completion transfer tunggal dibanding versi Portal" },
 ]} />
 
 Klien UMKM dan startup juga memberi feedback positif, terutama soal kemudahan dan eksekusi dana yang lebih cepat.
 
-*Sumber: kedua metrik sesuai laporan di [Local Transfers Go Mobile](https://app.notion.com/p/Local-Transfers-Go-Mobile-56-Adoption-1e2407ef883f807f9c8ae19d27a555fa), portofolio produk Fira Alliyah, Product Manager.*
+*Sumber: kedua metrik sesuai laporan di [Local Transfers Go Mobile](https://app.notion.com/p/Local-Transfers-Go-Mobile-56-Adoption-1e2407ef883f807f9c8ae19d27a555fa), portofolio produk Fira Alliyah, Product Manager. Target 50% dari PRD fitur ini.*
 </Section>
 
 <Section title="Refleksi">
