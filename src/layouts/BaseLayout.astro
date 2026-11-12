@@ -87,6 +87,9 @@ const lightThemeVars = [
       })()
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* The page sets its own colours; "only" stops browser auto dark modes
+        (Chrome on Android, Samsung Internet) from recolouring components. */}
+    <meta name="color-scheme" content={`only ${theme}`} />
     <title>{title}</title>
     <meta name="description" content={resolvedDescription} />
     <link rel="canonical" href={canonical} />
