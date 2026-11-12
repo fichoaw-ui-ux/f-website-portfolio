@@ -34,7 +34,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
   data-figma="experience"
 >
   <ContentBand>
-    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1" data-figma="experience/heading">
+    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1" data-figma="experience/heading" data-motion="lines">
       {/* Desktop heading is 32/1.25 semibold = the Mobile/Display/Heading (H1) style. */}
       {t.experience.heading}
     </h2>
@@ -54,7 +54,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
                   button stays the keyboard/screen-reader control; clicks anywhere
                   else in the header are forwarded to it (script below). */}
               <div class="group/job flex cursor-pointer flex-col gap-(--space-12) desktop:gap-(--space-20)" data-accordion-header data-figma={`experience/${slug(job.company)}/header`}>
-                <h3>
+                <h3 data-motion="lines">
                   <button
                     type="button"
                     id={`${id}-button`}
@@ -79,7 +79,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
                   </button>
                 </h3>
 
-                <div class="flex items-start gap-(--space-12) desktop:gap-(--space-16)" data-figma={`experience/${slug(job.company)}/role`}>
+                <div class="flex items-start gap-(--space-12) desktop:gap-(--space-16)" data-figma={`experience/${slug(job.company)}/role`} data-motion="rise">
                   {/* Role badge: mobile area 36×29 (1px borders, p2, container radius, inner one nested — Figma r6/r4, icon 12);
                       desktop 48×36, the same badge scaled ×1.33 (Figma values).
                       Desktop strokes are inset box-shadows: browsers round a

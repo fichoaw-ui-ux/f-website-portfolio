@@ -38,7 +38,7 @@ const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(-
 >
   <ContentBand>
     {/* Heading → grid: mobile 24, desktop 40. */}
-    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1">{t.exploration.heading}</h2>
+    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1" data-motion="lines">{t.exploration.heading}</h2>
 
     {items.length === 0 ? (
       <p class="mt-(--space-24) text-body-sm text-neutral-600 desktop:mt-(--space-40)">{t.exploration.noExplorations}</p>
@@ -51,6 +51,8 @@ const pill = 'flex min-w-0 cursor-pointer items-center justify-center rounded-(-
             <li
               class="group relative h-[400px] overflow-hidden rounded-(--radius-container) bg-neutral-200 desktop:h-[420px]"
               data-figma={`explorations/${e.data.slug}`}
+              data-motion="rise"
+              data-motion-distance="lg"
             >
               {/* Card: mobile 354 wide, desktop (1040 − 2×24) / 3 ≈ 331; 1× and 2×. */}
               <Image

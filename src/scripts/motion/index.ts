@@ -64,7 +64,6 @@ async function play(el: HTMLElement, kind: Kind, delay: number): Promise<void> {
   }
 
   await fontsReady()
-  const html = el.innerHTML
 
   if (kind === 'lines') {
     const words = splitWords(el)
@@ -95,7 +94,7 @@ async function play(el: HTMLElement, kind: Kind, delay: number): Promise<void> {
       { duration: DURATION.lightLetter, delay: stagger(lightStagger(letters.length), { startDelay: delay }), ease: 'linear' },
     )
   }
-  restore(el, html)
+  restore(el)
 }
 
 /* Scrubbed light-up: never one-shot and never restored, since it reverses
@@ -140,12 +139,23 @@ export function initMotion(): void {
   })
 
   if (onView.length === 0) return
-  const observer = new IntersectionObserver((entries) => {
-    const entering = entries.filter((e) => e.isIntersecting).map((e) => e.target as HTMLElement)
+  /* Two triggers: the element top reaching ~85% of the viewport, or the
+     element being fully visible. The second covers the last elements of a
+     page (the footer), whose top can never reach the 85% line because the
+     page ends first. Whichever fires first plays the element once. */
+  const pending = new Set(onView)
+  const onEnter = (entries: IntersectionObserverEntry[]): void => {
+    const entering = entries
+      .filter((e) => e.isIntersecting && pending.has(e.target as HTMLElement))
+      .map((e) => e.target as HTMLElement)
     entering.sort(byDocumentOrder).forEach((el, i) => {
-      observer.unobserve(el)
+      pending.delete(el)
+      line.unobserve(el)
+      full.unobserve(el)
       void play(el, el.dataset.motion as Kind, i * STAGGER.items + ownDelay(el))
     })
-  }, { rootMargin: VIEW_MARGIN })
-  onView.forEach((el) => observer.observe(el))
+  }
+  const line = new IntersectionObserver(onEnter, { rootMargin: VIEW_MARGIN })
+  const full = new IntersectionObserver(onEnter, { threshold: 0.99 })
+  onView.forEach((el) => { line.observe(el); full.observe(el) })
 }

@@ -30,9 +30,9 @@ const rows = [
   <ContentBand class="flex flex-col gap-(--space-24) desktop:flex-row desktop:items-center desktop:gap-(--space-96)">
     <div class="flex flex-col gap-(--space-16) desktop:w-[520px] desktop:shrink-0" data-figma="contact/headline">
       {/* Mobile 28/1.25 = mobile-h2 (Ficho; Figma Mobile/Display/Heading H1 32). */}
-      <h2 class="text-mobile-h2 text-neutral-600 desktop:text-section-heading">{t.contact.heading}</h2>
+      <h2 class="text-mobile-h2 text-neutral-600 desktop:text-section-heading" data-motion="lines">{t.contact.heading}</h2>
       {/* E-mail: mobile SemiBold, desktop Bold + underline (Figma). */}
-      <p class="text-mobile-subheading text-neutral-100 desktop:text-section-subheading">
+      <p class="text-mobile-subheading text-neutral-100 desktop:text-section-subheading" data-motion="rise">
         {t.contact.bodyBefore}<a
           href={`mailto:${site.email}`}
           class="font-semibold underline-offset-4 transition-colors duration-200 hover:text-neutral-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-100 desktop:font-bold desktop:underline"
@@ -42,7 +42,7 @@ const rows = [
 
     <ul class="border-t border-neutral-800 desktop:min-w-0 desktop:flex-1" data-figma="contact/list">
       {rows.map((row) => (
-        <li class="border-b border-neutral-800">
+        <li class="border-b border-neutral-800" data-motion="rise" data-motion-distance="sm">
           <a
             href={row.href}
             target={row.href.startsWith('http') ? '_blank' : undefined}

@@ -14,7 +14,7 @@ const lang = resolveLocale(Astro.currentLocale)
 const site = getSite(lang)
 const t = useTranslations(lang)
 ---
-<footer class="py-(--space-24) desktop:border-t desktop:border-neutral-800 desktop:py-(--space-28)" data-figma="footer">
+<footer class="py-(--space-24) desktop:border-t desktop:border-neutral-800 desktop:py-(--space-28)" data-figma="footer" data-motion="rise" data-motion-distance="sm">
   <ContentBand>
     <p class="text-center text-title-xmd text-neutral-600 desktop:text-left">&copy; {year} {site.name}. {t.footer.rights}</p>
   </ContentBand>

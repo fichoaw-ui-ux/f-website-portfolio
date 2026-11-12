@@ -27,17 +27,20 @@ const groups = [
     {groups.map((g) => (
       <div class="flex min-w-0 flex-col gap-(--space-32) desktop:flex-1 desktop:gap-(--space-40)" data-figma={`skills-tools/${g.key}`}>
         {/* Headings: mobile 24/1.25 (Mobile/Display/Heading H3), desktop 32/1.25 (H1). */}
-        <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1">{g.heading}</h2>
+        <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1" data-motion="lines">{g.heading}</h2>
         {/* Chips: mobile px12 py4 (Ficho; Figma px8), 14/22 regular (32 tall);
             desktop px16 py12, 16/1 semibold (42 tall). Gaps 8 / 12. */}
-        {/* Interaction (Ficho, 2026-11-12; not in Figma): chips appear one by
-            one when the list scrolls into view, and on desktop hover lift 2px
-            with a faint white glow. Both are off under reduced motion. */}
-        <ul class="flex flex-wrap gap-(--space-8) desktop:gap-(--space-12)" data-figma={`skills-tools/${g.key}/chips`} data-chip-list>
+        {/* Interaction (Ficho, 2026-11-12; not in Figma): chips rise one by one
+            when they scroll into view (shared runtime, src/scripts/motion), and
+            on desktop hover lift 2px with a faint white glow. Both are off
+            under reduced motion. */}
+        <ul class="flex flex-wrap gap-(--space-8) desktop:gap-(--space-12)" data-figma={`skills-tools/${g.key}/chips`}>
           {g.items.map((item) => (
             <li
               class="rounded-(--radius-pill) border border-neutral-800 px-(--space-12) py-(--space-4) text-body-sm whitespace-nowrap text-neutral-100 transition-[translate,box-shadow] duration-200 desktop:px-(--space-16) desktop:py-(--space-12) desktop:text-button-md motion-safe:desktop:hover:translate-y-[-2px] motion-safe:desktop:hover:shadow-[0_0_16px_rgba(255,255,255,0.08)]"
               data-chip
+              data-motion="rise"
+              data-motion-distance="sm"
             >{item}</li>
           ))}
         </ul>
@@ -46,27 +49,3 @@ const groups = [
   </ContentBand>
 </section>
 
-<script>
-  import { animate, inView, stagger } from 'motion'
-
-  // Chips stay visible without JS and under reduced motion; the hidden start
-  // state is only set here. A language-switch landing (data-lang-switch, see
-  // Reveal) leaves on-screen chips as they are.
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const langSwitch = document.documentElement.hasAttribute('data-lang-switch')
-
-  if (!reduced) {
-    document.querySelectorAll<HTMLElement>('[data-chip-list]').forEach((list) => {
-      const r = list.getBoundingClientRect()
-      if (langSwitch && r.bottom > 0 && r.top < window.innerHeight) return
-
-      const chips = Array.from(list.querySelectorAll<HTMLElement>('[data-chip]'))
-      chips.forEach((c) => { c.style.opacity = '0'; c.style.transform = 'translateY(8px)' })
-
-      inView(list, () => {
-        animate(chips, { opacity: 1, transform: 'translateY(0px)' }, { duration: 0.4, delay: stagger(0.03), ease: [0.22, 1, 0.36, 1] })
-          .then(() => chips.forEach((c) => { c.style.removeProperty('opacity'); c.style.removeProperty('transform') }))
-      }, { amount: 0.3 })
-    })
-  }
-</script>

@@ -4,8 +4,10 @@ import { toGraphemes } from './split'
    so nested inline elements (the PartHeader number span, links, <strong>)
    keep their styling. The visible split spans are aria-hidden; a visually
    hidden copy of the original text keeps what screen readers read the same.
-   `restore` puts the original markup back after the entrance, so later
-   resizes reflow plain text. */
+   `restore` unwraps the split spans back into plain text nodes after the
+   entrance (it never rewrites innerHTML, so child elements such as the
+   Experience accordion button keep their listeners), and later resizes
+   reflow plain text. */
 
 const SR_ONLY =
   'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0'
@@ -47,6 +49,7 @@ export function splitWords(el: HTMLElement): HTMLElement[] {
       if (/^\s+$/.test(part)) { frag.append(part); continue }
       const mask = span('', MASK)
       mask.setAttribute('aria-hidden', 'true')
+      mask.dataset.motionSplit = ''
       const move = span(part, 'display:inline-block')
       mask.append(move)
       frag.append(mask)
@@ -71,6 +74,7 @@ export function splitGraphemes(el: HTMLElement, masked: boolean): HTMLElement[] 
       if (/^\s+$/.test(part)) { frag.append(part); continue }
       const word = span('', masked ? 'display:inline-block;white-space:nowrap' : undefined)
       word.setAttribute('aria-hidden', 'true')
+      word.dataset.motionSplit = ''
       for (const g of toGraphemes(part)) {
         if (masked) {
           const mask = span('', MASK)
@@ -92,6 +96,8 @@ export function splitGraphemes(el: HTMLElement, masked: boolean): HTMLElement[] 
   return out
 }
 
-export function restore(el: HTMLElement, html: string): void {
-  el.innerHTML = html
+export function restore(el: HTMLElement): void {
+  el.querySelectorAll('[data-motion-sr]').forEach((n) => n.remove())
+  el.querySelectorAll('[data-motion-split]').forEach((n) => n.replaceWith(n.textContent ?? ''))
+  el.normalize()
 }

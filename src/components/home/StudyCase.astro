@@ -31,7 +31,7 @@ const HIDDEN_TAGS = new Set(['Product Design'])
   data-figma="study-case"
 >
   <ContentBand>
-    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1">{t.selectedWork.heading}</h2>
+    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1" data-motion="lines">{t.selectedWork.heading}</h2>
 
     {featured.length === 0 && <p class="mt-(--space-32) text-body-sm text-neutral-600">{t.selectedWork.noProjects}</p>}
 
@@ -45,6 +45,8 @@ const HIDDEN_TAGS = new Set(['Product Design'])
             <article
               class="group flex flex-col gap-(--space-24) overflow-hidden rounded-(--radius-container) border border-neutral-800 [filter:drop-shadow(0_4px_6px_rgba(22,34,51,0.12))_drop-shadow(0_16px_16px_rgba(22,34,51,0.16))] desktop:flex-row desktop:items-center desktop:gap-(--space-32) desktop:overflow-visible desktop:rounded-none desktop:border-0 desktop:[filter:none]"
               data-figma={`study-case/${p.data.slug}`}
+              data-motion="rise"
+              data-motion-distance="lg"
             >
               {/* Cover: mobile full card width at the image's 16:10 (352 × 220), no
                   stroke, clipped by the card's corners; desktop 504×360, no stroke.
