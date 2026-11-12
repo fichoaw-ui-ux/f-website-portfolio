@@ -127,8 +127,9 @@ describe('home page structure', () => {
       }
       // The pill's accessible name says which study it opens.
       expect(section).toContain('<span class="sr-only">: Quick Transfer: Boosting Portal Payments</span>')
-      // Ficho: industry/platform tags only, as in the design.
-      expect(section).toContain('Fintech B2B')
+      // Ficho: segment · platform · domain tags (2026-11-10), as in the design.
+      expect(section).toContain('>B2B<')
+      expect(section).toContain('>Web Portal<')
       expect(section).not.toMatch(/>\s*Product Design\s*</)
       // The legacy sticky-stack effect is gone.
       expect(html).not.toContain('stack-card')
@@ -140,11 +141,12 @@ describe('home page structure', () => {
       const section = html.match(/<section[^>]*id="skills"[\s\S]*?<\/section>/)?.[0] ?? ''
       expect(section).toMatch(/<h2[^>]*>\s*Skills\s*<\/h2>/)
       expect(section).toMatch(/<h2[^>]*>\s*Tools\s*<\/h2>/)
-      // 10 skills + 12 tools, in the CV's order (Ficho, 2026-11-07).
+      // 9 skills + 12 tools, in the CV's order (Ficho, 2026-11-07; UX Writing removed 2026-11-12).
       const chips = [...section.matchAll(/<li[^>]*data-chip[^>]*>\s*([^<]+?)\s*<\/li>/g)].map(m => m[1])
-      expect(chips).toHaveLength(22)
-      expect(chips.slice(0, 10).at(-1)).toBe('HTML/CSS')
-      for (const c of ['UX Writing (EN/ID)', 'Claude Code', 'Figma MCP', 'Mixpanel']) expect(chips).toContain(c)
+      expect(chips).toHaveLength(21)
+      expect(chips.slice(0, 9).at(-1)).toBe('HTML/CSS')
+      expect(chips).not.toContain('UX Writing (EN/ID)')
+      for (const c of ['Claude Code', 'Figma MCP', 'Mixpanel']) expect(chips).toContain(c)
       expect(chips).not.toContain('Slack')
     })
 

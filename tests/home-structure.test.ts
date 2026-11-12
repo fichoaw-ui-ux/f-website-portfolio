@@ -99,7 +99,7 @@ describe('home page structure (id)', () => {
       expect(section).toMatch(/<h2[^>]*>\s*Skill\s*<\/h2>/)
       expect(section).toMatch(/<h2[^>]*>\s*Tools\s*<\/h2>/)
       const chips = section.match(/<li[^>]*data-chip/g) ?? []
-      expect(chips).toHaveLength(22)
+      expect(chips).toHaveLength(21)
     })
 
     it('drops the old About section', () => {

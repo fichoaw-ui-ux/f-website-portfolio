@@ -109,6 +109,11 @@ const lightThemeVars = [
     {showHeader && <Header showBackToHome={showBackToHome} overVideo={theme === 'dark'} />}
     <main><slot /></main>
     {redesign ? <FooterRedesign /> : <Footer />}
+    <script>
+      // Scroll and load entrances for [data-motion] elements (src/scripts/motion).
+      import { initMotion } from '../scripts/motion'
+      initMotion()
+    </script>
     <script is:inline>
       // Counterpart to the stash in LanguageSwitch.astro — restores the scroll
       // position after the language-switch navigation lands here. The two
