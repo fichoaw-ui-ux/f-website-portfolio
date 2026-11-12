@@ -105,14 +105,14 @@ Removing the three roadblocks was the easy part. The harder part was fitting the
 I joined after Fira had wrapped up discovery, with the data mapped out and the problem statement clear. My job ran from ideating solutions to detailed UI and transition logic, an interactive prototype, and handoff to engineering.
 
 The three friction points pointed to one answer: a separate path for single transactions, just a short form asking who it's for and how much. We called it Single Transfer.
+</Section>
 
+<Section title="Exploration & Validation">
 After I sketched the first alternatives, we ran a **forum with the wider team (Designers + Writers + PM)** to align on direction and decide what needed validating. The forum agreed on two things to test with users:
 
 - How users experience the full *Single Transfer* journey end-to-end.
 - Which entry point option communicates the choice most clearly.
-</Section>
 
-<Section title="Exploration & Validation">
 I tested both with 8 internal users in usability testing sessions: 3 from Ops, 1 from Finance and 4 from Marketing. Seven of them already used Local Transfer in the Portal; one didn't.
 
 Each session opened with a walkthrough of Single Transfer from start to submit, so users had full context before I asked about entry points.
@@ -122,8 +122,24 @@ Each session opened with a walkthrough of Single Transfer from start to submit, 
 
 <Section title=" ">
 **Every participant** said the flow felt easy to follow. None of them raised the batch name or the validation table as a concern. Because I guided them through the flow, this is concept feedback: it shows the direction made sense to users, not that they could complete it on their own.
+</Section>
 
-The flow already solved the three friction points. The test results and a review with **Edo, our CEO**, then shaped three design decisions:
+<Section title="CEO Review: No Dead Ends">
+Fira and I presented the findings to **Edo, our CEO**: the flow was easy to follow, and the *Single* vs *Batch* toggle (Alt 2, see A.1) was the clearest entry point. Based on that and the 72%, we pitched **going more aggressively single-only**.
+
+Edo raised what the testing hadn't captured: what happens when a user needs batch and can't switch, however rarely it happens.
+</Section>
+
+<Quote author="Edo, CEO">
+This feature can handle single transactions through its own dedicated flow, but users should still be able to switch over and do a batch transaction too.
+</Quote>
+
+<Section title=" ">
+Our sessions never tested the need for batch showing up mid-flow. A rigid single-only flow could become a *dead end* at the exact moment it mattered most.
+
+This is where the feature got its name: **Quick Transfer**. *"Single"* closes a door that should stay open. **Framing the feature turned out to matter just as much as the flow itself.**
+
+The flow already solved the three friction points. The test results and this review then shaped three design decisions:
 
 - **A. Entry point** (picking the wrong path up front): settled by user testing and the CEO review.
 - **B. Recipient Details** (a dead end for users who need several recipients from the start): settled after the CEO review.
@@ -162,23 +178,7 @@ A few reactions behind those pros and cons:
 Weighing these, **Alt 2 won**: it was the clearest and had the fewest cons.
 </Section>
 
-<Section title="A.2 CEO Review: No Dead Ends" indent>
-Fira and I presented the findings to **Edo, our CEO**: the flow was easy to follow, and Alt 2 was the clearest entry point. Based on that and the 72%, we pitched **going more aggressively single-only**.
-
-Edo raised what the testing hadn't captured: what happens when a user needs batch and can't switch, however rarely it happens.
-</Section>
-
-<Quote indent author="Edo, CEO">
-This feature can handle single transactions through its own dedicated flow, but users should still be able to switch over and do a batch transaction too.
-</Quote>
-
-<Section title=" " indent>
-Our sessions never tested the need for batch showing up mid-flow. A rigid single-only flow could become a *dead end* at the exact moment it mattered most.
-
-This is where the feature got its name: **Quick Transfer**. *"Single"* closes a door that should stay open. **Framing the feature turned out to matter just as much as the flow itself.**
-</Section>
-
-<Section title="A.3 Decision: Alt 1 with Grouping" indent>
+<Section title="A.2 Decision: Alt 1 with Grouping" indent>
 Alt 2 no longer fit. Its *Single* vs *Batch* toggle tells users the fast path is for exactly one transfer, while Edo wanted a fast path that still works for a few recipients.
 
 Half the participants had already leaned this way. All four who voted for Alt 1 gave the same reason: every option was visible up front. Edo's concern gave that preference a reason to win.
