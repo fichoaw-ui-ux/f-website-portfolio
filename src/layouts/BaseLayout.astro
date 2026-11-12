@@ -110,9 +110,12 @@ const lightThemeVars = [
     <main><slot /></main>
     {redesign ? <FooterRedesign /> : <Footer />}
     <script>
-      // Scroll and load entrances for [data-motion] elements (src/scripts/motion).
+      // Scroll and load entrances for [data-motion] elements, and desktop
+      // smooth scroll (src/scripts/motion).
       import { initMotion } from '../scripts/motion'
+      import { initSmoothScroll } from '../scripts/motion/smooth-scroll'
       initMotion()
+      initSmoothScroll()
     </script>
     <script is:inline>
       // Counterpart to the stash in LanguageSwitch.astro — restores the scroll

@@ -136,3 +136,16 @@ describe.each(['work/quick-transfer/index.html', 'id/work/quick-transfer/index.h
     })
   },
 )
+
+describe('smooth scroll', () => {
+  it('depends on lenis', () => {
+    const pkg = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf8'))
+    expect(pkg.dependencies).toHaveProperty('lenis')
+  })
+  it('ships the Lenis CSS that turns off native smooth scrolling while Lenis runs', async () => {
+    const { readdir } = await import('node:fs/promises')
+    const files = (await readdir(join(DIST, '_astro'))).filter((f) => f.endsWith('.css'))
+    const css = (await Promise.all(files.map((f) => readFile(join(DIST, '_astro', f), 'utf8')))).join('\n')
+    expect(css).toMatch(/\.lenis-smooth\{?[^}]*scroll-behavior:\s*auto/)
+  })
+})
