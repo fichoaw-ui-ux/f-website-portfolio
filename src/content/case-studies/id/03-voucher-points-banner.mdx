@@ -118,11 +118,15 @@ Solusi paling mudah sebenarnya *auto-apply*: sistem langsung memotong biaya tanp
 
 PRD-nya menjadikan ini batasan yang tegas: perubahannya murni di front-end. Eligibility, ranking, dan apply voucher sudah tersedia di backend, jadi semua perbaikan harus datang dari cara halaman menampilkannya.
 
-Eksekusi desain sepenuhnya saya pegang: eksplorasi iterasi, restrukturisasi halaman, sampai handoff ke engineering. Dari sini lahir tiga keputusan, satu untuk tiap friction.
+Eksekusi desain sepenuhnya saya pegang: eksplorasi iterasi, restrukturisasi halaman, sampai handoff ke engineering. Dari sini lahir tiga keputusan desain, satu untuk tiap friction:
+
+- **A. Komponen voucher** (Friction #1): bagaimana voucher tampil dan terbaca, dipilih dari dua alternatif yang dieksplorasi.
+- **B. Points banner** (Friction #2): seberapa besar ruang untuk banner, diputuskan bersama tim Growth.
+- **C. Information architecture** (Friction #3): urutan halaman, dijawab lewat restrukturisasi hierarki.
 </Section>
 
 <Section title="A. Komponen Voucher: Dari Tidak Terlihat ke Actionable">
-**Friction yang dijawab:** #1, komponen voucher.
+**Masalah yang dijawab:** Friction #1, komponen voucher.
 
 Visual dan copy harus dibenahi bersamaan, karena keduanya sama-sama membuat user merasa tidak ada yang perlu di-tap.
 </Section>
@@ -163,7 +167,7 @@ Dua keputusan visual diambil sekaligus:
 </ImageGrid>
 
 <Section title="B. Points Banner: Dari Dominan ke Pendukung">
-**Friction yang dijawab:** #2, komponen points banner.
+**Masalah yang dijawab:** Friction #2, komponen points banner.
 
 Rekomendasi awal saya adalah memindahkan points banner ke Success Page supaya voucher menang penuh di reward slot Send Money. Tim Growth memutuskan untuk tetap menaruhnya di Send Money, dengan pertimbangan bahwa informasi points masih relevan di tahap ini: user yang tahu reward yang akan didapat sebelum bertransaksi cenderung lebih termotivasi menyelesaikan transfer.
 
@@ -175,8 +179,8 @@ Hasilnya, points banner diredam secara visual, dari banner emas yang dominan men
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-b-after.png" alt="After: strip abu-abu tipis" caption="After: strip abu-abu tipis" />
 </ImageGrid>
 
-<Section title="C. Information Architecture: Meluruskan Hierarki Halaman">
-**Friction yang dijawab:** #3, hierarki halaman.
+<Section title="C. Information Architecture: Dari Payment Dulu ke Voucher Dulu">
+**Masalah yang dijawab:** Friction #3, hierarki halaman.
 
 Yang paling halus dari ketiganya: masalahnya ada di **urutan, bukan di satu komponen**.
 

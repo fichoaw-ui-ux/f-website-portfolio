@@ -118,11 +118,15 @@ The easiest fix would have been *auto-apply*: the system deducts the discount wi
 
 The PRD made that a hard constraint: this was a front-end change only. Voucher eligibility, ranking and apply were already built on the backend, so every improvement had to come from how the page presented them.
 
-I owned the full design execution: exploring iterations, restructuring the page, and handing off to engineering. Three decisions followed, one per friction point.
+I owned the full design execution: exploring iterations, restructuring the page, and handing off to engineering. Three design decisions followed, one per friction point:
+
+- **A. Voucher component** (Friction #1): how the voucher shows up and reads, chosen from two explored alternatives.
+- **B. Points banner** (Friction #2): how much room the banner gets, settled with the Growth team.
+- **C. Information architecture** (Friction #3): the order of the page, settled by restructuring the hierarchy.
 </Section>
 
 <Section title="A. The Voucher Component: From Invisible to Actionable">
-**Friction addressed:** #1, the voucher component.
+**Problem addressed:** Friction #1, the voucher component.
 
 The visuals and the copy had to be fixed together, since both left users feeling there was nothing to tap.
 </Section>
@@ -163,7 +167,7 @@ Two visual decisions were made at once:
 </ImageGrid>
 
 <Section title="B. Points Banner: From Dominant to Supporting">
-**Friction addressed:** #2, the points banner component.
+**Problem addressed:** Friction #2, the points banner component.
 
 My first instinct was to recommend moving the points banner to the Success page entirely, so the voucher could fully win the reward slot on Send Money. The Growth team decided to keep it on Send Money. Their reasoning: points information is still relevant at this stage, since users who know what reward they'll get before completing a transfer tend to be more motivated to finish it.
 
@@ -175,8 +179,8 @@ The result: the points banner was visually de-emphasised, from a dominant gold b
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-b-after.png" alt="After: thin gray strip" caption="After: thin gray strip" />
 </ImageGrid>
 
-<Section title="C. Information Architecture: Straightening Out the Page Hierarchy">
-**Friction addressed:** #3, page hierarchy.
+<Section title="C. Information Architecture: From Payment First to Voucher First">
+**Problem addressed:** Friction #3, page hierarchy.
 
 The most subtle of the three: the problem was **order, not a single component**.
 
