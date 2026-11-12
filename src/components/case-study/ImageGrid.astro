@@ -7,4 +7,4 @@ const indentClass = indentPadding(indent)
 // Each figure spans two rows of this grid (title | frame) through subgrid, so
 // frames in one row start level even when a neighbour's title wraps.
 ---
-<div class:list={['mb-(--space-24) desktop:mb-(--space-32) grid grid-cols-1 gap-(--space-24) [&>figure]:mb-0 [&>figure]:row-span-2 [&>figure]:grid-rows-subgrid', colClass, indentClass]}><slot /></div>
+<div data-asset class:list={['mb-(--space-24) desktop:mb-(--space-32) grid grid-cols-1 gap-(--space-24) [&>figure]:mb-0 [&>figure]:row-span-2 [&>figure]:grid-rows-subgrid', colClass, indentClass]}><slot /></div>

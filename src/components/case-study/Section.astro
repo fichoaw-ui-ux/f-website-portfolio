@@ -40,8 +40,10 @@ const titleSize = [
   'text-title-xmd desktop:text-title-md',
 ][level - 1]
 // Gaps = home scale (CaseStudyLayout): block 24/32, sub-section 32/40; an indented
-// continuation is a block of the same sub-section.
-const sectionClass = 'mb-(--space-24) desktop:mb-(--space-32) [&:has(+section)]:mb-(--space-32) desktop:[&:has(+section)]:mb-(--space-40) [&:has(+section[data-indent])]:mb-(--space-24) desktop:[&:has(+section[data-indent])]:mb-(--space-32)'
+// continuation is a block of the same sub-section. Text → asset (image, image
+// grid, prototype; marked data-asset) is 24 on every breakpoint (Ficho: 32 read
+// as a break between the text and the asset it introduces).
+const sectionClass = 'mb-(--space-24) desktop:mb-(--space-32) [&:has(+section)]:mb-(--space-32) desktop:[&:has(+section)]:mb-(--space-40) [&:has(+section[data-indent])]:mb-(--space-24) desktop:[&:has(+section[data-indent])]:mb-(--space-32) desktop:[&:has(+[data-asset])]:mb-(--space-24)'
 const titleClass = `mb-(--space-12) text-neutral-100 desktop:mb-(--space-16) ${titleSize}`
 ---
 {prefix ? (
