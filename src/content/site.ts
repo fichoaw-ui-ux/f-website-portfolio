@@ -21,7 +21,6 @@ const shared = {
     'Wireframing',
     'Prototyping',
     'Design Systems',
-    'UX Writing (EN/ID)',
     'Graphic Design',
     'HTML/CSS',
   ],
