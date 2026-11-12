@@ -114,43 +114,19 @@ After I sketched the first alternatives, we ran a **forum with the wider team (D
 - Which entry point option communicates the choice most clearly.
 
 I tested both with 8 internal users in usability testing sessions: 3 from Ops, 1 from Finance and 4 from Marketing. Seven of them already used Local Transfer in the Portal; one didn't.
+</Section>
 
+<Section title="1. Test 1: The Single Transfer Flow (Concept Feedback)" indent level={2}>
 Each session opened with a walkthrough of Single Transfer from start to submit, so users had full context before I asked about entry points.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Full journey walkthrough of Single Transfer" caption="The Single Transfer journey shown to participants in the walkthrough." />
+<ImageFull indent src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Full journey walkthrough of Single Transfer" caption="The Single Transfer journey shown to participants in the walkthrough." />
 
-<Section title=" ">
+<Section title=" " indent={2}>
 **Every participant** said the flow felt easy to follow. None of them raised the batch name or the validation table as a concern. Because I guided them through the flow, this is concept feedback: it shows the direction made sense to users, not that they could complete it on their own.
 </Section>
 
-<Section title="CEO Review: No Dead Ends">
-Fira and I presented the findings to **Edo, our CEO**: the flow was easy to follow, and the *Single* vs *Batch* toggle (Alt 2, see A.1) was the clearest entry point. Based on that and the 72%, we pitched **going more aggressively single-only**.
-
-Edo raised what the testing hadn't captured: what happens when a user needs batch and can't switch, however rarely it happens.
-</Section>
-
-<Quote author="Edo, CEO">
-This feature can handle single transactions through its own dedicated flow, but users should still be able to switch over and do a batch transaction too.
-</Quote>
-
-<Section title=" ">
-Our sessions never tested the need for batch showing up mid-flow. A rigid single-only flow could become a *dead end* at the exact moment it mattered most.
-
-This is where the feature got its name: **Quick Transfer**. *"Single"* closes a door that should stay open. **Framing the feature turned out to matter just as much as the flow itself.**
-
-The flow already solved the three friction points. The test results and this review then shaped three design decisions:
-
-- **A. Entry point** (picking the wrong path up front): settled by user testing and the CEO review.
-- **B. Recipient Details** (a dead end for users who need several recipients from the start): settled after the CEO review.
-- **C. Transfer Details** (a dead end for users who need batch mid-flow): settled after the CEO review.
-</Section>
-
-<Section title="A. Entry Point: From a Toggle to Grouped Options">
-**Problem addressed:** a fast path that only works for one transaction, and picking the wrong path up front.
-</Section>
-
-<Section title="A.1 Testing: Three Entry Point Options" indent>
+<Section title="2. Test 2: The Entry Point" indent level={2}>
 Once users understood the full journey, I asked for their thoughts on the entry point. Three alternatives were tested:
 </Section>
 
@@ -160,7 +136,7 @@ Once users understood the full journey, I asked for their thoughts on the entry 
 
 <ImageFull indent src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. We were tempted by this one. If 72% of transactions are single anyway, why not skip the choice entirely and just show the list?" />
 
-<Section title=" " indent>
+<Section title=" " indent={2}>
 Alt 1 and Alt 2 tied at 4 votes each. Here's what participants said about each:
 
 | | Pros | Cons |
@@ -178,7 +154,33 @@ A few reactions behind those pros and cons:
 Weighing these, **Alt 2 won**: it was the clearest and had the fewest cons.
 </Section>
 
-<Section title="A.2 Decision: Alt 1 with Grouping" indent>
+<Section title="CEO Review: No Dead Ends">
+Fira and I presented the findings to **Edo, our CEO**: the flow was easy to follow, and Alt 2 was the clearest entry point. Based on that and the 72%, we pitched **going more aggressively single-only**.
+
+Edo raised what the testing hadn't captured: what happens when a user needs batch and can't switch, however rarely it happens.
+</Section>
+
+<Quote author="Edo, CEO">
+This feature can handle single transactions through its own dedicated flow, but users should still be able to switch over and do a batch transaction too.
+</Quote>
+
+<Section title=" ">
+Our sessions never tested the need for batch showing up mid-flow. A rigid single-only flow could become a *dead end* at the exact moment it mattered most.
+
+This is where the feature got its name: **Quick Transfer**. *"Single"* closes a door that should stay open. **Framing the feature turned out to matter just as much as the flow itself.**
+</Section>
+
+<Section title="Final Decisions: A Fast Path With No Dead Ends">
+The flow already solved the three friction points. The test results and this review then shaped three design decisions:
+
+- **A. Entry point** (picking the wrong path up front): settled by user testing and the CEO review.
+- **B. Recipient Details** (a dead end for users who need several recipients from the start): settled after the CEO review.
+- **C. Transfer Details** (a dead end for users who need batch mid-flow): settled after the CEO review.
+</Section>
+
+<Section title="A. Entry Point: From a Toggle to Grouped Options" indent level={2}>
+**Problem addressed:** a fast path that only works for one transaction, and picking the wrong path up front.
+
 Alt 2 no longer fit. Its *Single* vs *Batch* toggle tells users the fast path is for exactly one transfer, while Edo wanted a fast path that still works for a few recipients.
 
 Half the participants had already leaned this way. All four who voted for Alt 1 gave the same reason: every option was visible up front. Edo's concern gave that preference a reason to win.
@@ -191,7 +193,7 @@ So the structure moved to **Alt 1**, with all three methods (Quick + Upload Exce
   <ImageFull src="/images/cs-quick-transfer/entry-point-final-after.png" alt="After: Alt 1 with descriptive grouping" caption="After: Alt 1 with grouping" />
 </ImageGrid>
 
-<Section title="B. Recipient Details: From One Recipient to Multi-select">
+<Section title="B. Recipient Details: From One Recipient to Multi-select" indent level={2}>
 **Problem addressed:** a dead end for users who know from the start that they need several recipients.
 
 The first door into batch. I added a checkbox next to each recipient and an *"X recipients selected"* footer with a Continue button, which opens Empty Table with the selected recipients already filled in.
@@ -204,7 +206,7 @@ Testing had hinted at this too. One participant asked for a select-all button to
   <ImageFull src="/images/cs-quick-transfer/recipient-details-after.png" alt="After: Recipient Details with multi-select" caption="After: with multi-select" />
 </ImageGrid>
 
-<Section title="C. Transfer Details: From a Dead End to Adding Recipients">
+<Section title="C. Transfer Details: From a Dead End to Adding Recipients" indent level={2}>
 **Problem addressed:** a dead end, and lost data, for users who realise mid-flow that they need batch.
 
 The second door, with data preservation. A banner below the form reads *"Click here to add more recipients"*. One click, and everything already filled in carries over to Empty Table.

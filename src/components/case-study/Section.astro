@@ -28,7 +28,8 @@ const prefixWidth = indent ? 'desktop:w-[40px]' : 'desktop:w-(--space-24)'
 const bodyOffset = indent ? 'desktop:ml-(--space-48)' : 'desktop:ml-(--space-32)'
 const trimmed = title?.trim() ?? ''
 const hasTitle = trimmed.length > 0
-const prefixMatch = trimmed.match(/^([A-Z][.\d]*)\s+(.+)$/)
+// "A." / "A.1" for decisions, "1." for numbered sub-sections (Ficho).
+const prefixMatch = trimmed.match(/^([A-Z][.\d]*|\d+\.)\s+(.+)$/)
 const prefix = prefixMatch?.[1] ?? ''
 const titleBody = prefixMatch?.[2] ?? trimmed
 const prefixDepth = prefix ? prefix.split('.').filter(Boolean).length : 0
