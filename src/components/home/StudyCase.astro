@@ -77,8 +77,8 @@ const HIDDEN_TAGS = new Set(['Product Design'])
                     8 and summary → button 24 instead of Figma's 16 / 16, Ficho). */}
                 <ul class="flex flex-wrap gap-(--space-8)" aria-label="Tags">
                   {tags.map((tag) => (
-                    <li class="rounded-(--radius-pill) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-[12px] text-neutral-600 desktop:px-(--space-10)">
-                      {/* 12/1 semibold (Ficho; Figma mobile 12): Button/Small weight and line height, size not in tokens */}
+                    <li class="rounded-(--radius-pill) border border-neutral-800 px-(--space-8) py-(--space-4) text-button-sm text-[12px] text-neutral-600 desktop:px-(--space-10) desktop:text-button-sm">
+                      {/* Button/Small weight and line height. Mobile 12px (Figma mobile 12, not in tokens); desktop 14px Button/Small (Ficho) */}
                       {tag}
                     </li>
                   ))}
