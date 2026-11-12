@@ -46,16 +46,16 @@ const titleClass = `mb-(--space-12) text-neutral-100 desktop:mb-(--space-16) ${t
 ---
 {prefix ? (
   <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined}>
-    <Heading class:list={[titleClass, 'flex gap-x-(--space-8)']}>
+    <Heading class:list={[titleClass, 'flex gap-x-(--space-8)']} data-motion="lines">
       <span class:list={['shrink-0 text-neutral-600', prefixWidth]}>{prefix}</span>
       <span class="min-w-0">{titleBody}</span>
     </Heading>
-    <div class:list={['cs-prose', bodyOffset]}><slot /></div>
+    <div class:list={['cs-prose', bodyOffset]} data-motion="rise"><slot /></div>
   </section>
 ) : (
   <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined}>
-    {hasTitle && <Heading class={titleClass}>{trimmed}</Heading>}
-    <div class="cs-prose"><slot /></div>
+    {hasTitle && <Heading class={titleClass} data-motion="lines">{trimmed}</Heading>}
+    <div class="cs-prose" data-motion="rise"><slot /></div>
   </section>
 )}
 

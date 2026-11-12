@@ -1,4 +1,4 @@
-import { DURATION, LIGHT_LOAD_TOTAL } from './config'
+import { DURATION, LIGHT_LOAD_TOTAL, STAGGER } from './config'
 
 const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' })
 
@@ -27,4 +27,12 @@ export function groupByLine(tops: number[], tolerance = 2): number[][] {
 /** Per-grapheme stagger so a light-up of `count` graphemes lasts LIGHT_LOAD_TOTAL. */
 export function lightStagger(count: number): number {
   return count <= 1 ? 0 : (LIGHT_LOAD_TOTAL - DURATION.lightLetter) / (count - 1)
+}
+
+/** Longest letter cascade (s): long titles speed up instead of dragging on. */
+export const LETTER_CASCADE_MAX = 1
+
+/** Per-grapheme stagger for the `letters` rise, capped so the cascade stays ≤ LETTER_CASCADE_MAX. */
+export function letterStagger(count: number): number {
+  return count <= 1 ? STAGGER.letters : Math.min(STAGGER.letters, LETTER_CASCADE_MAX / (count - 1))
 }

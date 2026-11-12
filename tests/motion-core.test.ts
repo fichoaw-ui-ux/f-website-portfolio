@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { DURATION, STAGGER, DISTANCE, EASE } from '../src/scripts/motion/config'
 import { shouldAnimate } from '../src/scripts/motion/gate'
-import { toGraphemes, groupByLine, lightStagger } from '../src/scripts/motion/split'
+import { toGraphemes, groupByLine, lightStagger, letterStagger } from '../src/scripts/motion/split'
 
 /* Motion core (spec: docs/superpowers/specs/2026-11-12-site-motion-design.md).
    The gate decides whether an element gets a hidden start state at all; the
@@ -45,6 +45,15 @@ describe('lightStagger', () => {
     const total = DURATION.lightLetter + lightStagger(n) * (n - 1)
     expect(total).toBeGreaterThanOrEqual(1)
     expect(total).toBeLessThanOrEqual(1.5)
+  })
+})
+
+describe('letterStagger', () => {
+  it('uses the standard letter stagger for short text', () => {
+    expect(letterStagger(16)).toBe(STAGGER.letters)
+  })
+  it('caps the cascade of a long title at about 1s', () => {
+    expect(letterStagger(70) * 69).toBeLessThanOrEqual(1)
   })
 })
 

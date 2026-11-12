@@ -9,7 +9,7 @@ const { number, title } = Astro.props
 const n = String(parseInt(number, 10))
 ---
 <div id={`part-${n}`} class="scroll-mt-(--sticky-offset) mt-(--space-48) mb-(--space-32) border-t border-neutral-800 pt-(--space-48) desktop:mt-(--space-88) desktop:mb-(--space-40) desktop:pt-(--space-88)" data-part-header data-figma="case-study/part">
-  <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1">
+  <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1" data-motion="lines">
     <span class="mr-(--space-8) text-neutral-800">{n}.</span>{title}
   </h2>
 </div>

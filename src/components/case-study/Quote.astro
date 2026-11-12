@@ -8,7 +8,7 @@ const { author, indent = false } = Astro.props
 const indentClass = indentMargin(indent)
 ---
 <figure class:list={['mb-(--space-24) desktop:mb-(--space-32) rounded-(--radius-container) border border-neutral-800 p-[23px]', indentClass]}>
-  <blockquote class="text-title-md text-neutral-100 desktop:text-title-lg [&_p]:m-0">
+  <blockquote class="text-title-md text-neutral-100 desktop:text-title-lg [&_p]:m-0" data-motion="light-scroll">
     <slot />
   </blockquote>
   {author && <figcaption class="mt-(--space-16) text-button-sm text-neutral-600">— {author}</figcaption>}

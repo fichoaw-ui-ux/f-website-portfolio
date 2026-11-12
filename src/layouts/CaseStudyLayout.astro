@@ -57,13 +57,13 @@ const parts = [...(entry.body ?? '').matchAll(/<PartHeader\s+number="(\d+)"\s+ti
         48 / 88 bottom), the sticky tab bar, then the parts with section
         padding 48 / 88. */}
     <ContentBand class="pt-(--space-48) pb-(--space-48) desktop:pt-(--space-64) desktop:pb-(--space-88)">
-      <Reveal class="mx-auto max-w-[720px]">
+      <div class="mx-auto max-w-[720px]">
         <header class="flex flex-col items-start" data-figma="case-study/title">
           {/* Mobile 28/1.25 = mobile-h2, as the Contact heading (Ficho; Figma H1 32). */}
-          <h1 class="text-mobile-h2 text-neutral-100 desktop:text-section-heading">{d.title}</h1>
-          <p class="mt-(--space-16) text-mobile-subheading text-neutral-100 desktop:text-section-subheading">{d.summary}</p>
+          <h1 class="text-mobile-h2 text-neutral-100 desktop:text-section-heading" data-motion="letters" data-motion-trigger="load">{d.title}</h1>
+          <p class="mt-(--space-16) text-mobile-subheading text-neutral-100 desktop:text-section-subheading" data-motion="rise" data-motion-trigger="load" data-motion-delay="200">{d.summary}</p>
         </header>
-      </Reveal>
+      </div>
 
       <Reveal delay={100} class="mx-auto max-w-[720px]">
         <div class="group mt-(--space-32) overflow-hidden rounded-(--radius-container) bg-neutral-200 desktop:mt-(--space-40)" data-figma="case-study/cover">

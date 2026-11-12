@@ -24,11 +24,13 @@ const href = getRelativeLocaleUrl(lang, `/work/${slug}`)
 ---
 <section class="border-t border-neutral-800 py-(--space-48) desktop:py-(--space-88)" data-figma="case-study/next">
   <ContentBand>
-    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1">{t.caseStudy.nextProject}</h2>
+    <h2 class="text-mobile-h3 text-neutral-600 desktop:text-mobile-h1" data-motion="lines">{t.caseStudy.nextProject}</h2>
 
     <article
       class="group mt-(--space-32) flex flex-col gap-(--space-24) overflow-hidden rounded-(--radius-container) border border-neutral-800 [filter:drop-shadow(0_4px_6px_rgba(22,34,51,0.12))_drop-shadow(0_16px_16px_rgba(22,34,51,0.16))] desktop:mt-(--space-40) desktop:flex-row desktop:items-center desktop:gap-(--space-32) desktop:overflow-visible desktop:border-0 desktop:[filter:none]"
       data-figma={`case-study/next/${slug}`}
+      data-motion="rise"
+      data-motion-distance="lg"
     >
       {/* Cover links to the study too (Ficho), as on the home page: out of the tab
           order and hidden from screen readers; hovering it lights the button.

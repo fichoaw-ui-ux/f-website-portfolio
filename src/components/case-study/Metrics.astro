@@ -9,7 +9,7 @@ const cols = items.length >= 3 ? 'desktop:grid-cols-3' : items.length === 2 ? 'd
 ---
 <div class:list={['my-(--space-24) grid grid-cols-1 gap-(--space-24) desktop:my-(--space-32)', cols]}>
   {items.map(m => (
-    <div class="flex flex-col gap-(--space-8) rounded-(--radius-container) border border-neutral-800 p-[23px]">
+    <div class="flex flex-col gap-(--space-8) rounded-(--radius-container) border border-neutral-800 p-[23px]" data-motion="rise">
       <div class="text-mobile-h1 text-neutral-100 desktop:text-section-heading">{m.value}</div>
       <div class="text-body-sm text-neutral-600">{m.label}</div>
     </div>

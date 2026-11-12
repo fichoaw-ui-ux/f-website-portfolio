@@ -4,7 +4,7 @@ import {
   type Distance,
 } from './config'
 import { shouldAnimate } from './gate'
-import { groupByLine, lightStagger } from './split'
+import { groupByLine, letterStagger, lightStagger } from './split'
 import { restore, splitGraphemes, splitWords } from './dom-split'
 
 /* Entrance runtime (spec: docs/superpowers/specs/2026-11-12-site-motion-design.md).
@@ -82,7 +82,7 @@ async function play(el: HTMLElement, kind: Kind, delay: number): Promise<void> {
     await animate(
       letters,
       { opacity: [0, 1], transform: ['translateY(100%)', 'translateY(0%)'] },
-      { duration: DURATION.letters, delay: stagger(STAGGER.letters, { startDelay: delay }), ease: EASE },
+      { duration: DURATION.letters, delay: stagger(letterStagger(letters.length), { startDelay: delay }), ease: EASE },
     )
   } else if (kind === 'light-load') {
     const letters = splitGraphemes(el, false)

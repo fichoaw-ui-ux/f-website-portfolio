@@ -75,3 +75,64 @@ describe('Skills & Tools source', () => {
     expect(src).not.toContain('<script')
   })
 })
+
+describe.each(['work/quick-transfer/index.html', 'id/work/quick-transfer/index.html'])(
+  'case study motion markup (%s)',
+  (file) => {
+    let html = ''
+    beforeAll(async () => { html = await page(file) })
+
+    it('raises the title letter by letter on load, outside Reveal', () => {
+      const h1 = html.match(/<h1[^>]*>/)?.[0] ?? ''
+      expect(h1).toContain('data-motion="letters"')
+      expect(h1).toContain('data-motion-trigger="load"')
+      expect(html).not.toMatch(/class="reveal[^"]*"[^>]*>\s*<header[^>]*data-figma="case-study\/title"/)
+    })
+
+    it('reveals every part header and section title line by line', () => {
+      const parts = attrs(html, /<div[^>]*data-part-header[\s\S]*?<h2[^>]*>/g)
+      expect(parts.length).toBe(5)
+      for (const p of parts) expect(p).toMatch(/<h2[^>]*data-motion="lines"/)
+      const body = html.slice(html.indexOf('data-part-header'), html.indexOf('data-figma="case-study/next"'))
+      const titles = attrs(body, /<h[345][^>]*>/g)
+      expect(titles.length).toBeGreaterThan(0)
+      for (const h of titles) {
+        expect(h).toContain('data-motion="lines"')
+      }
+    })
+
+    it('raises every figure except the cover the long distance', () => {
+      const body = html.slice(html.indexOf('data-part-header'))
+      const figures = attrs(body, /<figure[^>]*>/g).filter((f) => !f.includes('rounded-(--radius-container) border'))
+      expect(figures.length).toBeGreaterThan(0)
+      for (const f of figures) {
+        expect(f).toContain('data-motion="rise"')
+        expect(f).toContain('data-motion-distance="lg"')
+      }
+    })
+
+    it('lights every Quote component up with scroll', () => {
+      // Quote.astro's blockquote has classes; plain markdown `>` quotes do not
+      // and rise with their section body instead.
+      const quotes = attrs(html, /<blockquote class=[^>]*>/g)
+      expect(quotes.length).toBeGreaterThan(0)
+      for (const q of quotes) expect(q).toContain('data-motion="light-scroll"')
+    })
+
+    it('raises every snapshot row and the next project card', () => {
+      const snapshot = html.match(/<dl[^>]*data-figma="case-study\/snapshot"[\s\S]*?<\/dl>/)?.[0] ?? ''
+      const rows = attrs(snapshot, /<div[^>]*>/g)
+      expect(rows.length).toBeGreaterThan(0)
+      for (const r of rows) expect(r).toContain('data-motion="rise"')
+      const next = html.match(/<article[^>]*data-figma="case-study\/next\/[^"]*"[^>]*>/)?.[0] ?? ''
+      expect(next).toContain('data-motion="rise"')
+      expect(next).toContain('data-motion-distance="lg"')
+    })
+
+    it('hides nothing in the markup itself', () => {
+      for (const kind of ['rise', 'lines', 'letters', 'light-load', 'light-scroll']) {
+        for (const tag of tagsWith(html, kind)) expect(tag).not.toMatch(/style="[^"]*opacity/)
+      }
+    })
+  },
+)
