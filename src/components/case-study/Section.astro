@@ -42,12 +42,14 @@ const titleSize = [
 // Gaps = home scale (CaseStudyLayout): block 24/32, sub-section 32/40; an indented
 // continuation is a block of the same sub-section. Text → asset (image, image
 // grid, prototype; marked data-asset) is 24 on every breakpoint (Ficho: 32 read
-// as a break between the text and the asset it introduces).
+// as a break between the text and the asset it introduces). An asset followed
+// by a new titled section (data-titled, not indented) takes the sub-section gap
+// 32/40 too (Ficho), set on the asset components.
 const sectionClass = 'mb-(--space-24) desktop:mb-(--space-32) [&:has(+section)]:mb-(--space-32) desktop:[&:has(+section)]:mb-(--space-40) [&:has(+section[data-indent])]:mb-(--space-24) desktop:[&:has(+section[data-indent])]:mb-(--space-32) desktop:[&:has(+[data-asset])]:mb-(--space-24)'
 const titleClass = `mb-(--space-12) text-neutral-100 desktop:mb-(--space-16) ${titleSize}`
 ---
 {prefix ? (
-  <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined}>
+  <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined} data-titled>
     <Heading class:list={[titleClass, 'flex gap-x-(--space-8)']} data-motion="lines">
       <span class:list={['shrink-0 text-neutral-600', prefixWidth]}>{prefix}</span>
       <span class="min-w-0">{titleBody}</span>
@@ -55,7 +57,7 @@ const titleClass = `mb-(--space-12) text-neutral-100 desktop:mb-(--space-16) ${t
     <div class:list={['cs-prose', bodyOffset]} data-motion="rise"><slot /></div>
   </section>
 ) : (
-  <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined}>
+  <section class:list={[sectionClass, indentClass]} data-indent={indent ? '' : undefined} data-titled={hasTitle ? '' : undefined}>
     {hasTitle && <Heading class={titleClass} data-motion="lines">{trimmed}</Heading>}
     <div class="cs-prose" data-motion="rise"><slot /></div>
   </section>

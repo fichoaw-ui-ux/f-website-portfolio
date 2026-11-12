@@ -41,7 +41,7 @@ if (caption && !state) {
 title = title.replace(/\.$/, '')
 const typeLabel = isPlaceholder ? t.imageFull.placeholderLabel : t.imageFull.imageLabel
 ---
-<figure data-asset class:list={['mb-(--space-24) grid gap-y-(--space-12) desktop:mb-(--space-32)', indentClass]} data-state={state ?? undefined} data-motion="rise" data-motion-distance="lg">
+<figure data-asset class:list={['mb-(--space-24) grid gap-y-(--space-12) desktop:mb-(--space-32) [&:has(+section[data-titled]:not([data-indent]))]:mb-(--space-32) desktop:[&:has(+section[data-titled]:not([data-indent]))]:mb-(--space-40)', indentClass]} data-state={state ?? undefined} data-motion="rise" data-motion-distance="lg">
   {title && (
     <figcaption class="text-title-xmd text-neutral-100" data-figma="case-study/image/title">
         {state ? (
