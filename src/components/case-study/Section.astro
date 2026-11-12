@@ -132,11 +132,19 @@ const titleClass = `mb-(--space-12) text-neutral-100 desktop:mb-(--space-16) ${t
   .cs-prose tr { border-bottom: 1px solid var(--color-neutral-800); }
   .cs-prose th,
   .cs-prose td {
-    padding: var(--space-12) var(--space-16) var(--space-12) 0;
+    padding: var(--space-12) var(--space-16);
     text-align: left;
     vertical-align: top;
   }
-  .cs-prose th { font-weight: 400; color: var(--color-neutral-600); }
+  /* Header row and first column read as headers (Ficho): light neutral-800
+     fill, white semibold. Cells are padded 16 on both sides so text clears
+     the fill. */
+  .cs-prose th,
+  .cs-prose td:first-child {
+    background: color-mix(in srgb, var(--color-neutral-800) 40%, transparent); /* not in tokens: neutral-800 at 40% (Ficho) */
+    font-weight: 600;
+    color: var(--color-neutral-100);
+  }
 
   @media (width >= 64rem) {
     .cs-prose {
