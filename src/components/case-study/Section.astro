@@ -45,7 +45,9 @@ const titleSize = [
 // as a break between the text and the asset it introduces). An asset followed
 // by a new titled section (data-titled, not indented) takes the sub-section gap
 // 32/40 too (Ficho), set on the asset components.
-const sectionClass = 'mb-(--space-24) desktop:mb-(--space-32) [&:has(+section)]:mb-(--space-32) desktop:[&:has(+section)]:mb-(--space-40) [&:has(+section[data-indent])]:mb-(--space-24) desktop:[&:has(+section[data-indent])]:mb-(--space-32) desktop:[&:has(+[data-asset])]:mb-(--space-24)'
+// Text → a titled sub-section (A → A.1, A.1 → A.2) is 24 on every breakpoint
+// (Ficho).
+const sectionClass = 'mb-(--space-24) desktop:mb-(--space-32) [&:has(+section)]:mb-(--space-32) desktop:[&:has(+section)]:mb-(--space-40) [&:has(+section[data-indent])]:mb-(--space-24) desktop:[&:has(+section[data-indent])]:mb-(--space-32) desktop:[&:has(+[data-asset])]:mb-(--space-24) desktop:[&:has(+section[data-indent][data-titled])]:mb-(--space-24)'
 const titleClass = `mb-(--space-12) text-neutral-100 desktop:mb-(--space-16) ${titleSize}`
 ---
 {prefix ? (
