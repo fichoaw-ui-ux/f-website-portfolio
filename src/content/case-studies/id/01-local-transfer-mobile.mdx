@@ -87,7 +87,7 @@ Pembayaran mendesak harus menunggu laptop, bahkan bagi business owner dan financ
 <Section title=" " indent>
 **2. Portal memperlakukan setiap transfer sebagai batch.**
 
-Alur Portal selalu dimulai sebagai batch: nama batch, tabel atau upload file, lalu validasi massal. Padahal 72% batch hanya berisi satu penerima.
+Alur Portal selalu dimulai sebagai batch: nama batch, tabel atau upload file, lalu validasi massal. Padahal 72% batch hanya berisi satu transaksi.
 </Section>
 
 <ImageFull indent src="/images/cs-quick-transfer/friction-1.png" alt="Layar nama batch di Jack Portal" caption="Nama batch di awal." />
@@ -115,7 +115,7 @@ Setelah Fira menyelesaikan *discovery*, dengan data yang sudah dipetakan dan pro
 </Section>
 
 <Section title="B. Eksplorasi & Validasi">
-Saya merancang **dua iterasi flow end-to-end** dan mengujinya ke **8 user internal Jack/Transfez**: 5 orang sudah familiar dengan flow Local Transfer di Portal, 3 orang belum. Pesertanya karyawan internal, bukan Drafter sungguhan, jadi hasilnya menunjukkan flow mana yang paling mudah dipahami, bukan perilaku Drafter sehari-hari.
+Saya merancang **dua iterasi flow end-to-end** dan mengujinya ke **8 user internal Jack/Transfez** dari tim Ops dan Finance: 5 orang sudah familiar dengan flow Local Transfer di Portal, 3 orang belum. Pesertanya karyawan internal, bukan Drafter sungguhan, jadi hasilnya menunjukkan flow mana yang paling mudah dipahami, bukan perilaku Drafter sehari-hari.
 </Section>
 
 <Section title="B.1 Pengujian: Urutan Langkah" indent>
@@ -141,6 +141,8 @@ Coba kedua iterasinya di bawah. Setiap prototipe dibuka dari halaman pengantar; 
 Sebagian besar user memilih pola yang sudah mereka kenal dari aplikasi bank dan e-wallet. Mereka terbiasa kirim uang dengan cara ini, dan terbiasa menentukan penerima dulu sebelum mengisi detail transfer.
 
 Familiar dengan Portal memang menarik user ke urutan Portal, tapi tidak semuanya. Dari 5 user yang sudah mengenal Portal, 3 memilih urutan Portal supaya konsisten dan supaya tahu tujuan batch-nya sebelum menambahkan penerima. 2 lainnya tetap memilih pola ini; di ponsel, ditanya detail batch di awal terasa janggal.
+
+Salah satu peserta dari tim Ops yang memilih urutan Portal memberi gambaran kenapa urutan ini masih masuk akal: di perusahaan, transfer biasanya dikelompokkan per jenis pengeluaran. Misalnya, setiap tanggal 15 ada batch khusus untuk biaya operasional, baru setelah itu daftar penerimanya diisi.
 
 Dari perbandingan ini, **Iterasi 1 menang**: bagi sebagian besar user, konsistensi dengan kebiasaan di ponsel lebih penting daripada konsistensi dengan Portal.
 </Section>
@@ -231,17 +233,15 @@ Batch di mobile dibatasi **10 penerima** tanpa upload file, cukup untuk rata-rat
 
 <Section title="A. Hasil">
 <Metrics items={[
-  { value: "56%", label: "Mobile transaction adoption rate Local Transfer, bulan pertama setelah rilis (target PRD: 50%)" },
-  { value: "40%", label: "Lebih singkat: rata-rata time-to-completion transfer tunggal dibanding versi Portal" },
+  { value: "56%", label: "Tingkat adopsi Local Transfer lewat mobile di bulan pertama setelah rilis (target PRD: 50%)" },
+  { value: "40%", label: "Rata-rata waktu menyelesaikan transfer tunggal lebih singkat dibanding Portal" },
 ]} />
 
 Klien UMKM dan startup juga memberi feedback positif, terutama soal kemudahan dan eksekusi dana yang lebih cepat.
-
-*Sumber: kedua metrik sesuai laporan di [Local Transfers Go Mobile](https://app.notion.com/p/Local-Transfers-Go-Mobile-56-Adoption-1e2407ef883f807f9c8ae19d27a555fa), portofolio produk Fira Zahra Allyah, Product Manager. Target 50% dari PRD fitur ini.*
 </Section>
 
 <Section title="B. Refleksi">
-**Yang paling saya pelajari dari proyek ini:** mendesain untuk mobile berarti memikirkan ulang alurnya untuk ponsel. Mengecilkan fitur desktop tidak cukup. Bahkan di antara user yang sudah mengenal Portal, sebagian besar memilih pola ponsel dibanding urutan Portal. Pengujian juga bukan kata akhir: alur final lahir dari review setelah pengujian, didukung data pemakaian.
+**Yang paling saya pelajari dari proyek ini:** mendesain untuk mobile berarti memikirkan ulang alurnya untuk ponsel. Mengecilkan fitur desktop tidak cukup. Secara keseluruhan, 5 dari 8 user memilih pola ponsel, dan 2 di antaranya justru sudah terbiasa dengan Portal. Pengujian juga bukan kata akhir: alur final lahir dari review setelah pengujian, didukung data pemakaian.
 
 > **User membawa kebiasaan dari aplikasi lain di ponselnya, dan desain yang baik mengikuti kebiasaan itu.**
 </Section>

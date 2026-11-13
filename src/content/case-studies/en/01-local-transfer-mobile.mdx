@@ -87,7 +87,7 @@ Urgent payments had to wait for a laptop, even for business owners and finance m
 <Section title=" " indent>
 **2. The Portal treated every transfer as a batch.**
 
-The Portal flow always started as a batch: a batch name, a table or file upload, then bulk validation. Yet 72% of batches held only one recipient.
+The Portal flow always started as a batch: a batch name, a table or file upload, then bulk validation. Yet 72% of batches held only one transaction.
 </Section>
 
 <ImageFull indent src="/images/cs-quick-transfer/friction-1.png" alt="Batch name screen in Jack Portal" caption="A batch name up front." />
@@ -115,7 +115,7 @@ After Fira wrapped up *discovery*, with the data mapped out and the problem stat
 </Section>
 
 <Section title="B. Exploration & Validation">
-I designed **two end-to-end flow iterations** and tested them with **8 internal Jack/Transfez users**: 5 already familiar with the Portal's Local Transfer flow, 3 not. Participants were internal staff rather than real Drafters, so the results show which flow was easiest to understand, not how Drafters behave day to day.
+I designed **two end-to-end flow iterations** and tested them with **8 internal Jack/Transfez users** from the Ops and Finance teams: 5 already familiar with the Portal's Local Transfer flow, 3 not. Participants were internal staff rather than real Drafters, so the results show which flow was easiest to understand, not how Drafters behave day to day.
 </Section>
 
 <Section title="B.1 Test: The Order of Steps" indent>
@@ -141,6 +141,8 @@ Try both iterations below. Each prototype opens on an intro screen; click **Go t
 Most users picked the pattern they already knew from banking and e-wallet apps. They were used to sending money that way, and to choosing who to pay before filling in the transfer details.
 
 Familiarity with the Portal pulled users toward the Portal order, but not all of them. Of the 5 users who knew the Portal, 3 picked the Portal order to keep it consistent and to know what a batch is for before adding recipients. The other 2 still picked this pattern; on a phone, being asked for batch details first felt off.
+
+One Ops participant who picked the Portal order explained why it still makes sense: companies usually group transfers by expense type. For example, every 15th there's a batch just for operational costs, and only then are the recipients filled in.
 
 From this comparison, **Iteration 1 won**: for most users, consistency with phone habits mattered more than consistency with the Portal.
 </Section>
@@ -236,12 +238,10 @@ Batch on mobile holds up to **10 recipients** with no file upload, enough for th
 ]} />
 
 SME and startup clients also gave positive feedback, especially about how easy it was and how much faster funds went out.
-
-*Source: both metrics as reported in [Local Transfers Go Mobile](https://app.notion.com/p/Local-Transfers-Go-Mobile-56-Adoption-1e2407ef883f807f9c8ae19d27a555fa), the product portfolio of Fira Zahra Allyah, Product Manager. The 50% target is from the feature's PRD.*
 </Section>
 
 <Section title="B. Reflection">
-**What I learned most from this project:** designing for mobile means rethinking the flow for the phone. Shrinking the desktop feature doesn't work. Even among users who knew the Portal, most picked the phone pattern over the Portal's order. Testing wasn't the last word either: the final flow came from a review after testing, backed by usage data.
+**What I learned most from this project:** designing for mobile means rethinking the flow for the phone. Shrinking the desktop feature doesn't work. Overall, 5 of 8 users picked the phone pattern, and 2 of them were already used to the Portal. Testing wasn't the last word either: the final flow came from a review after testing, backed by usage data.
 
 > **Users bring habits from the other apps on their phones, and good design follows those habits.**
 </Section>
