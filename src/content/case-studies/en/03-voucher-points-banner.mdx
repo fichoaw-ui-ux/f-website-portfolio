@@ -69,7 +69,7 @@ Users set the amount, picked a payment method, and passed a voucher entry they r
 
 <ImageFull indent mobile src="/images/cs-voucher-points-banner/context-mixpanel.png" alt="Send Money screen before the redesign, with the voucher entry 'Check your available voucher here'" caption="Current experience: where the voucher entry sat before the redesign." />
 
-<FigmaEmbed indent url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/template_file?page-id=961%3A9&node-id=6863-1835&viewport=1018%2C212%2C0.62&t=AaHU0eUqWPfkKv7V-1&scaling=contain&content-scaling=fixed&starting-point-node-id=6863%3A1442" title="Current experience: Send Money" caption="Prototype of the old Send Money page. Watch where your eye lands before Continue." />
+<FigmaEmbed indent url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/Study-Case?page-id=961%3A9&node-id=7388-9962&viewport=4125%2C-1090%2C0.2&t=fMnVoK20JgdQhaWK-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=7388%3A10504&show-proto-sidebar=1" title="Current experience: Send Money" caption="Prototype of the old Send Money page. Watch where your eye lands before Continue." />
 
 <Section title="C. The Friction Points">
 Tracing the page with my lead, we found **three components each playing a part**, quietly making each other worse.
@@ -118,33 +118,37 @@ The easiest fix would have been *auto-apply*: the system deducts the discount wi
 
 The PRD made that a hard constraint: this was a front-end change only. Voucher eligibility, ranking and apply were already built on the backend, so every improvement had to come from how the page presented them.
 
-I owned the full design execution: exploring iterations, restructuring the page, and handing off to engineering. Three design decisions followed, one per friction point:
-
-- **B. Voucher component** (Friction #1): how the voucher shows up and reads, chosen from two explored alternatives.
-- **C. Points banner** (Friction #2): how much room the banner gets, settled with the Growth team.
-- **D. Information architecture** (Friction #3): the order of the page, settled by restructuring the hierarchy.
+I owned the full design execution: exploring iterations, restructuring the page, and handing off to engineering.
 </Section>
 
-<Section title="B. The Voucher Component: From Invisible to Actionable">
+<Section title="B. Final Decisions">
+Three design decisions followed, one per friction point:
+
+- **B.1 Voucher component** (Friction #1): how the voucher shows up and reads, chosen from two explored alternatives.
+- **B.2 Points banner** (Friction #2): how much room the banner gets, settled with the Growth team.
+- **B.3 Information architecture** (Friction #3): the order of the page, settled by restructuring the hierarchy.
+</Section>
+
+<Section title="B.1 The Voucher Component: From Invisible to Actionable" indent>
 **Problem addressed:** Friction #1, the voucher component.
 
 The visuals and the copy had to be fixed together, since both left users feeling there was nothing to tap.
 </Section>
 
-<Section title="B.1 How do you introduce the voucher?" indent>
+<Section title="B.1.1 How do you introduce the voucher?" indent={2}>
 Two approaches were explored: *Quantity First* (showing how many vouchers are available) vs. *Value First* (showing the best voucher's value right away).
 </Section>
 
-<ImageGrid cols={2} indent={2}>
+<ImageGrid cols={2} indent={3}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-a1-quantity-first.png" alt="Alt 1: Quantity First" caption="Alt 1: quantity first" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-a1-value-first.png" alt="Alt 2: Value First" caption="Alt 2: value first" />
 </ImageGrid>
 
-<Section title=" " indent={2}>
+<Section title=" " indent={3}>
 **Alt 2 was chosen** as the more efficient option. The system already curates the voucher shown as the best value, so users don't need to go hunting for it themselves.
 </Section>
 
-<Section title="B.2 How do you tell the default state apart from the applied state?" indent>
+<Section title="B.1.2 How do you tell the default state apart from the applied state?" indent={2}>
 The old component **used one look for two different states**, so users could assume the voucher was already running.
 
 Two visual decisions were made at once:
@@ -152,21 +156,21 @@ Two visual decisions were made at once:
 - The **default state** was reset to something neutral: white background, pink outline border, a simple ticket icon, and an explicit **"Apply"** button. One clear signal: *this hasn't been claimed yet, tap to use it.*
 </Section>
 
-<ImageGrid cols={2} indent={2}>
+<ImageGrid cols={2} indent={3}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-before.png" alt="Before: default state" caption="Before: default state" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-after.png" alt="After: default state" caption="After: default state" />
 </ImageGrid>
 
-<Section title=" " indent={2}>
+<Section title=" " indent={3}>
 - The **active state** was made clearly distinct: a *motion icon* with a green badge as a confirmation signal. The voucher code appears at the top, and the copy changes to *"Promo applied!"*. The two states are now impossible to confuse.
 </Section>
 
-<ImageGrid cols={2} indent={2}>
+<ImageGrid cols={2} indent={3}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-before.png" alt="Before: active state" caption="Before: active state" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-after.png" alt="After: active state" caption="After: active state" />
 </ImageGrid>
 
-<Section title="C. Points Banner: From Dominant to Supporting">
+<Section title="B.2 Points Banner: From Dominant to Supporting" indent>
 **Problem addressed:** Friction #2, the points banner component.
 
 My first instinct was to recommend moving the points banner to the Success page entirely, so the voucher could fully win the reward slot on Send Money. The Growth team decided to keep it on Send Money. Their reasoning: points information is still relevant at this stage, since users who know what reward they'll get before completing a transfer tend to be more motivated to finish it.
@@ -174,12 +178,12 @@ My first instinct was to recommend moving the points banner to the Success page 
 The result: the points banner was visually de-emphasised, from a dominant gold banner down to a thin gray strip. It no longer dominates the reward slot, but still shows up as useful supporting information.
 </Section>
 
-<ImageGrid cols={2} indent>
+<ImageGrid cols={2} indent={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-b-before.png" alt="Before: dominant gold banner" caption="Before: dominant gold banner" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-b-after.png" alt="After: thin gray strip" caption="After: thin gray strip" />
 </ImageGrid>
 
-<Section title="D. Information Architecture: From Payment First to Voucher First">
+<Section title="B.3 Information Architecture: From Payment First to Voucher First" indent>
 **Problem addressed:** Friction #3, page hierarchy.
 
 The most subtle of the three: the problem was **order, not a single component**.
@@ -190,12 +194,12 @@ Two considerations drove this decision:
 - **Calculator and voucher as one unit.** Both stay as the main focus, with no distraction from other choices.
 </Section>
 
-<ImageGrid cols={2} indent>
+<ImageGrid cols={2} indent={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-c-before.png" alt="Before: payment method above the voucher" caption="Before: payment above voucher" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-c-after.png" alt="After: payment method moved below with a Change label" caption="After: payment moved below" />
 </ImageGrid>
 
-<Section title=" " indent>
+<Section title=" " indent={2}>
 **The result:** Payment Method moved further down with an explicit *"Change"* label. It's still easy to reach, and no longer interrupts the main flow.
 </Section>
 

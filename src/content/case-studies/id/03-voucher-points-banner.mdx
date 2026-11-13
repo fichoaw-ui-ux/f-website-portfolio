@@ -69,7 +69,7 @@ User mengatur nominal, memilih metode pembayaran, lalu melewati entry voucher ya
 
 <ImageFull indent mobile src="/images/cs-voucher-points-banner/context-mixpanel.png" alt="Layar Send Money sebelum didesain ulang, dengan entry voucher 'Check your available voucher here'" caption="Current experience: posisi entry voucher sebelum didesain ulang." />
 
-<FigmaEmbed indent url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/template_file?page-id=961%3A9&node-id=6863-1835&viewport=1018%2C212%2C0.62&t=AaHU0eUqWPfkKv7V-1&scaling=contain&content-scaling=fixed&starting-point-node-id=6863%3A1442" title="Current experience: Send Money" caption="Prototype halaman Send Money versi lama. Perhatikan ke mana mata Anda tertuju sebelum Continue." />
+<FigmaEmbed indent url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/Study-Case?page-id=961%3A9&node-id=7388-9962&viewport=4125%2C-1090%2C0.2&t=fMnVoK20JgdQhaWK-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=7388%3A10504&show-proto-sidebar=1" title="Current experience: Send Money" caption="Prototype halaman Send Money versi lama. Perhatikan ke mana mata Anda tertuju sebelum Continue." />
 
 <Section title="C. The Friction Points">
 Saat menelusuri halaman bersama lead saya, kami menemukan **tiga komponen yang masing-masing punya peran**, dan diam-diam saling memperparah.
@@ -118,33 +118,37 @@ Solusi paling mudah sebenarnya *auto-apply*: sistem langsung memotong biaya tanp
 
 PRD-nya menjadikan ini batasan yang tegas: perubahannya murni di front-end. Eligibility, ranking, dan apply voucher sudah tersedia di backend, jadi semua perbaikan harus datang dari cara halaman menampilkannya.
 
-Eksekusi desain sepenuhnya saya pegang: eksplorasi iterasi, restrukturisasi halaman, sampai handoff ke engineering. Dari sini lahir tiga keputusan desain, satu untuk tiap friction:
-
-- **B. Komponen voucher** (Friction #1): bagaimana voucher tampil dan terbaca, dipilih dari dua alternatif yang dieksplorasi.
-- **C. Points banner** (Friction #2): seberapa besar ruang untuk banner, diputuskan bersama tim Growth.
-- **D. Information architecture** (Friction #3): urutan halaman, dijawab lewat restrukturisasi hierarki.
+Eksekusi desain sepenuhnya saya pegang: eksplorasi iterasi, restrukturisasi halaman, sampai handoff ke engineering.
 </Section>
 
-<Section title="B. Komponen Voucher: Dari Tidak Terlihat ke Actionable">
+<Section title="B. Keputusan Final">
+Dari sini lahir tiga keputusan desain, satu untuk tiap friction:
+
+- **B.1 Komponen voucher** (Friction #1): bagaimana voucher tampil dan terbaca, dipilih dari dua alternatif yang dieksplorasi.
+- **B.2 Points banner** (Friction #2): seberapa besar ruang untuk banner, diputuskan bersama tim Growth.
+- **B.3 Information architecture** (Friction #3): urutan halaman, dijawab lewat restrukturisasi hierarki.
+</Section>
+
+<Section title="B.1 Komponen Voucher: Dari Tidak Terlihat ke Actionable" indent>
 **Masalah yang dijawab:** Friction #1, komponen voucher.
 
 Visual dan copy harus dibenahi bersamaan, karena keduanya sama-sama membuat user merasa tidak ada yang perlu di-tap.
 </Section>
 
-<Section title="B.1 Bagaimana memperkenalkan voucher?" indent>
+<Section title="B.1.1 Bagaimana memperkenalkan voucher?" indent={2}>
 Dua pendekatan dieksplorasi: *Quantity First* (menampilkan jumlah voucher yang tersedia) vs *Value First* (langsung menampilkan nilai voucher terbaik).
 </Section>
 
-<ImageGrid cols={2} indent={2}>
+<ImageGrid cols={2} indent={3}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-a1-quantity-first.png" alt="Alt 1: Quantity First" caption="Alt 1: quantity first" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-a1-value-first.png" alt="Alt 2: Value First" caption="Alt 2: value first" />
 </ImageGrid>
 
-<Section title=" " indent={2}>
+<Section title=" " indent={3}>
 **Alt 2 dipilih** karena paling efisien. Voucher yang ditampilkan sudah dikurasi sistem sebagai nilai terbaik, jadi user tidak perlu mencarinya sendiri.
 </Section>
 
-<Section title="B.2 Bagaimana membedakan default state dari applied state?" indent>
+<Section title="B.1.2 Bagaimana membedakan default state dari applied state?" indent={2}>
 Komponen lama punya **satu tampilan untuk dua kondisi yang berbeda**, sehingga user bisa mengira voucher sudah berjalan.
 
 Dua keputusan visual diambil sekaligus:
@@ -152,21 +156,21 @@ Dua keputusan visual diambil sekaligus:
 - **Default state** direset ke visual netral: background putih, border outline pink, ikon tiket sederhana, dan tombol **"Apply"** yang eksplisit. Satu sinyal yang jelas: *ini belum diambil, tap untuk pakai.*
 </Section>
 
-<ImageGrid cols={2} indent={2}>
+<ImageGrid cols={2} indent={3}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-before.png" alt="Before: default state" caption="Before: default state" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-after.png" alt="After: default state" caption="After: default state" />
 </ImageGrid>
 
-<Section title=" " indent={2}>
+<Section title=" " indent={3}>
 - **Active state** dibedakan secara tegas: *motion icon* dengan badge hijau sebagai sinyal konfirmasi. Kode voucher muncul di atas, dan copy berubah jadi *"Promo applied!"*. Dua state ini sekarang tidak mungkin tertukar.
 </Section>
 
-<ImageGrid cols={2} indent={2}>
+<ImageGrid cols={2} indent={3}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-before.png" alt="Before: active state" caption="Before: active state" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-after.png" alt="After: active state" caption="After: active state" />
 </ImageGrid>
 
-<Section title="C. Points Banner: Dari Dominan ke Pendukung">
+<Section title="B.2 Points Banner: Dari Dominan ke Pendukung" indent>
 **Masalah yang dijawab:** Friction #2, komponen points banner.
 
 Rekomendasi awal saya adalah memindahkan points banner ke Success Page supaya voucher menang penuh di reward slot Send Money. Tim Growth memutuskan untuk tetap menaruhnya di Send Money, dengan pertimbangan bahwa informasi points masih relevan di tahap ini: user yang tahu reward yang akan didapat sebelum bertransaksi cenderung lebih termotivasi menyelesaikan transfer.
@@ -174,12 +178,12 @@ Rekomendasi awal saya adalah memindahkan points banner ke Success Page supaya vo
 Hasilnya, points banner diredam secara visual, dari banner emas yang dominan menjadi strip abu-abu tipis. Banner ini tidak lagi mendominasi reward slot, tapi tetap hadir sebagai informasi pendukung yang berguna.
 </Section>
 
-<ImageGrid cols={2} indent>
+<ImageGrid cols={2} indent={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-b-before.png" alt="Before: banner emas dominan" caption="Before: banner emas dominan" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-b-after.png" alt="After: strip abu-abu tipis" caption="After: strip abu-abu tipis" />
 </ImageGrid>
 
-<Section title="D. Information Architecture: Dari Payment Dulu ke Voucher Dulu">
+<Section title="B.3 Information Architecture: Dari Payment Dulu ke Voucher Dulu" indent>
 **Masalah yang dijawab:** Friction #3, hierarki halaman.
 
 Yang paling halus dari ketiganya: masalahnya ada di **urutan, bukan di satu komponen**.
@@ -190,12 +194,12 @@ Dua pertimbangan yang mendasari keputusan ini:
 - **Calculator dan voucher sebagai satu kesatuan.** Keduanya tetap jadi fokus utama tanpa gangguan dari pilihan lain.
 </Section>
 
-<ImageGrid cols={2} indent>
+<ImageGrid cols={2} indent={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-c-before.png" alt="Before: payment method di atas voucher" caption="Before: payment di atas voucher" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-c-after.png" alt="After: payment method di bawah dengan label Change" caption="After: payment di bawah" />
 </ImageGrid>
 
-<Section title=" " indent>
+<Section title=" " indent={2}>
 **Hasilnya:** Payment Method dipindah ke bawah dengan label *"Change"* yang eksplisit. Tetap mudah dijangkau, dan tidak lagi menginterupsi alur utama.
 </Section>
 
