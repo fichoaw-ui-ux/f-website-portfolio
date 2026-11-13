@@ -1,0 +1,85 @@
+---
+import { indentPadding, type Indent } from './indent'
+/* Step flow — a text-only flow diagram for comparing step orders without an
+   image asset (Ficho). No Figma frame: built only from styles the case study
+   already uses. Frame = Metrics card (container radius, 1px #6C6C71, 23 + 1
+   padding); title = ImageFull title (Title/X-Medium, white); row label
+   "Before: …" / "After: …" with the state word in --color-state-before /
+   --color-state-after, as ImageFull captions; steps = the same frame at
+   Body/Small, numbered in #909098, stacked vertically with a centred ↓ between
+   them; labels and step text centred, step numbers left. Two rows sit side by
+   side on desktop (one column per platform) and stack on mobile.
+   Branch (Ficho): a row may end in `branches` — after its shared steps the
+   path splits into side-by-side sub-paths, each with its own label, numbering
+   continuing from the shared steps. */
+interface Path { label: string; steps: string[] }
+interface Row { label: string; steps: string[]; branches?: Path[] }
+interface Props { title?: string; rows: Row[]; indent?: Indent }
+const { title, rows, indent = false } = Astro.props
+const indentClass = indentPadding(indent)
+// With a branch, the plain column takes its content width (its steps kept on one
+// line on desktop) and the branching column gets the rest, so the sub-paths fit.
+const hasBranch = rows.some(r => r.branches?.length)
+
+const parse = (label: string) => {
+  const m = label.match(/^(Before|After)\s*:\s*(.+)$/s)
+  return m ? { state: m[1].toLowerCase() as 'before' | 'after', word: m[1], rest: m[2] } : null
+}
+const arrow = 'text-center text-body-sm text-neutral-700'
+// Number left, step centred; the empty 16px right column (= number column,
+// --space-16) keeps the step truly centred.
+const chip = 'grid grid-cols-[16px_1fr_16px] items-center gap-(--space-12) rounded-(--radius-container) border border-neutral-800 px-(--space-16) py-(--space-8) text-body-sm text-neutral-100'
+// In a branch the sub-paths are narrow, so the chip drops the balancing column.
+const branchChip = 'grid grid-cols-[16px_1fr] items-center gap-(--space-8) rounded-(--radius-container) border border-neutral-800 px-(--space-8) py-(--space-8) text-body-sm text-neutral-100'
+---
+<figure data-asset class:list={['mb-(--space-24) grid gap-y-(--space-12) desktop:mb-(--space-32) [&:has(+section[data-titled]:not([data-indent]):not([data-sub]))]:mb-(--space-32) desktop:[&:has(+section[data-titled]:not([data-indent]):not([data-sub]))]:mb-(--space-40)', indentClass]} data-motion="rise" data-motion-distance="lg" data-figma="case-study/step-flow">
+  {title && <figcaption class="text-title-xmd text-neutral-100">{title}</figcaption>}
+  <div class:list={['grid gap-(--space-24) rounded-(--radius-container) border border-neutral-800 p-[23px]', rows.length > 1 && (hasBranch ? 'desktop:grid-cols-[auto_1fr]' : 'desktop:grid-cols-2')]}>
+    {rows.map(row => {
+      const s = parse(row.label)
+      return (
+        <div class="grid content-start gap-(--space-12)">
+          <p class="text-center text-button-sm text-neutral-600">
+            {s ? (
+              <>
+                <span class:list={[s.state === 'before' ? 'text-state-before' : 'text-state-after']}>{s.word}</span>: {s.rest}
+              </>
+            ) : row.label}
+          </p>
+          <ol class="grid gap-(--space-8)">
+            {row.steps.map((step, i) => (
+              <>
+                {i > 0 && <li aria-hidden="true" class={arrow}>↓</li>}
+                <li class={chip}>
+                  <span class="text-neutral-700">{i + 1}</span>
+                  <span class:list={['text-center', hasBranch && !row.branches && 'desktop:whitespace-nowrap']}>{step}</span>
+                </li>
+              </>
+            ))}
+          </ol>
+          {row.branches && (
+            <div class="grid grid-cols-2 gap-(--space-8)">
+              {row.branches.map(path => (
+                <div class="grid content-start gap-(--space-8)">
+                  <p aria-hidden="true" class={arrow}>↓</p>
+                  <p class="text-center text-button-sm text-neutral-600">{path.label}</p>
+                  <ol class="grid gap-(--space-8)" start={row.steps.length + 1}>
+                    {path.steps.map((step, i) => (
+                      <>
+                        {i > 0 && <li aria-hidden="true" class={arrow}>↓</li>}
+                        <li class={branchChip}>
+                          <span class="text-neutral-700">{row.steps.length + i + 1}</span>
+                          <span class="text-center">{step}</span>
+                        </li>
+                      </>
+                    ))}
+                  </ol>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    })}
+  </div>
+</figure>

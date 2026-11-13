@@ -201,25 +201,28 @@ Dua pertimbangan yang mendasari keputusan ini:
 
 <PartHeader number="04" title="Solution" />
 
-<Section title="A. Satu Reward Slot, Satu Pemenang">
-Voucher kini terbaca sebagai peluang yang belum diambil: nilai terbaik terlihat di permukaan, apply cukup satu tap, dan diskonnya langsung muncul di rincian biaya.
+<Section>
+Kembali ke user yang sedang mengatur nominal di Send Money. Kini voucher terbaca sebagai peluang yang belum diambil: nilai voucher terbaik langsung terlihat, bukan sekadar ajakan umum, dan apply cukup satu tap lewat tombol *"Apply"* yang jelas.
 </Section>
 
-<ImageGrid indent cols={2}>
+<ImageGrid cols={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-before.png" alt="Before: Send Money default state" caption="Before: default state" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-after.png" alt="After: Send Money default state" caption="After: default state" />
 </ImageGrid>
 
-<ImageGrid indent cols={2}>
+<Section>
+Begitu dipakai, tampilannya berubah tegas: badge hijau, kode voucher, dan *"Promo applied!"*, dengan diskon yang langsung muncul di rincian biaya. Dua state ini tidak mungkin tertukar lagi.
+</Section>
+
+<ImageGrid cols={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-before.png" alt="Before: Send Money applied state" caption="Before: applied state" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-after.png" alt="After: Send Money applied state" caption="After: applied state" />
 </ImageGrid>
 
-<Section title="B. Detail Kunci">
-- **Nilai lebih dulu.** Entry voucher menampilkan nilai voucher terbaik, bukan ajakan umum.
-- **Dua state yang tidak mungkin tertukar.** Default netral dengan tombol *"Apply"*; applied menampilkan badge hijau, kode voucher, dan *"Promo applied!"*.
-- **Points sebagai pendukung.** Points banner tetap di Send Money sebagai strip abu-abu tipis di bagian bawah halaman.
-- **Payment method di bawah.** Payment method berada di bawah voucher dengan label *"Change"*, jadi calculator dan voucher terbaca sebagai satu kesatuan.
+<Section>
+Elemen lain ikut menyesuaikan. Points banner tetap di Send Money, tapi sebagai strip abu-abu tipis di bagian bawah halaman. Payment method pindah ke bawah voucher dengan label *"Change"*, jadi calculator dan voucher terbaca sebagai satu kesatuan.
+
+**Satu reward slot, satu pemenang: voucher.**
 </Section>
 
 <PartHeader number="05" title="Impact" />

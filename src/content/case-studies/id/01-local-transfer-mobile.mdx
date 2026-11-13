@@ -36,6 +36,7 @@ import ImageFull from '../../../components/case-study/ImageFull.astro'
 import ImageGrid from '../../../components/case-study/ImageGrid.astro'
 import FigmaEmbed from '../../../components/case-study/FigmaEmbed.astro'
 import Metrics from '../../../components/case-study/Metrics.astro'
+import StepFlow from '../../../components/case-study/StepFlow.astro'
 
 <PartHeader number="01" title="Project Snapshot" />
 
@@ -121,7 +122,7 @@ Saya merancang **dua iterasi flow end-to-end** dan mengujinya ke **8 user intern
 PRD awalnya meminta alur pembuatan transaksi di mobile mengikuti proses di Portal. Pertanyaannya: urutan langkahnya tetap mengikuti Portal, atau mengikuti pola aplikasi bank dan e-wallet? Saya mengujinya lewat dua iterasi:
 
 - **Iterasi 1:** Pilih penerima lebih dulu. Batch ditentukan di awal lewat checkbox; jumlah penerima yang dicentang menentukan single atau batch.
-- **Iterasi 2:** Urutan yang sama dengan Portal. Tentukan tujuan dan detail transaksi lebih dulu.
+- **Iterasi 2:** Urutan yang sama dengan Portal. Isi detail batch (nama batch dan kategori) lebih dulu, baru pilih penerima dan isi detail transfer.
 
 Coba kedua iterasinya di bawah. Setiap prototipe dibuka dari halaman pengantar; klik **Go to page** untuk langsung masuk ke alur Local Transfer.
 </Section>
@@ -133,7 +134,7 @@ Coba kedua iterasinya di bawah. Setiap prototipe dibuka dari halaman pengantar; 
 <Section title=" " indent={2}>
 | | Urutan Portal (Iterasi 2) | Pola bank & e-wallet (Iterasi 1) |
 | --- | --- | --- |
-| Single | Detail transfer → Penerima | Penerima → Detail transfer |
+| Single | Detail batch → Penerima → Detail transfer | Penerima → Detail transfer |
 | Batch | Detail batch → Penerima → Detail transfer | Penerima → Detail transfer → Detail batch |
 | Dipilih | **3 user** | **5 user** |
 
@@ -180,8 +181,13 @@ Ini keputusan tim. Fitur di aplikasi terus bertambah, jadi perlu satu tempat ter
 <Section title="D.2 Urutan Langkah: Dari Urutan Portal ke “Pilih Penerima Dulu”" indent>
 **Masalah yang dijawab:** Friction #1, Local Transfer belum ada di mobile.
 
-Pintu masuk saja tidak cukup. Mengikuti hasil pengujian, alur di mobile dimulai dari memilih penerima, baru kemudian mengisi detail transfer, seperti di aplikasi bank dan e-wallet. Urutan langkah di mobile pun tidak lagi mengikuti Portal, meski awalnya diminta PRD.
+Pintu masuk saja tidak cukup. Mengikuti hasil pengujian di B.1, alur di mobile dimulai dari memilih penerima, baru kemudian mengisi detail transfer, seperti di aplikasi bank dan e-wallet. Urutan langkah di mobile pun tidak lagi mengikuti Portal, meski awalnya diminta PRD.
 </Section>
+
+<StepFlow indent={2} title="Hasil pengujian B.1: urutan transfer tunggal" rows={[
+  { label: "Before: Urutan Portal, dipilih 3 user", steps: ["Detail batch (nama, kategori)", "Penerima", "Detail transfer (nominal, kategori)"] },
+  { label: "After: Pilih penerima dulu, dipilih 5 user", steps: ["Penerima", "Detail transfer (nominal, kategori)"] },
+]} />
 
 <Section title="D.3 Beban Batch: Dari Batch-first ke Single-first" indent>
 **Masalah yang dijawab:** Friction #2, Portal memperlakukan setiap transfer sebagai batch.
@@ -195,27 +201,31 @@ Beban batch dari Portal tidak boleh ikut pindah ke ponsel, tapi batch juga tidak
 **Iterasi 3** menjadi alur final. Transfer tunggal tidak membawa langkah batch sama sekali, dan batch tetap ada lewat ikon tambah penerima saat dibutuhkan.
 
 *Batch menjadi cabang dari alur single, alih-alih jalur terpisah sejak awal.*
+
+Meski begitu, di sisi data keduanya justru dipisahkan. Di Portal, transfer ke satu orang tetap tercatat sebagai batch berisi satu transaksi, karena sistemnya memang belum menyediakan tipe transaksi tunggal. Di mobile, tipe itu dibuat: transfer tunggal punya tipe transaksi dan ID sendiri, terpisah dari batch, sehingga detail transaksinya tidak lagi bercampur.
 </Section>
 
-<ImageFull indent={2} src="/images/cs-local-transfer-mobile/batch-flow.png" alt="User flow Local Transfer mobile: single sebagai default, batch sebagai cabang opsional" caption="User flow: single jadi default, batch jadi cabang opsional." />
+<StepFlow indent={2} title="Alur Local Transfer di tiap platform" rows={[
+  { label: "Before: Portal", steps: ["Create → Local Transfer", "Nama batch", "Tabel atau upload file", "Detail transfer", "Validasi massal", "Konfirmasi dan submit"] },
+  { label: "After: Jack Mobile App", steps: ["Create → Local Transfer", "Pilih penerima", "Detail transfer (nominal, kategori)"], branches: [
+    { label: "Single (default)", steps: ["Konfirmasi dan submit"] },
+    { label: "Batch (maks. 10)", steps: ["Tambah penerima", "Detail batch", "Konfirmasi dan submit"] },
+  ] },
+]} />
 
 <PartHeader number="04" title="Solution" />
 
-<Section title="A. Local Transfer di Ponsel">
-Drafter yang selama ini harus menunggu sampai bisa membuka laptop sekarang bisa membuat Local Transfer langsung dari Jack Mobile App, dengan single sebagai default dan batch hanya sejauh satu ketukan.
+<Section>
+Kembali ke Drafter yang perlu membayar supplier dari luar kantor. Sekarang ia cukup membuka Jack Mobile App, mengetuk **Create**, memilih **Local Transfer**, memilih penerima, mengisi detail transfer, lalu konfirmasi dan submit. Tanpa nama batch, tanpa tabel, dan tanpa menunggu bisa membuka laptop.
+
+Kalau ternyata ia perlu membayar beberapa orang sekaligus, ia tidak perlu mengulang dari awal. Cukup ketuk **ikon tambah penerima**, dan alurnya bergeser ke batch dengan data yang sudah diisi tetap terbawa. Detail batch baru ditanyakan di akhir, dan sebelum submit ia melihat ringkasan untuk mengedit atau menghapus tiap transaksi.
+
+Batch di mobile dibatasi **10 penerima** tanpa upload file, cukup untuk rata-rata batch di Portal yang berisi 8 transaksi. Batch yang lebih besar tetap dikerjakan di Portal.
+
+**Single jadi default, dan batch tetap ada sejauh satu ketukan.**
 </Section>
 
-<Section title="B. Flow Final">
-Untuk transfer tunggal: buka **Create** → pilih **Local Transfer** → pilih penerima → isi nominal → konfirmasi dan submit. Tanpa nama batch, tanpa tabel.
-</Section>
-
-<FigmaEmbed indent url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/Study-Case?page-id=402%3A60&node-id=7193-28927&viewport=-774%2C815%2C0.16&t=SEKsuUnJn7uITSbC-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=7193%3A28927&show-proto-sidebar=1" title="Prototype: Local Transfer di Jack Mobile App" caption="Prototype flow final Local Transfer di mobile." />
-
-<Section title="C. Detail Kunci">
-- **Batch tanpa mengulang.** Kalau di tengah jalan ternyata perlu kirim ke beberapa orang, user cukup mengetuk **ikon tambah penerima** dan alur bergeser ke batch, dengan data yang sudah diisi tetap terbawa.
-- **Detail batch di akhir.** Detail batch baru diminta di akhir. Sebelum submit, user melihat ringkasan dengan opsi Edit/Delete per transaksi.
-- **Maksimal 10 penerima.** Batch di mobile dibatasi **10 penerima** (rata-rata batch di Portal berisi 8 transaksi) tanpa upload file. Batch besar tetap lewat Portal.
-</Section>
+<FigmaEmbed url="https://www.figma.com/proto/9FaFxxDoTxNaEUkl0BDyuF/Study-Case?page-id=402%3A60&node-id=7193-28927&viewport=-774%2C815%2C0.16&t=SEKsuUnJn7uITSbC-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=7193%3A28927&show-proto-sidebar=1" title="Prototype: Local Transfer di Jack Mobile App" caption="Prototype flow final Local Transfer di mobile." />
 
 <PartHeader number="05" title="Impact" />
 
