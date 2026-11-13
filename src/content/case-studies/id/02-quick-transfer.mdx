@@ -101,13 +101,13 @@ Menghilangkan tiga hambatan itu bagian yang mudah. Yang lebih sulit adalah melay
 
 <PartHeader number="03" title="Design Decisions" />
 
-<Section title="Kickoff">
+<Section title="A. Kickoff">
 Saya masuk setelah Fira menyelesaikan discovery, dengan data yang sudah dipetakan dan problem statement yang jelas. Tugas saya mulai dari ideasi solusi, detail UI dan transition logic, prototype interaktif, sampai handoff ke engineering.
 
 Ketiga friction mengarah ke satu jawaban: jalur terpisah untuk transaksi tunggal, cukup form pendek yang menanyakan siapa yang dituju dan berapa yang dikirim. Kami menyebutnya Single Transfer.
 </Section>
 
-<Section title="Eksplorasi & Validasi">
+<Section title="B. Eksplorasi & Validasi">
 Setelah saya rancang alternatif awal, kami mengadakan **forum dengan tim besar (Designer + Writer + PM)** untuk menyamakan arah dan menentukan apa yang perlu divalidasi. Forum menyepakati dua hal yang perlu dites ke user:
 
 - Bagaimana user menjalani full journey *Single Transfer* secara end-to-end.
@@ -116,27 +116,27 @@ Setelah saya rancang alternatif awal, kami mengadakan **forum dengan tim besar (
 Saya tes keduanya ke 8 user internal di sesi usability testing: 3 dari Ops, 1 dari Finance, dan 4 dari Marketing. Tujuh di antaranya sudah biasa memakai Local Transfer di Portal; satu belum.
 </Section>
 
-<Section title="1. Pengujian 1: Alur Single Transfer (Concept Feedback)" indent="sub" level={2}>
+<Section title="B.1 Pengujian: Alur Single Transfer (Concept Feedback)" indent>
 Setiap sesi dibuka dengan walkthrough Single Transfer dari awal sampai submit, supaya user punya konteks utuh sebelum saya tanya soal entry point.
 </Section>
 
-<ImageFull indent="subText" src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Walkthrough full journey Single Transfer" caption="Perjalanan Single Transfer yang ditunjukkan ke peserta saat walkthrough." />
+<ImageFull indent={2} src="/images/cs-quick-transfer/walkthrough-full-journey.gif" alt="Walkthrough full journey Single Transfer" caption="Perjalanan Single Transfer yang ditunjukkan ke peserta saat walkthrough." />
 
-<Section title=" " indent="subText">
+<Section title=" " indent={2}>
 **Semua peserta** bilang alurnya mudah diikuti. Tidak ada yang mempersoalkan nama batch atau tabel validasi. Karena saya yang memandu mereka, hasil ini adalah concept feedback: arahnya masuk akal bagi user, tapi belum membuktikan mereka bisa menyelesaikannya sendiri.
 </Section>
 
-<Section title="2. Pengujian 2: Entry Point" indent="sub" level={2}>
+<Section title="B.2 Pengujian: Entry Point" indent>
 Setelah user paham full journey-nya, baru saya minta pendapat mereka soal entry point. Tiga alternatif yang dites:
 </Section>
 
-<ImageFull indent="subText" src="/images/cs-quick-transfer/entry-point-alt-1.png" alt="Entry point Alt 1: Hierarki tiga pilihan" caption="Alt 1: hierarki tiga pilihan, Single Local Transfer + Batch (Upload Excel / Empty Table)." />
+<ImageFull indent={2} src="/images/cs-quick-transfer/entry-point-alt-1.png" alt="Entry point Alt 1: Hierarki tiga pilihan" caption="Alt 1: hierarki tiga pilihan, Single Local Transfer + Batch (Upload Excel / Empty Table)." />
 
-<ImageFull indent="subText" src="/images/cs-quick-transfer/entry-point-alt-2.png" alt="Entry point Alt 2: Toggle dua pilihan" caption="Alt 2: toggle dua pilihan, Single vs Batch saja." />
+<ImageFull indent={2} src="/images/cs-quick-transfer/entry-point-alt-2.png" alt="Entry point Alt 2: Toggle dua pilihan" caption="Alt 2: toggle dua pilihan, Single vs Batch saja." />
 
-<ImageFull indent="subText" src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. Kami sempat condong ke arah ini. Kalau 72% transaksi cuma single, kenapa tidak lewati semua pilihan dan langsung tampilkan list?" />
+<ImageFull indent={2} src="/images/cs-quick-transfer/entry-point-alt-3.png" alt="Entry point Alt 3: Direct list" caption="Alt 3: direct list. Kami sempat condong ke arah ini. Kalau 72% transaksi cuma single, kenapa tidak lewati semua pilihan dan langsung tampilkan list?" />
 
-<Section title=" " indent="subText">
+<Section title=" " indent={2}>
 Alt 1 dan Alt 2 seri, masing-masing dipilih 4 peserta. Ini pendapat peserta tentang masing-masing alternatif:
 
 | | Kelebihan | Kekurangan |
@@ -154,31 +154,31 @@ Beberapa reaksi di balik kelebihan dan kekurangan tersebut:
 Dari perbandingan ini, **Alt 2 menang**: paling clear dan kekurangannya paling sedikit.
 </Section>
 
-<Section title="Review CEO: Jangan Ada Dead-end">
+<Section title="C. Review CEO">
 Saya dan Fira mempresentasikan temuannya ke **Bang Edo (CEO kami)**: alurnya mudah diikuti, dan Alt 2 entry point yang paling jelas. Berdasarkan itu dan data 72%, kami mengusulkan **lebih agresif fokus ke single-only**.
 
 Bang Edo menyoroti hal yang tidak tertangkap saat pengujian: apa yang terjadi kalau user butuh batch dan tidak bisa pindah, sejarang apa pun kebutuhan itu muncul.
 </Section>
 
-<Quote author="Bang Edo, CEO">
+<Quote indent author="Bang Edo, CEO">
 Fitur ini bisa melakukan transaksi tunggal dengan flow khusus, tapi user juga bisa beralih untuk melakukan transaksi batch juga.
 </Quote>
 
-<Section title=" ">
+<Section title=" " indent>
 Sesi kami tidak pernah menguji kebutuhan batch yang muncul di tengah jalan. Alur single-only yang kaku bisa jadi *dead-end* tepat di momen yang paling krusial.
 
 Dari sinilah fitur ini mendapat namanya: **Quick Transfer**. Nama *"Single"* menutup pintu yang seharusnya tetap terbuka. **Framing fitur ternyata sama pentingnya dengan flow-nya.**
 </Section>
 
-<Section title="Keputusan Final: Jalur Cepat Tanpa Dead-end">
+<Section title="D. Keputusan Final">
 Alurnya sudah menjawab ketiga friction. Hasil pengujian dan review ini lalu melahirkan tiga keputusan desain:
 
-- **A. Entry point** (salah memilih jalur di awal): dijawab lewat pengujian user dan review CEO.
-- **B. Recipient Details** (dead-end bagi user yang sejak awal butuh beberapa penerima): diputuskan setelah review CEO.
-- **C. Transfer Details** (dead-end bagi user yang baru sadar butuh batch di tengah jalan): diputuskan setelah review CEO.
+- **D.1 Entry point** (salah memilih jalur di awal): dijawab lewat pengujian user dan review CEO.
+- **D.2 Recipient Details** (dead-end bagi user yang sejak awal butuh beberapa penerima): diputuskan setelah review CEO.
+- **D.3 Transfer Details** (dead-end bagi user yang baru sadar butuh batch di tengah jalan): diputuskan setelah review CEO.
 </Section>
 
-<Section title="A. Entry Point: Dari Toggle ke Opsi Berkelompok" indent="sub" level={2}>
+<Section title="D.1 Entry Point: Dari Toggle ke Opsi Berkelompok" indent>
 **Masalah yang dijawab:** jalur cepat yang hanya bisa untuk satu transaksi, dan salah memilih jalur di awal.
 
 Alt 2 jadi tidak cocok. Toggle *Single* vs *Batch*-nya memberi kesan jalur cepat hanya untuk tepat satu transfer, padahal Bang Edo ingin jalur cepat yang tetap bisa dipakai untuk beberapa penerima.
@@ -188,12 +188,12 @@ Separuh peserta sebenarnya sudah condong ke arah ini. Keempat peserta yang memil
 Karena itu strukturnya pindah ke **Alt 1**, dengan ketiga metode (Quick + Upload Excel + Empty Table) tampil sejajar, dikelompokkan berdasarkan seberapa besar pekerjaan user, alih-alih *satu vs banyak*. Untuk menjawab kekurangan Alt 1, *"terlalu banyak pilihan"*, setiap grup menyebut kapasitasnya: *"Suitable for 1-5 recipients"* untuk Quick Transfer, *"For up to 1000 recipients"* untuk dua opsi batch.
 </Section>
 
-<ImageGrid cols={1} indent="subText">
+<ImageGrid cols={1} indent={2}>
   <ImageFull src="/images/cs-quick-transfer/entry-point-final-before.png" alt="Before: Alt 2 (toggle dua pilihan)" caption="Before: Alt 2 (toggle)" />
   <ImageFull src="/images/cs-quick-transfer/entry-point-final-after.png" alt="After: Alt 1 dengan grouping deskriptif" caption="After: Alt 1 dengan grouping" />
 </ImageGrid>
 
-<Section title="B. Recipient Details: Dari Satu Penerima ke Multi-select" indent="sub" level={2}>
+<Section title="D.2 Recipient Details: Dari Satu Penerima ke Multi-select" indent>
 **Masalah yang dijawab:** dead-end bagi user yang sejak awal tahu perlu kirim ke beberapa penerima.
 
 Pintu pertama ke batch. Saya menambahkan checkbox di setiap recipient dan footer *"X recipients selected"* dengan tombol Continue, yang membuka Empty Table dengan recipient terpilih sudah terisi.
@@ -201,12 +201,12 @@ Pintu pertama ke batch. Saya menambahkan checkbox di setiap recipient dan footer
 Pengujian juga sudah memberi petunjuk ke sini. Seorang peserta meminta tombol select all untuk mengirim ke semua penerima tersimpan, dan seorang peserta dari Ops menyebut klien biasanya mengirim ke penerima yang sama berulang kali.
 </Section>
 
-<ImageGrid cols={1} indent="subText">
+<ImageGrid cols={1} indent={2}>
   <ImageFull src="/images/cs-quick-transfer/recipient-details-before.png" alt="Before: Recipient Details tanpa multi-select" caption="Before: tanpa multi-select" />
   <ImageFull src="/images/cs-quick-transfer/recipient-details-after.png" alt="After: Recipient Details dengan multi-select" caption="After: dengan multi-select" />
 </ImageGrid>
 
-<Section title="C. Transfer Details: Dari Dead-end ke Tambah Penerima" indent="sub" level={2}>
+<Section title="D.3 Transfer Details: Dari Dead-end ke Tambah Penerima" indent>
 **Masalah yang dijawab:** dead-end, dan data yang hilang, bagi user yang baru sadar butuh batch di tengah jalan.
 
 Pintu kedua, dengan data preservation. Banner di bawah form bertuliskan *"Click here to add more recipients"*. Sekali klik, semua yang sudah diisi terbawa ke Empty Table.
@@ -214,36 +214,36 @@ Pintu kedua, dengan data preservation. Banner di bawah form bertuliskan *"Click 
 Copy banner ini awalnya berupa pertanyaan, *"Want to add more recipients?"*. Bersama UX writer, kami mengubahnya menjadi kalimat yang diawali aksi, supaya banner langsung menjelaskan apa yang terjadi saat diklik.
 </Section>
 
-<ImageGrid cols={1} indent="subText">
+<ImageGrid cols={1} indent={2}>
   <ImageFull src="/images/cs-quick-transfer/transfer-details-before.png" alt="Before: Transfer Details tanpa CTA banner" caption="Before: tanpa banner" />
   <ImageFull src="/images/cs-quick-transfer/transfer-details-after.png" alt="After: Transfer Details dengan CTA banner" caption="After: dengan CTA banner" />
 </ImageGrid>
 
 <PartHeader number="04" title="Solution" />
 
-<Section title="Quick Transfer Flow">
+<Section title="A. Quick Transfer Flow">
 **How do you want to send money?** Saat user mau melakukan transaksi, jawabannya sudah tersedia: **Quick Transfer**. Pilih bank, masukkan nomor rekening → step 2, isi nominal dan transfer note → submit.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/solution-1-quick-transfer.gif" alt="Flow Quick Transfer end-to-end" caption="Quick Transfer: dua step, form pendek." />
+<ImageFull indent src="/images/cs-quick-transfer/solution-1-quick-transfer.gif" alt="Flow Quick Transfer end-to-end" caption="Quick Transfer: dua step, form pendek." />
 
-<Section title="Dua Pintu ke Batch">
+<Section title="B. Dua Pintu ke Batch">
 Dua pintu dari dalam Quick Transfer menjaga batch tetap terbuka bagi siapa pun yang tiba-tiba butuh lebih.
 </Section>
 
-<ImageFull src="/images/cs-quick-transfer/solution-2-add-recipient.gif" alt="Multi-select di Recipient Details" caption="Di Recipient Details: centang beberapa nama sekaligus, data terbawa." />
+<ImageFull indent src="/images/cs-quick-transfer/solution-2-add-recipient.gif" alt="Multi-select di Recipient Details" caption="Di Recipient Details: centang beberapa nama sekaligus, data terbawa." />
 
-<ImageFull src="/images/cs-quick-transfer/solution-3-transfer-details.gif" alt="CTA banner di Transfer Details" caption="Di Transfer Details: klik banner, data yang sudah diisi terbawa ke Empty Table." />
+<ImageFull indent src="/images/cs-quick-transfer/solution-3-transfer-details.gif" alt="CTA banner di Transfer Details" caption="Di Transfer Details: klik banner, data yang sudah diisi terbawa ke Empty Table." />
 
-<Section title="Full Prototype">
+<Section title="C. Full Prototype">
 Bagi yang sejak awal tahu perlu kirim ke puluhan orang, Upload Excel dan Empty Table tetap ada, tanpa perubahan.
 </Section>
 
-<FigmaEmbed url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-46677&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1875%3A46627&page-id=411%3A2&show-proto-sidebar=1" title="Full prototype: Quick Transfer" caption="Prototype lengkap Quick Transfer end-to-end." />
+<FigmaEmbed indent url="https://www.figma.com/proto/IkEPs072TqfKuAmfF4SEbd/Jack---Local-Transfer?node-id=1875-46677&viewport=-990%2C1194%2C0.11&t=sm20zFSFZdtt8HdA-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1875%3A46627&page-id=411%3A2&show-proto-sidebar=1" title="Full prototype: Quick Transfer" caption="Prototype lengkap Quick Transfer end-to-end." />
 
 <PartHeader number="05" title="Impact" />
 
-<Section title="Hasil">
+<Section title="A. Hasil">
 <Metrics items={[
   { value: "52%", label: "Lebih singkat rata-rata waktu mulai transfer ke satu penerima" },
   { value: "41%", label: "Dari semua inisiasi Local Transfer lewat Quick Transfer, dalam 2 minggu setelah rilis" },
@@ -256,13 +256,13 @@ Feedback kualitatif menyebut pilihan barunya jauh lebih jelas, dan Quick Transfe
 *Sumber: metrik dan feedback sesuai laporan di [Quick Transfer: Boosting Portal Payments](https://app.notion.com/p/Quick-Transfer-Boosting-Portal-Payments-1e2407ef883f8088b0fcf433352e3d7b), portofolio produk Fira Zahra Allyah, Product Manager.*
 </Section>
 
-<Section title="Refleksi">
+<Section title="B. Refleksi">
 Yang paling memuaskan untuk saya adalah **alasan** di balik angka 52% dan 41% itu.
 
 **Masukan Bang Edo ternyata jadi penentu.** Kalau fitur ini tetap *"Single Transfer"* yang kaku, user yang tiba-tiba butuh tambah penerima akan kembali ke batch flow lama, frustrasi, dan mungkin tidak kembali lagi ke Quick Transfer. **Transition logic itulah yang membuat Quick Transfer terus dipakai setelah percobaan pertama.**
 </Section>
 
-<Section title="Referensi">
+<Section title="C. Referensi">
 - [Hasil usability testing](https://app.notion.com/p/fichoportfolio/UT-Quick-Transfer-Portal-Versi-Case-Study-41425ef5fa578125b1b1e68d43db66e7): 8 peserta internal, Mei 2024, mencakup walkthrough journey dan pengujian entry point.
 - [Quick Transfer: Boosting Portal Payments](https://app.notion.com/p/Quick-Transfer-Boosting-Portal-Payments-1e2407ef883f8088b0fcf433352e3d7b): portofolio produk Fira Zahra Allyah, Product Manager, sekaligus sumber metrik 52% dan 41%.
 </Section>

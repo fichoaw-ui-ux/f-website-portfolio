@@ -111,7 +111,7 @@ Satu pertanyaan jadi titik awal desain:
 
 <PartHeader number="03" title="Design Decisions" />
 
-<Section title="Kickoff">
+<Section title="A. Kickoff">
 Saya masuk di tahap analisis. Bersama Bang Fathur, lead saya, saya menelusuri root cause lewat tiga komponen di atas.
 
 Solusi paling mudah sebenarnya *auto-apply*: sistem langsung memotong biaya tanpa user perlu melakukan apa-apa. Setelah berdiskusi dengan tim Growth, kami sepakat tidak memilih jalan itu. Voucher yang ditemukan dan dipakai sendiri menciptakan momen kepuasan tersendiri, elemen gamifikasi yang hilang begitu prosesnya jadi otomatis. **Mekanismenya tetap; yang perlu diperbaiki adalah cara menampilkannya.**
@@ -120,18 +120,18 @@ PRD-nya menjadikan ini batasan yang tegas: perubahannya murni di front-end. Elig
 
 Eksekusi desain sepenuhnya saya pegang: eksplorasi iterasi, restrukturisasi halaman, sampai handoff ke engineering. Dari sini lahir tiga keputusan desain, satu untuk tiap friction:
 
-- **A. Komponen voucher** (Friction #1): bagaimana voucher tampil dan terbaca, dipilih dari dua alternatif yang dieksplorasi.
-- **B. Points banner** (Friction #2): seberapa besar ruang untuk banner, diputuskan bersama tim Growth.
-- **C. Information architecture** (Friction #3): urutan halaman, dijawab lewat restrukturisasi hierarki.
+- **B. Komponen voucher** (Friction #1): bagaimana voucher tampil dan terbaca, dipilih dari dua alternatif yang dieksplorasi.
+- **C. Points banner** (Friction #2): seberapa besar ruang untuk banner, diputuskan bersama tim Growth.
+- **D. Information architecture** (Friction #3): urutan halaman, dijawab lewat restrukturisasi hierarki.
 </Section>
 
-<Section title="A. Komponen Voucher: Dari Tidak Terlihat ke Actionable">
+<Section title="B. Komponen Voucher: Dari Tidak Terlihat ke Actionable">
 **Masalah yang dijawab:** Friction #1, komponen voucher.
 
 Visual dan copy harus dibenahi bersamaan, karena keduanya sama-sama membuat user merasa tidak ada yang perlu di-tap.
 </Section>
 
-<Section title="A.1 Bagaimana memperkenalkan voucher?" indent>
+<Section title="B.1 Bagaimana memperkenalkan voucher?" indent>
 Dua pendekatan dieksplorasi: *Quantity First* (menampilkan jumlah voucher yang tersedia) vs *Value First* (langsung menampilkan nilai voucher terbaik).
 </Section>
 
@@ -144,7 +144,7 @@ Dua pendekatan dieksplorasi: *Quantity First* (menampilkan jumlah voucher yang t
 **Alt 2 dipilih** karena paling efisien. Voucher yang ditampilkan sudah dikurasi sistem sebagai nilai terbaik, jadi user tidak perlu mencarinya sendiri.
 </Section>
 
-<Section title="A.2 Bagaimana membedakan default state dari applied state?" indent>
+<Section title="B.2 Bagaimana membedakan default state dari applied state?" indent>
 Komponen lama punya **satu tampilan untuk dua kondisi yang berbeda**, sehingga user bisa mengira voucher sudah berjalan.
 
 Dua keputusan visual diambil sekaligus:
@@ -166,7 +166,7 @@ Dua keputusan visual diambil sekaligus:
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-after.png" alt="After: active state" caption="After: active state" />
 </ImageGrid>
 
-<Section title="B. Points Banner: Dari Dominan ke Pendukung">
+<Section title="C. Points Banner: Dari Dominan ke Pendukung">
 **Masalah yang dijawab:** Friction #2, komponen points banner.
 
 Rekomendasi awal saya adalah memindahkan points banner ke Success Page supaya voucher menang penuh di reward slot Send Money. Tim Growth memutuskan untuk tetap menaruhnya di Send Money, dengan pertimbangan bahwa informasi points masih relevan di tahap ini: user yang tahu reward yang akan didapat sebelum bertransaksi cenderung lebih termotivasi menyelesaikan transfer.
@@ -179,7 +179,7 @@ Hasilnya, points banner diredam secara visual, dari banner emas yang dominan men
   <ImageFull mobile src="/images/cs-voucher-points-banner/decision-b-after.png" alt="After: strip abu-abu tipis" caption="After: strip abu-abu tipis" />
 </ImageGrid>
 
-<Section title="C. Information Architecture: Dari Payment Dulu ke Voucher Dulu">
+<Section title="D. Information Architecture: Dari Payment Dulu ke Voucher Dulu">
 **Masalah yang dijawab:** Friction #3, hierarki halaman.
 
 Yang paling halus dari ketiganya: masalahnya ada di **urutan, bukan di satu komponen**.
@@ -201,21 +201,21 @@ Dua pertimbangan yang mendasari keputusan ini:
 
 <PartHeader number="04" title="Solution" />
 
-<Section title="Satu Reward Slot, Satu Pemenang">
+<Section title="A. Satu Reward Slot, Satu Pemenang">
 Voucher kini terbaca sebagai peluang yang belum diambil: nilai terbaik terlihat di permukaan, apply cukup satu tap, dan diskonnya langsung muncul di rincian biaya.
 </Section>
 
-<ImageGrid cols={2}>
+<ImageGrid indent cols={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-before.png" alt="Before: Send Money default state" caption="Before: default state" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-default-after.png" alt="After: Send Money default state" caption="After: default state" />
 </ImageGrid>
 
-<ImageGrid cols={2}>
+<ImageGrid indent cols={2}>
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-before.png" alt="Before: Send Money applied state" caption="Before: applied state" />
   <ImageFull mobile src="/images/cs-voucher-points-banner/voucher-state-active-after.png" alt="After: Send Money applied state" caption="After: applied state" />
 </ImageGrid>
 
-<Section title="Detail Kunci">
+<Section title="B. Detail Kunci">
 - **Nilai lebih dulu.** Entry voucher menampilkan nilai voucher terbaik, bukan ajakan umum.
 - **Dua state yang tidak mungkin tertukar.** Default netral dengan tombol *"Apply"*; applied menampilkan badge hijau, kode voucher, dan *"Promo applied!"*.
 - **Points sebagai pendukung.** Points banner tetap di Send Money sebagai strip abu-abu tipis di bagian bawah halaman.
@@ -224,7 +224,7 @@ Voucher kini terbaca sebagai peluang yang belum diambil: nilai terbaik terlihat 
 
 <PartHeader number="05" title="Impact" />
 
-<Section title="Baseline & Target">
+<Section title="A. Baseline & Target">
 Solusi ini belum dirilis ke production saat studi kasus ini ditulis. Data baseline dari Mixpanel menunjukkan titik awal halaman ini:
 
 <Metrics items={[
@@ -251,7 +251,7 @@ Angka 10–15% adalah estimasi, disimpulkan dari keluhan user dan aplikasi finte
 - Kegagalan apply voucher tetap di bawah 2% dari total percobaan apply.
 </Section>
 
-<Section title="Validasi & Next Step">
+<Section title="B. Validasi & Next Step">
 Validasi dilakukan lewat konfirmasi langsung dengan tim Growth sebagai stakeholder utama. Desain disetujui dan masuk ke pipeline development.
 
 Persetujuan stakeholder belum menunjukkan bagaimana user membaca state barunya. Berikutnya, saya berencana menjalankan uji persepsi singkat dengan sekitar 5 user: apakah mereka bisa membedakan voucher yang tersedia dari voucher yang sudah applied?
@@ -261,7 +261,7 @@ Rilisnya bertahap lewat feature flag. Kalau completion rate Send Money turun leb
 Setelah rilis, voucher attach rate di transaksi yang eligible akan menunjukkan apakah redesign ini berhasil. Kalau angkanya naik, user mendapat lebih banyak value dari setiap transaksi, yang berkontribusi ke retention jangka panjang.
 </Section>
 
-<Section title="Refleksi">
+<Section title="C. Refleksi">
 **Yang paling saya pelajari dari proyek ini:** masalah yang terlihat seperti satu komponen bisa jadi kumpulan komponen yang berebut perhatian yang sama. Memperbaiki voucher saja akan membiarkan points banner dan urutan halaman tetap melawannya.
 
 Saya juga belajar untuk tidak terlalu terpaku pada rekomendasi sendiri. Saya ingin points banner hilang dari Send Money; pertimbangan tim Growth soal motivasi justru menghasilkan jalan tengah yang lebih baik: tetap ada, tapi lebih kalem.
